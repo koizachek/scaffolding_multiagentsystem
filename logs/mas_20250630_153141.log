@@ -1,0 +1,12 @@
+2025-06-30 15:31:41,729 - MAS.utils.logging_utils - INFO - Logging configured with level INFO
+2025-06-30 15:31:41,729 - MAS.utils.logging_utils - INFO - Logging to file: logs/mas_20250630_153141.log
+2025-06-30 15:31:41,729 - MAS.system - INFO - Initializing multi-agent scaffolding system
+2025-06-30 15:31:41,729 - MAS.agents.agent_factory - INFO - Creating lead agent: Lead Agent
+2025-06-30 15:31:41,729 - MAS.agents.base_agent - INFO - Initialized lead agent: Lead Agent
+2025-06-30 15:31:41,729 - MAS.core.scaffolding_engine - INFO - Initialized scaffolding engine
+2025-06-30 15:31:41,729 - MAS.core.dialogue_manager - INFO - Initialized dialogue manager
+2025-06-30 15:31:41,729 - MAS.agents.lead_agent - INFO - Initialized lead agent: Lead Agent
+2025-06-30 15:31:41,729 - MAS.agents.agent_factory - INFO - Created agent: lead (lead)
+2025-06-30 15:31:41,729 - MAS.core.scaffolding_engine - INFO - Initialized scaffolding engine
+2025-06-30 15:31:41,729 - MAS.core.dialogue_manager - INFO - Initialized dialogue manager
+2025-06-30 15:31:41,729 - MAS.system - INFO - Multi-agent scaffolding system initialized

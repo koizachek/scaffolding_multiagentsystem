@@ -1,0 +1,19 @@
+# Core dependencies
+openai
+openai-agents
+
+# PDF parsing
+pdfplumber
+PyPDF2
+
+# Graph visualization
+networkx
+matplotlib
+graphviz
+
+# CLI
+click
+
+# Utilities
+numpy
+pandas

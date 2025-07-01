@@ -1,0 +1,21 @@
+"""
+Configuration Module
+
+This module contains configuration files and settings for the multi-agent scaffolding system.
+"""
+
+from .scaffolding_config import (
+    DEFAULT_SCAFFOLDING_CONFIG,
+    SCAFFOLDING_PROMPT_TEMPLATES,
+    SCAFFOLDING_FOLLOWUP_TEMPLATES,
+    SCAFFOLDING_CONCLUSION_TEMPLATES,
+    DEFAULT_SCAFFOLDING_INTENSITY
+)
+
+__all__ = [
+    'DEFAULT_SCAFFOLDING_CONFIG',
+    'SCAFFOLDING_PROMPT_TEMPLATES',
+    'SCAFFOLDING_FOLLOWUP_TEMPLATES',
+    'SCAFFOLDING_CONCLUSION_TEMPLATES',
+    'DEFAULT_SCAFFOLDING_INTENSITY'
+]

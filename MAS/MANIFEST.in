@@ -1,0 +1,7 @@
+include README.md
+include LICENSE
+include requirements.txt
+include config.json
+recursive-include examples/data *.json
+recursive-include examples/output *.json *.txt *.png
+recursive-include logs *.log *.json *.csv

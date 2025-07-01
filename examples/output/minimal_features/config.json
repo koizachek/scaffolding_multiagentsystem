@@ -1,0 +1,56 @@
+{
+  "max_rounds": 3,
+  "agents": {
+    "lead": {
+      "type": "lead",
+      "name": "Lead Agent",
+      "enabled": true
+    },
+    "learner_profiling": {
+      "type": "learner_profiling",
+      "name": "Learner Profiling Agent",
+      "enabled": true
+    },
+    "strategic_scaffolding": {
+      "type": "strategic_scaffolding",
+      "name": "Strategic Scaffolding Agent",
+      "enabled": true
+    },
+    "conceptual_scaffolding": {
+      "type": "conceptual_scaffolding",
+      "name": "Conceptual Scaffolding Agent",
+      "enabled": true
+    },
+    "metacognitive_scaffolding": {
+      "type": "metacognitive_scaffolding",
+      "name": "Metacognitive Scaffolding Agent",
+      "enabled": true
+    },
+    "procedural_scaffolding": {
+      "type": "procedural_scaffolding",
+      "name": "Procedural Scaffolding Agent",
+      "enabled": true
+    },
+    "example_map": {
+      "type": "example_map",
+      "name": "Example Map Agent",
+      "enabled": true
+    },
+    "content_ingestion": {
+      "type": "content_ingestion",
+      "name": "Content Ingestion Agent",
+      "enabled": true
+    }
+  },
+  "design_features": {
+    "df1_learner_profiling": false,
+    "df2_scaffolding": true,
+    "df3_example_map": false,
+    "df4_content_ingestion": false
+  },
+  "logging": {
+    "log_dir": "logs",
+    "log_level": "INFO"
+  },
+  "output_dir": "examples/output/minimal_features"
+}

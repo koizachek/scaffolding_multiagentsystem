@@ -1,0 +1,73 @@
+{
+  "max_rounds": 4,
+  "output_dir": "output",
+  "session": {
+    "interactive_scaffolding": true,
+    "require_reflection": true,
+    "max_rounds": 4
+  },
+  "agents": {
+    "lead": {
+      "type": "lead",
+      "name": "Lead Agent",
+      "enabled": true
+    },
+    "learner_profiling": {
+      "type": "learner_profiling",
+      "name": "Learner Profiling Agent",
+      "enabled": true
+    },
+    "strategic_scaffolding": {
+      "type": "strategic_scaffolding",
+      "name": "Strategic Scaffolding Agent",
+      "enabled": true
+    },
+    "metacognitive_scaffolding": {
+      "type": "metacognitive_scaffolding",
+      "name": "Metacognitive Scaffolding Agent",
+      "enabled": true
+    },
+    "procedural_scaffolding": {
+      "type": "procedural_scaffolding",
+      "name": "Procedural Scaffolding Agent",
+      "enabled": true
+    },
+    "conceptual_scaffolding": {
+      "type": "conceptual_scaffolding",
+      "name": "Conceptual Scaffolding Agent",
+      "enabled": true
+    },
+    "content_ingestion": {
+      "type": "content_ingestion",
+      "name": "Content Ingestion Agent",
+      "enabled": true
+    },
+    "example_map": {
+      "type": "example_map",
+      "name": "Example Map Agent",
+      "enabled": true
+    }
+  },
+  "design_features": {
+    "df1_learner_profiling": true,
+    "df2_scaffolding": {
+      "strategic": true,
+      "metacognitive": true,
+      "procedural": true,
+      "conceptual": true
+    },
+    "df3_example_map": true,
+    "df4_content_ingestion": true
+  },
+  "scaffolding": {
+    "default_intensity": "medium",
+    "enable_interactive": true,
+    "enable_follow_ups": true,
+    "enable_conclusions": true,
+    "max_prompts_per_interaction": 3
+  },
+  "logging": {
+    "log_dir": "logs",
+    "log_level": "INFO"
+  }
+}

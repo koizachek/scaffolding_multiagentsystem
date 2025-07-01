@@ -1,0 +1,35 @@
+{
+  "maps": [
+    {
+      "name": "map1",
+      "topic": "Climate Change - Basic",
+      "node_count": 4,
+      "edge_count": 3,
+      "coverage": {
+        "nodes": 0.23529411764705882,
+        "edges": 0.15789473684210525
+      }
+    },
+    {
+      "name": "map2",
+      "topic": "Climate Change - Intermediate",
+      "node_count": 7,
+      "edge_count": 6,
+      "coverage": {
+        "nodes": 0.4117647058823529,
+        "edges": 0.3157894736842105
+      }
+    },
+    {
+      "name": "map3",
+      "topic": "Climate Change - Advanced",
+      "node_count": 11,
+      "edge_count": 11,
+      "coverage": {
+        "nodes": 0.6470588235294118,
+        "edges": 0.5789473684210527
+      }
+    }
+  ],
+  "comparison": {}
+}

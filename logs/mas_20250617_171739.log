@@ -1,0 +1,56 @@
+2025-06-17 17:17:39,829 - utils.logging_utils - INFO - Logging configured with level INFO
+2025-06-17 17:17:39,829 - utils.logging_utils - INFO - Logging to file: logs/mas_20250617_171739.log
+2025-06-17 17:17:39,829 - system - INFO - Initializing multi-agent scaffolding system
+2025-06-17 17:17:39,829 - agents.agent_factory - INFO - Creating lead agent: Lead Agent
+2025-06-17 17:17:39,829 - agents.base_agent - INFO - Initialized lead agent: Lead Agent
+2025-06-17 17:17:39,829 - agents.lead_agent - INFO - Initialized lead agent: Lead Agent
+2025-06-17 17:17:39,829 - agents.agent_factory - INFO - Created agent: lead (lead)
+2025-06-17 17:17:39,829 - agents.agent_factory - INFO - Creating learner profiling agent: Learner Profiling Agent
+2025-06-17 17:17:39,829 - agents.base_agent - INFO - Initialized learner_profiling agent: Learner Profiling Agent
+2025-06-17 17:17:39,829 - agents.learner_profiling_agent - INFO - Initialized learner profiling agent: Learner Profiling Agent
+2025-06-17 17:17:39,829 - agents.agent_factory - INFO - Created agent: learner_profiling (learner_profiling)
+2025-06-17 17:17:39,829 - agents.agent_factory - INFO - Creating strategic scaffolding agent: Strategic Scaffolding Agent
+2025-06-17 17:17:39,829 - agents.base_agent - INFO - Initialized strategic_scaffolding agent: Strategic Scaffolding Agent
+2025-06-17 17:17:39,829 - agents.strategic_scaffolding_agent - INFO - Initialized strategic scaffolding agent: Strategic Scaffolding Agent
+2025-06-17 17:17:39,829 - agents.agent_factory - INFO - Created agent: strategic_scaffolding (strategic_scaffolding)
+2025-06-17 17:17:39,829 - agents.agent_factory - INFO - Creating conceptual scaffolding agent: Conceptual Scaffolding Agent
+2025-06-17 17:17:39,829 - agents.base_agent - INFO - Initialized conceptual_scaffolding agent: Conceptual Scaffolding Agent
+2025-06-17 17:17:39,829 - agents.conceptual_scaffolding_agent - INFO - Initialized conceptual scaffolding agent: Conceptual Scaffolding Agent
+2025-06-17 17:17:39,829 - agents.agent_factory - INFO - Created agent: conceptual_scaffolding (conceptual_scaffolding)
+2025-06-17 17:17:39,829 - agents.agent_factory - INFO - Creating metacognitive scaffolding agent: Metacognitive Scaffolding Agent
+2025-06-17 17:17:39,829 - agents.base_agent - INFO - Initialized metacognitive_scaffolding agent: Metacognitive Scaffolding Agent
+2025-06-17 17:17:39,829 - agents.metacognitive_scaffolding_agent - INFO - Initialized metacognitive scaffolding agent: Metacognitive Scaffolding Agent
+2025-06-17 17:17:39,829 - agents.agent_factory - INFO - Created agent: metacognitive_scaffolding (metacognitive_scaffolding)
+2025-06-17 17:17:39,829 - agents.agent_factory - INFO - Creating procedural scaffolding agent: Procedural Scaffolding Agent
+2025-06-17 17:17:39,829 - agents.base_agent - INFO - Initialized procedural_scaffolding agent: Procedural Scaffolding Agent
+2025-06-17 17:17:39,829 - agents.procedural_scaffolding_agent - INFO - Initialized procedural scaffolding agent: Procedural Scaffolding Agent
+2025-06-17 17:17:39,829 - agents.agent_factory - INFO - Created agent: procedural_scaffolding (procedural_scaffolding)
+2025-06-17 17:17:39,829 - agents.agent_factory - INFO - Creating example map agent: Example Map Agent
+2025-06-17 17:17:39,829 - agents.base_agent - INFO - Initialized example_map agent: Example Map Agent
+2025-06-17 17:17:39,830 - agents.example_map_agent - INFO - Initialized example map agent: Example Map Agent
+2025-06-17 17:17:39,830 - agents.agent_factory - INFO - Created agent: example_map (example_map)
+2025-06-17 17:17:39,830 - agents.agent_factory - INFO - Creating content ingestion agent: Content Ingestion Agent
+2025-06-17 17:17:39,830 - agents.base_agent - INFO - Initialized content_ingestion agent: Content Ingestion Agent
+2025-06-17 17:17:39,830 - agents.content_ingestion_agent - INFO - Initialized content ingestion agent: Content Ingestion Agent
+2025-06-17 17:17:39,830 - agents.agent_factory - INFO - Created agent: content_ingestion (content_ingestion)
+2025-06-17 17:17:39,830 - system - INFO - Multi-agent scaffolding system initialized
+2025-06-17 17:17:39,830 - agents.example_map_agent - INFO - Set example map with 17 nodes and 19 edges
+2025-06-17 17:17:39,830 - agents.lead_agent - WARNING - Unknown input type: learner_profile
+2025-06-17 17:17:39,830 - system - INFO - Agent action: Lead Agent - process
+2025-06-17 17:17:40,844 - utils.visualization - INFO - Visualizing concept map: Concept Map
+2025-06-17 17:17:41,014 - utils.visualization - INFO - Visualization created for: Concept Map
+2025-06-17 17:17:41,316 - utils.visualization - INFO - Saved visualization to output/concept_map_round_0.png
+2025-06-17 17:17:41,316 - system - INFO - Agent action: Lead Agent - process
+2025-06-17 17:17:43,328 - utils.visualization - INFO - Visualizing concept map: Concept Map
+2025-06-17 17:17:43,386 - utils.visualization - INFO - Visualization created for: Concept Map
+2025-06-17 17:17:43,675 - utils.visualization - INFO - Saved visualization to output/concept_map_round_1.png
+2025-06-17 17:17:43,675 - system - INFO - Agent action: Lead Agent - process
+2025-06-17 17:17:45,688 - utils.visualization - INFO - Visualizing concept map: Concept Map
+2025-06-17 17:17:45,748 - utils.visualization - INFO - Visualization created for: Concept Map
+2025-06-17 17:17:46,049 - utils.visualization - INFO - Saved visualization to output/concept_map_round_2.png
+2025-06-17 17:17:46,049 - system - INFO - Agent action: Lead Agent - process
+2025-06-17 17:17:48,049 - agents.lead_agent - WARNING - Unknown input type: final_round
+2025-06-17 17:17:48,050 - system - INFO - Agent action: Lead Agent - process
+2025-06-17 17:17:48,050 - system - INFO - Generating session log
+2025-06-17 17:17:48,050 - system - INFO - Session completed: 3 rounds
+2025-06-17 17:17:48,050 - system - INFO - Active design features: {'df1_learner_profiling': True, 'df2_scaffolding': True, 'df3_example_map': True, 'df4_content_ingestion': True}

@@ -1,0 +1,43 @@
+{
+  "session": 4,
+  "date": "2025-02-05",
+  "nodes": 11,
+  "edges": 11,
+  "changes_since_previous": {
+    "new_nodes": [
+      "Deforestation",
+      "Biodiversity Loss",
+      "Ocean Acidification"
+    ],
+    "removed_nodes": [],
+    "new_edges": [
+      {
+        "source": "Climate Change",
+        "target": "Ocean Acidification",
+        "relation": "leads to"
+      },
+      {
+        "source": "Deforestation",
+        "target": "Carbon Emissions",
+        "relation": "increases"
+      },
+      {
+        "source": "Ocean Acidification",
+        "target": "Biodiversity Loss",
+        "relation": "contributes to"
+      },
+      {
+        "source": "Deforestation",
+        "target": "Biodiversity Loss",
+        "relation": "causes"
+      }
+    ],
+    "removed_edges": [],
+    "node_change": 3,
+    "edge_change": 4
+  },
+  "expert_coverage": {
+    "nodes": 0.6470588235294118,
+    "edges": 0.5263157894736842
+  }
+}
