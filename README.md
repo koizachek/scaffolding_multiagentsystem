@@ -22,14 +22,14 @@ The system is built with a hierarchical multi-agent architecture:
                       └────────┬────────┘
                                │
                                │
-           ┌──────────────────┼──────────────────┐
-           │                  │                  │
-┌──────────▼─────────┐ ┌──────▼───────┐ ┌────────▼────────┐
+            ┌─────────────────┼──────────-───────┐
+            │                 │                  │
+┌──────── ──▼────────┐ ┌──────▼───────┐ ┌────────▼────────┐
 │ Learner Profiling  │ │ Scaffolding  │ │   Example Map   │
-│   Agent (DF0)      │ │ Agents (DF0) │ │   Agent (DF0)   │
+│   Agent (DF1)      │ │Agents(DF1/2) │ │   Agent (DF3)   │
 └────────────────────┘ └──────┬───────┘ └─────────────────┘
                               │
-                              │
+                            (DF2)
          ┌──────────────────┬┴┬──────────────────┐
          │                  │ │                  │
 ┌────────▼────────┐ ┌───────▼─▼──────┐ ┌─────────▼────────┐
@@ -39,7 +39,7 @@ The system is built with a hierarchical multi-agent architecture:
                                               │
                                      ┌────────▼────────┐
                                      │   Procedural    │
-                                     │   Scaffolding   │
+                                     │ Scaffolding(DF4)│
                                      └─────────────────┘
 ```
 
