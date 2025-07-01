@@ -373,4 +373,3 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## Acknowledgments
 
 - This project was developed as a prototype for higher education research on scaffolding mechanisms.
-- Special thanks to the OpenAI team for providing the Agents SDK.
