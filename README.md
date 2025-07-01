@@ -312,7 +312,7 @@ MAS/
 ├── agents/                  # Agent modules
 │   ├── base_agent.py        # Base agent class
 │   ├── lead_agent.py        # Lead/orchestrator agent
-│   ├── learner_profiling_agent.py  # DF1 agent
+│   ├── learner_profiling_agent.py  # DF1&2 agent
 │   ├── strategic_scaffolding_agent.py  # DF2 strategic agent
 │   ├── conceptual_scaffolding_agent.py  # DF2 conceptual agent
 │   ├── metacognitive_scaffolding_agent.py  # DF2 metacognitive agent
