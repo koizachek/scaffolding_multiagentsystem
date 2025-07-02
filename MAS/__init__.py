@@ -12,7 +12,7 @@ __author__ = "Diana Kozachek"
 # Lazy import to avoid circular dependencies
 def get_system_class():
     """Get the MultiAgentScaffoldingSystem class with lazy import."""
-    from .system import MultiAgentScaffoldingSystem
+    from .mas_system import MultiAgentScaffoldingSystem
     return MultiAgentScaffoldingSystem
 
 __all__ = [

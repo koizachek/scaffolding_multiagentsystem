@@ -11,7 +11,7 @@ import os
 import sys
 from typing import Dict, List, Any, Optional
 
-from MAS.system import MultiAgentScaffoldingSystem
+from MAS.mas_system import MultiAgentScaffoldingSystem
 
 logger = logging.getLogger(__name__)
 

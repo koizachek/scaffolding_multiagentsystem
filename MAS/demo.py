@@ -17,7 +17,7 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from system import MultiAgentScaffoldingSystem
+from mas_system import MultiAgentScaffoldingSystem
 from utils.visualization import plot_concept_map
 
 # Configure logging
