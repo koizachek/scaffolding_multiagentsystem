@@ -12,7 +12,7 @@ from pathlib import Path
 # Add the parent directory to the Python path to import the MAS package
 sys.path.append(str(Path(__file__).parent.parent))
 
-from system import MultiAgentScaffoldingSystem
+from MAS.mas_system import MultiAgentScaffoldingSystem
 from utils.visualization import plot_concept_map
 
 def create_sample_config():

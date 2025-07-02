@@ -11,6 +11,10 @@ import os
 import sys
 from typing import Dict, List, Any, Optional, Callable
 
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
 from MAS.agents.agent_factory import create_agents_from_config
 from MAS.agents.base_agent import BaseAgent
 from MAS.utils.logging_utils import setup_logging

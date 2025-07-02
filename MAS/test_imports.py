@@ -26,7 +26,7 @@ def test_imports():
     # Test system import
     try:
         print("2. Testing system import...")
-        from MAS.system import MultiAgentScaffoldingSystem
+        from MAS.mas_system import MultiAgentScaffoldingSystem
         print("✓ System import successful")
     except Exception as e:
         print(f"✗ System import failed: {e}")
@@ -83,7 +83,7 @@ def test_system_instantiation():
     print("=" * 60)
     
     try:
-        from MAS.system import MultiAgentScaffoldingSystem
+        from MAS.mas_system import MultiAgentScaffoldingSystem
         
         # Use the existing config file
         config_path = os.path.join(os.path.dirname(__file__), "config.json")

@@ -190,6 +190,8 @@ This test will:
 3. Simulate a complete scaffolding interaction with a sample concept map
 4. Display the scaffolding type selected, agent prompts, and system responses
 
+Additionally install from pyproject.toml to use MAS without path issues (python -m pip install -e .)
+
 ### Interactive Mode
 
 The interactive mode provides a command-line interface for interacting with the real multi-agent system:

@@ -1,0 +1,14 @@
+[project]
+name = "MAS"
+version = "0.1.0"
+description = "Multi-Agent System utilities and agents"
+authors = [{ name = "Your Name" }]
+requires-python = ">=3.8"
+
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["MAS*"]
