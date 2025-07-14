@@ -76,6 +76,8 @@ The system is built with a hierarchical multi-agent architecture:
    - Provides context-awareness to other agents based on latest learner state
    - Enables targeted, relevant feedback by tracking changes over time
 
+<img width="1758" height="966" alt="prozess_orchestrierung" src="https://github.com/user-attachments/assets/c9ed1230-8d53-4580-ab86-28b409433f7b" />
+
 ## Installation
 
 ### Prerequisites
