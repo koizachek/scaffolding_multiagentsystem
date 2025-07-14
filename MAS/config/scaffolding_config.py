@@ -10,8 +10,8 @@ SCAFFOLDING_PROMPT_TEMPLATES = {
         "high": [
             "I notice that {observation}. Could you walk me through your process for organizing the concepts in your map? What was your overall strategy?",
             "Looking at your concept map, I see that {observation}. What approach did you use to decide which concepts to include first and how to arrange them?",
-            "Your map has {node_count} concepts and {edge_count} relationships. How did you decide on the overall structure? What might be a logical next step in expanding this area?",
-            "I'm curious about how you approached the organization of your concept map. What was your thinking behind placing {concept} where you did?",
+            "Your map has {node_count} concepts and {edge_count} relationships. How did you decide on this structure? What might be a logical next step in expanding this area?",
+            "How did you approache the organization of your concept map? What was your idea behind placing {concept} where you did?",
             "Have you considered organizing these concepts differently? What alternative structures might help show the relationships more clearly?",
             "What strategy did you use to determine which relationships to include in your map? Are there other important connections you considered but didn't include?"
         ],

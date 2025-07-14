@@ -7,17 +7,12 @@ It orchestrates the scaffolding interactions.
 
 import logging
 import random
-import sys
-import os
-from typing import Dict, List, Any, Optional, Tuple
+from typing import Dict, List, Any, Optional
 
 from MAS.utils.scaffolding_utils import (
     analyze_concept_map,
     select_scaffolding_type,
-    analyze_learner_response,
-    generate_default_prompts,
-    generate_default_follow_up,
-    generate_default_conclusion
+    generate_default_prompts 
 )
 from MAS.config.scaffolding_config import (
     SCAFFOLDING_PROMPT_TEMPLATES,
