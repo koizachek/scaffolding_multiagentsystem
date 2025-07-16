@@ -22,6 +22,7 @@ from MAS.utils.pdf_parser import parse_pdf_to_json
 from MAS.utils.visualization import plot_concept_map
 from MAS.core.scaffolding_engine import ScaffoldingEngine
 from MAS.core.dialogue_manager import DialogueManager
+from MAS.core.enhanced_io_manager import create_experimental_handlers, ExperimentalIOManager
 
 logger = logging.getLogger(__name__)
 
@@ -74,6 +75,11 @@ class MultiAgentScaffoldingSystem:
         self.lead_agent = self._get_lead_agent()
         if not self.lead_agent:
             raise ValueError("No lead agent found in configuration")
+        
+        # Initialize enhanced I/O manager for experimental features
+        self.experimental_io_manager = None
+        self.enhanced_input_handler = None
+        self.enhanced_output_handler = None
         
         # Initialize scaffolding engine and dialogue manager
         self.scaffolding_engine = ScaffoldingEngine(self.config, self.lead_agent)
@@ -465,3 +471,138 @@ class MultiAgentScaffoldingSystem:
         # In a real implementation, this would interact with the user interface
         # For now, just print to the console
         print(text)
+    
+    def enable_experimental_mode(self, io_config: Optional[Dict[str, Any]] = None) -> None:
+        """
+        Enable experimental mode with enhanced I/O and analysis capabilities.
+        
+        Args:
+            io_config: Configuration for enhanced I/O manager
+        """
+        logger.info("Enabling experimental mode")
+        
+        # Create enhanced I/O handlers
+        self.enhanced_input_handler, self.enhanced_output_handler = create_experimental_handlers(io_config)
+        self.experimental_io_manager = self.enhanced_input_handler.io_manager
+        
+        # Update dialogue manager to use enhanced handlers
+        self.dialogue_manager = DialogueManager(
+            self.config,
+            self.enhanced_input_handler,
+            self.enhanced_output_handler
+        )
+        
+        # Update lead agent's dialogue manager reference
+        if hasattr(self.lead_agent, 'dialogue_manager'):
+            self.lead_agent.dialogue_manager = self.dialogue_manager
+        
+        logger.info("Experimental mode enabled with enhanced I/O analysis")
+    
+    def disable_experimental_mode(self) -> None:
+        """Disable experimental mode and revert to standard I/O."""
+        logger.info("Disabling experimental mode")
+        
+        # Revert to standard handlers
+        self.dialogue_manager = DialogueManager(
+            self.config,
+            self._handle_user_input,
+            self._handle_system_output
+        )
+        
+        # Update lead agent's dialogue manager reference
+        if hasattr(self.lead_agent, 'dialogue_manager'):
+            self.lead_agent.dialogue_manager = self.dialogue_manager
+        
+        # Clear experimental references
+        self.experimental_io_manager = None
+        self.enhanced_input_handler = None
+        self.enhanced_output_handler = None
+        
+        logger.info("Experimental mode disabled")
+    
+    def get_interaction_analysis(self) -> Optional[Dict[str, Any]]:
+        """
+        Get comprehensive interaction analysis from experimental mode.
+        
+        Returns:
+            Interaction analysis if experimental mode is enabled, None otherwise
+        """
+        if self.experimental_io_manager:
+            return self.experimental_io_manager.get_interaction_analysis()
+        else:
+            logger.warning("Experimental mode not enabled. No interaction analysis available.")
+            return None
+    
+    def export_experimental_data(self, filepath: Optional[str] = None) -> Optional[str]:
+        """
+        Export experimental session data for research analysis.
+        
+        Args:
+            filepath: Optional filepath for export
+            
+        Returns:
+            Filepath where data was saved, or None if experimental mode not enabled
+        """
+        if self.experimental_io_manager:
+            return self.experimental_io_manager.export_session_data(filepath)
+        else:
+            logger.warning("Experimental mode not enabled. No data to export.")
+            return None
+    
+    def get_experimental_session_data(self) -> Optional[Dict[str, Any]]:
+        """
+        Get current experimental session data.
+        
+        Returns:
+            Session data if experimental mode is enabled, None otherwise
+        """
+        if self.experimental_io_manager:
+            return self.experimental_io_manager.get_session_data()
+        else:
+            return None
+    
+    def reset_experimental_session(self) -> None:
+        """Reset experimental session data for a new session."""
+        if self.experimental_io_manager:
+            self.experimental_io_manager.reset_session()
+            logger.info("Experimental session data reset")
+        else:
+            logger.warning("Experimental mode not enabled. No session to reset.")
+    
+    def is_experimental_mode_enabled(self) -> bool:
+        """Check if experimental mode is currently enabled."""
+        return self.experimental_io_manager is not None
+    
+    def process_concept_map_experimental(self, pdf_path: str, 
+                                       collect_detailed_analysis: bool = True) -> Dict[str, Any]:
+        """
+        Process a concept map with enhanced experimental data collection.
+        
+        Args:
+            pdf_path: Path to the concept map PDF
+            collect_detailed_analysis: Whether to collect detailed interaction analysis
+            
+        Returns:
+            Processing result with experimental data
+        """
+        if not self.is_experimental_mode_enabled():
+            logger.warning("Experimental mode not enabled. Using standard processing.")
+            return self.process_concept_map(pdf_path)
+        
+        logger.info(f"Processing concept map in experimental mode: {pdf_path}")
+        
+        # Process concept map normally, whatever normally means in that context
+        result = self.process_concept_map(pdf_path)
+        
+        # Add experimental analysis if requested
+        if collect_detailed_analysis and self.experimental_io_manager:
+            experimental_analysis = self.experimental_io_manager.get_interaction_analysis()
+            result["experimental_analysis"] = experimental_analysis
+            
+            # Log experimental metrics
+            if experimental_analysis and "session_summary" in experimental_analysis:
+                summary = experimental_analysis["session_summary"]
+                logger.info(f"Experimental metrics - Total interactions: {summary.get('total_interactions', 0)}, "
+                           f"Avg response time: {summary.get('avg_response_time', 0):.2f}s")
+        
+        return result
