@@ -49,7 +49,7 @@ This document summarizes the implementation of interactive scaffolding mechanism
 - Centralized logging and callback integration
 - Enforced custom logic via _process_impl() override
 
-#### Lead Agent (`agents/lead_agent.py`)
+#### Lead Agent (`agents/lead_agent.py`) 
 **Enhanced with**:
 - Scaffolding orchestration capabilities
 - Interactive session management
