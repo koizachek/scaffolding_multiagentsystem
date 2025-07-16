@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document summarizes the comprehensive implementation of interactive scaffolding mechanisms in the multi-agent system architecture. The system has been transformed from a passive concept map analyzer to an active educational partner that provides personalized, adaptive scaffolding support.
+This document summarizes the implementation of interactive scaffolding mechanisms in the multi-agent system architecture. The system went from passive concept map analyzer to an active educational partner that provides personalized, adaptive scaffolding support.
 
 ## Core System Architecture Enhancement
 
@@ -38,6 +38,16 @@ This document summarizes the comprehensive implementation of interactive scaffol
 - `present_conclusion()`: Scaffolding session conclusion
 
 ### 3. Enhanced Agent Classes
+
+#### Base Agent (`agents/base_agent.py`)
+**Used as**: Abstract superclass for all agent implementations, implicit in the system architecture, not an operational agent!
+**Provides**: 
+- Unified interface for all agents in the system
+- Standardized process() method for interaction flow
+- State management and configuration access
+- Enable/disable toggles for experimental control
+- Centralized logging and callback integration
+- Enforced custom logic via _process_impl() override
 
 #### Lead Agent (`agents/lead_agent.py`)
 **Enhanced with**:
