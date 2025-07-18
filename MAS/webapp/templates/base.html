@@ -1,0 +1,15 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Scaffolding</title>
+		<script src="https://unpkg.com/cytoscape@3.24.0/dist/cytoscape.min.js"></script>
+		<link rel="stylesheet" href ="{{ url_for('static', filename='css/style.css') }}">
+	</head>
+	<body>
+		{% include 'label_input_box.html' %}
+		{% include 'toolbar.html' %}
+		{% include 'cy_canvas.html' %}
+		<script src="{{ url_for('static', filename='js/contextMapCanvas.js') }}"></script>
+	</body>
+</html>
