@@ -6,6 +6,9 @@ openai-agents
 pdfplumber
 PyPDF2
 
+# Web-Application & Contex Map parsing 
+Flask
+
 # Graph visualization
 networkx
 matplotlib

@@ -1,0 +1,225 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Scaffolding</title>
+		
+		<script src="https://unpkg.com/cytoscape@3.24.0/dist/cytoscape.min.js"></script>
+
+		<style>
+			#cy {
+				width: 100%;
+				height: 90vh;
+				border: 1px solid black;
+				cursor: crosshair;
+			}
+
+			.toolbar {
+				display: flex;
+				gap: 10px;
+				padding: 10px;
+				background: #f0f0f0;
+				border-bottom: 1px solid #ccc;
+			}
+
+			.toolbar button.active {
+				background: #2ecc71;
+			}
+
+			
+		</style>
+
+	</head>
+	<body>
+		<div id="labelInputBox" style="
+			position: absolute;
+			display: none;
+			background: white;
+			border: 1px solid #ccc;
+			padding: 6px;
+			z-index: 10;
+			box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+		">
+			<input type="text" id="labelInputText" placeholder="Enter Label" />
+			<button id="labelInputSubmit">OK</button>
+		</div>	
+
+		<div class="toolbar">
+			<button id="addNodeButton">Add Node</button>
+			<button id="addEdgeButton">Add Edge</button>
+			<button id="moveModeButton" class="active">Edit Mode</button>
+		</div>
+
+		<div id="cy"></div>
+
+
+		<script>			
+			let cy = cytoscape({
+				container: document.getElementById('cy'),
+				layout: { name: 'grid' },
+				elements: [],
+				style: [{
+					selector: 'node',
+					style: {
+						'label': 'data(label)',
+						'background-color': '#3498db',
+						'color': '#fff',
+						'text-valign': 'center',
+						'text-halign': 'center',
+						'border-width': 2,
+						'border-color': 'transparent',
+						'width': 50,
+						'height': 50
+					}
+				}, {
+					selector: 'edge',
+					style: {
+						'label': 'data(label)',
+						'curve-style': 'bezier',
+						'target-arrow-shape': 'triangle',
+						'target-arrow-color': '#ccc',
+						'line-color': '#ccc',
+						'width': 3
+					}
+				}]});
+			
+			cy.style()
+				.selector('.selectedNode')
+				.style({
+					'background-color': 'green',
+					'border-color': 'orange',
+					'border-width': 2
+				}).update();
+
+
+			const Modes = { AddNode: "addNode", AddEdge: "addEdge", Move: "moveMode" };
+
+			let selectedButton = document.getElementById(Modes.Move + "Button");
+			let currentMode = Modes.Move;
+			
+			let edgeSource = null;
+
+			const setMode = (mode) => {
+				console.log("mode change from " + currentMode + " to " + mode);
+				selectedButton.classList.remove('active');
+				selectedButton = document.getElementById(mode + 'Button');
+				
+				selectedButton.classList.add('active');
+				currentMode = mode;
+				
+				cy.autoungrabify(mode === Modes.AddNode || mode == Modes.AddEdge);
+				edgeSource = null;
+			};
+
+			Object.values(Modes).forEach(mode => 
+				document.getElementById(mode + "Button").onclick = () => setMode(mode));
+			
+			const labelBox    = document.getElementById("labelInputBox");
+			const labelInput  = document.getElementById("labelInputText");
+			const labelSubmit = document.getElementById("labelInputSubmit");
+			
+			const nodeCreationManager = {
+				started: false,
+				nodePos: null,
+				nodeId:  null,
+
+				begin: function(pos, id) {
+					this.started = true;
+					this.nodePos = pos;
+					this.nodeId  = id;
+
+				},
+
+				finish: function() {
+					this.started = false;
+					this.nodePos = null;
+					this.nodeId  = null;
+					labelBox.style.display = 'none';
+				},
+
+				removeNode: function() {
+					if (cy.getElementById(this.nodeId).nonempty())
+						cy.remove(cy.getElementById(this.nodeId));
+				}
+			};
+
+			cy.on('tap', function(evt) {
+				if (evt.target != cy || currentMode != Modes.AddNode) return;
+				
+				if (nodeCreationManager.started) {
+					nodeCreationManager.removeNode();
+					nodeCreationManager.finish();
+				}
+
+				const pos = evt.position;
+				const renderPos = cy.renderer().projectIntoViewport(pos.x, pos.y);
+
+				labelBox.style.left = `${renderPos[0]-100}px`;
+				labelBox.style.top  = `${renderPos[1]+25}px`;
+				labelBox.style.display = 'block';
+				
+				const id = 'node_' + Date.now();
+				const label = '';
+				cy.add({
+					group: 'nodes',
+					data: { id, label },
+					position: pos
+				});
+				
+				labelInput.value = '';
+				labelInput.focus();
+				
+				nodeCreationManager.begin(pos, id);
+			});
+			
+			document.getElementById('labelInputSubmit').onclick = () => {
+				if (!nodeCreationManager.started) return;
+
+				const label = labelInput.value.trim();
+				if (!label || !nodeCreationManager.nodePos) {
+					nodeCreationManager.removeNode();
+					nodeCreationManager.finish();
+					return;
+				}
+							
+				const node = cy.getElementById(nodeCreationManager.nodeId);
+				const size = Math.max(50, label.length * 10);
+				node.style({'width': size, 'height': size});
+				node.data({ id: nodeCreationManager.nodeId, label });
+				nodeCreationManager.finish();
+			};
+
+			cy.on('tap', 'node', function(evt) {
+				if (currentMode != Modes.AddEdge) return;
+				
+				const node = evt.target;
+				if (!edgeSource) {
+					edgeSource = node;
+					edgeSource.addClass('selectedNode');
+					return;
+				}
+
+				if (edgeSource.id() == node.id()) {
+					edgeSource.removeClass('selectedNode');
+					edgeSource = null;
+					return;
+				}
+
+				const label = prompt('Enter edge label:');
+				cy.add({
+					group: 'edges',
+					data: {
+						id: 'edge_' + Date.now(),
+						source: edgeSource.id(),
+						target: node.id(),
+						label
+					}
+				});
+				edgeSource.removeClass('selectedNode');
+				edgeSource = null;
+			});
+
+		</script>
+
+	</body>
+</html>
