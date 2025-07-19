@@ -1,6 +1,7 @@
 # Core dependencies
 openai
 openai-agents
+python-dotenv
 
 # PDF parsing
 pdfplumber

@@ -1,0 +1,39 @@
+2025-07-19 19:52:04,990 - MAS.utils.logging_utils - INFO - Logging configured with level INFO
+2025-07-19 19:52:04,990 - MAS.utils.logging_utils - INFO - Logging to file: logs/mas_20250719_195204.log
+2025-07-19 19:52:04,990 - MAS.mas_system - INFO - Initializing multi-agent scaffolding system
+2025-07-19 19:52:04,991 - MAS.agents.agent_factory - INFO - Creating lead agent: Lead Agent
+2025-07-19 19:52:04,991 - MAS.agents.base_agent - INFO - Initialized lead agent: Lead Agent
+2025-07-19 19:52:04,991 - MAS.core.scaffolding_engine - INFO - Initialized scaffolding engine
+2025-07-19 19:52:04,991 - MAS.core.dialogue_manager - INFO - Initialized dialogue manager
+2025-07-19 19:52:04,991 - MAS.agents.lead_agent - INFO - Initialized lead agent: Lead Agent
+2025-07-19 19:52:04,991 - MAS.agents.agent_factory - INFO - Created agent: lead (lead)
+2025-07-19 19:52:04,991 - MAS.agents.agent_factory - INFO - Creating learner profiling agent: Learner Profiling Agent
+2025-07-19 19:52:04,991 - MAS.agents.base_agent - INFO - Initialized learner_profiling agent: Learner Profiling Agent
+2025-07-19 19:52:04,991 - MAS.agents.learner_profiling_agent - INFO - Initialized learner profiling agent: Learner Profiling Agent
+2025-07-19 19:52:04,991 - MAS.agents.agent_factory - INFO - Created agent: learner_profiling (learner_profiling)
+2025-07-19 19:52:04,991 - MAS.agents.agent_factory - INFO - Creating strategic scaffolding agent: Strategic Scaffolding Agent
+2025-07-19 19:52:04,991 - MAS.agents.base_agent - INFO - Initialized strategic_scaffolding agent: Strategic Scaffolding Agent
+2025-07-19 19:52:04,991 - MAS.agents.strategic_scaffolding_agent - INFO - Initialized strategic scaffolding agent: Strategic Scaffolding Agent
+2025-07-19 19:52:04,991 - MAS.agents.agent_factory - INFO - Created agent: strategic_scaffolding (strategic_scaffolding)
+2025-07-19 19:52:04,991 - MAS.agents.agent_factory - INFO - Creating metacognitive scaffolding agent: Metacognitive Scaffolding Agent
+2025-07-19 19:52:04,992 - MAS.agents.base_agent - INFO - Initialized metacognitive_scaffolding agent: Metacognitive Scaffolding Agent
+2025-07-19 19:52:04,992 - MAS.agents.metacognitive_scaffolding_agent - INFO - Initialized metacognitive scaffolding agent: Metacognitive Scaffolding Agent
+2025-07-19 19:52:04,992 - MAS.agents.agent_factory - INFO - Created agent: metacognitive_scaffolding (metacognitive_scaffolding)
+2025-07-19 19:52:04,992 - MAS.agents.agent_factory - INFO - Creating procedural scaffolding agent: Procedural Scaffolding Agent
+2025-07-19 19:52:04,992 - MAS.agents.base_agent - INFO - Initialized procedural_scaffolding agent: Procedural Scaffolding Agent
+2025-07-19 19:52:04,992 - MAS.agents.procedural_scaffolding_agent - INFO - Initialized procedural scaffolding agent: Procedural Scaffolding Agent
+2025-07-19 19:52:04,992 - MAS.agents.agent_factory - INFO - Created agent: procedural_scaffolding (procedural_scaffolding)
+2025-07-19 19:52:04,992 - MAS.agents.agent_factory - INFO - Creating conceptual scaffolding agent: Conceptual Scaffolding Agent
+2025-07-19 19:52:04,992 - MAS.agents.base_agent - INFO - Initialized conceptual_scaffolding agent: Conceptual Scaffolding Agent
+2025-07-19 19:52:04,992 - MAS.agents.conceptual_scaffolding_agent - INFO - Initialized conceptual scaffolding agent: Conceptual Scaffolding Agent
+2025-07-19 19:52:04,993 - MAS.agents.agent_factory - INFO - Created agent: conceptual_scaffolding (conceptual_scaffolding)
+2025-07-19 19:52:04,993 - MAS.agents.agent_factory - INFO - Creating content ingestion agent: Content Ingestion Agent
+2025-07-19 19:52:04,993 - MAS.agents.base_agent - INFO - Initialized content_ingestion agent: Content Ingestion Agent
+2025-07-19 19:52:04,993 - MAS.agents.content_ingestion_agent - INFO - Initialized content ingestion agent: Content Ingestion Agent
+2025-07-19 19:52:04,993 - MAS.agents.agent_factory - INFO - Created agent: content_ingestion (content_ingestion)
+2025-07-19 19:52:04,994 - MAS.agents.agent_factory - INFO - Creating example map agent: Example Map Agent
+2025-07-19 19:52:04,994 - MAS.agents.base_agent - INFO - Initialized example_map agent: Example Map Agent
+2025-07-19 19:52:04,994 - MAS.agents.example_map_agent - INFO - Initialized example map agent: Example Map Agent
+2025-07-19 19:52:04,994 - MAS.agents.agent_factory - INFO - Created agent: example_map (example_map)
+2025-07-19 19:52:04,994 - MAS.core.scaffolding_engine - INFO - Initialized scaffolding engine
+2025-07-19 19:52:04,994 - MAS.core.dialogue_manager - INFO - Initialized dialogue manager
