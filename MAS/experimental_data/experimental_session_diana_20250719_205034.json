@@ -1,0 +1,272 @@
+{
+  "session_id": "session_20250719_204430",
+  "start_time": "2025-07-19T20:44:30.895900",
+  "learner_profile": {
+    "name": "diana",
+    "background": "phd student",
+    "prior_knowledge": "I dont know anything",
+    "confidence": "1",
+    "interests": "money",
+    "goals": "peace",
+    "zpd_level": "medium",
+    "created_at": "2025-07-19T20:44:58.700142"
+  },
+  "agent_sequence": [
+    "procedural_scaffolding",
+    "conceptual_scaffolding",
+    "metacognitive_scaffolding",
+    "strategic_scaffolding"
+  ],
+  "used_agents": [
+    "procedural_scaffolding",
+    "conceptual_scaffolding",
+    "metacognitive_scaffolding",
+    "strategic_scaffolding"
+  ],
+  "rounds": [
+    {
+      "round_number": 0,
+      "agent_type": "procedural_scaffolding",
+      "start_time": "2025-07-19T20:48:54.595657",
+      "concept_map": {
+        "concepts": [],
+        "relationships": [],
+        "mermaid_source": "where is the visualization\n\n\nhelp\nexit",
+        "parser_metadata": {
+          "nodes_found": 0,
+          "edges_found": 0,
+          "concepts_created": 0,
+          "relationships_created": 0
+        },
+        "round": 0,
+        "timestamp": "2025-07-19T20:48:54.595390"
+      },
+      "interactions": [],
+      "agent_responses": [
+        {
+          "text": "To improve your concept map, start by identifying key concepts related to your topic. Think about the main ideas or themes you want to explore and list them as individual concepts. Once you have a few concepts, consider how they might connect to each other. What is one key concept you want to include in your map, and how might it relate to others?",
+          "timestamp": "2025-07-19T20:48:58.463611",
+          "type": "initial_prompt",
+          "model_used": "gpt-4o",
+          "tokens_used": 229
+        },
+        {
+          "text": "I understand it might feel challenging at the start, but concept mapping can really help organize your thoughts. Let's try adding just one concept to begin with—what's the main topic or idea you want to explore? Once we have that, we can start building from there.",
+          "timestamp": "2025-07-19T20:49:18.037281",
+          "type": "followup",
+          "model_used": "gpt-4o",
+          "tokens_used": 222
+        }
+      ],
+      "user_responses": [
+        {
+          "text": "no I want to exit",
+          "timestamp": "2025-07-19T20:49:15.098925",
+          "type": "response_to_initial"
+        }
+      ],
+      "end_time": "2025-07-19T20:49:18.037346",
+      "duration_seconds": 23.441689
+    },
+    {
+      "round_number": 1,
+      "agent_type": "conceptual_scaffolding",
+      "start_time": "2025-07-19T20:49:32.882703",
+      "concept_map": {
+        "concepts": [],
+        "relationships": [],
+        "mermaid_source": "",
+        "parser_metadata": {
+          "nodes_found": 0,
+          "edges_found": 0,
+          "concepts_created": 0,
+          "relationships_created": 0
+        },
+        "round": 1,
+        "timestamp": "2025-07-19T20:49:32.882597"
+      },
+      "interactions": [],
+      "agent_responses": [
+        {
+          "text": "It looks like you're starting fresh, which is a great opportunity to define the core concepts you want to explore. Consider what main idea or topic you'd like to focus on, and then think about the key components or subtopics that relate to it. As you start to draw connections, ask yourself: How do these concepts influence or depend on each other? This question can help you identify meaningful relationships between them.",
+          "timestamp": "2025-07-19T20:49:35.574086",
+          "type": "initial_prompt",
+          "model_used": "gpt-4o",
+          "tokens_used": 239
+        }
+      ],
+      "user_responses": [
+        {
+          "text": "DDONE",
+          "timestamp": "2025-07-19T20:49:38.087670",
+          "type": "response_to_initial"
+        }
+      ],
+      "end_time": "2025-07-19T20:49:38.087699",
+      "duration_seconds": 5.204996
+    },
+    {
+      "round_number": 2,
+      "agent_type": "metacognitive_scaffolding",
+      "start_time": "2025-07-19T20:49:56.519479",
+      "concept_map": {
+        "concepts": [],
+        "relationships": [],
+        "mermaid_source": "",
+        "parser_metadata": {
+          "nodes_found": 0,
+          "edges_found": 0,
+          "concepts_created": 0,
+          "relationships_created": 0
+        },
+        "round": 2,
+        "timestamp": "2025-07-19T20:49:56.519382"
+      },
+      "interactions": [],
+      "agent_responses": [
+        {
+          "text": "It's great that you're revisiting your concept map, as this indicates a commitment to refining your understanding. Reflect on the core topic or theme you're focusing on, and consider what key concepts are essential to this area. What relationships or connections between these concepts can you identify that would help clarify your understanding of the topic?",
+          "timestamp": "2025-07-19T20:49:58.262302",
+          "type": "initial_prompt",
+          "model_used": "gpt-4o",
+          "tokens_used": 224
+        },
+        {
+          "text": "It seems like you're at a starting point with your concept map. Reflect on what you've learned so far: which key concepts do you feel confident about, and how might they connect? What’s one idea you could start with to build your map further?",
+          "timestamp": "2025-07-19T20:50:17.007456",
+          "type": "followup",
+          "model_used": "gpt-4o",
+          "tokens_used": 220
+        }
+      ],
+      "user_responses": [
+        {
+          "text": "no thank you",
+          "timestamp": "2025-07-19T20:50:15.324459",
+          "type": "response_to_initial"
+        }
+      ],
+      "end_time": "2025-07-19T20:50:17.007525",
+      "duration_seconds": 20.488046
+    },
+    {
+      "round_number": 3,
+      "agent_type": "strategic_scaffolding",
+      "start_time": "2025-07-19T20:50:24.973184",
+      "concept_map": {
+        "concepts": [],
+        "relationships": [],
+        "mermaid_source": "",
+        "parser_metadata": {
+          "nodes_found": 0,
+          "edges_found": 0,
+          "concepts_created": 0,
+          "relationships_created": 0
+        },
+        "round": 3,
+        "timestamp": "2025-07-19T20:50:24.973093"
+      },
+      "interactions": [],
+      "agent_responses": [
+        {
+          "text": "It's great that you're taking the time to refine your concept map. Start by identifying 5-7 key concepts you want to include, and then think about how they logically connect with each other. Consider what central theme or question your map is addressing to guide your organization. What is the main topic or question you want your map to explore?",
+          "timestamp": "2025-07-19T20:50:26.800912",
+          "type": "initial_prompt",
+          "model_used": "gpt-4o",
+          "tokens_used": 226
+        }
+      ],
+      "user_responses": [
+        {
+          "text": "exit",
+          "timestamp": "2025-07-19T20:50:34.250143",
+          "type": "response_to_initial"
+        }
+      ],
+      "end_time": "2025-07-19T20:50:34.250187",
+      "duration_seconds": 9.277003
+    }
+  ],
+  "concept_map_evolution": [
+    {
+      "round": 0,
+      "timestamp": "2025-07-19T20:48:54.595526",
+      "concept_map": {
+        "concepts": [],
+        "relationships": [],
+        "mermaid_source": "where is the visualization\n\n\nhelp\nexit",
+        "parser_metadata": {
+          "nodes_found": 0,
+          "edges_found": 0,
+          "concepts_created": 0,
+          "relationships_created": 0
+        },
+        "round": 0,
+        "timestamp": "2025-07-19T20:48:54.595390"
+      }
+    },
+    {
+      "round": 1,
+      "timestamp": "2025-07-19T20:49:32.882653",
+      "concept_map": {
+        "concepts": [],
+        "relationships": [],
+        "mermaid_source": "",
+        "parser_metadata": {
+          "nodes_found": 0,
+          "edges_found": 0,
+          "concepts_created": 0,
+          "relationships_created": 0
+        },
+        "round": 1,
+        "timestamp": "2025-07-19T20:49:32.882597"
+      }
+    },
+    {
+      "round": 2,
+      "timestamp": "2025-07-19T20:49:56.519433",
+      "concept_map": {
+        "concepts": [],
+        "relationships": [],
+        "mermaid_source": "",
+        "parser_metadata": {
+          "nodes_found": 0,
+          "edges_found": 0,
+          "concepts_created": 0,
+          "relationships_created": 0
+        },
+        "round": 2,
+        "timestamp": "2025-07-19T20:49:56.519382"
+      }
+    },
+    {
+      "round": 3,
+      "timestamp": "2025-07-19T20:50:24.973139",
+      "concept_map": {
+        "concepts": [],
+        "relationships": [],
+        "mermaid_source": "",
+        "parser_metadata": {
+          "nodes_found": 0,
+          "edges_found": 0,
+          "concepts_created": 0,
+          "relationships_created": 0
+        },
+        "round": 3,
+        "timestamp": "2025-07-19T20:50:24.973093"
+      }
+    }
+  ],
+  "current_concept_map": {
+    "concepts": [],
+    "relationships": []
+  },
+  "mode": "experimental",
+  "end_time": "2025-07-19T20:50:34.250585",
+  "total_duration_seconds": 363.354685,
+  "total_rounds": 4,
+  "final_concept_map": {
+    "concepts": [],
+    "relationships": []
+  }
+}
