@@ -6,6 +6,21 @@
     "require_reflection": true,
     "max_rounds": 4
   },
+  "experimental": {
+    "round_duration_minutes": 7,
+    "break_duration_minutes": 2,
+    "randomize_agent_order": true,
+    "max_rounds": 4,
+    "participant_id_required": true,
+    "concept_map_input_method": "mermaid"
+  },
+  "openai": {
+    "primary_model": "gpt-4o",
+    "fallback_model": "gpt-4o-mini",
+    "max_tokens": 500,
+    "temperature": 0.7,
+    "max_retries": 3
+  },
   "agents": {
     "lead": {
       "type": "lead",
@@ -66,8 +81,19 @@
     "enable_conclusions": true,
     "max_prompts_per_interaction": 3
   },
+  "export": {
+    "json_format": true,
+    "csv_format": true,
+    "include_mermaid_source": true,
+    "include_timing_data": true,
+    "include_model_metadata": true
+  },
   "logging": {
     "log_dir": "logs",
-    "log_level": "INFO"
+    "log_level": "INFO",
+    "log_agent_assignments": true,
+    "log_model_usage": true,
+    "log_timing_data": true,
+    "export_round_data": true
   }
 }

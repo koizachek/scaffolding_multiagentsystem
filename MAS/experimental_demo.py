@@ -1,325 +1,458 @@
+#!/usr/bin/env python3
 """
-Experimental Demo
+Interactive Experimental Demo for Multi-Agent Scaffolding System
 
-This script demonstrates the enhanced I/O capabilities and experimental data collection
-features of the multi-agent scaffolding system.
+This script provides a fully interactive experimental platform where users:
+1. Create their learner profile through guided questions
+2. Experience 4 randomized, non-repeating scaffolding rounds
+3. Build concept maps cumulatively across rounds
+4. Have all interactions logged for research analysis
 """
 
-import json
-import logging
 import os
-from typing import Dict, Any
+import sys
+import json
+import random
+from datetime import datetime
+from typing import Dict, List, Any, Optional
+
+# Add the parent directory to the Python path
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from MAS.mas_system import MultiAgentScaffoldingSystem
-from MAS.core.enhanced_io_manager import create_enhanced_io_manager
 
-# Setup logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
-
-def demonstrate_enhanced_io():
-    """Demonstrate the enhanced I/O capabilities."""
-    print("=" * 60)
-    print("ENHANCED I/O DEMONSTRATION")
-    print("=" * 60)
+class InteractiveExperimentalSession:
+    """Manages a complete interactive experimental session."""
     
-    # Create system
-    system = MultiAgentScaffoldingSystem("MAS/config.json")
-    
-    # Configure experimental I/O
-    io_config = {
-        "max_input_length": 1000,
-        "input_timeout": 30,
-        "enable_colors": True,
-        "log_interactions": True
-    }
-    
-    # Enable experimental mode
-    system.enable_experimental_mode(io_config)
-    
-    print("\n🧪 Experimental mode enabled!")
-    print("The system will now collect detailed interaction data for research purposes.\n")
-    
-    # Simulate a scaffolding interaction
-    print("Let's simulate a concept mapping session with enhanced analysis...\n")
-    
-    # Create mock concept map data
-    mock_concept_map = {
-        "nodes": ["Photosynthesis", "Chloroplast", "Light", "CO2", "Glucose"],
-        "edges": [
-            {"source": "Light", "target": "Photosynthesis", "label": "enables"},
-            {"source": "CO2", "target": "Photosynthesis", "label": "required for"},
-            {"source": "Photosynthesis", "target": "Glucose", "label": "produces"}
-        ]
-    }
-    
-    # Update session state with mock data
-    system.session_state["current_concept_map"] = mock_concept_map
-    system.session_state["current_round"] = 1
-    
-    # Simulate user responses to different scaffolding types
-    test_responses = [
-        {
-            "scaffolding_type": "conceptual",
-            "prompt": "How do you think light and CO2 work together in photosynthesis?",
-            "response": "I think light provides energy and CO2 provides carbon atoms that get combined to make glucose. The chloroplast is where this happens."
-        },
-        {
-            "scaffolding_type": "strategic", 
-            "prompt": "What strategy did you use to organize these concepts?",
-            "response": "I started with the main process in the center and then added the inputs and outputs around it."
-        },
-        {
-            "scaffolding_type": "metacognitive",
-            "prompt": "How confident do you feel about your understanding of photosynthesis?",
-            "response": "I feel pretty confident about the basic process, but I'm not sure about all the detailed steps that happen inside the chloroplast."
+    def __init__(self):
+        self.system = None
+        self.session_data = {
+            "session_id": f"session_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
+            "start_time": datetime.now().isoformat(),
+            "learner_profile": {},
+            "agent_sequence": [],
+            "used_agents": [],
+            "rounds": [],
+            "concept_map_evolution": [],
+            "current_concept_map": {"concepts": [], "relationships": []},
+            "mode": None
         }
-    ]
     
-    # Process each response and collect analysis
-    for i, test_case in enumerate(test_responses, 1):
-        print(f"\n--- Test Case {i}: {test_case['scaffolding_type'].title()} Scaffolding ---")
-        print(f"Prompt: {test_case['prompt']}")
-        print(f"Simulated Response: {test_case['response']}")
+    def ask_user_question(self, question: str, required: bool = True) -> str:
+        """Ask user a question and get their response."""
+        while True:
+            response = input(f"\n{question}\n> ").strip()
+            if response or not required:
+                return response
+            print("This field is required. Please provide an answer.")
+    
+    def select_mode(self) -> str:
+        """Ask user to select experimental mode or demo."""
+        print("\n" + "="*60)
+        print("🧪 Multi-Agent Scaffolding System")
+        print("="*60)
         
-        # Simulate the interaction by directly calling the I/O manager
-        if system.experimental_io_manager:
-            context = {
-                "scaffolding_type": test_case["scaffolding_type"],
-                "prompt": test_case["prompt"],
-                "round": system.session_state["current_round"]
+        mode_response = input("\nDo you want to begin a live experimental session or run a demo? (experimental/demo) [experimental]: ").strip().lower()
+        
+        if mode_response in ['demo', 'd']:
+            return 'demo'
+        else:
+            return 'experimental'
+    
+    def create_learner_profile(self) -> Dict[str, Any]:
+        """Create learner profile through interactive questions."""
+        print("\n" + "="*60)
+        print("📋 LEARNER PROFILE CREATION")
+        print("="*60)
+        print("Please answer the following questions to create your learner profile.")
+        
+        profile = {
+            "name": self.ask_user_question("What is your name?"),
+            "background": self.ask_user_question("What is your educational/professional background?"),
+            "prior_knowledge": self.ask_user_question("What prior knowledge do you have about the topic you'll be mapping?"),
+            "confidence": self.ask_user_question("How confident do you feel about concept mapping? (1-10 scale or description)"),
+            "interests": self.ask_user_question("What are your main interests or areas of focus?"),
+            "goals": self.ask_user_question("What do you hope to achieve in this session?"),
+            "zpd_level": "medium",  # Always initialize at medium level
+            "created_at": datetime.now().isoformat()
+        }
+        
+        print(f"\n✅ Profile created for {profile['name']}")
+        print(f"📊 ZPD Level initialized: {profile['zpd_level']}")
+        
+        return profile
+    
+    def initialize_agent_sequence(self) -> List[str]:
+        """Create randomized, non-repeating agent sequence."""
+        agents = [
+            "conceptual_scaffolding",
+            "strategic_scaffolding", 
+            "metacognitive_scaffolding",
+            "procedural_scaffolding"
+        ]
+        
+        # Randomize the order
+        random.shuffle(agents)
+        
+        print(f"\n🎲 Randomized agent sequence: {' → '.join([a.replace('_', ' ').title() for a in agents])}")
+        
+        return agents
+    
+    def get_concept_map_input(self, round_num: int, is_first_round: bool = False) -> Dict[str, Any]:
+        """Get concept map input from user."""
+        print(f"\n" + "="*60)
+        print(f"📝 CONCEPT MAP INPUT - Round {round_num + 1}")
+        print("="*60)
+        
+        if is_first_round:
+            print("Please create your initial concept map using Mermaid.js syntax.")
+            print("Example format:")
+            print("  graph TD")
+            print("    A[Learning] --> B[Understanding]")
+            print("    B --> C[Application]")
+            print("\nEnter your concept map (type 'DONE' on a new line when finished):")
+        else:
+            print("Please extend your concept map from the previous round.")
+            print("Add new concepts and relationships to build upon your existing map.")
+            print("\nCurrent concept map has:")
+            print(f"  - {len(self.session_data['current_concept_map']['concepts'])} concepts")
+            print(f"  - {len(self.session_data['current_concept_map']['relationships'])} relationships")
+            print("\nEnter your extended concept map (type 'DONE' on a new line when finished):")
+        
+        mermaid_lines = []
+        while True:
+            line = input()
+            if line.strip() == "DONE":
+                break
+            mermaid_lines.append(line)
+        
+        mermaid_text = "\n".join(mermaid_lines)
+        
+        # Parse Mermaid to internal format
+        try:
+            concept_map = self.system.mermaid_parser.parse_mermaid_to_concept_map(mermaid_text)
+            concept_map["mermaid_source"] = mermaid_text
+            concept_map["round"] = round_num
+            concept_map["timestamp"] = datetime.now().isoformat()
+            
+            print(f"✅ Parsed concept map: {len(concept_map.get('concepts', []))} concepts, {len(concept_map.get('relationships', []))} relationships")
+            
+            return concept_map
+        except Exception as e:
+            print(f"⚠️  Error parsing concept map: {e}")
+            # Return basic structure if parsing fails
+            return {
+                "concepts": [],
+                "relationships": [],
+                "mermaid_source": mermaid_text,
+                "round": round_num,
+                "timestamp": datetime.now().isoformat(),
+                "parse_error": str(e)
+            }
+    
+    def conduct_scaffolding_round(self, round_num: int, agent_type: str, concept_map: Dict[str, Any]) -> Dict[str, Any]:
+        """Conduct a single scaffolding round with the specified agent."""
+        print(f"\n" + "="*60)
+        print(f"🤖 SCAFFOLDING ROUND {round_num + 1}: {agent_type.replace('_', ' ').title()}")
+        print("="*60)
+        
+        round_data = {
+            "round_number": round_num,
+            "agent_type": agent_type,
+            "start_time": datetime.now().isoformat(),
+            "concept_map": concept_map,
+            "interactions": [],
+            "agent_responses": [],
+            "user_responses": []
+        }
+        
+        # Generate initial scaffolding prompt using OpenAI
+        if self.session_data["mode"] == "experimental" and self.system.openai_manager:
+            try:
+                print("🔄 Generating scaffolding response...")
+                
+                context = {
+                    "round_number": round_num,
+                    "learner_profile": self.session_data["learner_profile"],
+                    "previous_rounds": len(self.session_data["rounds"]),
+                    "concept_map_evolution": self.session_data["concept_map_evolution"]
+                }
+                
+                api_result = self.system.openai_manager.generate_scaffolding_response(
+                    agent_type.replace("_scaffolding", ""), 
+                    concept_map, 
+                    context=context
+                )
+                
+                initial_response = api_result["response"]
+                round_data["agent_responses"].append({
+                    "text": initial_response,
+                    "timestamp": datetime.now().isoformat(),
+                    "type": "initial_prompt",
+                    "model_used": api_result.get("model_used"),
+                    "tokens_used": api_result.get("tokens_used")
+                })
+                
+                print(f"\n🤖 {agent_type.replace('_', ' ').title()} Agent:")
+                print("-" * 40)
+                print(initial_response)
+                print("-" * 40)
+                
+                # Get user response
+                user_response = self.ask_user_question(
+                    f"\n💬 Please respond to the {agent_type.replace('_', ' ')} scaffolding above:",
+                    required=True
+                )
+                
+                round_data["user_responses"].append({
+                    "text": user_response,
+                    "timestamp": datetime.now().isoformat(),
+                    "type": "response_to_initial"
+                })
+                
+                # Generate follow-up if needed
+                if len(user_response) > 10:  # Only if substantial response
+                    print("\n🔄 Generating follow-up...")
+                    
+                    followup_result = self.system.openai_manager.generate_scaffolding_response(
+                        agent_type.replace("_scaffolding", ""), 
+                        concept_map, 
+                        user_response=user_response,
+                        context=context
+                    )
+                    
+                    followup_response = followup_result["response"]
+                    round_data["agent_responses"].append({
+                        "text": followup_response,
+                        "timestamp": datetime.now().isoformat(),
+                        "type": "followup",
+                        "model_used": followup_result.get("model_used"),
+                        "tokens_used": followup_result.get("tokens_used")
+                    })
+                    
+                    print(f"\n🤖 {agent_type.replace('_', ' ').title()} Agent Follow-up:")
+                    print("-" * 40)
+                    print(followup_response)
+                    print("-" * 40)
+                
+            except Exception as e:
+                print(f"⚠️  Error with OpenAI integration: {e}")
+                # Fallback to demo response
+                demo_responses = {
+                    "conceptual": "Let's explore the conceptual relationships in your map. How do these concepts connect to form a coherent understanding?",
+                    "strategic": "Consider the strategic organization of your concept map. What's the most effective way to structure these ideas?",
+                    "metacognitive": "Reflect on your thinking process. How confident are you about these relationships? What might you be missing?",
+                    "procedural": "Let's focus on the procedural aspects. What steps or processes are represented in your concept map?"
+                }
+                
+                agent_key = agent_type.replace("_scaffolding", "")
+                demo_response = demo_responses.get(agent_key, "How can we improve your concept map?")
+                
+                round_data["agent_responses"].append({
+                    "text": demo_response,
+                    "timestamp": datetime.now().isoformat(),
+                    "type": "demo_fallback"
+                })
+                
+                print(f"\n🤖 {agent_type.replace('_', ' ').title()} Agent (Demo Mode):")
+                print("-" * 40)
+                print(demo_response)
+                print("-" * 40)
+                
+                user_response = self.ask_user_question(
+                    f"\n💬 Please respond to the {agent_type.replace('_', ' ')} scaffolding above:",
+                    required=True
+                )
+                
+                round_data["user_responses"].append({
+                    "text": user_response,
+                    "timestamp": datetime.now().isoformat(),
+                    "type": "response_to_demo"
+                })
+        
+        else:
+            # Demo mode responses
+            demo_responses = {
+                "conceptual": "Let's explore the conceptual relationships in your map. How do these concepts connect to form a coherent understanding?",
+                "strategic": "Consider the strategic organization of your concept map. What's the most effective way to structure these ideas?",
+                "metacognitive": "Reflect on your thinking process. How confident are you about these relationships? What might you be missing?",
+                "procedural": "Let's focus on the procedural aspects. What steps or processes are represented in your concept map?"
             }
             
-            # Analyze the response
-            analysis = system.experimental_io_manager.analyzer.analyze_response(
-                test_case["response"], context
+            agent_key = agent_type.replace("_scaffolding", "")
+            demo_response = demo_responses.get(agent_key, "How can we improve your concept map?")
+            
+            round_data["agent_responses"].append({
+                "text": demo_response,
+                "timestamp": datetime.now().isoformat(),
+                "type": "demo_response"
+            })
+            
+            print(f"\n🤖 {agent_type.replace('_', ' ').title()} Agent (Demo Mode):")
+            print("-" * 40)
+            print(demo_response)
+            print("-" * 40)
+            
+            user_response = self.ask_user_question(
+                f"\n💬 Please respond to the {agent_type.replace('_', ' ')} scaffolding above:",
+                required=True
             )
             
-            # Log the interaction
-            interaction_record = {
-                "timestamp": analysis["timestamp"],
-                "type": "user_input",
-                "prompt": test_case["prompt"],
-                "response": test_case["response"],
-                "response_time": 2.5,  # Simulated response time
-                "context": context,
-                "analysis": analysis
-            }
+            round_data["user_responses"].append({
+                "text": user_response,
+                "timestamp": datetime.now().isoformat(),
+                "type": "response_to_demo"
+            })
+        
+        round_data["end_time"] = datetime.now().isoformat()
+        round_data["duration_seconds"] = (
+            datetime.fromisoformat(round_data["end_time"]) - 
+            datetime.fromisoformat(round_data["start_time"])
+        ).total_seconds()
+        
+        print(f"\n✅ Round {round_num + 1} completed with {agent_type.replace('_', ' ').title()} agent")
+        
+        return round_data
+    
+    def update_concept_map(self, new_concept_map: Dict[str, Any]) -> None:
+        """Update the cumulative concept map."""
+        # Store evolution
+        self.session_data["concept_map_evolution"].append({
+            "round": len(self.session_data["concept_map_evolution"]),
+            "timestamp": datetime.now().isoformat(),
+            "concept_map": new_concept_map.copy()
+        })
+        
+        # Update current map (cumulative)
+        if new_concept_map.get("concepts"):
+            # Merge concepts (avoid duplicates by ID)
+            existing_ids = {c.get("id") for c in self.session_data["current_concept_map"]["concepts"]}
+            for concept in new_concept_map["concepts"]:
+                if concept.get("id") not in existing_ids:
+                    self.session_data["current_concept_map"]["concepts"].append(concept)
+        
+        if new_concept_map.get("relationships"):
+            # Merge relationships (avoid duplicates)
+            existing_rels = {(r.get("source"), r.get("target")) for r in self.session_data["current_concept_map"]["relationships"]}
+            for rel in new_concept_map["relationships"]:
+                rel_key = (rel.get("source"), rel.get("target"))
+                if rel_key not in existing_rels:
+                    self.session_data["current_concept_map"]["relationships"].append(rel)
+    
+    def save_session_data(self) -> str:
+        """Save complete session data to JSON file."""
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        filename = f"experimental_session_{self.session_data['learner_profile'].get('name', 'unknown')}_{timestamp}.json"
+        
+        # Add final summary
+        self.session_data["end_time"] = datetime.now().isoformat()
+        self.session_data["total_duration_seconds"] = (
+            datetime.fromisoformat(self.session_data["end_time"]) - 
+            datetime.fromisoformat(self.session_data["start_time"])
+        ).total_seconds()
+        self.session_data["total_rounds"] = len(self.session_data["rounds"])
+        self.session_data["final_concept_map"] = self.session_data["current_concept_map"]
+        
+        # Save to file
+        os.makedirs("experimental_data", exist_ok=True)
+        filepath = os.path.join("experimental_data", filename)
+        
+        with open(filepath, 'w', encoding='utf-8') as f:
+            json.dump(self.session_data, f, indent=2, ensure_ascii=False)
+        
+        print(f"\n💾 Session data saved to: {filepath}")
+        return filepath
+    
+    def run_experimental_session(self) -> None:
+        """Run the complete experimental session."""
+        try:
+            # 1. Mode Selection
+            mode = self.select_mode()
+            self.session_data["mode"] = mode
             
-            system.experimental_io_manager.interaction_log.append(interaction_record)
-            system.experimental_io_manager.session_data["interactions"].append(interaction_record)
+            print(f"\n🚀 Starting {mode} session...")
             
-            # Display key analysis results
-            print(f"\n📊 Analysis Results:")
-            print(f"   Word count: {analysis['metrics']['word_count']}")
-            print(f"   Engagement level: {analysis['engagement_level']}")
-            print(f"   Learning state: {analysis['learning_indicators']['learning_state']}")
-            print(f"   Sentiment: {analysis['linguistic_features']['sentiment']}")
+            # 2. Initialize System
+            self.system = MultiAgentScaffoldingSystem(
+                config_path="MAS/config.json",
+                mode=mode,
+                participant_id=f"participant_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+            )
             
-            # Show scaffolding needs
-            needs = analysis['scaffolding_needs']
-            max_need = max(needs.values())
-            if max_need > 0:
-                recommended_scaffolding = max(needs, key=needs.get)
-                print(f"   Recommended next scaffolding: {recommended_scaffolding} (score: {max_need:.2f})")
-    
-    # Get comprehensive analysis
-    print("\n" + "=" * 60)
-    print("COMPREHENSIVE SESSION ANALYSIS")
-    print("=" * 60)
-    
-    session_analysis = system.get_interaction_analysis()
-    if session_analysis:
-        print("\n📈 Session Summary:")
-        summary = session_analysis["session_summary"]
-        print(f"   Total interactions: {summary['total_interactions']}")
-        print(f"   Total words: {summary['total_words']}")
-        print(f"   Average words per response: {summary['avg_words_per_response']:.1f}")
-        print(f"   Average response time: {summary['avg_response_time']:.2f}s")
-        
-        print("\n🎯 Engagement Analysis:")
-        engagement = session_analysis["engagement_analysis"]
-        print(f"   High engagement: {engagement['high_engagement']} interactions")
-        print(f"   Medium engagement: {engagement['medium_engagement']} interactions")
-        print(f"   Low engagement: {engagement['low_engagement']} interactions")
-        
-        print("\n🧠 Learning Analysis:")
-        learning = session_analysis["learning_analysis"]
-        print(f"   Progressing: {learning['progressing']} interactions")
-        print(f"   Struggling: {learning['struggling']} interactions")
-        print(f"   Neutral: {learning['neutral']} interactions")
-        print(f"   Mixed: {learning['mixed']} interactions")
-        
-        print("\n🎯 Scaffolding Needs (Average Scores):")
-        needs = session_analysis["scaffolding_needs"]
-        for scaffolding_type, score in needs.items():
-            print(f"   {scaffolding_type.title()}: {score:.3f}")
-    
-    # Export experimental data
-    print("\n💾 Exporting experimental data...")
-    export_path = system.export_experimental_data("experimental_demo_data.json")
-    if export_path:
-        print(f"   Data exported to: {export_path}")
-        
-        # Show a sample of the exported data
-        with open(export_path, 'r') as f:
-            exported_data = json.load(f)
-        
-        print(f"\n📄 Exported data contains:")
-        print(f"   Session ID: {exported_data['session_id']}")
-        print(f"   Start time: {exported_data['start_time']}")
-        print(f"   Total interactions: {len(exported_data['interactions'])}")
-        print(f"   Analysis summary: {len(exported_data['analysis_summary'])} metrics")
-    
-    # Disable experimental mode
-    system.disable_experimental_mode()
-    print("\n🔄 Experimental mode disabled. System reverted to standard I/O.")
-
-def demonstrate_input_validation():
-    """Demonstrate input validation capabilities."""
-    print("\n" + "=" * 60)
-    print("INPUT VALIDATION DEMONSTRATION")
-    print("=" * 60)
-    
-    from MAS.core.enhanced_io_manager import InputValidator
-    
-    validator = InputValidator()
-    
-    test_inputs = [
-        ("Valid input", "This is a normal response about photosynthesis."),
-        ("Empty input", ""),
-        ("Too long input", "x" * 2001),
-        ("Potentially harmful", "<script>alert('test')</script>Normal text"),
-        ("With JavaScript", "javascript:void(0) and some text"),
-        ("Normal with HTML", "This has <b>bold</b> text which is fine")
-    ]
-    
-    print("\n🔍 Testing input validation:")
-    
-    for test_name, test_input in test_inputs:
-        is_valid, error_message = validator.validate_text_input(test_input)
-        sanitized = validator.sanitize_input(test_input)
-        
-        print(f"\n   {test_name}:")
-        print(f"      Input: {test_input[:50]}{'...' if len(test_input) > 50 else ''}")
-        print(f"      Valid: {is_valid}")
-        if not is_valid:
-            print(f"      Error: {error_message}")
-        print(f"      Sanitized: {sanitized[:50]}{'...' if len(sanitized) > 50 else ''}")
-
-def demonstrate_analysis_features():
-    """Demonstrate the analysis features in detail."""
-    print("\n" + "=" * 60)
-    print("ANALYSIS FEATURES DEMONSTRATION")
-    print("=" * 60)
-    
-    from MAS.core.enhanced_io_manager import InteractionAnalyzer
-    
-    analyzer = InteractionAnalyzer()
-    
-    # Test different types of responses
-    test_responses = [
-        {
-            "name": "High engagement, confident response",
-            "text": "I'm really excited about this topic! I understand that photosynthesis is the process where plants convert light energy into chemical energy. The chloroplasts contain chlorophyll which captures light, and then CO2 from the air combines with water to produce glucose and oxygen. This is fascinating because it's how plants make their own food!",
-            "context": {"scaffolding_type": "conceptual", "round": 1}
-        },
-        {
-            "name": "Uncertain, struggling response", 
-            "text": "I'm not sure about this. Maybe photosynthesis has something to do with light? I don't really understand how it works.",
-            "context": {"scaffolding_type": "conceptual", "round": 1}
-        },
-        {
-            "name": "Strategic thinking response",
-            "text": "I organized my concept map by putting the main process in the center and then connecting the inputs and outputs. I tried to group related concepts together and use different colors for different types of relationships.",
-            "context": {"scaffolding_type": "strategic", "round": 2}
-        },
-        {
-            "name": "Metacognitive reflection",
-            "text": "I feel more confident now than when I started. I realize I was confused about where exactly photosynthesis happens in the plant. Now I understand it's specifically in the chloroplasts. I think I need to learn more about the detailed chemical reactions.",
-            "context": {"scaffolding_type": "metacognitive", "round": 3}
-        }
-    ]
-    
-    print("\n🔬 Analyzing different response types:")
-    
-    for test_case in test_responses:
-        print(f"\n--- {test_case['name']} ---")
-        print(f"Response: {test_case['text'][:100]}...")
-        
-        analysis = analyzer.analyze_response(test_case['text'], test_case['context'])
-        
-        print(f"\n📊 Metrics:")
-        metrics = analysis['metrics']
-        print(f"   Words: {metrics['word_count']}, Characters: {metrics['character_count']}")
-        print(f"   Questions: {metrics['question_count']}, Exclamations: {metrics['exclamation_count']}")
-        
-        print(f"\n🗣️ Linguistic Features:")
-        linguistic = analysis['linguistic_features']
-        print(f"   Uncertainty indicators: {linguistic['uncertainty_indicators']}")
-        print(f"   Confidence indicators: {linguistic['confidence_indicators']}")
-        print(f"   Metacognitive language: {linguistic['metacognitive_language']}")
-        print(f"   Sentiment: {linguistic['sentiment']}")
-        
-        print(f"\n🧠 Cognitive Indicators:")
-        cognitive = analysis['cognitive_indicators']
-        print(f"   Deep processing: {cognitive['deep_processing_indicators']}")
-        print(f"   Conceptual understanding: {cognitive['conceptual_understanding']}")
-        print(f"   Cognitive load: {cognitive['cognitive_load']}")
-        
-        print(f"\n📈 Learning & Engagement:")
-        print(f"   Engagement level: {analysis['engagement_level']}")
-        learning = analysis['learning_indicators']
-        print(f"   Learning state: {learning['learning_state']}")
-        print(f"   Progress indicators: {learning['progress_indicators']}")
-        print(f"   Confusion indicators: {learning['confusion_indicators']}")
-        
-        print(f"\n🎯 Scaffolding Recommendations:")
-        needs = analysis['scaffolding_needs']
-        sorted_needs = sorted(needs.items(), key=lambda x: x[1], reverse=True)
-        for scaffolding_type, score in sorted_needs:
-            if score > 0:
-                print(f"   {scaffolding_type.title()}: {score:.3f}")
+            # 3. Create Learner Profile
+            self.session_data["learner_profile"] = self.create_learner_profile()
+            
+            # 4. Initialize Agent Sequence
+            self.session_data["agent_sequence"] = self.initialize_agent_sequence()
+            
+            # 5. Conduct 4 Rounds
+            for round_num in range(4):
+                agent_type = self.session_data["agent_sequence"][round_num]
+                
+                # Mark agent as used
+                self.session_data["used_agents"].append(agent_type)
+                
+                # Get concept map input
+                is_first_round = round_num == 0
+                concept_map = self.get_concept_map_input(round_num, is_first_round)
+                
+                # Update cumulative concept map
+                self.update_concept_map(concept_map)
+                
+                # Conduct scaffolding round
+                round_data = self.conduct_scaffolding_round(round_num, agent_type, concept_map)
+                
+                # Store round data
+                self.session_data["rounds"].append(round_data)
+                
+                # Show progress
+                print(f"\n📊 Progress: {round_num + 1}/4 rounds completed")
+                print(f"🎯 Agents used: {', '.join([a.replace('_', ' ').title() for a in self.session_data['used_agents']])}")
+                
+                if round_num < 3:
+                    input("\nPress Enter to continue to the next round...")
+            
+            # 6. Session Summary
+            print(f"\n" + "="*60)
+            print("🎉 EXPERIMENTAL SESSION COMPLETED")
+            print("="*60)
+            print(f"Participant: {self.session_data['learner_profile']['name']}")
+            print(f"Total rounds: {len(self.session_data['rounds'])}")
+            print(f"Agents experienced: {', '.join([a.replace('_', ' ').title() for a in self.session_data['used_agents']])}")
+            print(f"Final concept map: {len(self.session_data['current_concept_map']['concepts'])} concepts, {len(self.session_data['current_concept_map']['relationships'])} relationships")
+            
+            # 7. Save Data
+            filepath = self.save_session_data()
+            
+            print(f"\n✅ Complete experimental data saved for research analysis")
+            print(f"📁 File: {filepath}")
+            
+        except KeyboardInterrupt:
+            print("\n\n⚠️  Session interrupted by user")
+            if self.session_data.get("rounds"):
+                print("Saving partial session data...")
+                self.save_session_data()
+        except Exception as e:
+            print(f"\n❌ Error during experimental session: {e}")
+            import traceback
+            traceback.print_exc()
+            if self.session_data.get("rounds"):
+                print("Saving partial session data...")
+                self.save_session_data()
 
 def main():
-    """Run the experimental demonstration."""
-    print("🧪 MULTI-AGENT SCAFFOLDING SYSTEM")
-    print("Enhanced I/O and Experimental Features Demo")
-    print("=" * 60)
+    """Main entry point for the experimental session."""
+    print("🧪 Multi-Agent Scaffolding System - Interactive Experimental Platform")
+    print("="*80)
+    print("This platform provides a complete experimental research environment where:")
+    print("• Users create personalized learner profiles")
+    print("• Experience 4 randomized, non-repeating scaffolding agents")
+    print("• Build concept maps cumulatively across rounds")
+    print("• All interactions are logged for research analysis")
+    print("="*80)
     
-    try:
-        # Demonstrate enhanced I/O
-        demonstrate_enhanced_io()
-        
-        # Demonstrate input validation
-        demonstrate_input_validation()
-        
-        # Demonstrate analysis features
-        demonstrate_analysis_features()
-        
-        print("\n" + "=" * 60)
-        print("✅ DEMONSTRATION COMPLETE")
-        print("=" * 60)
-        print("\nKey improvements demonstrated:")
-        print("• Enhanced input validation and sanitization")
-        print("• Comprehensive user response analysis")
-        print("• Experimental data collection for research")
-        print("• Detailed interaction logging and metrics")
-        print("• Scaffolding effectiveness assessment")
-        print("• Learning progress tracking")
-        print("• Engagement level monitoring")
-        print("• Exportable session data for analysis")
-        
-        print("\nThese enhancements support:")
-        print("• Experimental research on scaffolding effectiveness")
-        print("• Adaptive scaffolding based on user analysis")
-        print("• Longitudinal learning progress studies")
-        print("• User experience optimization")
-        print("• Safety and security through input validation")
-        
-    except Exception as e:
-        logger.error(f"Error in demonstration: {e}")
-        print(f"\n❌ Error occurred: {e}")
+    session = InteractiveExperimentalSession()
+    session.run_experimental_session()
 
 if __name__ == "__main__":
     main()

@@ -194,6 +194,8 @@ def simulate_learner_response(prompt: str) -> str:
     # Return a random response
     return random.choice(responses)
 
+
+#runs the demo. It generates random responses from the dict
 def run_demo() -> None:
     """
     Run the demo.
@@ -263,72 +265,72 @@ def run_demo() -> None:
         # Process concept map
         print(f"Processing concept map with {len(concept_map['concepts'])} concepts and {len(concept_map['relationships'])} relationships")
         
-        # Conduct interactive scaffolding
-        interactive_mode = True
+        # Conduct scaffolding interaction
+        #interactive_mode = True
         
-        if interactive_mode:
+        #if interactive_mode:
             # Interactive mode: Use real user input
-            scaffolding_result = system.conduct_scaffolding_interaction(concept_map, round_num)
-        else:
+        #    scaffolding_result = system.conduct_scaffolding_interaction(concept_map, round_num)
+       # else:
             # Simulation mode: Use simulated responses
             # Start scaffolding interaction
-            interaction_result = system.conduct_scaffolding_interaction(concept_map, round_num)
+       #     interaction_result = system.conduct_scaffolding_interaction(concept_map, round_num)
             
             # Get scaffolding information
-            scaffolding_type = interaction_result.get("round_info", {}).get("scaffolding_type", "")
-            scaffolding_intensity = interaction_result.get("round_info", {}).get("scaffolding_intensity", "")
-            current_prompt = interaction_result.get("current_prompt", "")
+        #    scaffolding_type = interaction_result.get("round_info", {}).get("scaffolding_type", "")
+         #   scaffolding_intensity = interaction_result.get("round_info", {}).get("scaffolding_intensity", "")
+          #  current_prompt = interaction_result.get("current_prompt", "")
             
             # Check if there's a prompt (indicating scaffolding is active)
-            if current_prompt:
-                print(f"\nAgent Feedback (Scaffolding Type: {scaffolding_type}, Intensity: {scaffolding_intensity})")
+           # if current_prompt:
+            #    print(f"\nAgent Feedback (Scaffolding Type: {scaffolding_type}, Intensity: {scaffolding_intensity})")
                 
                 # Display prompt
-                print(f"\n🤖 Agent ({scaffolding_type}): {current_prompt}")
+             #   print(f"\n🤖 Agent ({scaffolding_type}): {current_prompt}")
                 
                 # Process each interaction
-                while current_prompt and not interaction_result.get("dialogue_complete", False):
+              #  while current_prompt and not interaction_result.get("dialogue_complete", False):
                     # Simulate learner response
-                    learner_response = simulate_learner_response(current_prompt)
-                    print(f"👤 Your response: {learner_response}")
+               #     learner_response = simulate_learner_response(current_prompt)
+                #    print(f"👤 Your response: {learner_response}")
                     
                     # Process learner response
-                    response_result = system.process_scaffolding_response(learner_response)
+                 #   response_result = system.process_scaffolding_response(learner_response)
                     
                     # Check if there's a follow-up
-                    follow_up = response_result.get("follow_up", "")
+                  #  follow_up = response_result.get("follow_up", "")
                     
-                    if follow_up:
+                   # if follow_up:
                         # Display follow-up
-                        print(f"\n🤖 Agent ({scaffolding_type}): {follow_up}")
+                    #    print(f"\n🤖 Agent ({scaffolding_type}): {follow_up}")
                     
                     # Get next prompt
-                    next_prompt = response_result.get("next_prompt", "")
+                #    next_prompt = response_result.get("next_prompt", "")
                     
-                    if next_prompt:
+                 #   if next_prompt:
                         # Display next prompt
-                        print(f"\n🤖 Agent ({scaffolding_type}): {next_prompt}")
+                  #      print(f"\n🤖 Agent ({scaffolding_type}): {next_prompt}")
                         
                         # Update current prompt
-                        current_prompt = next_prompt
-                    else:
+                   #     current_prompt = next_prompt
+                    #else:
                         # No more prompts
-                        current_prompt = ""
+            #            current_prompt = ""
                     
                     # Check if dialogue is complete
-                    if response_result.get("dialogue_complete", False):
+             #       if response_result.get("dialogue_complete", False):
                         # Get conclusion
-                        conclusion = response_result.get("conclusion", "")
+              #          conclusion = response_result.get("conclusion", "")
                         
                         # Display conclusion
-                        if conclusion:
-                            print(f"\n🤖 Agent: {conclusion}")
+               #         if conclusion:
+                #            print(f"\n🤖 Agent: {conclusion}")
                         
                         # Break out of loop
-                        break
+                 #       break
             
             # Store scaffolding result
-            scaffolding_result = response_result
+           # scaffolding_result = response_result
         
         # Get scaffolding summary
         scaffolding_summary = system.get_scaffolding_summary()
