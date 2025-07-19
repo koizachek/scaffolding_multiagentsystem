@@ -445,7 +445,21 @@ class MultiAgentScaffoldingSystem:
             return {
                 "status": "error",
                 "message": f"Error processing user response: {str(e)}"
-            }
+            }  
+    def conduct_interactive_scaffolding(self, concept_map: Dict[str, Any], round_number: int) -> Dict[str, Any]:
+        """
+        Conduct interactive scaffolding with the given concept map and round number.
+        Args:
+            concept_map: The learner's concept map.
+            round_number: The current round number.
+        Returns:
+            A dictionary with interaction results.
+        """
+        logger.info(f"Starting interactive scaffolding for round {round_number}")
+        if hasattr(self.scaffolding_engine, "conduct_interactive_scaffolding"):
+            return self.scaffolding_engine.conduct_interactive_scaffolding(concept_map, round_number)
+        else:
+            raise NotImplementedError("Scaffolding engine does not support interactive scaffolding.")
     
     def _handle_user_input(self, prompt: str) -> str:
         """
@@ -568,6 +582,24 @@ class MultiAgentScaffoldingSystem:
             logger.info("Experimental session data reset")
         else:
             logger.warning("Experimental mode not enabled. No session to reset.")
+
+    def set_expert_map(self, expert_map: Dict[str, Any]) -> None:
+        """ 
+        Set expert concept map in the scaffolding engine.
+        """
+        if hasattr(self.scaffolding_engine, "set_expert_map"):
+            self.scaffolding_engine.set_expert_map(expert_map)
+        else:
+            self.expert_map = expert_map #fallbaclk
+
+    def set_learner_profile(self, learner_profile: Dict[str, Any]) -> None:
+        """
+        Set the learner profile in the scaffolding engine.
+        """
+        if hasattr(self.scaffolding_engine, "set_learner_profile"):
+            self.scaffolding_engine.set_learner_profile(learner_profile)
+        else:
+            self.session_state["learner_profile"] = learner_profile #fallback
     
     def is_experimental_mode_enabled(self) -> bool:
         """Check if experimental mode is currently enabled."""

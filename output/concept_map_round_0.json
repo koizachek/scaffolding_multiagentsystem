@@ -1,25 +1,48 @@
 {
-  "nodes": [
-    "Climate Change",
-    "Global Warming",
-    "Carbon Emissions",
-    "Fossil Fuels"
+  "concepts": [
+    {
+      "id": "1",
+      "text": "Climate Change",
+      "x": 400,
+      "y": 100
+    },
+    {
+      "id": "2",
+      "text": "Global Warming",
+      "x": 400,
+      "y": 200
+    },
+    {
+      "id": "3",
+      "text": "Carbon Emissions",
+      "x": 200,
+      "y": 300
+    },
+    {
+      "id": "4",
+      "text": "Fossil Fuels",
+      "x": 200,
+      "y": 400
+    }
   ],
-  "edges": [
+  "relationships": [
     {
-      "source": "Fossil Fuels",
-      "target": "Carbon Emissions",
-      "relation": "produces"
+      "id": "r1",
+      "source": "4",
+      "target": "3",
+      "text": "produces"
     },
     {
-      "source": "Carbon Emissions",
-      "target": "Global Warming",
-      "relation": "causes"
+      "id": "r2",
+      "source": "3",
+      "target": "2",
+      "text": "causes"
     },
     {
-      "source": "Global Warming",
-      "target": "Climate Change",
-      "relation": "leads to"
+      "id": "r3",
+      "source": "2",
+      "target": "1",
+      "text": "leads to"
     }
   ]
 }
