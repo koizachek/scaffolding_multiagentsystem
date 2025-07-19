@@ -366,11 +366,7 @@ To support new input or output formats:
 - **Logging:** Python standard logging
 - **OpenAI Agents SDK:** For agent orchestration and LLM integration
 
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## Acknowledgments
 
 - This project was developed as a prototype for higher education research on scaffolding mechanisms.
-- Special thanks to the OpenAI team for providing the Agents SDK.

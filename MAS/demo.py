@@ -268,7 +268,7 @@ def run_demo() -> None:
         
         if interactive_mode:
             # Interactive mode: Use real user input
-            scaffolding_result = system.conduct_interactive_scaffolding(concept_map, round_num)
+            scaffolding_result = system.conduct_scaffolding_interaction(concept_map, round_num)
         else:
             # Simulation mode: Use simulated responses
             # Start scaffolding interaction

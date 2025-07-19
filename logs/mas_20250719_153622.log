@@ -1,0 +1,15 @@
+2025-07-19 15:36:22,379 - MAS.utils.logging_utils - INFO - Logging configured with level INFO
+2025-07-19 15:36:22,379 - MAS.utils.logging_utils - INFO - Logging to file: logs/mas_20250719_153622.log
+2025-07-19 15:36:22,379 - mas_system - INFO - Initializing multi-agent scaffolding system
+2025-07-19 15:36:22,380 - MAS.agents.agent_factory - INFO - Creating lead agent: Lead Agent
+2025-07-19 15:36:22,380 - MAS.agents.base_agent - INFO - Initialized lead agent: Lead Agent
+2025-07-19 15:36:22,380 - MAS.core.scaffolding_engine - INFO - Initialized scaffolding engine
+2025-07-19 15:36:22,380 - MAS.core.dialogue_manager - INFO - Initialized dialogue manager
+2025-07-19 15:36:22,380 - MAS.agents.lead_agent - INFO - Initialized lead agent: Lead Agent
+2025-07-19 15:36:22,380 - MAS.agents.agent_factory - INFO - Created agent: lead (lead)
+2025-07-19 15:36:22,380 - MAS.core.scaffolding_engine - INFO - Initialized scaffolding engine
+2025-07-19 15:36:22,380 - MAS.core.dialogue_manager - INFO - Initialized dialogue manager
+2025-07-19 15:36:22,380 - mas_system - INFO - Multi-agent scaffolding system initialized
+2025-07-19 15:36:22,381 - utils.visualization - INFO - Plotting concept map to output/concept_map_round_0.png
+2025-07-19 15:36:22,706 - utils.visualization - INFO - Concept map plotted to output/concept_map_round_0.png
+2025-07-19 15:36:22,706 - mas_system - INFO - Starting interactive scaffolding for round 0
