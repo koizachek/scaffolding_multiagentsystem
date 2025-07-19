@@ -108,6 +108,7 @@ class SessionLogger:
         # Set up log file paths
         self.json_log_path = os.path.join(log_dir, f"{session_id}.json")
         self.csv_log_path = os.path.join(log_dir, f"{session_id}.csv")
+        self.log_path = self.json_log_path
         
         logger.info(f"Initialized session logger with ID: {session_id}")
     
