@@ -8,9 +8,14 @@ for the multi-agent scaffolding system.
 import os
 import logging
 import time
+
 from typing import Dict, List, Any, Optional
-import openai
 from openai import OpenAI
+from pathlib import Path
+from dotenv import load_dotenv
+
+env_path = Path(__file__).resolve().parent.parent / ".env"
+load_dotenv(dotenv_path=env_path)
 
 logger = logging.getLogger(__name__)
 

@@ -140,9 +140,19 @@ class MultiAgentScaffoldingSystem:
             # Initialize session data
             self.session_rounds = []
             self.agent_sequence = []
+            # Set up log file path and session logger
+            timestamp = time.strftime("%Y%m%d_%H%M%S")
+            log_filename = f"logs/mas_{timestamp}.log"
+            self.log_file = log_filename  # Now defined
             self.session_logger = SessionLogger(self.log_file)
-            
+
             logger.info(f"Experimental mode initialized for participant: {participant_id}")
+#old
+#            self.session_rounds = []
+#            self.agent_sequence = []
+#            self.session_logger = SessionLogger(self.log_file)     
+#    
+#            logger.info(f"Experimental mode initialized for participant: {participant_id}")
         else:
             # Demo mode - no real API calls
             self.openai_manager = None
