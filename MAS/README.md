@@ -173,11 +173,55 @@ python cli.py configure --df1 disable --df2 enable --df3 enable --df4 disable
 
 ## Usage
 
-The system provides a command-line interface (CLI) for interaction. Here are some common usage examples:
+The system provides multiple interfaces for different use cases:
+
+### Interactive Experimental Session (Recommended)
+
+For conducting real experimental studies with live user interaction:
+
+```bash
+python MAS/experimental_demo.py
+```
+
+This launches the **Interactive Experimental Platform** which:
+
+1. **Mode Selection**: Prompts user to choose between experimental or demo mode
+2. **Learner Profile Creation**: Collects user information through guided questions:
+   - Name, background, prior knowledge
+   - Confidence level, interests, goals
+   - Automatically initializes ZPD level at "medium"
+3. **Randomized Agent Sequence**: Generates unique, non-repeating order of 4 scaffolding agents:
+   - Conceptual Scaffolding
+   - Strategic Scaffolding  
+   - Metacognitive Scaffolding
+   - Procedural Scaffolding
+4. **Interactive Rounds**: 4 timed rounds (7 minutes each) with 2-minute breaks
+5. **Cumulative Concept Mapping**: Users build upon their concept map each round using Mermaid.js syntax
+6. **Real-time OpenAI Integration**: Live scaffolding responses based on user input and concept maps
+7. **Comprehensive Logging**: All interactions, timings, and data saved for research analysis
+
+#### Setting Up API Keys
+
+For experimental mode with OpenAI integration, set your API key:
+
+```bash
+export OPENAI_API_KEY="your-api-key-here"
+```
+
+Or create a `.env` file:
+```
+OPENAI_API_KEY=your-api-key-here
+```
+
+#### Data Export
+
+The system automatically exports session data in two formats:
+- **JSON**: Complete session data with metadata (`experimental_session_[name]_[timestamp].json`)
+- **CSV**: Flattened data for statistical analysis (`experimental_results_[name]_[timestamp].csv`)
 
 ### Testing the System
 
-Before using the system, you can run the comprehensive test suite to verify all components are working correctly:
+Before using the system, run the comprehensive test suite:
 
 ```bash
 cd /path/to/Scaff_MAS
@@ -190,9 +234,9 @@ This test will:
 3. Simulate a complete scaffolding interaction with a sample concept map
 4. Display the scaffolding type selected, agent prompts, and system responses
 
-### Interactive Mode
+### Legacy CLI Interface
 
-The interactive mode provides a command-line interface for interacting with the real multi-agent system:
+The original CLI interface is still available for programmatic usage:
 
 ```bash
 cd /path/to/Scaff_MAS
@@ -209,55 +253,26 @@ In interactive mode, you can use the following commands:
 - `help` - Show help message
 - `exit` - Exit interactive mode
 
-### Processing a Concept Map
+### Demo Mode
 
-To process a concept map PDF:
-
-```bash
-cd /path/to/Scaff_MAS
-PYTHONPATH=. python MAS/cli.py process path/to/concept_map.pdf
-```
-
-### Uploading Learning Materials
-
-To upload a learning material:
-
-```bash
-cd /path/to/Scaff_MAS
-PYTHONPATH=. python MAS/cli.py upload path/to/material.pdf --type pdf --name "Learning Material"
-```
-
-### Finalizing a Session
-
-To finalize a session and generate summary feedback:
-
-```bash
-cd /path/to/Scaff_MAS
-PYTHONPATH=. python MAS/cli.py finalize
-```
-
-### Running the Demo
-
-The system includes a demo script that simulates a full session with all design features enabled:
+For showcasing scaffolding prompts without live user interaction:
 
 ```bash
 cd /path/to/Scaff_MAS
 PYTHONPATH=. python MAS/demo.py
 ```
 
-The demo script:
-1. Creates a sample configuration
-2. Initializes the system
-3. Simulates learner profile input
-4. Simulates concept map submissions for multiple rounds
-5. Finalizes the session and generates summary feedback
+**Note**: Demo mode only showcases scaffolding prompts and system capabilities. Real experimental studies require the interactive experimental session with live user input.
 
 ### Important Notes
 
-- **Always use `PYTHONPATH=.`** when running commands to ensure proper module resolution
-- **Run commands from the Scaff_MAS directory** to ensure relative paths work correctly
-- The system uses **interactive scaffolding** by default - it will prompt for user responses and adapt based on input
-- All scaffolding is **educational** - the system never provides direct answers, only guided questions and prompts
+- **Use `python MAS/experimental_demo.py`** for real experimental studies
+- **Demo mode** is only for showcasing system capabilities
+- **Experimental mode requires OpenAI API key** for live scaffolding responses
+- **All user I/O is managed by CLINE** - no placeholder console prompts
+- **Agent sequences are randomized** per participant for experimental validity
+- **No sample data is loaded** - all profiles and interactions are user-driven
+- **Concept maps are cumulative** - users extend their maps each round (no overwrites)
 
 ## Experiment Interaction Flow
 
