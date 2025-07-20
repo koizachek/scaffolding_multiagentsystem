@@ -7,9 +7,12 @@
 		<link rel="stylesheet" href ="{{ url_for('static', filename='css/style.css') }}">
 	</head>
 	<body>
-		{% include 'label_input_box.html' %}
-		{% include 'toolbar.html' %}
-		{% include 'cy_canvas.html' %}
-		<script src="{{ url_for('static', filename='js/contextMapCanvas.js') }}"></script>
+		<div id="cy-wrapper" style="position: relative; width: 100%; height: 100%;">
+			{% include 'label_input_box.html' %}
+			{% include 'toolbar.html' %}
+			{% include 'cy_canvas.html' %}	
+		</div>
+		<script type="module" src="{{ url_for('static', filename='js/ContextMapCanvas.js') }}"></script>
+
 	</body>
 </html>
