@@ -1,3 +1,28 @@
+const nameInputBox =  {
+	box:          document.getElementById("labelInputBox"),
+	input:        document.getElementById("labelInputText"),
+	submitButton: document.getElementById("labelInputSubmit"),
+	
+	position: function(posX, posY) {	
+			nameInputBox.box.style.left = `${posX}px`;
+			nameInputBox.box.style.top  = `${posY}px`;
+			nameInputBox.box.style.display = 'block';	
+	},
+
+	focus: function() {	
+		this.input.value = '';
+		this.input.focus();
+	},
+
+	hide: function() {
+		this.box.style.display = 'none';
+	},
+
+	getValue: function() {
+		return this.input.value.trim();
+	}
+};
+
 class CanvasController {
 	constructor(cy, ctx) {
 		this.ctx = ctx;
@@ -5,15 +30,39 @@ class CanvasController {
 	}
 }
 
-export class NodeCreationController extends CanvasController {
+export class EdgeCreationController extends CanvasController {
 	constructor(cy, ctx) {
 		super(cy, ctx);
 		
-		this.labelBox    = document.getElementById("labelInputBox");
-		this.labelInput  = document.getElementById("labelInputText");
-		this.labelSubmit = document.getElementById("labelInputSubmit");
+		this.ghostNodeId = 'edge_ghost';
+	}
 
-		this.ghostNodeId  = null;
+	init() {
+		this.cy.on('taphold', 'node', (evt) => {
+			if (this.ctx.nodeCreationStarted) return;
+			
+			const edgeStart = evt.target;
+
+			this.cy.add({
+				group: 'nodes',
+				data: { id: this.ghostNodeId },
+				style: {
+					'background-color': 'transparent'
+				},
+				grabbable: false,
+				selectable: false
+			});
+			
+
+			this.ctx.edgeCreationStarted = true;
+		});
+	}
+}
+
+export class NodeCreationController extends CanvasController {
+	constructor(cy, ctx) {
+		super(cy, ctx);
+		this.ghostNodeId = null;
 	}
 
 	init() {
@@ -21,7 +70,7 @@ export class NodeCreationController extends CanvasController {
 			const node = evt.target;
 			if (this.ctx.nodeCreationStarted && this.ghostNodeId == node.id()) {
 				this.deleteGhost();
-				return;
+				this.finish();
 			}
 		});
 
@@ -43,22 +92,20 @@ export class NodeCreationController extends CanvasController {
 			const renderPos = this.cy.getElementById(id).renderedPosition();
 			const containerRect = this.cy.container().getBoundingClientRect();
 
-			this.labelBox.style.left = `${containerRect.left + renderPos.x - 120}px`;
-			this.labelBox.style.top  = `${containerRect.top  + renderPos.y - 80}px`;
-			this.labelBox.style.display = 'block';
-
-			this.labelInput.value = '';
-			this.labelInput.focus();
+			nameInputBox.position(containerRect.left + renderPos.x - 12,
+					      containerRect.top  + renderPos.y - 80);
+			nameInputBox.focus();
 
 			this.ghostNodeId = id;
 			this.ctx.nodeCreationStarted = true;
 			this.cy.autoungrabify(true);
 		});
 
-		this.labelSubmit.onclick = () => {
-			const label = this.labelInput.value.trim();
+		nameInputBox.submitButton.onclick = () => {
+			const label = nameInputBox.getValue();
 			if (!label) {
 				this.deleteGhost();
+				this.finish();
 				return;
 			}
 						
@@ -76,15 +123,15 @@ export class NodeCreationController extends CanvasController {
 	deleteGhost() {
 		if (this.cy.getElementById(this.ghostNodeId).nonempty()) {
 			this.cy.remove(this.cy.getElementById(this.ghostNodeId));
-			this.finish();
 		};
 	}
 
 	finish() {
 		this.cy.autoungrabify(false);
 		this.ctx.nodeCreationStarted = false;
-		this.labelBox.style.display = 'none';
 		this.ghostNodeId = null;
+
+		nameInputBox.hide();
 	}
 
 	
