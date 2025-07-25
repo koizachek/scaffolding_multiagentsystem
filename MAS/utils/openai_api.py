@@ -12,7 +12,7 @@ import time
 from typing import Dict, List, Any, Optional
 from openai import OpenAI
 from pathlib import Path
-from dotenv import load_dotenv
+from python_dotenv import load_dotenv
 
 env_path = Path(__file__).resolve().parent.parent / ".env"
 load_dotenv(dotenv_path=env_path)
