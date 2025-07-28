@@ -18,3 +18,7 @@ click
 # Utilities
 numpy
 pandas
+
+# Web Application
+streamlit
+st-contextmap-cs
