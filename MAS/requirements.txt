@@ -21,4 +21,4 @@ pandas
 
 # Web Application
 streamlit
-st-contextmap-cs
+st-conceptmap-cs >= 1.0.2.1

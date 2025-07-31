@@ -1,0 +1,19 @@
+{
+    "rounds": 4,
+    "labels": { 
+	"initial": {
+	    "header": "Please create your initial concept map using the window below."
+	},
+	"extend": {
+	    "header": "Please extend your concept map from the previous round."
+	}
+    },
+
+    "initial_map": {
+	"elements": [
+	    { "data": { "id": "a", "label": "Learning" } },
+	    { "data": { "id": "b", "label": "Understanding" } },
+	    { "data": { "source": "a", "target": "b", "label": "leads to" } }
+	]
+    }
+}
