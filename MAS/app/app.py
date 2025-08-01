@@ -1,4 +1,5 @@
 import json
+import os
 from logging import disable
 from pandas._libs.tslibs.fields import round_nsint64
 import streamlit as st
@@ -28,7 +29,8 @@ def init_session_state():
 
 
 def load_contents():
-    with open("contents.json") as f:
+    path = os.path.join(os.path.dirname(__file__), "contents.json")
+    with open(path) as f:
         return json.load(f)
 
 
