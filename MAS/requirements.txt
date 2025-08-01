@@ -18,3 +18,7 @@ click
 # Utilities
 numpy
 pandas
+
+# Web Application
+streamlit
+st-conceptmap-cs >= 1.0.2.1
