@@ -1,68 +1,352 @@
 import json
 import os
-from logging import disable
-from pandas._libs.tslibs.fields import round_nsint64
 import streamlit as st
 from conceptmap_component import conceptmap_component, parse_conceptmap
-from application_session import ApplicationSession
+from streamlit_experimental_session import StreamlitExperimentalSession
 
 
 # Session State Initialization
 def init_session_state():
+    """Initialize session state with experimental session support."""
     defaults = {
-        "session": ApplicationSession(),
+        "experimental_session": None,
+        "mode": None,
+        "learner_profile": None,
+        "agent_sequence": [],
         "submit_request": False,
         "followup": False,
         "roundn": 0,
         "contents": load_contents(),
-        "cmdata": []
+        "cmdata": [],
+        "session_initialized": False,
+        "profile_created": False,
+        "session_finalized": False,
+        "tutorial_completed": False,
+        "conversation_turn": 0,
+        "conversation_history": {},
+        "show_tutorial": False
     }
+    
     for key, value in defaults.items():
         if key not in st.session_state:
             st.session_state[key] = value
     
+    # Initialize concept map data if empty
     if not st.session_state.cmdata:
-        st.session_state.cmdata.append(defaults['contents']["initial_map"])
+        st.session_state.cmdata.append(st.session_state.contents["initial_map"])
     
-    if 'max_round' not in st.session_state:
-        st.session_state.max_rounds = defaults['contents']["rounds"]
+    # Set max rounds
+    if 'max_rounds' not in st.session_state:
+        st.session_state.max_rounds = st.session_state.contents["rounds"]
 
 
 def load_contents():
+    """Load contents configuration."""
     path = os.path.join(os.path.dirname(__file__), "contents.json")
     with open(path) as f:
         return json.load(f)
 
 
-# UI Rendering
-def render_summary_page():
-    roundn = st.session_state.roundn
+def render_mode_selection():
+    """Render mode selection page."""
+    st.header("🧪 Multi-Agent Scaffolding System")
+    st.markdown("---")
     
+    st.markdown("""
+    Welcome to the Multi-Agent Scaffolding System! This platform provides an interactive 
+    concept mapping experience with AI-powered scaffolding agents.
+    
+    **Choose your mode:**
+    """)
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.subheader("🔬 Experimental Mode")
+        st.markdown("""
+        - **Real OpenAI-powered scaffolding**
+        - **Personalized learner profiling**
+        - **Complete session logging**
+        - **Research-grade data export**
+        - Requires OpenAI API key
+        """)
+        
+        if st.button("Start Experimental Session", type="primary", use_container_width=True):
+            st.session_state.mode = "experimental"
+            st.session_state.experimental_session = StreamlitExperimentalSession()
+            
+            # Initialize system
+            if st.session_state.experimental_session.initialize_system("experimental"):
+                st.session_state.session_initialized = True
+                st.success("✅ Experimental mode initialized!")
+                st.rerun()
+            else:
+                st.error("❌ Failed to initialize experimental mode")
+    
+    with col2:
+        st.subheader("🎭 Demo Mode")
+        st.markdown("""
+        - **Static demo responses**
+        - **No API requirements**
+        - **Quick demonstration**
+        - **No data logging**
+        - Perfect for testing
+        """)
+        
+        if st.button("Start Demo Session", type="secondary", use_container_width=True):
+            st.session_state.mode = "demo"
+            st.session_state.experimental_session = StreamlitExperimentalSession()
+            
+            # Initialize system in demo mode
+            if st.session_state.experimental_session.initialize_system("demo"):
+                st.session_state.session_initialized = True
+                st.session_state.profile_created = True  # Skip profile for demo
+                
+                # Initialize agent sequence for demo
+                st.session_state.agent_sequence = st.session_state.experimental_session.initialize_agent_sequence()
+                
+                st.success("✅ Demo mode initialized!")
+                st.rerun()
+            else:
+                st.error("❌ Failed to initialize demo mode")
+
+
+def render_learner_profile():
+    """Render learner profile creation page."""
+    profile = st.session_state.experimental_session.create_learner_profile_form()
+    
+    if profile:
+        st.session_state.learner_profile = profile
+        st.session_state.profile_created = True
+        
+        # Initialize agent sequence
+        st.session_state.agent_sequence = st.session_state.experimental_session.initialize_agent_sequence()
+        
+        st.info("🎲 Agent sequence randomized for experimental validity")
+        st.write("**Your agent sequence:**")
+        for i, agent in enumerate(st.session_state.agent_sequence):
+            st.write(f"{i+1}. {agent.replace('_', ' ').title()}")
+        
+        st.markdown("---")
+        st.info("📚 Before starting the experiment, you'll complete a brief tutorial on concept mapping.")
+        
+        if st.button("Begin Tutorial", type="primary"):
+            st.session_state.show_tutorial = True
+            st.rerun()
+
+
+def render_tutorial():
+    """Render interactive concept mapping tutorial."""
+    st.header("📚 Concept Mapping Tutorial")
+    st.markdown("---")
+    
+    st.markdown("""
+    Welcome! Before starting the experiment, let's learn how to create concept maps effectively.
+    
+    **What is a concept map?**
+    A concept map is a visual representation of knowledge that shows relationships between concepts using nodes (concepts) and edges (relationships).
+    """)
+    
+    # Tutorial steps
+    tutorial_steps = [
+        {
+            "title": "Step 1: Creating Nodes (Concepts)",
+            "content": """
+            **How to create a node:**
+            - Click anywhere on the map with your **left mouse button** 🖱️
+            - Type your concept label
+            - Press **Enter** or click **OK** to confirm
+            
+            **Try it:** Create a node labeled "Learning" in the practice area below.
+            """,
+            "demo_map": {
+                "elements": [
+                    {"data": {"id": "example1", "label": "Example Concept", "x": 200, "y": 100}}
+                ]
+            }
+        },
+        {
+            "title": "Step 2: Creating Edges (Relationships)",
+            "content": """
+            **How to create an edge:**
+            - Click and **hold** on a node for **1 second** 🖱️ (source node turns red 🔴)
+            - Click on another node to connect them
+            - Type the relationship label (e.g., "leads to", "causes", "includes")
+            - Press **Enter** or click **OK** to confirm
+            
+            **Try it:** Connect two concepts with a meaningful relationship.
+            """,
+            "demo_map": {
+                "elements": [
+                    {"data": {"id": "a", "label": "Learning", "x": 150, "y": 100}},
+                    {"data": {"id": "b", "label": "Understanding", "x": 350, "y": 100}},
+                    {"data": {"source": "a", "target": "b", "label": "leads to"}}
+                ]
+            }
+        },
+        {
+            "title": "Step 3: Editing and Deleting",
+            "content": """
+            **Editing:**
+            - **Double-click** on any node or edge to edit its label
+            
+            **Deleting:**
+            - **Right-click** on any node or edge to delete it
+            
+            **Moving:**
+            - **Drag** nodes to reposition them
+            - Hold **Shift** to select multiple nodes
+            
+            **Try it:** Practice editing and moving elements in the map below.
+            """,
+            "demo_map": {
+                "elements": [
+                    {"data": {"id": "concept1", "label": "Practice", "x": 200, "y": 80}},
+                    {"data": {"id": "concept2", "label": "Mastery", "x": 200, "y": 180}},
+                    {"data": {"source": "concept1", "target": "concept2", "label": "leads to"}}
+                ]
+            }
+        }
+    ]
+    
+    # Tutorial navigation
+    if "tutorial_step" not in st.session_state:
+        st.session_state.tutorial_step = 0
+    
+    current_step = tutorial_steps[st.session_state.tutorial_step]
+    
+    # Progress indicator
+    progress = (st.session_state.tutorial_step + 1) / len(tutorial_steps)
+    st.progress(progress, text=f"Step {st.session_state.tutorial_step + 1} of {len(tutorial_steps)}")
+    
+    # Current step content
+    st.subheader(current_step["title"])
+    st.markdown(current_step["content"])
+    
+    # Practice area
+    st.markdown("**Practice Area:**")
+    try:
+        tutorial_response = conceptmap_component(
+            cm_data=current_step["demo_map"],
+            key=f"tutorial_step_{st.session_state.tutorial_step}"
+        )
+    except Exception as e:
+        st.error(f"Tutorial map error: {e}")
+        tutorial_response = None
+    
+    # Navigation buttons
+    col1, col2, col3 = st.columns([1, 2, 1])
+    
+    with col1:
+        if st.session_state.tutorial_step > 0:
+            if st.button("← Previous", type="secondary"):
+                st.session_state.tutorial_step -= 1
+                st.rerun()
+    
+    with col3:
+        if st.session_state.tutorial_step < len(tutorial_steps) - 1:
+            if st.button("Next →", type="primary"):
+                st.session_state.tutorial_step += 1
+                st.rerun()
+        else:
+            if st.button("Complete Tutorial", type="primary"):
+                st.session_state.tutorial_completed = True
+                st.session_state.show_tutorial = False
+                st.success("🎉 Tutorial completed! You're ready to start the experiment.")
+                st.rerun()
+    
+    # Skip option
+    st.markdown("---")
+    if st.button("Skip Tutorial", type="secondary"):
+        st.session_state.tutorial_completed = True
+        st.session_state.show_tutorial = False
+        st.rerun()
+
+
+def render_summary_page():
+    """Render session summary page."""
     st.header("Multiagent Scaffolding Experiment")
     st.markdown("---")
     st.write("Thank You for participating in the Multiagent Scaffolding Experiment!")
     st.balloons()
+    
+    # Finalize session if not already done
+    if not st.session_state.session_finalized and st.session_state.experimental_session:
+        with st.spinner("Finalizing session and exporting data..."):
+            export_info = st.session_state.experimental_session.finalize_session()
+            st.session_state.session_finalized = True
+            
+            if "error" not in export_info:
+                st.success("✅ Session data exported successfully!")
+                
+                if st.session_state.mode == "experimental":
+                    st.info("📊 **Data Export Information:**")
+                    st.write(f"- **JSON File:** {export_info.get('json_file', 'N/A')}")
+                    st.write(f"- **CSV File:** {export_info.get('csv_file', 'N/A')}")
+                    st.write(f"- **Participant:** {export_info.get('participant_name', 'N/A')}")
+    
     st.subheader("Session Summary")
     
-    st.write(f"Rounds completed: {st.session_state.max_rounds}")
-    st.write(f"Agent order: {st.session_state.session._agent_sequence}")
-    st.write(f"Final concept map:")
-    conceptmap_component(cm_data=st.session_state.cmdata[roundn-1], key="cm_summary")
+    # Get session summary
+    if st.session_state.experimental_session:
+        summary = st.session_state.experimental_session.get_session_summary()
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.write(f"**Participant:** {summary.get('participant_name', 'Demo User')}")
+            st.write(f"**Mode:** {summary.get('mode', 'unknown').title()}")
+            st.write(f"**Rounds completed:** {st.session_state.max_rounds}")
+        
+        with col2:
+            if st.session_state.agent_sequence:
+                st.write("**Agent order:**")
+                for i, agent in enumerate(st.session_state.agent_sequence):
+                    st.write(f"{i+1}. {agent.replace('_', ' ').title()}")
+    
+    st.write("**Final concept map:**")
+    if st.session_state.cmdata and len(st.session_state.cmdata) > st.session_state.roundn:
+        conceptmap_component(cm_data=st.session_state.cmdata[st.session_state.roundn-1], key="cm_summary")
+    
+    # Option to start new session
+    st.markdown("---")
+    if st.button("Start New Session", type="primary"):
+        # Clear session state
+        for key in list(st.session_state.keys()):
+            del st.session_state[key]
+        st.rerun()
 
 
 def render_agent_name():
+    """Render agent name for current round."""
     roundn = st.session_state.roundn
-    agent_name = st.session_state.session.get_agent_name(roundn)
+    if st.session_state.experimental_session:
+        agent_name = st.session_state.experimental_session.get_agent_name(roundn)
+    else:
+        agent_name = "Demo Agent"
+    
     st.markdown(f'<div style="font-size:20px;">🧙<b> {agent_name} Agent Follow-Up:</div>', unsafe_allow_html=True)
 
+
 def render_header():
+    """Render page header."""
     st.header("Multiagent Scaffolding Experiment")
     st.markdown("---")
     st.subheader(f"Round {st.session_state.roundn + 1}/{st.session_state.max_rounds}")
+    
+    # Show mode and participant info
+    if st.session_state.mode:
+        col1, col2 = st.columns([3, 1])
+        with col1:
+            if st.session_state.learner_profile:
+                st.caption(f"Participant: {st.session_state.learner_profile['name']}")
+        with col2:
+            st.caption(f"Mode: {st.session_state.mode.title()}")
 
 
 @st.dialog("How to use a concept map creator?", width='large')
 def render_help_dialog():
+    """Render help dialog for concept map editor."""
     st.subheader("Modifying nodes 🔵")
     st.markdown("""
                 - Click with **Left Mouse Button** 🖱️ on any place to create a new node.
@@ -83,60 +367,236 @@ def render_help_dialog():
                     - Press **Escape** or drag the context map to discard changes.
                 - Double Click with **Left Mouse Button** 🖱️ on an edge to edit it's label.
                 - Click with **Right Mouse Button** 🖱️ on an edge to delete it.
-
                 """)
 
 
 def render_concept_map():
+    """Render concept map editor."""
     roundn = st.session_state.roundn
     contents = st.session_state.contents
     cm_label = contents["labels"]["extend" if roundn else "initial"]["header"]
     
-    _, middle,right = st.columns([1, 20, 1])
+    _, middle, right = st.columns([1, 20, 1])
     with right:
         if st.button(label='❓', type='secondary'):
             render_help_dialog()
     with middle:
         st.write(cm_label)
-        response = conceptmap_component(
-            cm_data=st.session_state.cmdata[roundn],
-            submit_request=st.session_state.submit_request,
-            key=f"round_{roundn}"
-        )
+        
+        # Create a container for the concept map
+        try:
+            response = conceptmap_component(
+                cm_data=st.session_state.cmdata[roundn],
+                submit_request=st.session_state.submit_request,
+                key=f"round_{roundn}"
+            )
+        except Exception as e:
+            st.error(f"Error rendering concept map: {e}")
+            response = None
+    
     return response
 
 
 def render_cm_submit_button():
-    with st.columns(5)[2]:
+    """Render concept map submit button."""
+    st.markdown("---")  # Add a separator
+    
+    # Make the submit button more prominent
+    st.markdown("### Submit Your Concept Map")
+    
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
         if not st.session_state.followup:
-            if st.button("Submit", type='primary'):
+            if st.button("🚀 Submit Concept Map", type='primary', use_container_width=True):
                 if st.session_state.roundn == st.session_state.max_rounds - 1:
                     st.session_state.roundn += 1
                     
                 st.session_state.submit_request = True
                 st.rerun()
-         
+        else:
+            st.info("⏳ Waiting for concept map submission...")
+
 
 def render_followup():
+    """Render agent followup interaction with multi-turn conversation support."""
     roundn = st.session_state.roundn
+    
+    # Initialize conversation state for this round
+    round_key = f"round_{roundn}_conversation"
+    if round_key not in st.session_state:
+        st.session_state[round_key] = []
+    
+    conversation_history = st.session_state[round_key]
+    
+    # Initialize conversation turn counter
+    conversation_turn_key = f"round_{roundn}_turn"
+    if conversation_turn_key not in st.session_state:
+        st.session_state[conversation_turn_key] = 0
+    
+    conversation_turn = st.session_state[conversation_turn_key]
+    
     with st.container(border=True):
-        with st.spinner("Waiting for agent response..."):
-            render_agent_name()
+        render_agent_name()
+        
+        # Show conversation history
+        if conversation_history:
+            st.markdown("**Conversation History:**")
+            for i, exchange in enumerate(conversation_history):
+                with st.expander(f"Exchange {i+1}", expanded=(i == len(conversation_history)-1)):
+                    st.markdown(f"**🧙 Agent:** {exchange['agent_message']}")
+                    st.markdown(f"**👤 You:** {exchange['user_response']}")
+        
+        # Current agent response
         with st.container(border=True):
-            agent_msg = st.session_state.session.get_agent_response(roundn)
+            current_cm_data = st.session_state.cmdata[roundn] if roundn < len(st.session_state.cmdata) else None
+            
+            # Get previous user response for context
+            previous_user_response = None
+            if conversation_history:
+                previous_user_response = conversation_history[-1]['user_response']
+            
+            # Get agent response
+            if st.session_state.experimental_session:
+                agent_msg = st.session_state.experimental_session.get_agent_response(
+                    roundn, 
+                    concept_map_data=current_cm_data,
+                    user_response=previous_user_response,
+                    conversation_turn=conversation_turn
+                )
+                
+                # Add to conversation history in session
+                st.session_state.experimental_session.add_to_conversation_history(
+                    roundn, "agent", agent_msg, {"conversation_turn": conversation_turn}
+                )
+            else:
+                # Demo mode with conversation awareness
+                if conversation_turn == 0:
+                    agent_msg = "This is a demo response. In experimental mode, you would receive personalized AI-powered scaffolding."
+                else:
+                    agent_msg = f"Thank you for your response. This is demo follow-up #{conversation_turn}. In experimental mode, this would be a contextual response based on your input."
+            
+            st.markdown(f"**Current Response:**")
             st.write(agent_msg)
-        st.text_area(label='label', label_visibility='hidden', placeholder="Please respond to the scaffolding above", height="stretch", key='followup_response')
-        with st.columns([2,1,2])[1]: 
-            if st.button("Submit", type='primary', disabled=len(st.session_state.followup_response) == 0):
+        
+        # User response area - use unique key based on turn
+        current_response_key = f'followup_response_r{roundn}_t{conversation_turn}'
+        st.text_area(
+            label='Your Response', 
+            placeholder="Please respond to the scaffolding above", 
+            height=100, 
+            key=current_response_key
+        )
+        
+        # Action buttons
+        col1, col2, col3 = st.columns([1, 1, 1])
+        
+        user_response = st.session_state.get(current_response_key, '')
+        
+        with col1:
+            # Continue conversation button
+            max_turns = 5
+            can_continue = (conversation_turn < max_turns and 
+                          st.session_state.experimental_session and 
+                          st.session_state.experimental_session.can_continue_conversation(roundn))
+            
+            if (len(user_response) > 0 and can_continue and 
+                st.button("Continue Conversation", type='secondary', use_container_width=True, key=f"continue_r{roundn}_t{conversation_turn}")):
+                
+                # Add current exchange to history
+                conversation_history.append({
+                    'agent_message': agent_msg,
+                    'user_response': user_response,
+                    'turn': conversation_turn
+                })
+                
+                # Log user response
+                if st.session_state.experimental_session:
+                    st.session_state.experimental_session.log_user_response(
+                        roundn, user_response, current_cm_data
+                    )
+                    st.session_state.experimental_session.add_to_conversation_history(
+                        roundn, "user", user_response, {"conversation_turn": conversation_turn}
+                    )
+                
+                # Increment turn counter for next iteration
+                st.session_state[conversation_turn_key] += 1
+                st.rerun()
+        
+        with col2:
+            # Finish round button
+            if (len(user_response) > 0 and 
+                st.button("Finish Round", type='primary', use_container_width=True, key=f"finish_r{roundn}_t{conversation_turn}")):
+                
+                # Add final exchange to history
+                conversation_history.append({
+                    'agent_message': agent_msg,
+                    'user_response': user_response,
+                    'turn': conversation_turn
+                })
+                
+                # Log final user response
+                if st.session_state.experimental_session:
+                    st.session_state.experimental_session.log_user_response(
+                        roundn, user_response, current_cm_data
+                    )
+                    st.session_state.experimental_session.add_to_conversation_history(
+                        roundn, "user", user_response, {"conversation_turn": conversation_turn, "final": True}
+                    )
+                
+                # Update concept map evolution
+                if st.session_state.experimental_session and current_cm_data:
+                    st.session_state.experimental_session.update_concept_map_evolution(
+                        roundn, current_cm_data
+                    )
+                
+                # Reset conversation state for next round
+                st.session_state[conversation_turn_key] = 0
+                
+                # Move to next round
                 st.session_state.followup = False
                 st.session_state.roundn += 1
                 st.rerun()
+        
+        with col3:
+            # Show conversation limits
+            if st.session_state.experimental_session:
+                remaining_turns = max_turns - conversation_turn
+                if remaining_turns > 0:
+                    st.caption(f"Turns remaining: {remaining_turns}")
+                else:
+                    st.caption("Max turns reached")
+        
+        # Show instructions
+        if conversation_turn == 0:
+            st.info("💡 **Tip:** You can have up to 5 exchanges with the agent in this round. Use 'Continue Conversation' for follow-up questions or 'Finish Round' when ready to proceed.")
+        elif conversation_turn >= max_turns - 1:
+            st.warning("⚠️ This is your final exchange for this round. Click 'Finish Round' to proceed.")
 
 
-# Handling of the concept map responses
 def handle_response(response):
+    """Handle concept map response with cumulative logic."""
     if response and not st.session_state.followup:
-        st.session_state.cmdata.append(response)
+        # Update the current round's concept map instead of appending
+        roundn = st.session_state.roundn
+        
+        # Ensure we have enough slots in cmdata
+        while len(st.session_state.cmdata) <= roundn:
+            # For rounds after 0, copy the previous round's data as starting point
+            if len(st.session_state.cmdata) > 0:
+                # Copy the previous round's concept map as the base for the new round
+                previous_map = st.session_state.cmdata[-1].copy()
+                st.session_state.cmdata.append(previous_map)
+            else:
+                # First round uses initial map
+                st.session_state.cmdata.append(st.session_state.contents["initial_map"])
+        
+        # Update the current round's concept map with the new data
+        st.session_state.cmdata[roundn] = response
+        
+        # Log the concept map update for debugging
+        if st.session_state.experimental_session:
+            st.session_state.experimental_session.update_concept_map_evolution(roundn, response)
+        
         st.session_state.submit_request = False
         st.session_state.followup = True
         st.rerun()
@@ -144,25 +604,55 @@ def handle_response(response):
         st.session_state.submit_request = False
 
 
-# Main Logic
 def main():
+    """Main application logic."""
     init_session_state()
     
+    # Mode selection
+    if not st.session_state.mode:
+        render_mode_selection()
+        return
+    
+    # Learner profile creation (experimental mode only)
+    if (st.session_state.mode == "experimental" and 
+        st.session_state.session_initialized and 
+        not st.session_state.profile_created):
+        render_learner_profile()
+        return
+    
+    # Tutorial flow (experimental mode only)
+    if (st.session_state.mode == "experimental" and 
+        st.session_state.profile_created and 
+        st.session_state.show_tutorial):
+        render_tutorial()
+        return
+    
+    # Check if tutorial is required but not completed (experimental mode)
+    if (st.session_state.mode == "experimental" and 
+        st.session_state.profile_created and 
+        not st.session_state.tutorial_completed and 
+        not st.session_state.show_tutorial):
+        st.session_state.show_tutorial = True
+        st.rerun()
+    
+    # Main session logic
     roundn = st.session_state.roundn
 
     if roundn == st.session_state.max_rounds:
         render_summary_page()
     else:
         render_header()
-        response = render_concept_map()
-        handle_response(response)
+        
+        # Render submit button BEFORE concept map to ensure it's always visible
         render_cm_submit_button()
+        
+        response = render_concept_map()
+        
+        handle_response(response)
 
         if st.session_state.followup:
             render_followup()
 
 
-
 if __name__ == "__main__":
     main()
-
