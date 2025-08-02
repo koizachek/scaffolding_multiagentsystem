@@ -11,9 +11,9 @@ import json
 from typing import Dict, Any, Optional
 
 
-def conceptmap_component(cm_data: Optional[Dict[str, Any]] = None, 
-                        submit_request: bool = False, 
-                        key: str = "conceptmap") -> Optional[Dict[str, Any]]:
+def interactive_conceptmap_component(cm_data: Optional[Dict[str, Any]] = None, 
+                                   submit_request: bool = False, 
+                                   key: str = "interactive_conceptmap") -> Optional[Dict[str, Any]]:
     """
     Render an interactive concept map component using Cytoscape.js.
     
@@ -36,13 +36,8 @@ def conceptmap_component(cm_data: Optional[Dict[str, Any]] = None,
     
     # Convert to Cytoscape format
     cytoscape_elements = []
-    elements = cm_data.get("elements", []) if cm_data else []
-    
-    for element in elements:
-        if not element or "data" not in element:
-            continue
-            
-        data = element["data"]
+    for element in cm_data.get("elements", []):
+        data = element.get("data", {})
         if "source" not in data:  # It's a node
             cytoscape_elements.append({
                 "data": {
@@ -543,7 +538,7 @@ if __name__ == "__main__":
     st.title("Interactive Concept Map Component Test")
     
     # Test the component
-    result = conceptmap_component(key="test")
+    result = interactive_conceptmap_component(key="test")
     
     if result:
         st.write("**Component Output:**")

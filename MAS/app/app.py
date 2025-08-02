@@ -8,6 +8,11 @@ from streamlit_experimental_session import StreamlitExperimentalSession
 # Session State Initialization
 def init_session_state():
     """Initialize session state with experimental session support."""
+    # Load contents first
+    if "contents" not in st.session_state:
+        st.session_state.contents = load_contents()
+    
+    # Initialize other defaults
     defaults = {
         "experimental_session": None,
         "mode": None,
@@ -16,8 +21,6 @@ def init_session_state():
         "submit_request": False,
         "followup": False,
         "roundn": 0,
-        "contents": load_contents(),
-        "cmdata": [],
         "session_initialized": False,
         "profile_created": False,
         "session_finalized": False,
@@ -31,9 +34,12 @@ def init_session_state():
         if key not in st.session_state:
             st.session_state[key] = value
     
-    # Initialize concept map data if empty
-    if not st.session_state.cmdata:
-        st.session_state.cmdata.append(st.session_state.contents["initial_map"])
+    # Initialize concept map data separately to avoid corruption
+    if "cmdata" not in st.session_state or not isinstance(st.session_state.cmdata, list):
+        # Make a deep copy of the initial map to avoid reference issues
+        import copy
+        initial_map = copy.deepcopy(st.session_state.contents["initial_map"])
+        st.session_state.cmdata = [initial_map]
     
     # Set max rounds
     if 'max_rounds' not in st.session_state:
@@ -385,8 +391,20 @@ def render_concept_map():
         
         # Create a container for the concept map
         try:
+            # Ensure we have valid concept map data
+            if roundn < len(st.session_state.cmdata) and isinstance(st.session_state.cmdata[roundn], dict):
+                cm_data = st.session_state.cmdata[roundn]
+            else:
+                # Use initial map if we don't have data for this round
+                cm_data = st.session_state.contents["initial_map"]
+            
+            # Debug: Check data type before passing to component
+            if not isinstance(cm_data, dict):
+                st.error(f"Invalid concept map data type: {type(cm_data)}")
+                cm_data = st.session_state.contents["initial_map"]
+            
             response = conceptmap_component(
-                cm_data=st.session_state.cmdata[roundn],
+                cm_data=cm_data,
                 submit_request=st.session_state.submit_request,
                 key=f"round_{roundn}"
             )
@@ -408,9 +426,6 @@ def render_cm_submit_button():
     with col2:
         if not st.session_state.followup:
             if st.button("🚀 Submit Concept Map", type='primary', use_container_width=True):
-                if st.session_state.roundn == st.session_state.max_rounds - 1:
-                    st.session_state.roundn += 1
-                    
                 st.session_state.submit_request = True
                 st.rerun()
         else:
@@ -643,10 +658,11 @@ def main():
     else:
         render_header()
         
-        # Render submit button BEFORE concept map to ensure it's always visible
-        render_cm_submit_button()
-        
+        # Render concept map first
         response = render_concept_map()
+        
+        # Then render submit button
+        render_cm_submit_button()
         
         handle_response(response)
 

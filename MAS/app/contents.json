@@ -11,8 +11,8 @@
 
     "initial_map": {
 	"elements": [
-	    { "data": { "id": "a", "label": "Learning" } },
-	    { "data": { "id": "b", "label": "Understanding" } },
+	    { "data": { "id": "a", "label": "Learning", "x": 200, "y": 100 } },
+	    { "data": { "id": "b", "label": "Understanding", "x": 400, "y": 100 } },
 	    { "data": { "source": "a", "target": "b", "label": "leads to" } }
 	]
     }
