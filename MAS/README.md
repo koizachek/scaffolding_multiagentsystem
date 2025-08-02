@@ -404,14 +404,14 @@ OPENAI_API_KEY=your-api-key-here
 
 Upon launching, you'll choose between two modes:
 
-**🔬 Experimental Mode:**
+**Experimental Mode:**
 - Real OpenAI-powered scaffolding responses
 - Personalized learner profiling
 - Complete session logging and data export
 - Research-grade experimental data collection
 - Requires OpenAI API key
 
-**🎭 Demo Mode:**
+**Demo Mode:**
 - Static demonstration responses
 - No API requirements
 - Quick system demonstration
@@ -493,32 +493,32 @@ The integrated concept map editor provides essential functionality for building 
 
 #### Current Features
 
-**✅ Node Management:**
+**Node Management:**
 - **Create Nodes:** Click anywhere to add new concepts
 - **Edit Labels:** Double-click on nodes to modify text
 - **Delete Nodes:** Right-click to remove concepts
 - **Move Nodes:** Drag to reposition (basic implementation)
 
-**✅ Edge Management:**
+**Edge Management:**
 - **Create Connections:** Click and hold source node, then click target
 - **Label Relationships:** Add meaningful relationship descriptions
 - **Edit Connections:** Double-click edges to modify labels
 - **Delete Connections:** Right-click edges to remove
 
-**✅ Visualization:**
+**Visualization:**
 - **Real-time Updates:** See changes immediately
 - **Structure Overview:** View node and edge counts
 - **Text Diagram:** ASCII-style relationship visualization
 - **Cumulative Building:** Each round extends the previous map
 
-**✅ Data Management:**
+**Data Management:**
 - **JSON Storage:** Structured concept map data
 - **Session Persistence:** Maps saved throughout experiment
 - **Export Integration:** Automatic inclusion in research data
 
 #### Current Limitations
 
-**❌ Advanced Features Not Yet Implemented:**
+**Advanced Features Not Yet Implemented:**
 - **Zoom Controls:** Cannot zoom in/out of the map
 - **Advanced Drag & Drop:** Limited repositioning capabilities
 - **Reset Functionality:** No clear-all button
@@ -528,12 +528,12 @@ The integrated concept map editor provides essential functionality for building 
 #### How the Editor Works
 
 **Basic Workflow:**
-1. **Adding Concepts:** Use the "➕ Add New Concept" expander
+1. **Adding Concepts:** Use the "Add New Concept" expander
    - Type concept name in text field
    - Click "Add Concept" button
    - Concept appears in the map structure
 
-2. **Creating Connections:** Use the "🔗 Add New Connection" expander
+2. **Creating Connections:** Use the "Add New Connection" expander
    - Select source concept from dropdown
    - Select target concept from dropdown
    - Type relationship label
@@ -643,10 +643,10 @@ streamlit run app.py --server.port 8502
 #### Browser Compatibility
 
 **Recommended Browsers:**
-- Chrome 90+ ✅
-- Firefox 88+ ✅
-- Safari 14+ ✅
-- Edge 90+ ✅
+- Chrome 90+ 
+- Firefox 88+ 
+- Safari 14+ 
+- Edge 90+ 
 
 **Known Issues:**
 - Internet Explorer not supported
