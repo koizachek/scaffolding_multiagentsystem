@@ -665,8 +665,16 @@ class StreamlitExperimentalSession:
         if round_key not in self.session_data["conversation_history"]:
             self.session_data["conversation_history"][round_key] = []
         
+        # If speaker is "agent", get the specific agent type for this round
+        if speaker == "agent" and roundn < len(self.session_data["agent_sequence"]):
+            agent_type = self.session_data["agent_sequence"][roundn]
+            speaker_id = agent_type  # Use specific agent type as speaker ID
+        else:
+            speaker_id = speaker  # Keep "user" or other speakers as-is
+        
         conversation_entry = {
-            "speaker": speaker,  # "agent" or "user"
+            "speaker": speaker_id,  # Now includes specific agent type
+            "agent_type": self.session_data["agent_sequence"][roundn] if roundn < len(self.session_data["agent_sequence"]) and speaker == "agent" else None,
             "message": message,
             "timestamp": datetime.now().isoformat(),
             "metadata": metadata or {}
