@@ -312,11 +312,40 @@ The system implements the following iterative cycle:
 
 The system generates comprehensive logs including:
 - User inputs with timestamps
-- Agent outputs and feedback
+- Agent outputs and feedback with **specific agent type identification**
 - Agent internal reasoning for each sub-agent
 - ZPD estimates with round/session timestamps
 - Active DFs/feature toggles per session
-- Agent invoked (lead or sub-agent type)
+- **Agent-specific conversation tracking** (conceptual, strategic, metacognitive, procedural)
+- Multi-turn conversation history per round
+- Concept map evolution across rounds
+- Performance metrics and scaffolding decisions
+
+### Enhanced Agent Logging (Latest Update)
+
+The logging system now provides **agent-specific identification** in conversation history:
+
+```json
+{
+  "conversation_history": {
+    "round_0": [
+      {
+        "speaker": "procedural_scaffolding",
+        "agent_type": "procedural_scaffolding",
+        "message": "Let's focus on the procedural aspects...",
+        "timestamp": "2025-08-02T19:04:57.758408",
+        "metadata": {"conversation_turn": 0}
+      }
+    ]
+  }
+}
+```
+
+This enables researchers to:
+- Analyze effectiveness of each scaffolding agent type
+- Track multi-turn conversations with specific agents
+- Compare response patterns across different agent types
+- Generate agent-specific metrics for research analysis
 
 Logs are stored in the directory specified in the configuration file (default: `logs`).
 

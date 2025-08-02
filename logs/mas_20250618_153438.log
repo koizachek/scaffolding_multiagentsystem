@@ -1,8 +1,0 @@
-2025-06-18 15:34:38,642 - utils.logging_utils - INFO - Logging configured with level INFO
-2025-06-18 15:34:38,642 - utils.logging_utils - INFO - Logging to file: logs/mas_20250618_153438.log
-2025-06-18 15:34:38,642 - system - INFO - Initializing multi-agent scaffolding system
-2025-06-18 15:34:38,642 - agents.agent_factory - INFO - Creating lead agent: Lead Agent
-2025-06-18 15:34:38,642 - agents.base_agent - INFO - Initialized lead agent: Lead Agent
-2025-06-18 15:34:38,642 - agents.lead_agent - INFO - Initialized lead agent: Lead Agent
-2025-06-18 15:34:38,642 - agents.agent_factory - INFO - Created agent: lead (lead)
-2025-06-18 15:34:38,642 - system - INFO - Multi-agent scaffolding system initialized

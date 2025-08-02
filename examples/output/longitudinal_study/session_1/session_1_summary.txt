@@ -1,6 +1,0 @@
-Session 1 (2025-01-15)
-Topic: Climate Change - Initial Understanding
-Nodes: 4, Edges: 3
-
-Agent Feedback:
-
