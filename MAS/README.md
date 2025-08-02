@@ -346,6 +346,345 @@ MAS/
 └── requirements.txt         # Dependencies
 ```
 
+## Streamlit Web Interface
+
+The Multi-Agent Scaffolding System now includes a modern web-based interface built with Streamlit, providing an intuitive graphical alternative to the CLI for conducting scaffolding experiments.
+
+### Overview
+
+The Streamlit interface offers:
+- **User-friendly web GUI** for all experiment interactions
+- **Interactive concept map editor** with visual feedback
+- **Real-time AI-powered scaffolding** (experimental mode)
+- **Multi-turn conversation support** with scaffolding agents
+- **Comprehensive tutorial system** for concept mapping
+- **Automatic data export** and session management
+- **Demo mode** for testing without API requirements
+
+### Getting Started with Streamlit
+
+#### Prerequisites
+
+In addition to the base system requirements, you'll need:
+
+```bash
+pip install streamlit
+```
+
+#### Launching the Web Interface
+
+1. **Navigate to the app directory:**
+   ```bash
+   cd MAS/app
+   ```
+
+2. **Launch the Streamlit application:**
+   ```bash
+   streamlit run app.py
+   ```
+
+3. **Open your browser** to the displayed URL (typically `http://localhost:8501`)
+
+#### Environment Setup
+
+For **Experimental Mode** with real AI scaffolding, ensure your OpenAI API key is configured:
+
+```bash
+export OPENAI_API_KEY="your-api-key-here"
+```
+
+Or create a `.env` file in the `MAS/` directory:
+```
+OPENAI_API_KEY=your-api-key-here
+```
+
+### Using the Web Interface
+
+#### 1. Mode Selection
+
+Upon launching, you'll choose between two modes:
+
+**🔬 Experimental Mode:**
+- Real OpenAI-powered scaffolding responses
+- Personalized learner profiling
+- Complete session logging and data export
+- Research-grade experimental data collection
+- Requires OpenAI API key
+
+**🎭 Demo Mode:**
+- Static demonstration responses
+- No API requirements
+- Quick system demonstration
+- No data logging or export
+- Perfect for testing and showcasing
+
+#### 2. Learner Profile Creation (Experimental Mode Only)
+
+The system collects comprehensive learner information through an interactive form:
+
+- **Personal Information:** Name and background
+- **Prior Knowledge:** Experience with the topic
+- **Confidence Level:** Self-assessed competence
+- **Learning Goals:** What you hope to achieve
+- **Interests:** Related areas of interest
+
+This profile enables personalized scaffolding throughout the experiment.
+
+#### 3. Interactive Tutorial
+
+Before starting the experiment, participants complete a hands-on concept mapping tutorial covering:
+
+**Step 1: Creating Nodes (Concepts)**
+- Click anywhere on the map to create a new concept
+- Type the concept label and press Enter
+- Practice with example concepts
+
+**Step 2: Creating Edges (Relationships)**
+- Click and hold on a node for 1 second (source turns red)
+- Click another node to connect them
+- Type the relationship label (e.g., "leads to", "causes")
+- Practice connecting concepts meaningfully
+
+**Step 3: Editing and Navigation**
+- Double-click to edit labels
+- Right-click to delete elements
+- Drag nodes to reposition them
+- Select multiple nodes with Shift
+
+The tutorial can be skipped for experienced users.
+
+#### 4. Experiment Flow
+
+The experiment consists of **4 rounds** with randomized agent order:
+
+**Round Structure:**
+1. **Concept Map Creation/Extension**
+   - Round 1: Create initial concept map
+   - Rounds 2-4: Extend and refine existing map
+   - Maps are cumulative (build upon previous rounds)
+
+2. **Agent Scaffolding Interaction**
+   - AI agent provides personalized feedback
+   - Multi-turn conversation support (up to 5 exchanges per round)
+   - Context-aware responses based on your concept map
+
+3. **Reflection and Response**
+   - Respond to agent scaffolding
+   - Continue conversation for clarification
+   - Finish round when ready to proceed
+
+**Agent Types (Randomized Order):**
+- **Conceptual Scaffolding:** Highlights key concepts and relationships
+- **Strategic Scaffolding:** Offers planning and learning strategies
+- **Metacognitive Scaffolding:** Prompts self-regulation and monitoring
+- **Procedural Scaffolding:** Guides tool usage and interface navigation
+
+#### 5. Session Completion
+
+After all rounds:
+- **Session Summary:** Review your progress and agent interactions
+- **Data Export:** Automatic generation of research files (experimental mode)
+- **Final Concept Map:** View your completed concept map
+- **New Session Option:** Start fresh with a new participant
+
+### Concept Map Editor
+
+The integrated concept map editor provides essential functionality for building and modifying concept maps:
+
+#### Current Features
+
+**✅ Node Management:**
+- **Create Nodes:** Click anywhere to add new concepts
+- **Edit Labels:** Double-click on nodes to modify text
+- **Delete Nodes:** Right-click to remove concepts
+- **Move Nodes:** Drag to reposition (basic implementation)
+
+**✅ Edge Management:**
+- **Create Connections:** Click and hold source node, then click target
+- **Label Relationships:** Add meaningful relationship descriptions
+- **Edit Connections:** Double-click edges to modify labels
+- **Delete Connections:** Right-click edges to remove
+
+**✅ Visualization:**
+- **Real-time Updates:** See changes immediately
+- **Structure Overview:** View node and edge counts
+- **Text Diagram:** ASCII-style relationship visualization
+- **Cumulative Building:** Each round extends the previous map
+
+**✅ Data Management:**
+- **JSON Storage:** Structured concept map data
+- **Session Persistence:** Maps saved throughout experiment
+- **Export Integration:** Automatic inclusion in research data
+
+#### Current Limitations
+
+**❌ Advanced Features Not Yet Implemented:**
+- **Zoom Controls:** Cannot zoom in/out of the map
+- **Advanced Drag & Drop:** Limited repositioning capabilities
+- **Reset Functionality:** No clear-all button
+- **Visual Canvas:** Text-based rather than full graphical interface
+- **Mouse Wheel Support:** No scroll-based navigation
+
+#### How the Editor Works
+
+**Basic Workflow:**
+1. **Adding Concepts:** Use the "➕ Add New Concept" expander
+   - Type concept name in text field
+   - Click "Add Concept" button
+   - Concept appears in the map structure
+
+2. **Creating Connections:** Use the "🔗 Add New Connection" expander
+   - Select source concept from dropdown
+   - Select target concept from dropdown
+   - Type relationship label
+   - Click "Add Connection" button
+
+3. **Viewing Structure:** The editor displays:
+   - **Node List:** All concepts with labels
+   - **Edge List:** All connections with relationships
+   - **Text Diagram:** Visual representation of relationships
+
+**Data Format:**
+```json
+{
+  "elements": [
+    {
+      "data": {
+        "id": "concept_1",
+        "label": "Learning",
+        "x": 200,
+        "y": 150
+      }
+    },
+    {
+      "data": {
+        "id": "edge_1_2",
+        "source": "concept_1",
+        "target": "concept_2",
+        "label": "leads to"
+      }
+    }
+  ]
+}
+```
+
+### Session Data and Logging
+
+#### Experimental Mode Data Export
+
+The system automatically generates comprehensive research data:
+
+**JSON Export (`experimental_session_[name]_[timestamp].json`):**
+- Complete session metadata
+- Learner profile information
+- Round-by-round concept map evolution
+- Agent interaction history
+- Multi-turn conversation logs
+- Timing information for each round
+
+**CSV Export (`experimental_results_[name]_[timestamp].csv`):**
+- Flattened data for statistical analysis
+- Participant demographics
+- Concept map metrics (node/edge counts)
+- Agent sequence and timing
+- Response patterns and engagement metrics
+
+#### What Gets Logged
+
+**Participant Data:**
+- Learner profile responses
+- Randomized agent sequence
+- Session start/end times
+
+**Interaction Data:**
+- Concept map submissions per round
+- Agent scaffolding messages
+- User responses to scaffolding
+- Multi-turn conversation exchanges
+- Round completion times
+
+**System Data:**
+- Mode selection (experimental/demo)
+- Technical metadata
+- Error logs and system events
+
+### Troubleshooting
+
+#### Common Issues
+
+**1. API Key Problems:**
+```
+Error: OpenAI API key not found
+```
+**Solution:** Ensure your API key is properly set:
+```bash
+export OPENAI_API_KEY="your-key-here"
+```
+
+**2. Streamlit Port Issues:**
+```
+Error: Port 8501 is already in use
+```
+**Solution:** Use a different port:
+```bash
+streamlit run app.py --server.port 8502
+```
+
+**3. Concept Map Not Updating:**
+- Refresh the browser page
+- Check browser console for JavaScript errors
+- Ensure you're clicking "Submit Concept Map" after changes
+
+**4. Session Data Not Saving:**
+- Verify write permissions in the MAS directory
+- Check that the session completed properly
+- Look for error messages in the Streamlit interface
+
+#### Browser Compatibility
+
+**Recommended Browsers:**
+- Chrome 90+ ✅
+- Firefox 88+ ✅
+- Safari 14+ ✅
+- Edge 90+ ✅
+
+**Known Issues:**
+- Internet Explorer not supported
+- Some mobile browsers may have limited functionality
+
+### Comparison: CLI vs Web Interface
+
+| Feature | CLI Interface | Web Interface |
+|---------|---------------|---------------|
+| **User Experience** | Command-line based | Visual, intuitive GUI |
+| **Concept Map Input** | PDF upload required | Interactive editor |
+| **Real-time Feedback** | Text-based | Visual + text |
+| **Tutorial System** | None | Interactive tutorial |
+| **Multi-turn Conversations** | Limited | Full support (5 turns) |
+| **Data Export** | Manual | Automatic |
+| **Setup Complexity** | Higher | Lower |
+| **Research Suitability** | Advanced users | All user levels |
+
+### Best Practices
+
+**For Researchers:**
+- Use **Experimental Mode** for data collection
+- Ensure participants complete the tutorial
+- Monitor session completion rates
+- Regularly backup exported data files
+
+**For Participants:**
+- Complete the tutorial before starting
+- Take time to build meaningful concept maps
+- Engage actively with agent scaffolding
+- Use multi-turn conversations for clarification
+
+**For System Administrators:**
+- Monitor API usage and costs
+- Ensure adequate server resources
+- Regular system updates and maintenance
+- Backup configuration files
+
 ## Extending the System
 
 The system is designed to be modular and extensible. Here are some ways to extend it:
