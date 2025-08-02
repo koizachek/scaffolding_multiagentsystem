@@ -38,16 +38,25 @@ def conceptmap_component(cm_data: Optional[Dict[str, Any]] = None,
     cytoscape_elements = []
     elements = cm_data.get("elements", []) if cm_data else []
     
+    node_counter = 1
+    edge_counter = 1
+    
     for element in elements:
         if not element or "data" not in element:
             continue
             
         data = element["data"]
         if "source" not in data:  # It's a node
+            # Ensure valid ID
+            node_id = data.get("id", "")
+            if not node_id or node_id.strip() == "":
+                node_id = f"node_{node_counter}"
+                node_counter += 1
+                
             cytoscape_elements.append({
                 "data": {
-                    "id": data.get("id", ""),
-                    "label": data.get("label", "")
+                    "id": node_id,
+                    "label": data.get("label", "Untitled")
                 },
                 "position": {
                     "x": data.get("x", 200),
@@ -55,14 +64,25 @@ def conceptmap_component(cm_data: Optional[Dict[str, Any]] = None,
                 }
             })
         else:  # It's an edge
-            cytoscape_elements.append({
-                "data": {
-                    "id": data.get("id", ""),
-                    "source": data.get("source", ""),
-                    "target": data.get("target", ""),
-                    "label": data.get("label", "")
-                }
-            })
+            # Ensure valid ID
+            edge_id = data.get("id", "")
+            if not edge_id or edge_id.strip() == "":
+                edge_id = f"edge_{edge_counter}"
+                edge_counter += 1
+                
+            # Ensure valid source and target
+            source_id = data.get("source", "")
+            target_id = data.get("target", "")
+            
+            if source_id and target_id:  # Only add edge if both source and target exist
+                cytoscape_elements.append({
+                    "data": {
+                        "id": edge_id,
+                        "source": source_id,
+                        "target": target_id,
+                        "label": data.get("label", "")
+                    }
+                })
     
     # HTML template with Cytoscape.js
     html_template = f"""
@@ -203,8 +223,20 @@ def conceptmap_component(cm_data: Optional[Dict[str, Any]] = None,
             let nodeIdCounter = 1;
             let edgeIdCounter = 1;
             
-            // Initialize Cytoscape
-            document.addEventListener('DOMContentLoaded', function() {{
+            // Initialize Cytoscape - Use immediate execution instead of DOMContentLoaded
+            function initializeCytoscape() {{
+                // Ensure container exists before initializing
+                const container = document.getElementById('cy');
+                if (!container) {{
+                    setTimeout(initializeCytoscape, 50);
+                    return;
+                }}
+                
+                // Prevent multiple initializations
+                if (window.cytoscapeInitialized) {{
+                    return;
+                }}
+                window.cytoscapeInitialized = true;
                 cy = cytoscape({{
                     container: document.getElementById('cy'),
                     
@@ -351,7 +383,17 @@ def conceptmap_component(cm_data: Optional[Dict[str, Any]] = None,
                         cancelLabel();
                     }}
                 }});
-            }});
+                
+                // Send initial data after a short delay
+                setTimeout(sendDataToStreamlit, 100);
+            }}
+            
+            // Initialize immediately and also on DOMContentLoaded as fallback
+            initializeCytoscape();
+            document.addEventListener('DOMContentLoaded', initializeCytoscape);
+            
+            // Additional fallback for Streamlit components
+            setTimeout(initializeCytoscape, 100);
             
             function createNode(x, y) {{
                 showLabelInput(x, y, function(label) {{
@@ -481,8 +523,6 @@ def conceptmap_component(cm_data: Optional[Dict[str, Any]] = None,
                 }}, '*');
             }}
             
-            // Send initial data
-            setTimeout(sendDataToStreamlit, 100);
         </script>
     </body>
     </html>
