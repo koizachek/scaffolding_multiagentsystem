@@ -1,5 +1,6 @@
 import json
 import os
+import copy
 import streamlit as st
 from conceptmap_component import conceptmap_component, parse_conceptmap
 from streamlit_experimental_session import StreamlitExperimentalSession
@@ -509,9 +510,8 @@ def render_followup():
         
         with col1:
             # Continue conversation button
-            max_turns = 5
-            can_continue = (conversation_turn < max_turns and 
-                          st.session_state.experimental_session and 
+            max_user_messages = 5
+            can_continue = (st.session_state.experimental_session and 
                           st.session_state.experimental_session.can_continue_conversation(roundn))
             
             if (len(user_response) > 0 and can_continue and 
@@ -575,7 +575,7 @@ def render_followup():
         with col3:
             # Show conversation limits
             if st.session_state.experimental_session:
-                remaining_turns = max_turns - conversation_turn
+                remaining_turns = max_user_messages - conversation_turn
                 if remaining_turns > 0:
                     st.caption(f"Turns remaining: {remaining_turns}")
                 else:
@@ -584,7 +584,7 @@ def render_followup():
         # Show instructions
         if conversation_turn == 0:
             st.info("💡 **Tip:** You can have up to 5 exchanges with the agent in this round. Use 'Continue Conversation' for follow-up questions or 'Finish Round' when ready to proceed.")
-        elif conversation_turn >= max_turns - 1:
+        elif conversation_turn >= max_user_messages - 1:
             st.warning("⚠️ This is your final exchange for this round. Click 'Finish Round' to proceed.")
 
 
@@ -599,7 +599,7 @@ def handle_response(response):
             # For rounds after 0, copy the previous round's data as starting point
             if len(st.session_state.cmdata) > 0:
                 # Copy the previous round's concept map as the base for the new round
-                previous_map = st.session_state.cmdata[-1].copy()
+                previous_map = copy.deepcopy(st.session_state.cmdata[-1])
                 st.session_state.cmdata.append(previous_map)
             else:
                 # First round uses initial map

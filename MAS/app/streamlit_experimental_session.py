@@ -612,8 +612,11 @@ class StreamlitExperimentalSession:
     
     def can_continue_conversation(self, roundn: int) -> bool:
         """Check if more conversation turns are allowed for this round."""
-        max_turns = 10  # 5 agent responses + 5 user responses
-        return self.get_conversation_turn_count(roundn) < max_turns
+        # Count only user messages to limit to 5 user interactions
+        history = self.get_conversation_history(roundn)
+        user_message_count = len([msg for msg in history if msg.get("speaker") == "user"])
+        max_user_messages = 5
+        return user_message_count < max_user_messages
     
     def get_session_summary(self) -> Dict[str, Any]:
         """Get session summary for display."""
