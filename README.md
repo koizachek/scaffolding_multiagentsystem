@@ -31,19 +31,19 @@ The system is built with a hierarchical multi-agent architecture:
                               │
                             (DF2)
          ┌───────────────────┬┴─────────────────┐
-         │                  │                   │
-┌────────▼────────┐ ┌───────▼───────┐ ┌─────────▼────────┐
+         │                   │                  │
+┌────────▼────────┐ ┌─────-──▼──────┐ ┌─────────▼────────┐
 │    Strategic    │ │  Conceptual   │ │  Metacognitive   │
 │   Scaffolding   │ │  Scaffolding  │ │   Scaffolding    │
 └─────────────────┘ └───────────────┘ └──────────────────┘
-                                              │
-                                     ┌────────▼────────┐
-                                     │   Procedural    │
-                                     │ Scaffolding(DF4)│
-                                     └─────────────────┘
+                                                │
+                                       ┌────────▼────────┐
+                                       │   Procedural    │
+                                       │ Scaffolding(DF4)│
+                                       └─────────────────┘
 ```
 
-### Agent Roles
+### Roles
 
 1. **Lead Agent (Orchestrator)**
    - Controls workflow, phases, user prompts, and sub-agent activation
@@ -76,651 +76,300 @@ The system is built with a hierarchical multi-agent architecture:
    - Provides context-awareness to other agents based on latest learner state
    - Enables targeted, relevant feedback by tracking changes over time
 
+## Research Goals
+
+This system enables researchers to study:
+- **Scaffolding Effectiveness**: Compare different types of educational scaffolding (conceptual, strategic, metacognitive, procedural)
+- **Learner Adaptation**: How learners respond to personalized scaffolding based on their profiles
+- **Concept Map Evolution**: Track how concept maps develop through scaffolded interactions
+- **Agent-Specific Analysis**: Analyze which scaffolding agents are most effective for different learners
+
+## System Overview
+
+The Multi-Agent Scaffolding System (MAS) provides scaffolded feedback on concept maps through four specialized AI agents:
+
+- **Conceptual Scaffolding**: Highlights key concepts and relationships, identifies gaps
+- **Strategic Scaffolding**: Offers planning and learning strategies  
+- **Metacognitive Scaffolding**: Prompts self-regulation and reflection
+- **Procedural Scaffolding**: Guides tool usage and concept mapping techniques
+
+Key features:
+- **Randomized agent sequences** for experimental validity
+- **Personalized learner profiling** with adaptive scaffolding levels
+- **Multi-turn conversations** (up to 5 exchanges per round)
+- **Comprehensive research data logging** with agent-specific tracking
+- **Interactive concept map editor** with real-time feedback
+
 ## Installation
 
 ### Prerequisites
 
 - Python 3.8 or higher
-- pip (Python package installer)
+- OpenAI API key (for experimental mode)
 
 ### Setup
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/multi-agent-scaffolding.git
-   cd multi-agent-scaffolding
+   git clone https://github.com/koizachek/scaffolding_multiagentsystem.git
+   cd scaffolding_multiagentsystem
    ```
 
 2. Install dependencies:
    ```bash
-   pip install -r requirements.txt
+   pip install -r MAS/requirements.txt
    ```
 
-## Configuration
+3. Set up your OpenAI API key:
+   ```bash
+   export OPENAI_API_KEY="your-api-key-here"
+   ```
+   
+   Or create a `.env` file in the `MAS/` directory:
+   ```
+   OPENAI_API_KEY=your-api-key-here
+   ```
 
-The system is configured using a JSON configuration file. By default, the system looks for `config.json` in the current directory, but you can specify a different path using the `--config` option.
+## Running Experiments
 
-### Example Configuration
-
-```json
-{
-  "max_rounds": 4,
-  "agents": {
-    "lead": {
-      "type": "lead",
-      "name": "Lead Agent",
-      "enabled": true
-    },
-    "learner_profiling": {
-      "type": "learner_profiling",
-      "name": "Learner Profiling Agent",
-      "enabled": true
-    },
-    "strategic_scaffolding": {
-      "type": "strategic_scaffolding",
-      "name": "Strategic Scaffolding Agent",
-      "enabled": true
-    },
-    "conceptual_scaffolding": {
-      "type": "conceptual_scaffolding",
-      "name": "Conceptual Scaffolding Agent",
-      "enabled": true
-    },
-    "metacognitive_scaffolding": {
-      "type": "metacognitive_scaffolding",
-      "name": "Metacognitive Scaffolding Agent",
-      "enabled": true
-    },
-    "procedural_scaffolding": {
-      "type": "procedural_scaffolding",
-      "name": "Procedural Scaffolding Agent",
-      "enabled": true
-    },
-    "example_map": {
-      "type": "example_map",
-      "name": "Example Map Agent",
-      "enabled": true
-    },
-    "content_ingestion": {
-      "type": "content_ingestion",
-      "name": "Content Ingestion Agent",
-      "enabled": true
-    }
-  },
-  "design_features": {
-    "df1_learner_profiling": true,
-    "df2_scaffolding": true,
-    "df3_example_map": true,
-    "df4_content_ingestion": true
-  },
-  "logging": {
-    "log_dir": "logs",
-    "log_level": "INFO"
-  },
-  "output_dir": "output"
-}
-```
-
-### Enabling/Disabling Design Features
-
-You can enable or disable individual design features using the `design_features` section of the configuration file. This allows for ablation studies to test the effectiveness of different scaffolding mechanisms.
-
-You can also use the CLI to configure the system:
-
-```bash
-python cli.py configure --df1 disable --df2 enable --df3 enable --df4 disable
-```
-
-## Usage
-
-The system provides multiple interfaces for different use cases:
-
-### Interactive Experimental Session (Recommended)
-
-For conducting real experimental studies with live user interaction:
-
-```bash
-python MAS/experimental_demo.py
-```
-
-This launches the **Interactive Experimental Platform** which:
-
-1. **Mode Selection**: Prompts user to choose between experimental or demo mode
-2. **Learner Profile Creation**: Collects user information through guided questions:
-   - Name, background, prior knowledge
-   - Confidence level, interests, goals
-   - Automatically initializes ZPD level at "medium"
-3. **Randomized Agent Sequence**: Generates unique, non-repeating order of 4 scaffolding agents:
-   - Conceptual Scaffolding
-   - Strategic Scaffolding  
-   - Metacognitive Scaffolding
-   - Procedural Scaffolding
-4. **Interactive Rounds**: 4 timed rounds (7 minutes each) with 2-minute breaks
-5. **Cumulative Concept Mapping**: Users build upon their concept map each round using Mermaid.js syntax
-6. **Real-time OpenAI Integration**: Live scaffolding responses based on user input and concept maps
-7. **Comprehensive Logging**: All interactions, timings, and data saved for research analysis
-
-#### Setting Up API Keys
-
-For experimental mode with OpenAI integration, set your API key:
-
-```bash
-export OPENAI_API_KEY="your-api-key-here"
-```
-
-Or create a `.env` file:
-```
-OPENAI_API_KEY=your-api-key-here
-```
-
-#### Data Export
-
-The system automatically exports session data in two formats:
-- **JSON**: Complete session data with metadata (`experimental_session_[name]_[timestamp].json`)
-- **CSV**: Flattened data for statistical analysis (`experimental_results_[name]_[timestamp].csv`)
-
-### Testing the System
-
-Before using the system, run the comprehensive test suite:
-
-```bash
-cd /path/to/Scaff_MAS
-PYTHONPATH=. python MAS/test_imports.py
-```
-
-This test will:
-1. Verify all module imports work without circular dependencies
-2. Instantiate the full multi-agent system with all 8 agents
-3. Simulate a complete scaffolding interaction with a sample concept map
-4. Display the scaffolding type selected, agent prompts, and system responses
-
-### Legacy CLI Interface
-
-The original CLI interface is still available for programmatic usage:
-
-```bash
-cd /path/to/Scaff_MAS
-PYTHONPATH=. python MAS/cli.py interactive
-```
-
-In interactive mode, you can use the following commands:
-- `process <pdf_path>` - Process a concept map PDF
-- `upload <file_path> [type] [name]` - Upload a learning material
-- `respond <text>` - Respond to a scaffolding prompt
-- `finalize` - Finalize the session and generate summary feedback
-- `status` - Show session status
-- `config` - Show current configuration
-- `help` - Show help message
-- `exit` - Exit interactive mode
-
-### Demo Mode
-
-For showcasing scaffolding prompts without live user interaction:
-
-```bash
-cd /path/to/Scaff_MAS
-PYTHONPATH=. python MAS/demo.py
-```
-
-**Note**: Demo mode only showcases scaffolding prompts and system capabilities. Real experimental studies require the interactive experimental session with live user input.
-
-### Important Notes
-
-- **Use `python MAS/experimental_demo.py`** for real experimental studies
-- **Demo mode** is only for showcasing system capabilities
-- **Experimental mode requires OpenAI API key** for live scaffolding responses
-- **All user I/O is managed by CLINE** - no placeholder console prompts
-- **Agent sequences are randomized** per participant for experimental validity
-- **No sample data is loaded** - all profiles and interactions are user-driven
-- **Concept maps are cumulative** - users extend their maps each round (no overwrites)
-
-## Experiment Interaction Flow
-
-The system implements the following iterative cycle:
-
-1. **Concept Map Creation:** User creates/submits initial map (PDF)
-2. **Agent Interaction:** 
-   - Lead agent collects input
-   - Active sub-agents analyze and provide scaffolded feedback
-   - Learner must respond/reflect before receiving new suggestions
-3. **Refinement Rounds:** Repeat steps 1-2 for four total rounds (configurable)
-4. **Completion:** Final map submission and summary feedback
-
-## Data Formats
-
-### Input
-
-- **User Input:** Concept maps uploaded as PDF files
-- **Internal Processing:** PDFs are parsed and converted to JSON graph format:
-  ```json
-  {
-    "nodes": ["ConceptA", "ConceptB", ...],
-    "edges": [
-      {"source": "ConceptA", "target": "ConceptB", "relation": "causes"},
-      ...
-    ]
-  }
-  ```
-
-### Output
-
-- **Feedback:** Text-based scaffolded feedback from agents
-- **Visualization:** Concept maps plotted and saved as PNG/SVG after each round
-- **Logs:** Comprehensive session logs in JSON format
-
-## Logging
-
-The system generates comprehensive logs including:
-- User inputs with timestamps
-- Agent outputs and feedback
-- Agent internal reasoning for each sub-agent
-- ZPD estimates with round/session timestamps
-- Active DFs/feature toggles per session
-- Agent invoked (lead or sub-agent type)
-
-Logs are stored in the directory specified in the configuration file (default: `logs`).
-
-## Project Structure
-
-```
-MAS/
-├── agents/                  # Agent modules
-│   ├── base_agent.py        # Base agent class
-│   ├── lead_agent.py        # Lead/orchestrator agent
-│   ├── learner_profiling_agent.py  # DF1 agent
-│   ├── strategic_scaffolding_agent.py  # DF2 strategic agent
-│   ├── conceptual_scaffolding_agent.py  # DF2 conceptual agent
-│   ├── metacognitive_scaffolding_agent.py  # DF2 metacognitive agent
-│   ├── procedural_scaffolding_agent.py  # DF2 procedural agent
-│   ├── example_map_agent.py  # DF3 agent
-│   ├── content_ingestion_agent.py  # DF4 agent
-│   └── agent_factory.py     # Factory for creating agents
-├── utils/                   # Utility modules
-│   ├── pdf_parser.py        # PDF parsing utilities
-│   ├── visualization.py     # Concept map visualization
-│   └── logging_utils.py     # Logging utilities
-├── cli.py                   # Command-line interface
-├── system.py                # Main system class
-├── demo.py                  # Demo script
-├── config.json              # Configuration file
-└── requirements.txt         # Dependencies
-```
-
-## Streamlit Web Interface
-
-The Multi-Agent Scaffolding System now includes a modern web-based interface built with Streamlit, providing an intuitive graphical alternative to the CLI for conducting scaffolding experiments.
-
-### Overview
-
-The Streamlit interface offers:
-- **User-friendly web GUI** for all experiment interactions
-- **Interactive concept map editor** with visual feedback
-- **Real-time AI-powered scaffolding** (experimental mode)
-- **Multi-turn conversation support** with scaffolding agents
-- **Comprehensive tutorial system** for concept mapping
-- **Automatic data export** and session management
-- **Demo mode** for testing without API requirements
-
-### Getting Started with Streamlit
-
-#### Prerequisites
-
-In addition to the base system requirements, you'll need:
-
-```bash
-pip install streamlit
-```
-
-#### Launching the Web Interface
+### Launch the Web Interface
 
 1. **Navigate to the app directory:**
    ```bash
    cd MAS/app
    ```
 
-2. **Launch the Streamlit application:**
+2. **Start the Streamlit application:**
    ```bash
    streamlit run app.py
    ```
 
-3. **Open your browser** to the displayed URL (typically `http://localhost:8501`)
+3. **Open your browser** to `http://localhost:8501`
 
-#### Environment Setup
-
-For **Experimental Mode** with real AI scaffolding, ensure your OpenAI API key is configured:
-
-```bash
-export OPENAI_API_KEY="your-api-key-here"
-```
-
-Or create a `.env` file in the `MAS/` directory:
-```
-OPENAI_API_KEY=your-api-key-here
-```
-
-### Using the Web Interface
+### Experiment Flow
 
 #### 1. Mode Selection
+- **Experimental Mode**: Real AI scaffolding with data logging (requires API key)
+- **Demo Mode**: Static responses for testing (no API key needed)
 
-Upon launching, you'll choose between two modes:
+#### 2. Learner Profile Creation (Experimental Mode)
+The system collects:
+- Personal background and prior knowledge
+- Confidence level in concept mapping
+- Learning goals and interests
+- **Automatic scaffolding level assignment** based on background knowledge
 
-**Experimental Mode:**
-- Real OpenAI-powered scaffolding responses
-- Personalized learner profiling
-- Complete session logging and data export
-- Research-grade experimental data collection
-- Requires OpenAI API key
-
-**Demo Mode:**
-- Static demonstration responses
-- No API requirements
-- Quick system demonstration
-- No data logging or export
-- Perfect for testing and showcasing
-
-#### 2. Learner Profile Creation (Experimental Mode Only)
-
-The system collects comprehensive learner information through an interactive form:
-
-- **Personal Information:** Name and background
-- **Prior Knowledge:** Experience with the topic
-- **Confidence Level:** Self-assessed competence
-- **Learning Goals:** What you hope to achieve
-- **Interests:** Related areas of interest
-
-This profile enables personalized scaffolding throughout the experiment.
-
-#### 3. Interactive Tutorial
-
-Before starting the experiment, participants complete a hands-on concept mapping tutorial covering:
-
-**Step 1: Creating Nodes (Concepts)**
-- Click anywhere on the map to create a new concept
-- Type the concept label and press Enter
-- Practice with example concepts
-
-**Step 2: Creating Edges (Relationships)**
-- Click and hold on a node for 1 second (source turns red)
-- Click another node to connect them
-- Type the relationship label (e.g., "leads to", "causes")
-- Practice connecting concepts meaningfully
-
-**Step 3: Editing and Navigation**
-- Double-click to edit labels
-- Right-click to delete elements
-- Drag nodes to reposition them
-- Select multiple nodes with Shift
-
-The tutorial can be skipped for experienced users.
-
-#### 4. Experiment Flow
-
-The experiment consists of **4 rounds** with randomized agent order:
+#### 3. Four-Round Experiment
+Each participant completes **4 rounds** with randomized agent order:
 
 **Round Structure:**
-1. **Concept Map Creation/Extension**
-   - Round 1: Create initial concept map
-   - Rounds 2-4: Extend and refine existing map
-   - Maps are cumulative (build upon previous rounds)
-
-2. **Agent Scaffolding Interaction**
-   - AI agent provides personalized feedback
-   - Multi-turn conversation support (up to 5 exchanges per round)
-   - Context-aware responses based on your concept map
-
-3. **Reflection and Response**
-   - Respond to agent scaffolding
-   - Continue conversation for clarification
-   - Finish round when ready to proceed
+1. **Concept Map Building**: Interactive editor for creating/extending concept maps
+2. **Agent Scaffolding**: Personalized feedback from one of four agent types
+3. **Multi-turn Conversation**: Up to 5 exchanges for clarification and deeper scaffolding
+4. **Reflection**: Opportunity to revise concept map based on scaffolding
 
 **Agent Types (Randomized Order):**
-- **Conceptual Scaffolding:** Highlights key concepts and relationships
-- **Strategic Scaffolding:** Offers planning and learning strategies
-- **Metacognitive Scaffolding:** Prompts self-regulation and monitoring
-- **Procedural Scaffolding:** Guides tool usage and interface navigation
+- Conceptual Scaffolding Agent
+- Strategic Scaffolding Agent  
+- Metacognitive Scaffolding Agent
+- Procedural Scaffolding Agent
 
-#### 5. Session Completion
+#### 4. Data Export
+Automatic generation of research files:
+- **JSON**: Complete session data (`experimental_session_[name]_[timestamp].json`)
+- **CSV**: Flattened data for analysis (`experimental_results_[name]_[timestamp].csv`)
 
-After all rounds:
-- **Session Summary:** Review your progress and agent interactions
-- **Data Export:** Automatic generation of research files (experimental mode)
-- **Final Concept Map:** View your completed concept map
-- **New Session Option:** Start fresh with a new participant
+## Research Data
 
-### Concept Map Editor
+### What Gets Logged
 
-The integrated concept map editor provides essential functionality for building and modifying concept maps:
+**Participant Data:**
+- Complete learner profile responses
+- Background knowledge assessment scores
+- Assigned scaffolding levels
 
-#### Current Features
+**Interaction Data:**
+- **Agent-specific conversation history** (identifies which agent provided each response)
+- Multi-turn conversation exchanges
+- Concept map evolution across all rounds
+- Response times and engagement patterns
 
-**Node Management:**
-- **Create Nodes:** Click anywhere to add new concepts
-- **Edit Labels:** Double-click on nodes to modify text
-- **Delete Nodes:** Right-click to remove concepts
-- **Move Nodes:** Drag to reposition (basic implementation)
+**Performance Metrics:**
+- Concept map complexity (nodes/edges)
+- Learning progression indicators
+- Scaffolding effectiveness measures
 
-**Edge Management:**
-- **Create Connections:** Click and hold source node, then click target
-- **Label Relationships:** Add meaningful relationship descriptions
-- **Edit Connections:** Double-click edges to modify labels
-- **Delete Connections:** Right-click edges to remove
+### Enhanced Agent Logging
 
-**Visualization:**
-- **Real-time Updates:** See changes immediately
-- **Structure Overview:** View node and edge counts
-- **Text Diagram:** ASCII-style relationship visualization
-- **Cumulative Building:** Each round extends the previous map
+The system provides detailed agent-specific tracking:
 
-**Data Management:**
-- **JSON Storage:** Structured concept map data
-- **Session Persistence:** Maps saved throughout experiment
-- **Export Integration:** Automatic inclusion in research data
-
-#### Current Limitations
-
-**Advanced Features Not Yet Implemented:**
-- **Zoom Controls:** Cannot zoom in/out of the map
-- **Advanced Drag & Drop:** Limited repositioning capabilities
-- **Reset Functionality:** No clear-all button
-- **Visual Canvas:** Text-based rather than full graphical interface
-- **Mouse Wheel Support:** No scroll-based navigation
-
-#### How the Editor Works
-
-**Basic Workflow:**
-1. **Adding Concepts:** Use the "Add New Concept" expander
-   - Type concept name in text field
-   - Click "Add Concept" button
-   - Concept appears in the map structure
-
-2. **Creating Connections:** Use the "Add New Connection" expander
-   - Select source concept from dropdown
-   - Select target concept from dropdown
-   - Type relationship label
-   - Click "Add Connection" button
-
-3. **Viewing Structure:** The editor displays:
-   - **Node List:** All concepts with labels
-   - **Edge List:** All connections with relationships
-   - **Text Diagram:** Visual representation of relationships
-
-**Data Format:**
 ```json
 {
-  "elements": [
-    {
-      "data": {
-        "id": "concept_1",
-        "label": "Learning",
-        "x": 200,
-        "y": 150
+  "conversation_history": {
+    "round_0": [
+      {
+        "speaker": "conceptual_scaffolding",
+        "agent_type": "conceptual_scaffolding",
+        "message": "I notice your concept map focuses on...",
+        "timestamp": "2025-08-02T19:04:57.758408"
       }
-    },
-    {
-      "data": {
-        "id": "edge_1_2",
-        "source": "concept_1",
-        "target": "concept_2",
-        "label": "leads to"
-      }
-    }
-  ]
+    ]
+  }
 }
 ```
 
-### Session Data and Logging
+This enables researchers to:
+- Analyze effectiveness of each scaffolding type
+- Compare response patterns across agents
+- Track conversation depth by agent type
+- Generate agent-specific research metrics
 
-#### Experimental Mode Data Export
+## Data Storage
 
-The system automatically generates comprehensive research data:
+**Experimental Data**: `MAS/experimental_data/`
+- All session files are automatically saved here
+- JSON format for complete data
+- CSV format for statistical analysis
 
-**JSON Export (`experimental_session_[name]_[timestamp].json`):**
-- Complete session metadata
-- Learner profile information
-- Round-by-round concept map evolution
-- Agent interaction history
-- Multi-turn conversation logs
-- Timing information for each round
+**System Logs**: `MAS/app/logs/`
+- Technical system logs
+- Error tracking and debugging information
 
-**CSV Export (`experimental_results_[name]_[timestamp].csv`):**
-- Flattened data for statistical analysis
-- Participant demographics
-- Concept map metrics (node/edge counts)
-- Agent sequence and timing
-- Response patterns and engagement metrics
+## Interactive Concept Map Editor
 
-#### What Gets Logged
+### Features
+- **Visual concept creation**: Click to add concepts
+- **Relationship building**: Connect concepts with labeled relationships  
+- **Real-time editing**: Modify labels and connections dynamically
+- **Cumulative building**: Each round extends the previous map
+- **Structure overview**: View node/edge counts and relationships
 
-**Participant Data:**
-- Learner profile responses
-- Randomized agent sequence
-- Session start/end times
+### Workflow
+1. **Add Concepts**: Use the concept creation interface
+2. **Create Connections**: Select source and target concepts, add relationship labels
+3. **Edit/Delete**: Modify existing elements as needed
+4. **Submit**: Save concept map and proceed to agent interaction
 
-**Interaction Data:**
-- Concept map submissions per round
-- Agent scaffolding messages
-- User responses to scaffolding
-- Multi-turn conversation exchanges
-- Round completion times
+## System Architecture
 
-**System Data:**
-- Mode selection (experimental/demo)
-- Technical metadata
-- Error logs and system events
-
-### Troubleshooting
-
-#### Common Issues
-
-**1. API Key Problems:**
 ```
-Error: OpenAI API key not found
+MAS/
+├── app/                     # Streamlit web interface
+│   ├── app.py              # Main application entry point
+│   ├── streamlit_experimental_session.py  # Session management
+│   ├── conceptmap_component.py  # Concept map editor
+│   └── contents.json       # UI content and labels
+├── agents/                 # AI scaffolding agents
+│   ├── conceptual_scaffolding_agent.py
+│   ├── strategic_scaffolding_agent.py
+│   ├── metacognitive_scaffolding_agent.py
+│   ├── procedural_scaffolding_agent.py
+│   └── agent_factory.py    # Agent creation and management
+├── utils/                  # Core utilities
+│   ├── openai_api.py       # AI integration
+│   ├── logging_utils.py    # Research data logging
+│   └── scaffolding_utils.py # Scaffolding analysis
+├── examples/data/          # Reference data
+│   └── expert_concept_map.json  # Expert comparison map
+├── experimental_data/      # Research session data
+└── config.json            # System configuration
 ```
-**Solution:** Ensure your API key is properly set:
+
+## Configuration
+
+The system uses `MAS/config.json` for configuration:
+
+```json
+{
+  "max_rounds": 4,
+  "agents": {
+    "conceptual_scaffolding": {"enabled": true},
+    "strategic_scaffolding": {"enabled": true},
+    "metacognitive_scaffolding": {"enabled": true},
+    "procedural_scaffolding": {"enabled": true}
+  },
+  "logging": {
+    "log_dir": "logs",
+    "log_level": "INFO"
+  }
+}
+```
+
+## Testing the System
+
+Verify system functionality:
+
+```bash
+cd /path/to/scaffolding_multiagentsystem
+PYTHONPATH=. python MAS/test_imports.py
+```
+
+This test:
+1. Verifies all module imports
+2. Instantiates the multi-agent system
+3. Simulates a scaffolding interaction
+4. Displays system responses
+
+## Research Applications
+
+### Experimental Studies
+- **Scaffolding Effectiveness**: Compare agent types across participants
+- **Learner Adaptation**: Study how different profiles respond to scaffolding
+- **Conversation Analysis**: Analyze multi-turn scaffolding dialogues
+- **Concept Map Development**: Track learning progression through map evolution
+
+### Data Analysis
+- **Agent Performance**: Which scaffolding types are most effective?
+- **Learner Patterns**: How do different learners engage with scaffolding?
+- **Conversation Depth**: What leads to deeper scaffolding interactions?
+- **Learning Outcomes**: How do concept maps improve through scaffolding?
+
+## Troubleshooting
+
+### Common Issues
+
+**API Key Problems:**
 ```bash
 export OPENAI_API_KEY="your-key-here"
 ```
 
-**2. Streamlit Port Issues:**
-```
-Error: Port 8501 is already in use
-```
-**Solution:** Use a different port:
+**Port Conflicts:**
 ```bash
 streamlit run app.py --server.port 8502
 ```
 
-**3. Concept Map Not Updating:**
-- Refresh the browser page
-- Check browser console for JavaScript errors
-- Ensure you're clicking "Submit Concept Map" after changes
+**Data Not Saving:**
+- Check write permissions in MAS directory
+- Verify session completion
+- Look for error messages in interface
 
-**4. Session Data Not Saving:**
-- Verify write permissions in the MAS directory
-- Check that the session completed properly
-- Look for error messages in the Streamlit interface
-
-#### Browser Compatibility
-
-**Recommended Browsers:**
-- Chrome 90+ 
-- Firefox 88+ 
-- Safari 14+ 
-- Edge 90+ 
-
-**Known Issues:**
-- Internet Explorer not supported
-- Some mobile browsers may have limited functionality
-
-### Comparison: CLI vs Web Interface
-
-| Feature | CLI Interface | Web Interface |
-|---------|---------------|---------------|
-| **User Experience** | Command-line based | Visual, intuitive GUI |
-| **Concept Map Input** | PDF upload required | Interactive editor |
-| **Real-time Feedback** | Text-based | Visual + text |
-| **Tutorial System** | None | Interactive tutorial |
-| **Multi-turn Conversations** | Limited | Full support (5 turns) |
-| **Data Export** | Manual | Automatic |
-| **Setup Complexity** | Higher | Lower |
-| **Research Suitability** | Advanced users | All user levels |
-
-### Best Practices
-
-**For Researchers:**
-- Use **Experimental Mode** for data collection
-- Ensure participants complete the tutorial
-- Monitor session completion rates
-- Regularly backup exported data files
-
-**For Participants:**
-- Complete the tutorial before starting
-- Take time to build meaningful concept maps
-- Engage actively with agent scaffolding
-- Use multi-turn conversations for clarification
-
-**For System Administrators:**
-- Monitor API usage and costs
-- Ensure adequate server resources
-- Regular system updates and maintenance
-- Backup configuration files
-
-## Extending the System
-
-The system is designed to be modular and extensible. Here are some ways to extend it:
-
-### Adding a New Agent
-
-1. Create a new agent class that inherits from `BaseAgent`
-2. Implement the `_process_impl` method to define the agent's behavior
-3. Add the agent to the `agent_factory.py` module
-4. Update the configuration file to include the new agent
-
-### Modifying Scaffolding Behavior
-
-Each scaffolding agent has its own implementation of scaffolding behavior. To modify this behavior:
-
-1. Locate the relevant agent module (e.g., `strategic_scaffolding_agent.py`)
-2. Modify the methods that generate scaffolded feedback
-3. Update the agent's reasoning and decision-making processes as needed
-
-### Adding New Input/Output Formats
-
-To support new input or output formats:
-
-1. Update the `pdf_parser.py` module to support new input formats
-2. Update the `visualization.py` module to support new output formats
-3. Modify the relevant agent modules to handle the new formats
+### Browser Requirements
+- Chrome 90+, Firefox 88+, Safari 14+, Edge 90+
+- JavaScript enabled
+- Local storage enabled
 
 ## Dependencies
 
-- **PDF Parsing:** pdfplumber, PyPDF2
-- **Graph Visualization:** networkx, matplotlib, graphviz
-- **CLI:** argparse
-- **Logging:** Python standard logging
-- **OpenAI Agents SDK:** For agent orchestration and LLM integration
+Core requirements (see `MAS/requirements.txt`):
+- `streamlit` - Web interface
+- `openai` - AI integration  
+- `pandas` - Data processing
+- `json` - Data serialization
+- `datetime` - Timestamp management
 
+## Contributing
+
+This system is designed for educational research. To extend functionality:
+
+1. **Add New Agents**: Create new scaffolding agent classes in `MAS/agents/`
+2. **Modify Scaffolding**: Update agent behavior in individual agent files
+3. **Enhance UI**: Modify Streamlit components in `MAS/app/`
+4. **Extend Logging**: Add new metrics in `MAS/utils/logging_utils.py`
+
+## License
+
+This project is developed for higher education research on scaffolding mechanisms.
 
 ## Acknowledgments
 
-- This project was developed as a prototype for higher education research on scaffolding mechanisms.
+Developed as a research prototype for studying multi-agent scaffolding effectiveness in educational settings.
