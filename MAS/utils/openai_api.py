@@ -153,25 +153,27 @@ class OpenAIManager:
                                     scaffolding_type: str,
                                     concept_map: Dict[str, Any],
                                     user_response: Optional[str] = None,
-                                    context: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+                                    context: Optional[Dict[str, Any]] = None,
+                                    scaffolding_level: str = "medium") -> Dict[str, Any]:
         """
-        Generate scaffolding response based on type and context.
+        Generate scaffolding response based on type, level, and context.
         
         Args:
             scaffolding_type: Type of scaffolding (conceptual, strategic, etc.)
             concept_map: Current concept map data
             user_response: Previous user response (if any)
             context: Additional context information
+            scaffolding_level: Level of scaffolding (low, medium, high)
             
         Returns:
             Generated scaffolding response with metadata
         """
-        # Build system message based on scaffolding type
-        system_message = self._get_scaffolding_system_message(scaffolding_type)
+        # Build system message based on scaffolding type and level
+        system_message = self._get_scaffolding_system_message(scaffolding_type, scaffolding_level)
         
-        # Build prompt
+        # Build prompt with scaffolding level consideration
         prompt = self._build_scaffolding_prompt(
-            scaffolding_type, concept_map, user_response, context
+            scaffolding_type, concept_map, user_response, context, scaffolding_level
         )
         
         # Generate response
@@ -179,51 +181,116 @@ class OpenAIManager:
         
         # Add scaffolding-specific metadata
         result["scaffolding_type"] = scaffolding_type
+        result["scaffolding_level"] = scaffolding_level
         result["concept_map_nodes"] = len(concept_map.get("concepts", []))
         result["concept_map_edges"] = len(concept_map.get("relationships", []))
         
         return result
     
-    def _get_scaffolding_system_message(self, scaffolding_type: str) -> str:
-        """Get system message for specific scaffolding type."""
+    def _get_scaffolding_system_message(self, scaffolding_type: str, scaffolding_level: str = "medium") -> str:
+        """Get system message for specific scaffolding type and level."""
         
-        system_messages = {
-            "conceptual": """You are a conceptual scaffolding agent helping learners understand relationships between concepts in their concept maps. Your role is to:
+        # Import scaffolding templates
+        try:
+            from MAS.config.scaffolding_config import SCAFFOLDING_PROMPT_TEMPLATES
+        except ImportError:
+            # Fallback if import fails
+            from config.scaffolding_config import SCAFFOLDING_PROMPT_TEMPLATES
+        
+        base_messages = {
+            "conceptual": f"""You are a Conceptual Scaffolding Agent for Climate Change concept mapping.
+
+SCAFFOLDING LEVEL: {scaffolding_level.upper()}
+ROLE: Help learners understand relationships between concepts in their concept maps.
+PRINCIPLE: Guide learners to discover conceptual connections, don't provide direct answers.
+
+SCAFFOLDING APPROACH:
 - Help learners identify missing conceptual connections
-- Clarify relationships between concepts
+- Clarify relationships between concepts  
 - Encourage deeper thinking about concept meanings
 - Ask questions that promote conceptual understanding
-Keep responses supportive, educational, and focused on concept relationships.""",
+- Use {scaffolding_level} intensity scaffolding
+
+INSTRUCTIONS:
+- Stay within conceptual scaffolding only
+- Use {scaffolding_level} intensity responses
+- Guide through questions, don't provide direct answers
+- Focus on concept relationships and meanings
+- Reference the learner's current concept map state
+- Keep responses supportive and educational""",
             
-            "strategic": """You are a strategic scaffolding agent helping learners organize and structure their concept maps effectively. Your role is to:
+            "strategic": f"""You are a Strategic Scaffolding Agent for Climate Change concept mapping.
+
+SCAFFOLDING LEVEL: {scaffolding_level.upper()}
+ROLE: Help learners organize and structure their concept maps effectively.
+PRINCIPLE: Guide learners to discover organizational strategies, don't provide direct answers.
+
+SCAFFOLDING APPROACH:
 - Help learners plan their concept map organization
 - Suggest effective mapping strategies
 - Guide learners in prioritizing important concepts
 - Encourage systematic thinking about map structure
-Keep responses practical, organized, and focused on strategic planning.""",
+- Use {scaffolding_level} intensity scaffolding
+
+INSTRUCTIONS:
+- Stay within strategic scaffolding only
+- Use {scaffolding_level} intensity responses
+- Guide through questions, don't provide direct answers
+- Focus on organization, structure, and planning approaches
+- Reference the learner's current concept map state
+- Keep responses practical and organized""",
             
-            "metacognitive": """You are a metacognitive scaffolding agent helping learners reflect on their learning process and understanding. Your role is to:
+            "metacognitive": f"""You are a Metacognitive Scaffolding Agent for Climate Change concept mapping.
+
+SCAFFOLDING LEVEL: {scaffolding_level.upper()}
+ROLE: Help learners reflect on their learning process and understanding.
+PRINCIPLE: Guide learners to self-reflect and assess their understanding, don't provide direct answers.
+
+SCAFFOLDING APPROACH:
 - Encourage self-reflection on learning progress
 - Help learners assess their own understanding
 - Promote awareness of thinking processes
 - Guide learners in monitoring their comprehension
-Keep responses reflective, supportive, and focused on self-awareness.""",
+- Use {scaffolding_level} intensity scaffolding
+
+INSTRUCTIONS:
+- Stay within metacognitive scaffolding only
+- Use {scaffolding_level} intensity responses
+- Guide through questions, don't provide direct answers
+- Focus on self-reflection and learning awareness
+- Reference the learner's current concept map state
+- Keep responses reflective and supportive""",
             
-            "procedural": """You are a procedural scaffolding agent helping learners with the process and methods of concept mapping. Your role is to:
+            "procedural": f"""You are a Procedural Scaffolding Agent for Climate Change concept mapping.
+
+SCAFFOLDING LEVEL: {scaffolding_level.upper()}
+ROLE: Help learners with the process and methods of concept mapping.
+PRINCIPLE: Guide learners through procedures and techniques, don't provide direct answers.
+
+SCAFFOLDING APPROACH:
 - Guide learners through concept mapping procedures
 - Explain effective mapping techniques
 - Help with technical aspects of map creation
 - Provide step-by-step guidance when needed
-Keep responses clear, instructional, and focused on procedures."""
+- Use {scaffolding_level} intensity scaffolding
+
+INSTRUCTIONS:
+- Stay within procedural scaffolding only
+- Use {scaffolding_level} intensity responses
+- Guide through questions, don't provide direct answers
+- Focus on procedures, techniques, and methods
+- Reference the learner's current concept map state
+- Keep responses clear and instructional"""
         }
         
-        return system_messages.get(scaffolding_type, system_messages["conceptual"])
+        return base_messages.get(scaffolding_type, base_messages["conceptual"])
     
     def _build_scaffolding_prompt(self, 
                                 scaffolding_type: str,
                                 concept_map: Dict[str, Any],
                                 user_response: Optional[str] = None,
-                                context: Optional[Dict[str, Any]] = None) -> str:
+                                context: Optional[Dict[str, Any]] = None,
+                                scaffolding_level: str = "medium") -> str:
         """Build prompt for scaffolding interaction."""
         
         # Extract concept map information

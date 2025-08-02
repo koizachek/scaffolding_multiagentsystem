@@ -56,8 +56,12 @@ def load_contents():
 
 def render_mode_selection():
     """Render mode selection page."""
-    st.header("🧪 Multi-Agent Scaffolding System")
+    st.header("Multi-Agent Scaffolding System")
     st.markdown("---")
+    
+    # Display the topic
+    st.subheader("Topic: Climate Change")
+    st.info("In this experiment, you will create a concept map about Climate Change and its related concepts.")
     
     st.markdown("""
     Welcome to the Multi-Agent Scaffolding System! This platform provides an interactive 

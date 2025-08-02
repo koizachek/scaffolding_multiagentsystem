@@ -1,0 +1,304 @@
+{
+  "session_id": "session_20250802_183458",
+  "start_time": "2025-08-02T18:34:58.423720",
+  "learner_profile": {
+    "name": "Diana",
+    "background": "PhD in info sys",
+    "prior_knowledge": "none",
+    "confidence": "1 - Very Low",
+    "interests": "technology",
+    "goals": "experiment testing",
+    "background_knowledge_score": 0,
+    "scaffolding_level": "high",
+    "zpd_level": "high",
+    "created_at": "2025-08-02T18:35:26.261688"
+  },
+  "agent_sequence": [
+    "metacognitive_scaffolding",
+    "procedural_scaffolding",
+    "strategic_scaffolding",
+    "conceptual_scaffolding"
+  ],
+  "used_agents": [],
+  "rounds": [],
+  "concept_map_evolution": [
+    {
+      "round": 0,
+      "timestamp": "2025-08-02T18:36:37.985829",
+      "concept_map": {
+        "concepts": [],
+        "relationships": [],
+        "timestamp": "2025-08-02T18:36:37.985801",
+        "source_format": "streamlit"
+      },
+      "agent_type": "metacognitive_scaffolding"
+    },
+    {
+      "round": 0,
+      "timestamp": "2025-08-02T18:39:11.649089",
+      "concept_map": {
+        "concepts": [],
+        "relationships": [],
+        "timestamp": "2025-08-02T18:39:11.649083",
+        "source_format": "streamlit"
+      },
+      "agent_type": "metacognitive_scaffolding"
+    },
+    {
+      "round": 1,
+      "timestamp": "2025-08-02T18:39:11.711065",
+      "concept_map": {
+        "concepts": [],
+        "relationships": [],
+        "timestamp": "2025-08-02T18:39:11.711052",
+        "source_format": "streamlit"
+      },
+      "agent_type": "procedural_scaffolding"
+    },
+    {
+      "round": 1,
+      "timestamp": "2025-08-02T18:40:56.698462",
+      "concept_map": {
+        "concepts": [],
+        "relationships": [],
+        "timestamp": "2025-08-02T18:40:56.698457",
+        "source_format": "streamlit"
+      },
+      "agent_type": "procedural_scaffolding"
+    },
+    {
+      "round": 2,
+      "timestamp": "2025-08-02T18:40:56.764039",
+      "concept_map": {
+        "concepts": [],
+        "relationships": [],
+        "timestamp": "2025-08-02T18:40:56.764032",
+        "source_format": "streamlit"
+      },
+      "agent_type": "strategic_scaffolding"
+    },
+    {
+      "round": 2,
+      "timestamp": "2025-08-02T18:41:14.084242",
+      "concept_map": {
+        "concepts": [],
+        "relationships": [],
+        "timestamp": "2025-08-02T18:41:14.084236",
+        "source_format": "streamlit"
+      },
+      "agent_type": "strategic_scaffolding"
+    },
+    {
+      "round": 3,
+      "timestamp": "2025-08-02T18:41:14.174044",
+      "concept_map": {
+        "concepts": [],
+        "relationships": [],
+        "timestamp": "2025-08-02T18:41:14.174037",
+        "source_format": "streamlit"
+      },
+      "agent_type": "conceptual_scaffolding"
+    },
+    {
+      "round": 3,
+      "timestamp": "2025-08-02T18:41:40.425499",
+      "concept_map": {
+        "concepts": [],
+        "relationships": [],
+        "timestamp": "2025-08-02T18:41:40.425495",
+        "source_format": "streamlit"
+      },
+      "agent_type": "conceptual_scaffolding"
+    }
+  ],
+  "current_concept_map": {
+    "concepts": [],
+    "relationships": [],
+    "timestamp": "2025-08-02T18:41:40.425495",
+    "source_format": "streamlit"
+  },
+  "mode": "experimental",
+  "conversation_history": {
+    "round_0": [
+      {
+        "speaker": "agent",
+        "message": "It seems like you're at the starting point of your concept map on climate change. Reflect on what key concepts you already know about climate change and consider how they might connect. What is one major concept you think should be included first, and why does it stand out to you?",
+        "timestamp": "2025-08-02T18:36:40.744591",
+        "metadata": {
+          "conversation_turn": 0
+        }
+      },
+      {
+        "speaker": "agent",
+        "message": "Reflect on the starting point of your concept map. What key concepts related to climate change do you think are essential to include first, and why might they be foundational to your understanding? Consider how identifying these initial concepts can set the stage for developing meaningful relationships later.",
+        "timestamp": "2025-08-02T18:38:12.794895",
+        "metadata": {
+          "conversation_turn": 0
+        }
+      },
+      {
+        "speaker": "agent",
+        "message": "It looks like you're starting fresh with this concept map, which is a great opportunity to shape your understanding of climate change from the ground up. Reflect on what key concepts you believe are central to climate change and consider how they might interconnect. What do you already know about climate change that could serve as a starting point for developing your map?",
+        "timestamp": "2025-08-02T18:38:43.914491",
+        "metadata": {
+          "conversation_turn": 0
+        }
+      },
+      {
+        "speaker": "user",
+        "message": "I can only think of stuff that affects myself. what can I do?",
+        "timestamp": "2025-08-02T18:38:43.924988",
+        "metadata": {
+          "conversation_turn": 0
+        }
+      },
+      {
+        "speaker": "agent",
+        "message": "It's great that you're starting with personal impacts, as understanding how climate change affects you can be a strong foundation for broader connections. Reflect on how these personal impacts might relate to larger environmental or societal issues. What connections can you draw between your personal experiences and the broader concept of climate change?",
+        "timestamp": "2025-08-02T18:38:46.714496",
+        "metadata": {
+          "conversation_turn": 1
+        }
+      },
+      {
+        "speaker": "agent",
+        "message": "Reflecting on how climate change affects you personally is a great starting point. Consider how your individual experiences might connect to broader climate change concepts. What specific aspects of your life are impacted by climate change, and how might these be linked to larger environmental systems or issues?",
+        "timestamp": "2025-08-02T18:39:07.439659",
+        "metadata": {
+          "conversation_turn": 1
+        }
+      },
+      {
+        "speaker": "agent",
+        "message": "It’s great that you’re starting with personal impacts, as these can be a strong foundation for understanding broader concepts. Reflect on how your personal experiences might connect to larger climate change issues. What specific aspects of your daily life do you think could be linked to climate change, and how might these connections expand your concept map?",
+        "timestamp": "2025-08-02T18:39:11.634599",
+        "metadata": {
+          "conversation_turn": 1
+        }
+      },
+      {
+        "speaker": "user",
+        "message": "I cannot think of any.\n",
+        "timestamp": "2025-08-02T18:39:11.649041",
+        "metadata": {
+          "conversation_turn": 1,
+          "final": true
+        }
+      }
+    ],
+    "round_1": [
+      {
+        "speaker": "agent",
+        "message": "Great start! Let's begin by identifying key concepts related to climate change. Think about major topics such as \"Greenhouse Gases,\" \"Global Warming,\" or \"Renewable Energy.\" Once you've listed a few concepts, you can start drawing lines to show how they relate to each other. What is one concept you think is crucial to include in your map?",
+        "timestamp": "2025-08-02T18:39:13.928227",
+        "metadata": {
+          "conversation_turn": 0
+        }
+      },
+      {
+        "speaker": "agent",
+        "message": "Great start on your concept map! Let's begin by identifying the main concepts related to climate change. Think about the key elements like \"Greenhouse Gases,\" \"Global Warming,\" or \"Renewable Energy.\" What's one main concept you'd like to add to your map to get started?",
+        "timestamp": "2025-08-02T18:40:52.809918",
+        "metadata": {
+          "conversation_turn": 0
+        }
+      },
+      {
+        "speaker": "agent",
+        "message": "Great start! Let's begin by identifying key concepts related to climate change that you want to include in your map. Consider aspects like causes, effects, and potential solutions. What is one major concept related to climate change that you think should be at the center of your map?",
+        "timestamp": "2025-08-02T18:40:56.684457",
+        "metadata": {
+          "conversation_turn": 0
+        }
+      },
+      {
+        "speaker": "user",
+        "message": " ",
+        "timestamp": "2025-08-02T18:40:56.698418",
+        "metadata": {
+          "conversation_turn": 0,
+          "final": true
+        }
+      }
+    ],
+    "round_2": [
+      {
+        "speaker": "agent",
+        "message": "Let's start by identifying key concepts related to climate change that are essential for your map. Consider categories like causes, effects, solutions, and stakeholders. How might you prioritize these categories to form a clear, logical structure for your concept map?",
+        "timestamp": "2025-08-02T18:40:58.499195",
+        "metadata": {
+          "conversation_turn": 0
+        }
+      },
+      {
+        "speaker": "agent",
+        "message": "Let's start by identifying key concepts related to climate change that you want to include in your map. What are some major categories or themes you think are crucial to understand climate change? Once you have a few concepts, think about how they might relate to each other; this will help you define relationships and structure your map effectively.",
+        "timestamp": "2025-08-02T18:41:06.278317",
+        "metadata": {
+          "conversation_turn": 0
+        }
+      },
+      {
+        "speaker": "agent",
+        "message": "Let's start by identifying a central concept related to climate change that you want to explore deeply. Once you have this anchor, think about key categories or themes that branch out from it, such as causes, effects, solutions, or stakeholders. Which central concept resonates most with your current understanding and interests in climate change?",
+        "timestamp": "2025-08-02T18:41:14.066742",
+        "metadata": {
+          "conversation_turn": 0
+        }
+      },
+      {
+        "speaker": "user",
+        "message": " ",
+        "timestamp": "2025-08-02T18:41:14.084174",
+        "metadata": {
+          "conversation_turn": 0,
+          "final": true
+        }
+      }
+    ],
+    "round_3": [
+      {
+        "speaker": "agent",
+        "message": "It's great that you're ready to build your concept map! Let's start by identifying key concepts related to climate change, such as \"greenhouse gases,\" \"global warming,\" and \"carbon emissions.\" How do you think these concepts might be connected, and what relationships could exist between them in the context of climate change?",
+        "timestamp": "2025-08-02T18:41:15.771063",
+        "metadata": {
+          "conversation_turn": 0
+        }
+      },
+      {
+        "speaker": "agent",
+        "message": "It seems like you're starting from a blank slate in this round, which offers a great opportunity to think about foundational concepts and how they interconnect. Consider what major concepts related to climate change, such as greenhouse gases, global warming, and renewable energy, could form the core of your map. What do you think is a key concept that could serve as a starting point, and how might it connect to other important concepts in climate change?",
+        "timestamp": "2025-08-02T18:41:36.197359",
+        "metadata": {
+          "conversation_turn": 0
+        }
+      },
+      {
+        "speaker": "agent",
+        "message": "It looks like you're starting fresh with your concept map! Think about key concepts related to climate change, such as \"greenhouse gases,\" \"global warming,\" and \"renewable energy.\" How might these concepts be interconnected, and what relationships can you identify between them to begin structuring your map?",
+        "timestamp": "2025-08-02T18:41:40.410419",
+        "metadata": {
+          "conversation_turn": 0
+        }
+      },
+      {
+        "speaker": "user",
+        "message": " ",
+        "timestamp": "2025-08-02T18:41:40.425455",
+        "metadata": {
+          "conversation_turn": 0,
+          "final": true
+        }
+      }
+    ]
+  },
+  "end_time": "2025-08-02T18:41:40.483390",
+  "total_duration_seconds": 402.05967,
+  "total_rounds": 0,
+  "final_concept_map": {
+    "concepts": [],
+    "relationships": [],
+    "timestamp": "2025-08-02T18:41:40.425495",
+    "source_format": "streamlit"
+  }
+}

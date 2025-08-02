@@ -102,7 +102,7 @@ class StreamlitExperimentalSession:
     
     def create_learner_profile_form(self) -> Dict[str, Any]:
         """Create learner profile through Streamlit form."""
-        st.header("📋 Learner Profile Creation")
+        st.header("Learner Profile Creation")
         st.markdown("Please complete your learner profile to personalize your scaffolding experience.")
         
         with st.form("learner_profile_form"):
@@ -142,6 +142,10 @@ class StreamlitExperimentalSession:
                     st.error("Please fill in all required fields marked with *")
                     return None
                 
+                # Assess background knowledge and determine scaffolding level
+                background_score = self.assess_background_knowledge(background, prior_knowledge)
+                scaffolding_level = self.determine_scaffolding_level(background_score)
+                
                 profile = {
                     "name": name.strip(),
                     "background": background.strip(),
@@ -149,7 +153,9 @@ class StreamlitExperimentalSession:
                     "confidence": confidence,
                     "interests": interests.strip(),
                     "goals": goals.strip(),
-                    "zpd_level": "medium",  # Always initialize at medium level
+                    "background_knowledge_score": background_score,
+                    "scaffolding_level": scaffolding_level,
+                    "zpd_level": scaffolding_level,  # For compatibility
                     "created_at": datetime.now().isoformat()
                 }
                 
@@ -160,15 +166,67 @@ class StreamlitExperimentalSession:
                 if self.session_logger:
                     self.session_logger.log_event(
                         event_type="learner_profile_created",
-                        metadata={"profile": profile}
+                        metadata={
+                            "profile": profile,
+                            "background_assessment": {
+                                "score": background_score,
+                                "scaffolding_level": scaffolding_level,
+                                "reasoning": f"Background knowledge score {background_score} → {scaffolding_level} scaffolding"
+                            }
+                        }
                     )
                 
-                st.success(f"✅ Profile created for {profile['name']}")
-                st.info(f"📊 ZPD Level initialized: {profile['zpd_level']}")
+                st.success(f"Profile created for {profile['name']}")
+                st.info(f"Background Knowledge Score: {background_score}/17 concepts")
+                st.info(f"Scaffolding Level Assigned: {scaffolding_level.upper()}")
                 
                 return profile
         
         return None
+    
+    def assess_background_knowledge(self, background: str, prior_knowledge: str) -> int:
+        """Assess background knowledge by comparing against expert concept map."""
+        # Load expert concept map
+        expert_concepts = [
+            "climate change", "global warming", "carbon emissions", "fossil fuels",
+            "renewable energy", "greenhouse effect", "sea level rise", "extreme weather",
+            "deforestation", "ocean acidification", "biodiversity loss", "carbon sequestration",
+            "methane", "permafrost melting", "feedback loops", "policy interventions", "climate justice"
+        ]
+        
+        # Combine background and prior knowledge text
+        combined_text = (background + " " + prior_knowledge).lower()
+        
+        # Count matches with expert concepts
+        matches = 0
+        for concept in expert_concepts:
+            if concept in combined_text:
+                matches += 1
+        
+        return matches
+    
+    def determine_scaffolding_level(self, background_score: int) -> str:
+        """Determine scaffolding level based on background knowledge score."""
+        # Higher background knowledge = lower scaffolding needed
+        if background_score >= 8:  # High knowledge (8+ concepts mentioned)
+            return "low"     # Low scaffolding needed
+        elif background_score >= 4:  # Medium knowledge (4-7 concepts)
+            return "medium"  # Medium scaffolding
+        else:  # Low knowledge (0-3 concepts)
+            return "high"    # High scaffolding needed
+    
+    def load_expert_map(self) -> Dict[str, Any]:
+        """Load the expert concept map for comparison."""
+        try:
+            expert_map_path = os.path.join(
+                os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                "examples", "data", "expert_concept_map.json"
+            )
+            with open(expert_map_path, 'r') as f:
+                return json.load(f)
+        except Exception as e:
+            # Return empty map if loading fails
+            return {"nodes": [], "edges": []}
     
     def initialize_agent_sequence(self) -> List[str]:
         """Create randomized, non-repeating agent sequence."""
@@ -339,13 +397,23 @@ class StreamlitExperimentalSession:
                 if not isinstance(internal_format, dict):
                     internal_format = {"concepts": [], "relationships": []}
                 
-                # Generate scaffolding response
+                # Analyze concept map performance
+                map_analysis = self.analyze_concept_map_performance(internal_format, roundn)
+                
+                # Get scaffolding level from learner profile
+                scaffolding_level = self.session_data.get("learner_profile", {}).get("scaffolding_level", "medium")
+                
+                # Generate scaffolding response with level
                 api_result = self.openai_manager.generate_scaffolding_response(
                     agent_type.replace("_scaffolding", ""), 
                     internal_format, 
                     user_response=user_response,
-                    context=context
+                    context=context,
+                    scaffolding_level=scaffolding_level
                 )
+                
+                # Log performance-scaffolding relationship
+                self.log_scaffolding_decision(roundn, agent_type, scaffolding_level, map_analysis, api_result.get("response", ""))
                 
                 # Safely extract response
                 if isinstance(api_result, dict):
@@ -516,19 +584,20 @@ class StreamlitExperimentalSession:
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
             participant_name = self.session_data['learner_profile'].get('name', 'unknown')
             
-            # Create experimental_data directory
-            os.makedirs("MAS/experimental_data", exist_ok=True)
+            # Create experimental_data directory - use correct path relative to project root
+            experimental_data_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "experimental_data")
+            os.makedirs(experimental_data_dir, exist_ok=True)
             
             # JSON export (complete session data)
             json_filename = f"experimental_session_{participant_name}_{timestamp}.json"
-            json_filepath = os.path.join("MAS/experimental_data", json_filename)
+            json_filepath = os.path.join(experimental_data_dir, json_filename)
             
             with open(json_filepath, 'w', encoding='utf-8') as f:
                 json.dump(self.session_data, f, indent=2, ensure_ascii=False)
             
             # CSV export (flattened for analysis)
             csv_filename = f"experimental_results_{participant_name}_{timestamp}.csv"
-            csv_filepath = os.path.join("MAS/experimental_data", csv_filename)
+            csv_filepath = os.path.join(experimental_data_dir, csv_filename)
             
             self._export_csv_data(csv_filepath)
             
@@ -617,6 +686,174 @@ class StreamlitExperimentalSession:
         user_message_count = len([msg for msg in history if msg.get("speaker") == "user"])
         max_user_messages = 5
         return user_message_count < max_user_messages
+    
+    def analyze_concept_map_performance(self, concept_map: Dict[str, Any], roundn: int) -> Dict[str, Any]:
+        """Analyze concept map performance for scaffolding decisions."""
+        try:
+            # Import scaffolding utilities
+            from MAS.utils.scaffolding_utils import analyze_concept_map
+        except ImportError:
+            # Fallback implementation
+            return self._basic_concept_map_analysis(concept_map, roundn)
+        
+        # Get previous map for comparison
+        previous_map = None
+        if roundn > 0 and len(self.session_data["concept_map_evolution"]) > 0:
+            previous_entry = self.session_data["concept_map_evolution"][-1]
+            previous_map = previous_entry.get("concept_map", {})
+        
+        # Load expert map
+        expert_map = self.load_expert_map()
+        
+        # Convert expert map format if needed
+        if expert_map and "nodes" in expert_map:
+            # Convert expert map to internal format
+            expert_internal = {
+                "concepts": [{"text": node, "id": node} for node in expert_map["nodes"]],
+                "relationships": [
+                    {"source": edge["source"], "target": edge["target"], "text": edge.get("relation", "")}
+                    for edge in expert_map.get("edges", [])
+                ]
+            }
+        else:
+            expert_internal = {"concepts": [], "relationships": []}
+        
+        # Perform analysis
+        analysis = analyze_concept_map(concept_map, previous_map, expert_internal)
+        
+        # Add round-specific information
+        analysis["round_number"] = roundn
+        analysis["timestamp"] = datetime.now().isoformat()
+        
+        return analysis
+    
+    def _basic_concept_map_analysis(self, concept_map: Dict[str, Any], roundn: int) -> Dict[str, Any]:
+        """Basic concept map analysis fallback."""
+        concepts = concept_map.get("concepts", [])
+        relationships = concept_map.get("relationships", [])
+        
+        # Basic metrics
+        node_count = len(concepts)
+        edge_count = len(relationships)
+        connectivity_ratio = edge_count / max(1, node_count)
+        
+        # Simple ZPD estimation
+        zpd_estimate = {
+            "strategic": 0.5,
+            "metacognitive": 0.5,
+            "procedural": 0.5,
+            "conceptual": 0.5
+        }
+        
+        # Adjust based on basic metrics
+        if node_count < 3:
+            zpd_estimate["conceptual"] = 0.8
+        elif node_count > 10:
+            zpd_estimate["conceptual"] = 0.2
+        
+        if connectivity_ratio < 0.5:
+            zpd_estimate["strategic"] = 0.8
+        elif connectivity_ratio > 1.5:
+            zpd_estimate["strategic"] = 0.2
+        
+        return {
+            "node_count": node_count,
+            "edge_count": edge_count,
+            "connectivity_ratio": connectivity_ratio,
+            "isolated_nodes": [],
+            "central_nodes": [],
+            "missing_nodes": [],
+            "missing_edges": [],
+            "zpd_estimate": zpd_estimate,
+            "round_number": roundn,
+            "timestamp": datetime.now().isoformat()
+        }
+    
+    def log_scaffolding_decision(self, roundn: int, agent_type: str, scaffolding_level: str, 
+                                map_analysis: Dict[str, Any], agent_response: str):
+        """Log the complete performance-scaffolding relationship."""
+        if self.session_logger:
+            # Calculate expert similarity if possible
+            expert_similarity = self.calculate_expert_similarity(map_analysis)
+            
+            # Calculate improvement from previous round
+            improvement = self.calculate_improvement_from_previous(roundn)
+            
+            self.session_logger.log_event(
+                event_type="scaffolding_decision",
+                metadata={
+                    "round_number": roundn,
+                    "agent_type": agent_type,
+                    "scaffolding_level": scaffolding_level,
+                    "background_knowledge_score": self.session_data.get("learner_profile", {}).get("background_knowledge_score", 0),
+                    "concept_map_performance": {
+                        "nodes": map_analysis.get("node_count", 0),
+                        "edges": map_analysis.get("edge_count", 0),
+                        "connectivity": map_analysis.get("connectivity_ratio", 0),
+                        "isolated_nodes": len(map_analysis.get("isolated_nodes", [])),
+                        "expert_similarity": expert_similarity,
+                        "improvement_from_previous": improvement
+                    },
+                    "zpd_estimates": map_analysis.get("zpd_estimate", {}),
+                    "agent_response": agent_response,
+                    "scaffolding_reasoning": f"Background knowledge score {self.session_data.get('learner_profile', {}).get('background_knowledge_score', 0)} → {scaffolding_level} scaffolding",
+                    "performance_indicators": {
+                        "map_complexity": map_analysis.get("node_count", 0) + map_analysis.get("edge_count", 0),
+                        "organization_quality": map_analysis.get("connectivity_ratio", 0),
+                        "conceptual_coverage": len(map_analysis.get("central_nodes", []))
+                    }
+                }
+            )
+    
+    def calculate_expert_similarity(self, map_analysis: Dict[str, Any]) -> float:
+        """Calculate similarity to expert concept map."""
+        try:
+            expert_map = self.load_expert_map()
+            if not expert_map or not expert_map.get("nodes"):
+                return 0.0
+            
+            expert_node_count = len(expert_map["nodes"])
+            expert_edge_count = len(expert_map.get("edges", []))
+            
+            current_node_count = map_analysis.get("node_count", 0)
+            current_edge_count = map_analysis.get("edge_count", 0)
+            
+            # Simple similarity based on coverage
+            node_similarity = min(current_node_count / max(1, expert_node_count), 1.0)
+            edge_similarity = min(current_edge_count / max(1, expert_edge_count), 1.0)
+            
+            # Weighted average
+            similarity = (node_similarity * 0.6) + (edge_similarity * 0.4)
+            return round(similarity, 3)
+            
+        except Exception:
+            return 0.0
+    
+    def calculate_improvement_from_previous(self, roundn: int) -> Dict[str, Any]:
+        """Calculate improvement from previous round."""
+        if roundn == 0 or len(self.session_data["concept_map_evolution"]) < 2:
+            return {"node_growth": 0, "edge_growth": 0, "connectivity_change": 0.0}
+        
+        try:
+            current_map = self.session_data["concept_map_evolution"][-1]["concept_map"]
+            previous_map = self.session_data["concept_map_evolution"][-2]["concept_map"]
+            
+            current_nodes = len(current_map.get("concepts", []))
+            current_edges = len(current_map.get("relationships", []))
+            current_connectivity = current_edges / max(1, current_nodes)
+            
+            previous_nodes = len(previous_map.get("concepts", []))
+            previous_edges = len(previous_map.get("relationships", []))
+            previous_connectivity = previous_edges / max(1, previous_nodes)
+            
+            return {
+                "node_growth": current_nodes - previous_nodes,
+                "edge_growth": current_edges - previous_edges,
+                "connectivity_change": round(current_connectivity - previous_connectivity, 3)
+            }
+            
+        except Exception:
+            return {"node_growth": 0, "edge_growth": 0, "connectivity_change": 0.0}
     
     def get_session_summary(self) -> Dict[str, Any]:
         """Get session summary for display."""
