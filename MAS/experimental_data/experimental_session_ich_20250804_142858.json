@@ -1,0 +1,342 @@
+{
+  "session_id": "session_20250804_142647",
+  "start_time": "2025-08-04T14:26:47.962318",
+  "learner_profile": {
+    "name": "ich",
+    "background": "kann",
+    "prior_knowledge": "das",
+    "confidence": "1 - Very Low",
+    "interests": "alles",
+    "goals": "nicht mehr",
+    "background_knowledge_score": 0,
+    "scaffolding_level": "high",
+    "zpd_level": "high",
+    "created_at": "2025-08-04T14:26:59.384870"
+  },
+  "agent_sequence": [
+    "procedural_scaffolding",
+    "conceptual_scaffolding",
+    "metacognitive_scaffolding",
+    "strategic_scaffolding"
+  ],
+  "used_agents": [],
+  "rounds": [],
+  "concept_map_evolution": [
+    {
+      "round": 0,
+      "timestamp": "2025-08-04T14:27:04.091640",
+      "concept_map": {
+        "concepts": [],
+        "relationships": [],
+        "action_history": [],
+        "interaction_metrics": {},
+        "session_timing": {},
+        "timestamp": "2025-08-04T14:27:04.087594",
+        "source_format": "streamlit_enhanced"
+      },
+      "agent_type": "procedural_scaffolding",
+      "action_history": [],
+      "interaction_metrics": {},
+      "session_timing": {}
+    },
+    {
+      "round": 0,
+      "timestamp": "2025-08-04T14:27:34.281274",
+      "concept_map": {
+        "concepts": [],
+        "relationships": [],
+        "action_history": [],
+        "interaction_metrics": {},
+        "session_timing": {},
+        "timestamp": "2025-08-04T14:27:34.274430",
+        "source_format": "streamlit_enhanced"
+      },
+      "agent_type": "procedural_scaffolding",
+      "action_history": [],
+      "interaction_metrics": {},
+      "session_timing": {}
+    },
+    {
+      "round": 1,
+      "timestamp": "2025-08-04T14:27:34.360210",
+      "concept_map": {
+        "concepts": [],
+        "relationships": [],
+        "action_history": [],
+        "interaction_metrics": {},
+        "session_timing": {},
+        "timestamp": "2025-08-04T14:27:34.350468",
+        "source_format": "streamlit_enhanced"
+      },
+      "agent_type": "conceptual_scaffolding",
+      "action_history": [],
+      "interaction_metrics": {},
+      "session_timing": {}
+    },
+    {
+      "round": 1,
+      "timestamp": "2025-08-04T14:27:52.953752",
+      "concept_map": {
+        "concepts": [],
+        "relationships": [],
+        "action_history": [],
+        "interaction_metrics": {},
+        "session_timing": {},
+        "timestamp": "2025-08-04T14:27:52.944387",
+        "source_format": "streamlit_enhanced"
+      },
+      "agent_type": "conceptual_scaffolding",
+      "action_history": [],
+      "interaction_metrics": {},
+      "session_timing": {}
+    },
+    {
+      "round": 2,
+      "timestamp": "2025-08-04T14:27:53.028353",
+      "concept_map": {
+        "concepts": [],
+        "relationships": [],
+        "action_history": [],
+        "interaction_metrics": {},
+        "session_timing": {},
+        "timestamp": "2025-08-04T14:27:53.022595",
+        "source_format": "streamlit_enhanced"
+      },
+      "agent_type": "metacognitive_scaffolding",
+      "action_history": [],
+      "interaction_metrics": {},
+      "session_timing": {}
+    },
+    {
+      "round": 2,
+      "timestamp": "2025-08-04T14:28:17.923807",
+      "concept_map": {
+        "concepts": [],
+        "relationships": [],
+        "action_history": [],
+        "interaction_metrics": {},
+        "session_timing": {},
+        "timestamp": "2025-08-04T14:28:17.916658",
+        "source_format": "streamlit_enhanced"
+      },
+      "agent_type": "metacognitive_scaffolding",
+      "action_history": [],
+      "interaction_metrics": {},
+      "session_timing": {}
+    },
+    {
+      "round": 3,
+      "timestamp": "2025-08-04T14:28:18.004063",
+      "concept_map": {
+        "concepts": [],
+        "relationships": [],
+        "action_history": [],
+        "interaction_metrics": {},
+        "session_timing": {},
+        "timestamp": "2025-08-04T14:28:17.998545",
+        "source_format": "streamlit_enhanced"
+      },
+      "agent_type": "strategic_scaffolding",
+      "action_history": [],
+      "interaction_metrics": {},
+      "session_timing": {}
+    },
+    {
+      "round": 3,
+      "timestamp": "2025-08-04T14:28:58.509091",
+      "concept_map": {
+        "concepts": [],
+        "relationships": [],
+        "action_history": [],
+        "interaction_metrics": {},
+        "session_timing": {},
+        "timestamp": "2025-08-04T14:28:58.500672",
+        "source_format": "streamlit_enhanced"
+      },
+      "agent_type": "strategic_scaffolding",
+      "action_history": [],
+      "interaction_metrics": {},
+      "session_timing": {}
+    }
+  ],
+  "current_concept_map": {
+    "concepts": [],
+    "relationships": [],
+    "action_history": [],
+    "interaction_metrics": {},
+    "session_timing": {},
+    "timestamp": "2025-08-04T14:28:58.500672",
+    "source_format": "streamlit_enhanced"
+  },
+  "mode": "experimental",
+  "conversation_history": {
+    "round_0": [
+      {
+        "speaker": "procedural_scaffolding",
+        "agent_type": "procedural_scaffolding",
+        "message": "Let's start by identifying the main topic or central concept of your map. Once you have that, think about breaking it down into sub-concepts related to climate change, such as \"Greenhouse Gases,\" \"Global Warming,\" or \"Renewable Energy.\" What central concept do you want to place at the heart of your map to anchor these ideas?",
+        "timestamp": "2025-08-04T14:27:06.819546",
+        "metadata": {
+          "conversation_turn": 0
+        }
+      },
+      {
+        "speaker": "procedural_scaffolding",
+        "agent_type": "procedural_scaffolding",
+        "message": "To start building your concept map, begin by identifying key concepts related to climate change, such as \"greenhouse gases,\" \"global warming,\" and \"carbon footprint.\" Once you have those concepts, think about how they might be interrelated and consider which concept connects most directly to others. What is one concept you think is central to understanding climate change, and how might it connect to other concepts?",
+        "timestamp": "2025-08-04T14:27:29.782199",
+        "metadata": {
+          "conversation_turn": 0
+        }
+      },
+      {
+        "speaker": "procedural_scaffolding",
+        "agent_type": "procedural_scaffolding",
+        "message": "Great start! To begin building your concept map, let's start by identifying key concepts related to climate change. Think about broad ideas like \"Greenhouse Gases,\" \"Global Warming,\" or \"Renewable Energy.\" Once you have a few concepts in mind, what do you think is the most central idea that could serve as the main focus of your map?",
+        "timestamp": "2025-08-04T14:27:34.247953",
+        "metadata": {
+          "conversation_turn": 0
+        }
+      },
+      {
+        "speaker": "user",
+        "agent_type": null,
+        "message": " ",
+        "timestamp": "2025-08-04T14:27:34.267195",
+        "metadata": {
+          "conversation_turn": 0,
+          "final": true
+        }
+      }
+    ],
+    "round_1": [
+      {
+        "speaker": "conceptual_scaffolding",
+        "agent_type": "conceptual_scaffolding",
+        "message": "You're off to an open start, which means you have great potential to explore various aspects of climate change! Start by identifying key concepts like \"greenhouse gases,\" \"global warming,\" and \"renewable energy.\" How do you think these concepts might be related to each other, and what impact might they have on the broader system of climate change?",
+        "timestamp": "2025-08-04T14:27:36.490546",
+        "metadata": {
+          "conversation_turn": 0
+        }
+      },
+      {
+        "speaker": "conceptual_scaffolding",
+        "agent_type": "conceptual_scaffolding",
+        "message": "Great start on your concept mapping journey! Let's focus on identifying some key concepts related to climate change that you might want to include, such as greenhouse gases, carbon footprint, or renewable energy. Once you have a few concepts, think about how they might connect—what impact do greenhouse gases have on the environment, or how does renewable energy help reduce the carbon footprint? What connections can you draw between these ideas?",
+        "timestamp": "2025-08-04T14:27:46.874005",
+        "metadata": {
+          "conversation_turn": 0
+        }
+      },
+      {
+        "speaker": "conceptual_scaffolding",
+        "agent_type": "conceptual_scaffolding",
+        "message": "It looks like you're at a great starting point with a blank slate! Let's begin by thinking about key concepts related to climate change, such as \"greenhouse gases,\" \"global warming,\" and \"renewable energy.\" How do you think these concepts might connect to each other, and which one could serve as a central hub in your map?",
+        "timestamp": "2025-08-04T14:27:52.918351",
+        "metadata": {
+          "conversation_turn": 0
+        }
+      },
+      {
+        "speaker": "user",
+        "agent_type": null,
+        "message": " ",
+        "timestamp": "2025-08-04T14:27:52.934606",
+        "metadata": {
+          "conversation_turn": 0,
+          "final": true
+        }
+      }
+    ],
+    "round_2": [
+      {
+        "speaker": "metacognitive_scaffolding",
+        "agent_type": "metacognitive_scaffolding",
+        "message": "Reflecting on your current concept map, what have been your thought processes in deciding which concepts to include? Consider how this might influence the relationships you identify. How might revisiting your initial goals for this concept map assist you in determining which concepts or relationships to explore next?",
+        "timestamp": "2025-08-04T14:27:56.534309",
+        "metadata": {
+          "conversation_turn": 0
+        }
+      },
+      {
+        "speaker": "metacognitive_scaffolding",
+        "agent_type": "metacognitive_scaffolding",
+        "message": "Reflect for a moment on the steps you've taken in previous rounds. What might have been your initial focus, and how has that evolved? Consider what concepts you believe are crucial to understanding climate change—what connections can you begin to draw from your current knowledge?",
+        "timestamp": "2025-08-04T14:28:14.140970",
+        "metadata": {
+          "conversation_turn": 0
+        }
+      },
+      {
+        "speaker": "metacognitive_scaffolding",
+        "agent_type": "metacognitive_scaffolding",
+        "message": "Reflecting on your progress, how do you feel about the current state of your concept map? Consider what key concepts might be missing and how they interconnect in the context of climate change. What strategies could you use to identify and define these core elements and their relationships?",
+        "timestamp": "2025-08-04T14:28:17.895490",
+        "metadata": {
+          "conversation_turn": 0
+        }
+      },
+      {
+        "speaker": "user",
+        "agent_type": null,
+        "message": " ok",
+        "timestamp": "2025-08-04T14:28:17.909340",
+        "metadata": {
+          "conversation_turn": 0,
+          "final": true
+        }
+      }
+    ],
+    "round_3": [
+      {
+        "speaker": "strategic_scaffolding",
+        "agent_type": "strategic_scaffolding",
+        "message": "You're in a great position to build a strong foundation for your concept map! Start by identifying key concepts related to climate change that you find most critical. How might you categorize these concepts into main themes, such as causes, effects, and solutions, to create a structured map?",
+        "timestamp": "2025-08-04T14:28:19.862836",
+        "metadata": {
+          "conversation_turn": 0
+        }
+      },
+      {
+        "speaker": "strategic_scaffolding",
+        "agent_type": "strategic_scaffolding",
+        "message": "Let's start by considering the key concepts related to climate change that you want to include. Think about the broad categories such as causes, effects, and solutions. Once you've identified these, how might you prioritize them to form a clear structure for your map?",
+        "timestamp": "2025-08-04T14:28:53.198729",
+        "metadata": {
+          "conversation_turn": 0
+        }
+      },
+      {
+        "speaker": "strategic_scaffolding",
+        "agent_type": "strategic_scaffolding",
+        "message": "Let's start by identifying key concepts related to climate change that you'll want to include—think about major themes like greenhouse gases, renewable energy, and policy initiatives. Once you've listed those, consider how they might connect to each other. What do you think are the most critical starting points for your map, and how might they relate to one another in the context of climate change?",
+        "timestamp": "2025-08-04T14:28:58.473041",
+        "metadata": {
+          "conversation_turn": 0
+        }
+      },
+      {
+        "speaker": "user",
+        "agent_type": null,
+        "message": "ende?",
+        "timestamp": "2025-08-04T14:28:58.490245",
+        "metadata": {
+          "conversation_turn": 0,
+          "final": true
+        }
+      }
+    ]
+  },
+  "end_time": "2025-08-04T14:28:58.558543",
+  "total_duration_seconds": 130.596225,
+  "total_rounds": 0,
+  "final_concept_map": {
+    "concepts": [],
+    "relationships": [],
+    "action_history": [],
+    "interaction_metrics": {},
+    "session_timing": {},
+    "timestamp": "2025-08-04T14:28:58.500672",
+    "source_format": "streamlit_enhanced"
+  }
+}

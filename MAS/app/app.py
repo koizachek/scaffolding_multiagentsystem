@@ -238,8 +238,7 @@ def render_tutorial():
     st.markdown("**Practice Area:**")
     try:
         tutorial_response = conceptmap_component(
-            cm_data=current_step["demo_map"],
-            key=f"tutorial_step_{st.session_state.tutorial_step}"
+            cm_data=current_step["demo_map"]
         )
     except Exception as e:
         st.error(f"Tutorial map error: {e}")
@@ -317,7 +316,7 @@ def render_summary_page():
     
     st.write("**Final concept map:**")
     if st.session_state.cmdata and len(st.session_state.cmdata) > st.session_state.roundn:
-        conceptmap_component(cm_data=st.session_state.cmdata[st.session_state.roundn-1], key="cm_summary")
+        conceptmap_component(cm_data=st.session_state.cmdata[st.session_state.roundn-1])
     
     # Option to start new session
     st.markdown("---")
@@ -410,8 +409,7 @@ def render_concept_map():
             
             response = conceptmap_component(
                 cm_data=cm_data,
-                submit_request=st.session_state.submit_request,
-                key=f"round_{roundn}"
+                submit_request=st.session_state.submit_request
             )
         except Exception as e:
             st.error(f"Error rendering concept map: {e}")
@@ -593,8 +591,36 @@ def render_followup():
 
 
 def handle_response(response):
-    """Handle concept map response with cumulative logic."""
+    """Handle concept map response with cumulative logic and enhanced debugging."""
+    # Always log what we receive, even if None
+    print(f"🔍 HANDLE_RESPONSE DEBUG:")
+    print(f"   Response received: {response is not None}")
+    print(f"   Response type: {type(response).__name__}")
+    print(f"   Followup state: {st.session_state.followup}")
+    print(f"   Submit request: {st.session_state.submit_request}")
+    
+    if response is not None:
+        print(f"   Response content: {str(response)[:300]}")
+        if isinstance(response, dict):
+            print(f"   Has elements: {'elements' in response}")
+            if "elements" in response:
+                print(f"   Elements count: {len(response['elements'])}")
+    
     if response and not st.session_state.followup:
+        print(f"   ✅ Processing response...")
+        
+        # Debug: Log what we received
+        if st.session_state.experimental_session and st.session_state.experimental_session.session_logger:
+            st.session_state.experimental_session.session_logger.log_event(
+                event_type="handle_response_debug",
+                metadata={
+                    "response_type": type(response).__name__,
+                    "response_preview": str(response)[:300] if response else "None",
+                    "has_elements": "elements" in response if isinstance(response, dict) else False,
+                    "has_action_history": "action_history" in response if isinstance(response, dict) else False
+                }
+            )
+        
         # Update the current round's concept map instead of appending
         roundn = st.session_state.roundn
         
@@ -611,6 +637,25 @@ def handle_response(response):
         
         # Update the current round's concept map with the new data
         st.session_state.cmdata[roundn] = response
+        print(f"   📝 Stored response in cmdata[{roundn}]")
+        
+        # Debug: Show what we're storing
+        if isinstance(response, dict) and "elements" in response:
+            element_count = len(response["elements"])
+            st.success(f"✅ Concept map data captured: {element_count} elements")
+            
+            # Show element breakdown
+            nodes = [e for e in response["elements"] if "source" not in e.get("data", {})]
+            edges = [e for e in response["elements"] if "source" in e.get("data", {})]
+            st.write(f"**Elements breakdown:** {len(nodes)} nodes, {len(edges)} edges")
+            
+            # Show first few elements for verification
+            if len(response["elements"]) > 0:
+                st.write("**Sample elements:**")
+                for i, elem in enumerate(response["elements"][:3]):
+                    st.write(f"  {i+1}. {elem}")
+        else:
+            st.warning("⚠️ Response received but no elements found")
         
         # Log the concept map update for debugging
         if st.session_state.experimental_session:
@@ -620,7 +665,10 @@ def handle_response(response):
         st.session_state.followup = True
         st.rerun()
     elif st.session_state.submit_request:
+        print(f"   ⚠️ Submit request but no response - resetting submit_request")
         st.session_state.submit_request = False
+    else:
+        print(f"   ℹ️ No action taken (response: {response is not None}, followup: {st.session_state.followup})")
 
 
 def main():

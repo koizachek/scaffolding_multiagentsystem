@@ -262,62 +262,160 @@ class StreamlitExperimentalSession:
         return "Unknown Agent"
     
     def convert_streamlit_to_internal_format(self, streamlit_cm_data) -> Dict[str, Any]:
-        """Convert Streamlit concept map format to internal format."""
+        """Convert Streamlit concept map format to internal format with enhanced action tracking."""
         concepts = []
         relationships = []
+        action_history = []
+        interaction_metrics = {}
+        session_timing = {}
+        
+        # Debug logging - always log for troubleshooting
+        print(f"🔍 DEBUG: Converting concept map data")
+        print(f"   Input type: {type(streamlit_cm_data).__name__}")
+        print(f"   Input data: {str(streamlit_cm_data)[:200] if streamlit_cm_data else 'None'}")
+        
+        if self.session_logger:
+            self.session_logger.log_event(
+                event_type="concept_map_conversion_debug",
+                metadata={
+                    "input_type": type(streamlit_cm_data).__name__,
+                    "input_data": str(streamlit_cm_data)[:500] if streamlit_cm_data else "None",
+                    "has_elements": "elements" in streamlit_cm_data if isinstance(streamlit_cm_data, dict) else False,
+                    "has_action_history": "action_history" in streamlit_cm_data if isinstance(streamlit_cm_data, dict) else False
+                }
+            )
         
         # Handle different input types
         if streamlit_cm_data is None:
+            print("   ⚠️  Input is None - returning empty structure")
             # Return empty structure for None input
             pass
         elif isinstance(streamlit_cm_data, str):
+            print("   📝 Input is string - attempting JSON parse")
             # Handle string input (might be JSON or initial map format)
             try:
                 if streamlit_cm_data.strip():
                     parsed_data = json.loads(streamlit_cm_data)
                     if isinstance(parsed_data, dict):
                         streamlit_cm_data = parsed_data
+                        print(f"   ✅ Successfully parsed JSON: {len(parsed_data)} keys")
                     else:
                         # If it's not a valid dict after parsing, treat as empty
                         streamlit_cm_data = {}
+                        print("   ⚠️  Parsed data is not a dict")
                 else:
                     streamlit_cm_data = {}
-            except (json.JSONDecodeError, AttributeError):
+                    print("   ⚠️  Empty string input")
+            except (json.JSONDecodeError, AttributeError) as e:
                 # If JSON parsing fails, treat as empty concept map
                 streamlit_cm_data = {}
+                print(f"   ❌ JSON parsing failed: {e}")
         elif not isinstance(streamlit_cm_data, dict):
+            print(f"   ⚠️  Input is not dict, string, or None: {type(streamlit_cm_data)}")
             # If it's not a dict, string, or None, treat as empty
             streamlit_cm_data = {}
         
         # Process the data if it's now a dictionary
-        if isinstance(streamlit_cm_data, dict) and "elements" in streamlit_cm_data:
-            for element in streamlit_cm_data["elements"]:
-                data = element.get("data", {})
+        if isinstance(streamlit_cm_data, dict):
+            print(f"   📊 Processing dict with keys: {list(streamlit_cm_data.keys())}")
+            
+            # Extract action history and metrics if available (enhanced format)
+            action_history = streamlit_cm_data.get("action_history", [])
+            interaction_metrics = streamlit_cm_data.get("interaction_metrics", {})
+            session_timing = streamlit_cm_data.get("session_timing", {})
+            
+            print(f"   📈 Found {len(action_history)} actions, metrics: {bool(interaction_metrics)}")
+            
+            # Process concept map elements
+            if "elements" in streamlit_cm_data:
+                elements = streamlit_cm_data["elements"]
+                print(f"   🗺️  Processing {len(elements)} elements")
                 
-                # Check if it's a node (has id but no source/target)
-                if "id" in data and "source" not in data and "target" not in data:
-                    concepts.append({
-                        "id": data["id"],
-                        "text": data.get("label", ""),
-                        "x": data.get("x", 0),
-                        "y": data.get("y", 0)
-                    })
+                if self.session_logger:
+                    self.session_logger.log_event(
+                        event_type="processing_elements",
+                        metadata={
+                            "element_count": len(elements),
+                            "elements_preview": str(elements)[:300]
+                        }
+                    )
                 
-                # Check if it's an edge (has source and target)
-                elif "source" in data and "target" in data:
-                    relationships.append({
-                        "id": data.get("id", f"{data['source']}-{data['target']}"),
-                        "source": data["source"],
-                        "target": data["target"],
-                        "text": data.get("label", "")
-                    })
+                for i, element in enumerate(elements):
+                    if not isinstance(element, dict):
+                        print(f"   ⚠️  Element {i} is not a dict: {type(element)}")
+                        continue
+                    
+                    if "data" not in element:
+                        print(f"   ⚠️  Element {i} has no 'data' key: {list(element.keys())}")
+                        continue
+                        
+                    data = element.get("data", {})
+                    print(f"   🔍 Element {i} data: {data}")
+                    
+                    # Check if it's a node (has id but no source/target)
+                    if "id" in data and "source" not in data and "target" not in data:
+                        concept = {
+                            "id": data["id"],
+                            "text": data.get("label", ""),
+                            "x": data.get("x", 0),
+                            "y": data.get("y", 0)
+                        }
+                        concepts.append(concept)
+                        print(f"   ✅ Added node: {concept}")
+                        
+                        if self.session_logger:
+                            self.session_logger.log_event(
+                                event_type="node_processed",
+                                metadata={"node": concept}
+                            )
+                    
+                    # Check if it's an edge (has source and target)
+                    elif "source" in data and "target" in data:
+                        relationship = {
+                            "id": data.get("id", f"{data['source']}-{data['target']}"),
+                            "source": data["source"],
+                            "target": data["target"],
+                            "text": data.get("label", "")
+                        }
+                        relationships.append(relationship)
+                        print(f"   ✅ Added edge: {relationship}")
+                        
+                        if self.session_logger:
+                            self.session_logger.log_event(
+                                event_type="edge_processed",
+                                metadata={"edge": relationship}
+                            )
+                    else:
+                        print(f"   ⚠️  Element {i} is neither node nor edge: {data}")
+            else:
+                print("   ⚠️  No 'elements' key found in data")
         
-        return {
+        result = {
             "concepts": concepts,
             "relationships": relationships,
+            "action_history": action_history,
+            "interaction_metrics": interaction_metrics,
+            "session_timing": session_timing,
             "timestamp": datetime.now().isoformat(),
-            "source_format": "streamlit"
+            "source_format": "streamlit_enhanced"
         }
+        
+        print(f"   🎯 Final result: {len(concepts)} concepts, {len(relationships)} relationships")
+        
+        # Final debug log
+        if self.session_logger:
+            self.session_logger.log_event(
+                event_type="concept_map_conversion_result",
+                metadata={
+                    "concepts_count": len(concepts),
+                    "relationships_count": len(relationships),
+                    "action_history_count": len(action_history),
+                    "has_interaction_metrics": bool(interaction_metrics),
+                    "result_preview": str(result)[:500]
+                }
+            )
+        
+        return result
     
     def get_agent_response(self, roundn: int, concept_map_data: Optional[Dict[str, Any]] = None, user_response: Optional[str] = None, conversation_turn: int = 0) -> str:
         """Get agent response for the current round."""
@@ -495,23 +593,35 @@ class StreamlitExperimentalSession:
             )
     
     def update_concept_map_evolution(self, roundn: int, concept_map_data):
-        """Update the concept map evolution tracking."""
+        """Update the concept map evolution tracking with enhanced action logging."""
         try:
             # Convert to internal format with robust error handling
             internal_format = self.convert_streamlit_to_internal_format(concept_map_data)
             
-            # Add to evolution
+            # Extract action history and metrics if available
+            action_history = internal_format.get("action_history", [])
+            interaction_metrics = internal_format.get("interaction_metrics", {})
+            session_timing = internal_format.get("session_timing", {})
+            
+            # Add to evolution with enhanced data
             evolution_entry = {
                 "round": roundn,
                 "timestamp": datetime.now().isoformat(),
                 "concept_map": internal_format,
-                "agent_type": self.session_data["agent_sequence"][roundn] if roundn < len(self.session_data["agent_sequence"]) else None
+                "agent_type": self.session_data["agent_sequence"][roundn] if roundn < len(self.session_data["agent_sequence"]) else None,
+                "action_history": action_history,
+                "interaction_metrics": interaction_metrics,
+                "session_timing": session_timing
             }
             
             self.session_data["concept_map_evolution"].append(evolution_entry)
             
             # Update current concept map (cumulative)
             self.session_data["current_concept_map"] = internal_format
+            
+            # Log detailed concept map actions if available
+            if action_history and self.session_logger:
+                self.log_detailed_concept_map_actions(roundn, action_history, interaction_metrics)
             
             # Log concept map update
             if self.session_logger:
@@ -522,7 +632,9 @@ class StreamlitExperimentalSession:
                         "nodes_count": len(internal_format.get("concepts", [])),
                         "edges_count": len(internal_format.get("relationships", [])),
                         "evolution_length": len(self.session_data["concept_map_evolution"]),
-                        "input_data_type": type(concept_map_data).__name__
+                        "input_data_type": type(concept_map_data).__name__,
+                        "action_count": len(action_history),
+                        "interaction_metrics": interaction_metrics
                     }
                 )
                 
@@ -544,9 +656,136 @@ class StreamlitExperimentalSession:
                 "round": roundn,
                 "timestamp": datetime.now().isoformat(),
                 "concept_map": {"concepts": [], "relationships": [], "error": str(e)},
-                "agent_type": self.session_data["agent_sequence"][roundn] if roundn < len(self.session_data["agent_sequence"]) else None
+                "agent_type": self.session_data["agent_sequence"][roundn] if roundn < len(self.session_data["agent_sequence"]) else None,
+                "action_history": [],
+                "interaction_metrics": {},
+                "session_timing": {}
             }
             self.session_data["concept_map_evolution"].append(evolution_entry)
+    
+    def log_detailed_concept_map_actions(self, roundn: int, action_history: List[Dict], interaction_metrics: Dict):
+        """Log detailed concept map actions for research analysis."""
+        if not self.session_logger:
+            return
+        
+        # Analyze action patterns
+        action_patterns = self.analyze_action_patterns(action_history)
+        
+        # Log comprehensive action data
+        self.session_logger.log_event(
+            event_type="detailed_concept_map_actions",
+            metadata={
+                "round_number": roundn,
+                "agent_type": self.session_data["agent_sequence"][roundn] if roundn < len(self.session_data["agent_sequence"]) else None,
+                "total_actions": len(action_history),
+                "action_breakdown": {
+                    "nodes_created": interaction_metrics.get("nodes_created", 0),
+                    "edges_created": interaction_metrics.get("edges_created", 0),
+                    "nodes_deleted": interaction_metrics.get("nodes_deleted", 0),
+                    "edges_deleted": interaction_metrics.get("edges_deleted", 0),
+                    "labels_edited": interaction_metrics.get("labels_edited", 0),
+                    "nodes_moved": interaction_metrics.get("nodes_moved", 0)
+                },
+                "action_patterns": action_patterns,
+                "detailed_actions": action_history[-10:] if len(action_history) > 10 else action_history,  # Last 10 actions for detail
+                "interaction_metrics": interaction_metrics
+            }
+        )
+    
+    def analyze_action_patterns(self, action_history: List[Dict]) -> Dict[str, Any]:
+        """Analyze patterns in user concept map actions."""
+        if not action_history:
+            return {}
+        
+        # Count action types
+        action_counts = {}
+        action_sequences = []
+        time_intervals = []
+        
+        for i, action in enumerate(action_history):
+            action_type = action.get("action_type", "unknown")
+            action_counts[action_type] = action_counts.get(action_type, 0) + 1
+            action_sequences.append(action_type)
+            
+            # Calculate time intervals between actions
+            if i > 0:
+                try:
+                    current_time = datetime.fromisoformat(action["timestamp"].replace('Z', '+00:00'))
+                    prev_time = datetime.fromisoformat(action_history[i-1]["timestamp"].replace('Z', '+00:00'))
+                    interval = (current_time - prev_time).total_seconds()
+                    time_intervals.append(interval)
+                except:
+                    pass
+        
+        # Analyze patterns
+        patterns = {
+            "action_counts": action_counts,
+            "total_actions": len(action_history),
+            "most_common_action": max(action_counts.items(), key=lambda x: x[1])[0] if action_counts else None,
+            "action_diversity": len(action_counts),
+            "average_time_between_actions": sum(time_intervals) / len(time_intervals) if time_intervals else 0,
+            "building_strategy": self.determine_building_strategy(action_sequences),
+            "editing_behavior": self.analyze_editing_behavior(action_history)
+        }
+        
+        return patterns
+    
+    def determine_building_strategy(self, action_sequences: List[str]) -> str:
+        """Determine the user's concept map building strategy."""
+        if not action_sequences:
+            return "unknown"
+        
+        # Count consecutive node vs edge additions
+        node_streaks = 0
+        edge_streaks = 0
+        current_streak = 1
+        current_type = None
+        
+        for action in action_sequences:
+            if action in ["add_node", "add_edge"]:
+                if action == current_type:
+                    current_streak += 1
+                else:
+                    if current_type == "add_node" and current_streak >= 3:
+                        node_streaks += 1
+                    elif current_type == "add_edge" and current_streak >= 2:
+                        edge_streaks += 1
+                    current_type = action
+                    current_streak = 1
+        
+        # Determine strategy
+        if node_streaks > edge_streaks:
+            return "node_first"  # Adds many nodes then connects
+        elif edge_streaks > node_streaks:
+            return "incremental"  # Builds incrementally (node-edge-node-edge)
+        else:
+            return "mixed"  # Mixed approach
+    
+    def analyze_editing_behavior(self, action_history: List[Dict]) -> Dict[str, Any]:
+        """Analyze editing and revision behavior."""
+        edit_actions = [a for a in action_history if a.get("action_type") in ["edit_label", "delete_node", "delete_edge", "move_node"]]
+        creation_actions = [a for a in action_history if a.get("action_type") in ["add_node", "add_edge"]]
+        
+        return {
+            "total_edits": len(edit_actions),
+            "total_creations": len(creation_actions),
+            "edit_ratio": len(edit_actions) / max(1, len(creation_actions)),
+            "revision_frequency": len(edit_actions) / max(1, len(action_history)),
+            "most_edited_elements": self.find_most_edited_elements(edit_actions)
+        }
+    
+    def find_most_edited_elements(self, edit_actions: List[Dict]) -> Dict[str, int]:
+        """Find which elements were edited most frequently."""
+        element_edit_counts = {}
+        
+        for action in edit_actions:
+            element_id = action.get("element_id")
+            if element_id:
+                element_edit_counts[element_id] = element_edit_counts.get(element_id, 0) + 1
+        
+        # Return top 5 most edited elements
+        sorted_elements = sorted(element_edit_counts.items(), key=lambda x: x[1], reverse=True)
+        return dict(sorted_elements[:5])
     
     def finalize_session(self) -> Dict[str, Any]:
         """Finalize the session and export data."""

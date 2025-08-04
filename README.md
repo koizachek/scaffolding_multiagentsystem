@@ -27,20 +27,20 @@ The system is built with a hierarchical multi-agent architecture:
 ┌───────────▼────────┐ ┌───────▼──────┐ ┌────────▼────────┐
 │ Learner Profiling  │ │ Scaffolding  │ │   Example Map   │
 │   Agent (DF1)      │ │Agents(DF1/2) │ │   Agent (DF3)   │
-└────────────────────┘ └──────┬───────┘ └─────────────────┘
-                              │
-                            (DF2)
-         ┌───────────────────┬┴─────────────────┐
-         │                   │                  │
-┌────────▼────────┐ ┌─────-──▼──────┐ ┌─────────▼────────┐
-│    Strategic    │ │  Conceptual   │ │  Metacognitive   │
-│   Scaffolding   │ │  Scaffolding  │ │   Scaffolding    │
-└─────────────────┘ └───────────────┘ └──────────────────┘
-                                                │
-                                       ┌────────▼────────┐
-                                       │   Procedural    │
-                                       │ Scaffolding(DF4)│
-                                       └─────────────────┘
+└────────────────────┘ └───────┬──────┘ └─────────────────┘
+                               │
+                             (DF2)
+          ┌────────────────────┴─────────────────┐
+          │                   │                  │
+ ┌────────▼────────┐ ┌─────-──▼──────┐ ┌─────────▼────────┐
+ │    Strategic    │ │  Conceptual   │ │  Metacognitive   │
+ │   Scaffolding   │ │  Scaffolding  │ │   Scaffolding    │
+ └─────────────────┘ └───────────────┘ └──────────────────┘
+                                                 │
+                                        ┌────────▼────────┐
+                                        │   Procedural    │
+                                        │ Scaffolding(DF4)│
+                                        └─────────────────┘
 ```
 
 ### Roles
@@ -144,7 +144,7 @@ Key features:
    streamlit run app.py
    ```
 
-3. **Open your browser** to `http://localhost:8501`
+3. **Open your browser** to (for example) `http://localhost:8501`
 
 ### Experiment Flow
 
@@ -177,7 +177,6 @@ Each participant completes **4 rounds** with randomized agent order:
 #### 4. Data Export
 Automatic generation of research files:
 - **JSON**: Complete session data (`experimental_session_[name]_[timestamp].json`)
-- **CSV**: Flattened data for analysis (`experimental_results_[name]_[timestamp].csv`)
 
 ## Research Data
 
@@ -335,7 +334,7 @@ export OPENAI_API_KEY="your-key-here"
 
 **Port Conflicts:**
 ```bash
-streamlit run app.py --server.port 8502
+streamlit run app.py --server.port 8502 
 ```
 
 **Data Not Saving:**

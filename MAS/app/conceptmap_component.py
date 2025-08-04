@@ -3,6 +3,7 @@ Interactive Concept Map Component for Streamlit using Cytoscape.js
 
 This module provides a true interactive concept map component that integrates
 Cytoscape.js with Streamlit for drag-and-drop, click-to-create functionality.
+Enhanced with detailed action logging for research purposes.
 """
 
 import streamlit as st
@@ -15,7 +16,7 @@ def conceptmap_component(cm_data: Optional[Dict[str, Any]] = None,
                         submit_request: bool = False, 
                         key: str = "conceptmap") -> Optional[Dict[str, Any]]:
     """
-    Render an interactive concept map component using Cytoscape.js.
+    Render an interactive concept map component using Cytoscape.js with enhanced action tracking.
     
     Args:
         cm_data: Initial concept map data
@@ -23,7 +24,7 @@ def conceptmap_component(cm_data: Optional[Dict[str, Any]] = None,
         key: Unique key for the component
         
     Returns:
-        Updated concept map data or None
+        Updated concept map data with action history or None
     """
     
     # Initialize concept map data
@@ -84,7 +85,7 @@ def conceptmap_component(cm_data: Optional[Dict[str, Any]] = None,
                     }
                 })
     
-    # HTML template with Cytoscape.js
+    # HTML template with enhanced Cytoscape.js and action tracking
     html_template = f"""
     <!DOCTYPE html>
     <html>
@@ -194,6 +195,7 @@ def conceptmap_component(cm_data: Optional[Dict[str, Any]] = None,
             <strong>Double-click</strong> to edit • 
             <strong>Right-click</strong> to delete • 
             <strong>Drag</strong> to move
+            <br><small>📊 All actions are being tracked for research purposes</small>
         </div>
         
         <div class="toolbar">
@@ -201,7 +203,7 @@ def conceptmap_component(cm_data: Optional[Dict[str, Any]] = None,
             <button id="fitBtn">📐 Fit to Screen</button>
             <button id="exportBtn">💾 Export Data</button>
             <span style="margin-left: auto; font-size: 14px; color: #6c757d;">
-                Nodes: <span id="nodeCount">0</span> | Edges: <span id="edgeCount">0</span>
+                Nodes: <span id="nodeCount">0</span> | Edges: <span id="edgeCount">0</span> | Actions: <span id="actionCount">0</span>
             </span>
         </div>
         
@@ -223,20 +225,81 @@ def conceptmap_component(cm_data: Optional[Dict[str, Any]] = None,
             let nodeIdCounter = 1;
             let edgeIdCounter = 1;
             
-            // Initialize Cytoscape - Use immediate execution instead of DOMContentLoaded
+            // Enhanced action tracking variables
+            let actionHistory = [];
+            let sessionStartTime = new Date();
+            let roundStartTime = new Date();
+            let interactionMetrics = {{
+                total_actions: 0,
+                nodes_created: 0,
+                edges_created: 0,
+                nodes_deleted: 0,
+                edges_deleted: 0,
+                labels_edited: 0,
+                nodes_moved: 0
+            }};
+            
+            // Action logging function
+            function logAction(actionType, elementId, details = {{}}) {{
+                const timestamp = new Date().toISOString();
+                const sessionTimeMs = new Date() - sessionStartTime;
+                const roundTimeMs = new Date() - roundStartTime;
+                
+                const action = {{
+                    timestamp: timestamp,
+                    action_type: actionType,
+                    element_id: elementId,
+                    details: details,
+                    session_time_ms: sessionTimeMs,
+                    round_time_ms: roundTimeMs
+                }};
+                
+                actionHistory.push(action);
+                interactionMetrics.total_actions++;
+                
+                // Update specific metrics
+                switch(actionType) {{
+                    case 'add_node':
+                        interactionMetrics.nodes_created++;
+                        break;
+                    case 'add_edge':
+                        interactionMetrics.edges_created++;
+                        break;
+                    case 'delete_node':
+                        interactionMetrics.nodes_deleted++;
+                        break;
+                    case 'delete_edge':
+                        interactionMetrics.edges_deleted++;
+                        break;
+                    case 'edit_label':
+                        interactionMetrics.labels_edited++;
+                        break;
+                    case 'move_node':
+                        interactionMetrics.nodes_moved++;
+                        break;
+                }}
+                
+                updateActionCount();
+                console.log('Action logged:', action);
+            }}
+            
+            function updateActionCount() {{
+                document.getElementById('actionCount').textContent = actionHistory.length;
+            }}
+            
+            // Initialize Cytoscape with enhanced tracking
             function initializeCytoscape() {{
-                // Ensure container exists before initializing
                 const container = document.getElementById('cy');
                 if (!container) {{
                     setTimeout(initializeCytoscape, 50);
                     return;
                 }}
                 
-                // Prevent multiple initializations
                 if (window.cytoscapeInitialized) {{
                     return;
                 }}
                 window.cytoscapeInitialized = true;
+                
                 cy = cytoscape({{
                     container: document.getElementById('cy'),
                     
@@ -313,8 +376,9 @@ def conceptmap_component(cm_data: Optional[Dict[str, Any]] = None,
                 }});
                 
                 updateCounts();
+                updateActionCount();
                 
-                // Event handlers
+                // Enhanced event handlers with action logging
                 cy.on('tap', function(evt) {{
                     if (evt.target === cy) {{
                         // Clicked on background - create new node
@@ -330,6 +394,11 @@ def conceptmap_component(cm_data: Optional[Dict[str, Any]] = None,
                         sourceNode = evt.target;
                         sourceNode.addClass('source-node');
                         cy.container().style.cursor = 'crosshair';
+                        
+                        logAction('start_edge_creation', sourceNode.id(), {{
+                            source_label: sourceNode.data('label'),
+                            position: sourceNode.position()
+                        }});
                     }}
                 }});
                 
@@ -344,6 +413,22 @@ def conceptmap_component(cm_data: Optional[Dict[str, Any]] = None,
                 cy.on('cxttap', function(evt) {{
                     // Right click - delete element
                     if (evt.target !== cy) {{
+                        const elementType = evt.target.isNode() ? 'node' : 'edge';
+                        const elementId = evt.target.id();
+                        const elementData = {{
+                            id: elementId,
+                            label: evt.target.data('label')
+                        }};
+                        
+                        if (elementType === 'edge') {{
+                            elementData.source = evt.target.source().id();
+                            elementData.target = evt.target.target().id();
+                        }} else {{
+                            elementData.position = evt.target.position();
+                        }}
+                        
+                        logAction(`delete_${{elementType}}`, elementId, elementData);
+                        
                         evt.target.remove();
                         updateCounts();
                         sendDataToStreamlit();
@@ -353,35 +438,62 @@ def conceptmap_component(cm_data: Optional[Dict[str, Any]] = None,
                 cy.on('dbltap', function(evt) {{
                     // Double click - edit label
                     if (evt.target !== cy) {{
-                        editLabel(evt.target, evt.renderedPosition || evt.position);
+                        const oldLabel = evt.target.data('label');
+                        editLabel(evt.target, evt.renderedPosition || evt.position, oldLabel);
                     }}
                 }});
                 
                 cy.on('dragfree', 'node', function(evt) {{
-                    // Node moved - update data
+                    // Node moved - log and update data
+                    const newPos = evt.target.position();
+                    logAction('move_node', evt.target.id(), {{
+                        label: evt.target.data('label'),
+                        new_position: newPos
+                    }});
                     sendDataToStreamlit();
                 }});
                 
                 // Toolbar buttons
                 document.getElementById('resetBtn').onclick = function() {{
+                    logAction('reset_view', null, {{
+                        zoom_before: cy.zoom(),
+                        pan_before: cy.pan()
+                    }});
                     cy.zoom(1);
                     cy.center();
                 }};
                 
                 document.getElementById('fitBtn').onclick = function() {{
+                    logAction('fit_to_screen', null, {{
+                        zoom_before: cy.zoom(),
+                        pan_before: cy.pan()
+                    }});
                     cy.fit();
                 }};
                 
                 document.getElementById('exportBtn').onclick = function() {{
+                    logAction('manual_export', null, {{
+                        nodes_count: cy.nodes().length,
+                        edges_count: cy.edges().length
+                    }});
                     sendDataToStreamlit();
                 }};
                 
                 // Escape key cancels edge creation
                 document.addEventListener('keydown', function(e) {{
                     if (e.key === 'Escape') {{
+                        if (isCreatingEdge) {{
+                            logAction('cancel_edge_creation', sourceNode ? sourceNode.id() : null);
+                        }}
                         resetEdgeCreation();
                         cancelLabel();
                     }}
+                }});
+                
+                // Log initial state
+                logAction('component_initialized', null, {{
+                    initial_nodes: cy.nodes().length,
+                    initial_edges: cy.edges().length
                 }});
                 
                 // Send initial data after a short delay
@@ -403,6 +515,12 @@ def conceptmap_component(cm_data: Optional[Dict[str, Any]] = None,
                             data: {{ id: nodeId, label: label }},
                             position: {{ x: x, y: y }}
                         }});
+                        
+                        logAction('add_node', nodeId, {{
+                            label: label,
+                            position: {{ x: x, y: y }}
+                        }});
+                        
                         updateCounts();
                         sendDataToStreamlit();
                     }}
@@ -422,19 +540,35 @@ def conceptmap_component(cm_data: Optional[Dict[str, Any]] = None,
                                 label: label
                             }}
                         }});
+                        
+                        logAction('add_edge', edgeId, {{
+                            label: label,
+                            source: sourceNode.id(),
+                            target: targetNode.id(),
+                            source_label: sourceNode.data('label'),
+                            target_label: targetNode.data('label')
+                        }});
+                        
                         updateCounts();
                         sendDataToStreamlit();
                     }}
                 }});
             }}
             
-            function editLabel(element, pos) {{
+            function editLabel(element, pos, oldLabel) {{
                 showLabelInput(pos.x, pos.y, function(label) {{
-                    if (label.trim()) {{
+                    if (label.trim() && label !== oldLabel) {{
                         element.data('label', label);
+                        
+                        logAction('edit_label', element.id(), {{
+                            old_label: oldLabel,
+                            new_label: label,
+                            element_type: element.isNode() ? 'node' : 'edge'
+                        }});
+                        
                         sendDataToStreamlit();
                     }}
-                }}, element.data('label'));
+                }}, oldLabel);
             }}
             
             function showLabelInput(x, y, callback, currentLabel = '') {{
@@ -516,10 +650,24 @@ def conceptmap_component(cm_data: Optional[Dict[str, Any]] = None,
                     }});
                 }});
                 
-                // Send to Streamlit
+                // Calculate session duration
+                const sessionDurationMs = new Date() - sessionStartTime;
+                const roundDurationMs = new Date() - roundStartTime;
+                
+                // Send enhanced data to Streamlit
                 window.parent.postMessage({{
                     type: 'streamlit:componentValue',
-                    value: {{ elements: elements }}
+                    value: {{
+                        elements: elements,
+                        action_history: actionHistory,
+                        interaction_metrics: interactionMetrics,
+                        session_timing: {{
+                            session_duration_ms: sessionDurationMs,
+                            round_duration_ms: roundDurationMs,
+                            session_start: sessionStartTime.toISOString(),
+                            round_start: roundStartTime.toISOString()
+                        }}
+                    }}
                 }}, '*');
             }}
             
@@ -528,28 +676,36 @@ def conceptmap_component(cm_data: Optional[Dict[str, Any]] = None,
     </html>
     """
     
-    # Render the component
+    # Render the component without key parameter for compatibility
     component_value = components.html(
         html_template,
         height=700
     )
     
-    # Return the component value (concept map data)
+    # Debug: Log what the component is returning
+    if component_value is not None:
+        print(f"🔍 COMPONENT DEBUG: Received data from component")
+        print(f"   Type: {type(component_value)}")
+        print(f"   Content: {str(component_value)[:200]}")
+    else:
+        print(f"🔍 COMPONENT DEBUG: Component returned None")
+    
+    # Return the component value (concept map data with action history)
     return component_value
 
 
 def parse_conceptmap(cm_data: Dict[str, Any]) -> Dict[str, Any]:
     """
-    Parse concept map data into a standardized format.
+    Parse concept map data into a standardized format with enhanced action tracking.
     
     Args:
-        cm_data: Raw concept map data
+        cm_data: Raw concept map data with action history
         
     Returns:
-        Parsed concept map data
+        Parsed concept map data with action analytics
     """
     if not cm_data or "elements" not in cm_data:
-        return {"concepts": [], "relationships": []}
+        return {"concepts": [], "relationships": [], "action_history": [], "interaction_metrics": {}}
     
     concepts = []
     relationships = []
@@ -574,13 +730,16 @@ def parse_conceptmap(cm_data: Dict[str, Any]) -> Dict[str, Any]:
     
     return {
         "concepts": concepts,
-        "relationships": relationships
+        "relationships": relationships,
+        "action_history": cm_data.get("action_history", []),
+        "interaction_metrics": cm_data.get("interaction_metrics", {}),
+        "session_timing": cm_data.get("session_timing", {})
     }
 
 
 # Example usage and testing
 if __name__ == "__main__":
-    st.title("Interactive Concept Map Component Test")
+    st.title("Enhanced Interactive Concept Map Component Test")
     
     # Test the component
     result = conceptmap_component(key="test")
@@ -592,3 +751,20 @@ if __name__ == "__main__":
         st.write("**Parsed Output:**")
         parsed = parse_conceptmap(result)
         st.json(parsed)
+        
+        # Display action analytics if available
+        if result.get("action_history"):
+            st.write("**Action Analytics:**")
+            st.write(f"Total Actions: {len(result['action_history'])}")
+            if result.get("interaction_metrics"):
+                metrics = result["interaction_metrics"]
+                col1, col2, col3 = st.columns(3)
+                with col1:
+                    st.metric("Nodes Created", metrics.get("nodes_created", 0))
+                    st.metric("Nodes Deleted", metrics.get("nodes_deleted", 0))
+                with col2:
+                    st.metric("Edges Created", metrics.get("edges_created", 0))
+                    st.metric("Edges Deleted", metrics.get("edges_deleted", 0))
+                with col3:
+                    st.metric("Labels Edited", metrics.get("labels_edited", 0))
+                    st.metric("Nodes Moved", metrics.get("nodes_moved", 0))
