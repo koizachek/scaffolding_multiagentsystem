@@ -22,3 +22,7 @@ pandas
 # Web Application
 streamlit
 st-conceptmap-cs >= 1.0.2.1
+
+# Database connection
+dnspython
+pymongo
