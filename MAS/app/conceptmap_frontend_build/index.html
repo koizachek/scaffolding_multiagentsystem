@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Streamlit Component</title>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#000000" />
+		<meta name="description" content="Context Map" />
+		<link rel="stylesheet" href="./bootstrap.min.css" />
+		<script type="module" crossorigin src="./assets/index-CfHEW0we.js"></script>
+	</head>
+	<style>
+		#cy {
+			background-color: #262730;
+			border: 6px solid #3c3d4a;
+			border-radius: 8px;
+			width: 600px;
+			height: 400px;
+			margin: 0;
+			padding: 0;
+		}
+		
+		#labelInputText {
+			color: white;
+			font-size: 12px;
+			font-family: 'Comic Sans MS';
+			text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;	
+			text-align: center;
+			background-color: transparent;
+			border-width: 0;
+			width: 105px;	
+		}
+
+		#labelInputText::placeholder {
+			color: white;
+		}
+
+		#labelInputText:focus {
+			outline: none;
+		}
+
+		#labelInputBox {
+			font-size: 12px;
+		}
+	</style>
+  	<body>
+		
+		<div id="labelInputBox" style="
+			position: absolute;
+			display: none;
+			background: transparent;
+			z-index: 10;">
+
+			<input type="text" id="labelInputText" placeholder="Enter Label"/>
+			<button id="labelInputSubmit">OK</button>
+		</div>	
+		<div id="cy"></div>
+	</body>
+</html>
