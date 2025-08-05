@@ -50,7 +50,12 @@ def conceptmap_component(
 
     cm_data = cm_data or {}
     return _conceptmap(
-        cm_data=cm_data, submit_request=submit_request, key=key, default=None
+        cm_data=cm_data,
+        submit_request=submit_request,
+        key=key,
+        # Return an empty structure instead of ``None`` so the component
+        # reports a valid result even before user interaction.
+        default={"elements": []},
     )
 
 
