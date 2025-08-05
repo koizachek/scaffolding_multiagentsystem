@@ -598,15 +598,49 @@ def handle_response(response):
     print(f"   Response type: {type(response).__name__}")
     print(f"   Followup state: {st.session_state.followup}")
     print(f"   Submit request: {st.session_state.submit_request}")
-    
+
     if response is not None:
         print(f"   Response content: {str(response)[:300]}")
         if isinstance(response, dict):
             print(f"   Has elements: {'elements' in response}")
             if "elements" in response:
                 print(f"   Elements count: {len(response['elements'])}")
+
+    # --- Real-time logging of node and edge creations ---
+    if response and isinstance(response, dict) and "elements" in response:
+        elements = response["elements"]
+        current_nodes = {e["data"]["id"] for e in elements if "source" not in e.get("data", {})}
+        current_edges = {e["data"]["id"] for e in elements if "source" in e.get("data", {})}
+
+        prev_nodes = st.session_state.get("_prev_cm_nodes")
+        prev_edges = st.session_state.get("_prev_cm_edges")
+
+        if prev_nodes is None or prev_edges is None:
+            # Initialize tracking on first run without logging existing elements
+            st.session_state._prev_cm_nodes = current_nodes
+            st.session_state._prev_cm_edges = current_edges
+        else:
+            new_nodes = current_nodes - prev_nodes
+            new_edges = current_edges - prev_edges
+
+            for node_id in new_nodes:
+                node_data = next(e["data"] for e in elements if e["data"]["id"] == node_id)
+                print(
+                    f"🆕 Node created: {node_data.get('label', '')} (id: {node_id}, x: {node_data.get('x')}, y: {node_data.get('y')})"
+                )
+
+            for edge_id in new_edges:
+                edge_data = next(e["data"] for e in elements if e["data"]["id"] == edge_id)
+                print(
+                    f"🆕 Edge created: {edge_data.get('source')} -> {edge_data.get('target')} "
+                    f"(label: {edge_data.get('label', '')}, id: {edge_id})"
+                )
+
+            # Update tracked state
+            st.session_state._prev_cm_nodes = current_nodes
+            st.session_state._prev_cm_edges = current_edges
     
-    if response and not st.session_state.followup:
+    if st.session_state.submit_request and response and not st.session_state.followup:
         print(f"   ✅ Processing response...")
         
         # Debug: Log what we received
@@ -668,7 +702,7 @@ def handle_response(response):
         print(f"   ⚠️ Submit request but no response - resetting submit_request")
         st.session_state.submit_request = False
     else:
-        print(f"   ℹ️ No action taken (response: {response is not None}, followup: {st.session_state.followup})")
+        print(f"   ℹ️ No action taken (response: {response is not None}, submit_request: {st.session_state.submit_request}, followup: {st.session_state.followup})")
 
 
 def main():
