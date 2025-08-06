@@ -1,13 +1,9 @@
 import json
 import os
 import copy
-import logging
 import streamlit as st
 from conceptmap_component import conceptmap_component, parse_conceptmap
 from streamlit_experimental_session import StreamlitExperimentalSession
-
-
-logger = logging.getLogger(__name__)
 
 
 # Session State Initialization
@@ -597,18 +593,18 @@ def render_followup():
 def handle_response(response):
     """Handle concept map response with cumulative logic and enhanced debugging."""
     # Always log what we receive, even if None
-    logger.debug("🔍 HANDLE_RESPONSE DEBUG:")
-    logger.debug(f"   Response received: {response is not None}")
-    logger.debug(f"   Response type: {type(response).__name__}")
-    logger.debug(f"   Followup state: {st.session_state.followup}")
-    logger.debug(f"   Submit request: {st.session_state.submit_request}")
+    print(f"🔍 HANDLE_RESPONSE DEBUG:")
+    print(f"   Response received: {response is not None}")
+    print(f"   Response type: {type(response).__name__}")
+    print(f"   Followup state: {st.session_state.followup}")
+    print(f"   Submit request: {st.session_state.submit_request}")
 
     if response is not None:
-        logger.debug(f"   Response content: {str(response)[:300]}")
+        print(f"   Response content: {str(response)[:300]}")
         if isinstance(response, dict):
-            logger.debug(f"   Has elements: {'elements' in response}")
+            print(f"   Has elements: {'elements' in response}")
             if "elements" in response:
-                logger.debug(f"   Elements count: {len(response['elements'])}")
+                print(f"   Elements count: {len(response['elements'])}")
 
     # --- Real-time logging of node and edge creations ---
     if response and isinstance(response, dict) and "elements" in response:
@@ -637,7 +633,7 @@ def handle_response(response):
                     for e in dict_elements
                     if e.get("data", {}).get("id") == node_id
                 )
-                logger.info(
+                print(
                     f"🆕 Node created: {node_data.get('label', '')} (id: {node_id}, x: {node_data.get('x')}, y: {node_data.get('y')})"
                 )
                 if (
@@ -660,7 +656,7 @@ def handle_response(response):
                     for e in dict_elements
                     if e.get("data", {}).get("id") == edge_id
                 )
-                logger.info(
+                print(
                     f"🆕 Edge created: {edge_data.get('source')} -> {edge_data.get('target')} "
                     f"(label: {edge_data.get('label', '')}, id: {edge_id})"
                 )
@@ -683,7 +679,7 @@ def handle_response(response):
             st.session_state._prev_cm_edges = current_edges
     
     if st.session_state.submit_request and response and not st.session_state.followup:
-        logger.info("   ✅ Processing response...")
+        print(f"   ✅ Processing response...")
         
         # Debug: Log what we received
         if st.session_state.experimental_session and st.session_state.experimental_session.session_logger:
@@ -713,7 +709,7 @@ def handle_response(response):
         
         # Update the current round's concept map with the new data
         st.session_state.cmdata[roundn] = response
-        logger.info(f"   📝 Stored response in cmdata[{roundn}]")
+        print(f"   📝 Stored response in cmdata[{roundn}]")
         
         # Debug: Show what we're storing
         if isinstance(response, dict) and "elements" in response:
@@ -742,12 +738,10 @@ def handle_response(response):
         st.session_state.followup = True
         st.rerun()
     elif st.session_state.submit_request:
-        logger.warning("   ⚠️ Submit request but no response - resetting submit_request")
+        print(f"   ⚠️ Submit request but no response - resetting submit_request")
         st.session_state.submit_request = False
     else:
-        logger.info(
-            f"   ℹ️ No action taken (response: {response is not None}, submit_request: {st.session_state.submit_request}, followup: {st.session_state.followup})"
-        )
+        print(f"   ℹ️ No action taken (response: {response is not None}, submit_request: {st.session_state.submit_request}, followup: {st.session_state.followup})")
 
 
 def main():

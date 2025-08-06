@@ -9,7 +9,6 @@ import os
 import sys
 import json
 import random
-import logging
 import streamlit as st
 from datetime import datetime
 from typing import Dict, List, Any, Optional
@@ -34,9 +33,6 @@ except ImportError:
     from utils.openai_api import OpenAIManager
     from utils.logging_utils import SessionLogger
     from utils.mermaid_parser import MermaidParser
-
-logger = logging.getLogger(__name__)
-
 
 class StreamlitExperimentalSession:
     """Manages a complete interactive experimental session through Streamlit."""
@@ -274,9 +270,9 @@ class StreamlitExperimentalSession:
         session_timing = {}
         
         # Debug logging - always log for troubleshooting
-        logger.info("🔍 DEBUG: Converting concept map data")
-        logger.info(f"   Input type: {type(streamlit_cm_data).__name__}")
-        logger.info(f"   Input data: {str(streamlit_cm_data)[:200] if streamlit_cm_data else 'None'}")
+        print(f"🔍 DEBUG: Converting concept map data")
+        print(f"   Input type: {type(streamlit_cm_data).__name__}")
+        print(f"   Input data: {str(streamlit_cm_data)[:200] if streamlit_cm_data else 'None'}")
         
         if self.session_logger:
             self.session_logger.log_event(
@@ -291,49 +287,49 @@ class StreamlitExperimentalSession:
         
         # Handle different input types
         if streamlit_cm_data is None:
-            logger.warning("   ⚠️  Input is None - returning empty structure")
+            print("   ⚠️  Input is None - returning empty structure")
             # Return empty structure for None input
             pass
         elif isinstance(streamlit_cm_data, str):
-            logger.info("   📝 Input is string - attempting JSON parse")
+            print("   📝 Input is string - attempting JSON parse")
             # Handle string input (might be JSON or initial map format)
             try:
                 if streamlit_cm_data.strip():
                     parsed_data = json.loads(streamlit_cm_data)
                     if isinstance(parsed_data, dict):
                         streamlit_cm_data = parsed_data
-                        logger.info(f"   ✅ Successfully parsed JSON: {len(parsed_data)} keys")
+                        print(f"   ✅ Successfully parsed JSON: {len(parsed_data)} keys")
                     else:
                         # If it's not a valid dict after parsing, treat as empty
                         streamlit_cm_data = {}
-                        logger.warning("   ⚠️  Parsed data is not a dict")
+                        print("   ⚠️  Parsed data is not a dict")
                 else:
                     streamlit_cm_data = {}
-                    logger.warning("   ⚠️  Empty string input")
+                    print("   ⚠️  Empty string input")
             except (json.JSONDecodeError, AttributeError) as e:
                 # If JSON parsing fails, treat as empty concept map
                 streamlit_cm_data = {}
-                logger.error(f"   ❌ JSON parsing failed: {e}")
+                print(f"   ❌ JSON parsing failed: {e}")
         elif not isinstance(streamlit_cm_data, dict):
-            logger.warning(f"   ⚠️  Input is not dict, string, or None: {type(streamlit_cm_data)}")
+            print(f"   ⚠️  Input is not dict, string, or None: {type(streamlit_cm_data)}")
             # If it's not a dict, string, or None, treat as empty
             streamlit_cm_data = {}
         
         # Process the data if it's now a dictionary
         if isinstance(streamlit_cm_data, dict):
-            logger.info(f"   📊 Processing dict with keys: {list(streamlit_cm_data.keys())}")
+            print(f"   📊 Processing dict with keys: {list(streamlit_cm_data.keys())}")
             
             # Extract action history and metrics if available (enhanced format)
             action_history = streamlit_cm_data.get("action_history", [])
             interaction_metrics = streamlit_cm_data.get("interaction_metrics", {})
             session_timing = streamlit_cm_data.get("session_timing", {})
             
-            logger.info(f"   📈 Found {len(action_history)} actions, metrics: {bool(interaction_metrics)}")
+            print(f"   📈 Found {len(action_history)} actions, metrics: {bool(interaction_metrics)}")
             
             # Process concept map elements
             if "elements" in streamlit_cm_data:
                 elements = streamlit_cm_data["elements"]
-                logger.info(f"   🗺️  Processing {len(elements)} elements")
+                print(f"   🗺️  Processing {len(elements)} elements")
                 
                 if self.session_logger:
                     self.session_logger.log_event(
@@ -346,15 +342,15 @@ class StreamlitExperimentalSession:
                 
                 for i, element in enumerate(elements):
                     if not isinstance(element, dict):
-                        logger.warning(f"   ⚠️  Element {i} is not a dict: {type(element)}")
+                        print(f"   ⚠️  Element {i} is not a dict: {type(element)}")
                         continue
                     
                     if "data" not in element:
-                        logger.warning(f"   ⚠️  Element {i} has no 'data' key: {list(element.keys())}")
+                        print(f"   ⚠️  Element {i} has no 'data' key: {list(element.keys())}")
                         continue
                         
                     data = element.get("data", {})
-                    logger.info(f"   🔍 Element {i} data: {data}")
+                    print(f"   🔍 Element {i} data: {data}")
                     
                     # Check if it's a node (has id but no source/target)
                     if "id" in data and "source" not in data and "target" not in data:
@@ -365,7 +361,7 @@ class StreamlitExperimentalSession:
                             "y": data.get("y", 0)
                         }
                         concepts.append(concept)
-                        logger.info(f"   ✅ Added node: {concept}")
+                        print(f"   ✅ Added node: {concept}")
                         
                         if self.session_logger:
                             self.session_logger.log_event(
@@ -382,7 +378,7 @@ class StreamlitExperimentalSession:
                             "text": data.get("label", "")
                         }
                         relationships.append(relationship)
-                        logger.info(f"   ✅ Added edge: {relationship}")
+                        print(f"   ✅ Added edge: {relationship}")
                         
                         if self.session_logger:
                             self.session_logger.log_event(
@@ -390,9 +386,9 @@ class StreamlitExperimentalSession:
                                 metadata={"edge": relationship}
                             )
                     else:
-                        logger.warning(f"   ⚠️  Element {i} is neither node nor edge: {data}")
+                        print(f"   ⚠️  Element {i} is neither node nor edge: {data}")
             else:
-                logger.warning("   ⚠️  No 'elements' key found in data")
+                print("   ⚠️  No 'elements' key found in data")
         
         result = {
             "concepts": concepts,
@@ -404,7 +400,7 @@ class StreamlitExperimentalSession:
             "source_format": "streamlit_enhanced"
         }
         
-        logger.info(f"   🎯 Final result: {len(concepts)} concepts, {len(relationships)} relationships")
+        print(f"   🎯 Final result: {len(concepts)} concepts, {len(relationships)} relationships")
         
         # Final debug log
         if self.session_logger:
