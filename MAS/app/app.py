@@ -624,6 +624,9 @@ def handle_response(response):
             new_nodes = current_nodes - prev_nodes
             new_edges = current_edges - prev_edges
 
+            # Prepare a parsed snapshot for logging if needed
+            parsed_snapshot = parse_conceptmap(response)
+
             for node_id in new_nodes:
                 node_data = next(
                     e["data"]
@@ -633,6 +636,19 @@ def handle_response(response):
                 print(
                     f"🆕 Node created: {node_data.get('label', '')} (id: {node_id}, x: {node_data.get('x')}, y: {node_data.get('y')})"
                 )
+                if (
+                    st.session_state.experimental_session
+                    and st.session_state.experimental_session.session_logger
+                ):
+                    st.session_state.experimental_session.session_logger.log_event(
+                        event_type="concept_map_node_created",
+                        metadata={
+                            "node": node_data,
+                            "nodes_count": len(parsed_snapshot.get("concepts", [])),
+                            "edges_count": len(parsed_snapshot.get("relationships", [])),
+                            "concept_map_snapshot": parsed_snapshot,
+                        },
+                    )
 
             for edge_id in new_edges:
                 edge_data = next(
@@ -644,6 +660,19 @@ def handle_response(response):
                     f"🆕 Edge created: {edge_data.get('source')} -> {edge_data.get('target')} "
                     f"(label: {edge_data.get('label', '')}, id: {edge_id})"
                 )
+                if (
+                    st.session_state.experimental_session
+                    and st.session_state.experimental_session.session_logger
+                ):
+                    st.session_state.experimental_session.session_logger.log_event(
+                        event_type="concept_map_edge_created",
+                        metadata={
+                            "edge": edge_data,
+                            "nodes_count": len(parsed_snapshot.get("concepts", [])),
+                            "edges_count": len(parsed_snapshot.get("relationships", [])),
+                            "concept_map_snapshot": parsed_snapshot,
+                        },
+                    )
 
             # Update tracked state
             st.session_state._prev_cm_nodes = current_nodes
