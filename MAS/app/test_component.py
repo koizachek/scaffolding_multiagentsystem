@@ -3,7 +3,7 @@ Standalone test for the concept map component to verify data flow.
 """
 
 import streamlit as st
-from conceptmap_component import conceptmap_component
+from .conceptmap_component import conceptmap_component
 
 st.title("🧪 Concept Map Component Test")
 st.markdown("This is a standalone test to verify the component is working properly.")

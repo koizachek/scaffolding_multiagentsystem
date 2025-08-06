@@ -1,9 +1,13 @@
 import json
 import os
 import copy
+import logging
 import streamlit as st
 from conceptmap_component import conceptmap_component, parse_conceptmap
 from streamlit_experimental_session import StreamlitExperimentalSession
+
+
+logger = logging.getLogger(__name__)
 
 
 # Session State Initialization
@@ -593,21 +597,102 @@ def render_followup():
 def handle_response(response):
     """Handle concept map response with cumulative logic and enhanced debugging."""
     # Always log what we receive, even if None
-    print(f"🔍 HANDLE_RESPONSE DEBUG:")
-    print(f"   Response received: {response is not None}")
-    print(f"   Response type: {type(response).__name__}")
-    print(f"   Followup state: {st.session_state.followup}")
-    print(f"   Submit request: {st.session_state.submit_request}")
-    
+    logger.debug("🔍 HANDLE_RESPONSE DEBUG:")
+    logger.debug(f"   Response received: {response is not None}")
+    logger.debug(f"   Response type: {type(response).__name__}")
+    logger.debug(f"   Followup state: {st.session_state.followup}")
+    logger.debug(f"   Submit request: {st.session_state.submit_request}")
+
     if response is not None:
-        print(f"   Response content: {str(response)[:300]}")
+        logger.debug(f"   Response content: {str(response)[:300]}")
         if isinstance(response, dict):
-            print(f"   Has elements: {'elements' in response}")
+            logger.debug(f"   Has elements: {'elements' in response}")
             if "elements" in response:
-                print(f"   Elements count: {len(response['elements'])}")
+                logger.debug(f"   Elements count: {len(response['elements'])}")
+
+    # --- Real-time logging of node and edge creations ---
+    if response and isinstance(response, dict) and "elements" in response:
+        elements = response["elements"]
+        if isinstance(elements, dict):
+            dict_elements = []
+            dict_elements.extend(elements.get("nodes", []))
+            dict_elements.extend(elements.get("edges", []))
+        else:
+            dict_elements = [e for e in elements if isinstance(e, dict)]
+        current_nodes = {
+            e["data"]["id"] for e in dict_elements if "source" not in e.get("data", {})
+        }
+        current_edges = {
+            e["data"]["id"] for e in dict_elements if "source" in e.get("data", {})
+        }
+
+        prev_nodes = st.session_state.get("_prev_cm_nodes")
+        prev_edges = st.session_state.get("_prev_cm_edges")
+
+        if prev_nodes is None or prev_edges is None:
+            # Initialize tracking on first run without logging existing elements
+            st.session_state._prev_cm_nodes = current_nodes
+            st.session_state._prev_cm_edges = current_edges
+        else:
+            new_nodes = current_nodes - prev_nodes
+            new_edges = current_edges - prev_edges
+
+            # Prepare a parsed snapshot for logging if needed
+            parsed_snapshot = parse_conceptmap(response)
+
+            for node_id in new_nodes:
+                node_data = next(
+                    e["data"]
+                    for e in dict_elements
+                    if e.get("data", {}).get("id") == node_id
+                )
+                logger.info(
+                    f"🆕 Node created: {node_data.get('label', '')} (id: {node_id}, x: {node_data.get('x')}, y: {node_data.get('y')})"
+                )
+                if (
+                    st.session_state.experimental_session
+                    and st.session_state.experimental_session.session_logger
+                ):
+                    st.session_state.experimental_session.session_logger.log_event(
+                        event_type="concept_map_node_created",
+                        metadata={
+                            "node": node_data,
+                            "nodes_count": len(parsed_snapshot.get("concepts", [])),
+                            "edges_count": len(parsed_snapshot.get("relationships", [])),
+                            "concept_map_snapshot": parsed_snapshot,
+                        },
+                    )
+
+            for edge_id in new_edges:
+                edge_data = next(
+                    e["data"]
+                    for e in dict_elements
+                    if e.get("data", {}).get("id") == edge_id
+                )
+                logger.info(
+                    f"🆕 Edge created: {edge_data.get('source')} -> {edge_data.get('target')} "
+                    f"(label: {edge_data.get('label', '')}, id: {edge_id})"
+                )
+                if (
+                    st.session_state.experimental_session
+                    and st.session_state.experimental_session.session_logger
+                ):
+                    st.session_state.experimental_session.session_logger.log_event(
+                        event_type="concept_map_edge_created",
+                        metadata={
+                            "edge": edge_data,
+                            "nodes_count": len(parsed_snapshot.get("concepts", [])),
+                            "edges_count": len(parsed_snapshot.get("relationships", [])),
+                            "concept_map_snapshot": parsed_snapshot,
+                        },
+                    )
+
+            # Update tracked state
+            st.session_state._prev_cm_nodes = current_nodes
+            st.session_state._prev_cm_edges = current_edges
     
-    if response and not st.session_state.followup:
-        print(f"   ✅ Processing response...")
+    if st.session_state.submit_request and response and not st.session_state.followup:
+        logger.info("   ✅ Processing response...")
         
         # Debug: Log what we received
         if st.session_state.experimental_session and st.session_state.experimental_session.session_logger:
@@ -637,22 +722,23 @@ def handle_response(response):
         
         # Update the current round's concept map with the new data
         st.session_state.cmdata[roundn] = response
-        print(f"   📝 Stored response in cmdata[{roundn}]")
+        logger.info(f"   📝 Stored response in cmdata[{roundn}]")
         
         # Debug: Show what we're storing
         if isinstance(response, dict) and "elements" in response:
-            element_count = len(response["elements"])
+            dict_elements = [e for e in response["elements"] if isinstance(e, dict)]
+            element_count = len(dict_elements)
             st.success(f"✅ Concept map data captured: {element_count} elements")
-            
+
             # Show element breakdown
-            nodes = [e for e in response["elements"] if "source" not in e.get("data", {})]
-            edges = [e for e in response["elements"] if "source" in e.get("data", {})]
+            nodes = [e for e in dict_elements if "source" not in e.get("data", {})]
+            edges = [e for e in dict_elements if "source" in e.get("data", {})]
             st.write(f"**Elements breakdown:** {len(nodes)} nodes, {len(edges)} edges")
-            
+
             # Show first few elements for verification
-            if len(response["elements"]) > 0:
+            if len(dict_elements) > 0:
                 st.write("**Sample elements:**")
-                for i, elem in enumerate(response["elements"][:3]):
+                for i, elem in enumerate(dict_elements[:3]):
                     st.write(f"  {i+1}. {elem}")
         else:
             st.warning("⚠️ Response received but no elements found")
@@ -665,10 +751,12 @@ def handle_response(response):
         st.session_state.followup = True
         st.rerun()
     elif st.session_state.submit_request:
-        print(f"   ⚠️ Submit request but no response - resetting submit_request")
+        logger.warning("   ⚠️ Submit request but no response - resetting submit_request")
         st.session_state.submit_request = False
     else:
-        print(f"   ℹ️ No action taken (response: {response is not None}, followup: {st.session_state.followup})")
+        logger.info(
+            f"   ℹ️ No action taken (response: {response is not None}, submit_request: {st.session_state.submit_request}, followup: {st.session_state.followup})"
+        )
 
 
 def main():
