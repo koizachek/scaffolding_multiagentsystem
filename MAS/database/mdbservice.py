@@ -5,7 +5,7 @@ from pymongo import DESCENDING
 from pymongo.mongo_client import MongoClient
 from datetime import datetime
 
-from dtos import *
+from MAS.database.dtos import *
 
 load_dotenv()
 def _construct_uri_from_env() -> str:
