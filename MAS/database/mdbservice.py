@@ -154,7 +154,7 @@ class MDBService:
         Returns:
             A list of session documents with matching agent_sequence.
         """
-        return self._query_as_list(self._sessions, 'agent_sequence', agent_sequence) 
+        return self._query_as_list(self._sessions, 'agent_sequence', sequence) 
 
 
     def insert_profile(self, username: str, password: str, profile: Profile) -> None:
