@@ -4,6 +4,7 @@ import copy
 import logging
 import streamlit as st
 from conceptmap_component import conceptmap_component, parse_conceptmap
+from streamlit.runtime.state import session_state
 from streamlit_experimental_session import StreamlitExperimentalSession
 
 
@@ -26,8 +27,9 @@ def init_session_state():
         "submit_request": False,
         "followup": False,
         "roundn": 0,
+        "profile_initialisation_started": False,
         "session_initialized": False,
-        "profile_created": False,
+        "profile_initialized": False,
         "session_finalized": False,
         "tutorial_completed": False,
         "conversation_turn": 0,
@@ -115,7 +117,7 @@ def render_mode_selection():
             # Initialize system in demo mode
             if st.session_state.experimental_session.initialize_system("demo"):
                 st.session_state.session_initialized = True
-                st.session_state.profile_created = True  # Skip profile for demo
+                st.session_state.profile_initialized = True  # Skip profile for demo
                 
                 # Initialize agent sequence for demo
                 st.session_state.agent_sequence = st.session_state.experimental_session.initialize_agent_sequence()
@@ -126,13 +128,23 @@ def render_mode_selection():
                 st.error("❌ Failed to initialize demo mode")
 
 
+def render_profile_login():
+    with st.columns([1, 10, 1])[1]:
+        st.write("To participate in the experiment you have fill in the profile form!")
+        st.info("If you had already participated in the MAS experiments, you might have a saved user profile.")
+        if st.button("Create new profile", type='primary', use_container_width=True):
+            st.session_state.profile_initialisation_started = True
+            st.rerun()
+        st.button("I already have a profile", use_container_width=True)
+
+
 def render_learner_profile():
     """Render learner profile creation page."""
     profile = st.session_state.experimental_session.create_learner_profile_form()
     
     if profile:
         st.session_state.learner_profile = profile
-        st.session_state.profile_created = True
+        st.session_state.profile_initialized = True
         
         # Initialize agent sequence
         st.session_state.agent_sequence = st.session_state.experimental_session.initialize_agent_sequence()
@@ -768,23 +780,32 @@ def main():
         render_mode_selection()
         return
     
+    # Learner profile login page (experimental mode only)
+    if (st.session_state.mode == "experimental" and 
+        st.session_state.session_initialized and 
+        not st.session_state.profile_initialisation_started and
+        not st.session_state.profile_initialized):
+        render_profile_login()
+        return
+    
     # Learner profile creation (experimental mode only)
     if (st.session_state.mode == "experimental" and 
         st.session_state.session_initialized and 
-        not st.session_state.profile_created):
+        st.session_state.profile_initialisation_started and
+        not st.session_state.profile_initialized):
         render_learner_profile()
         return
-    
+
     # Tutorial flow (experimental mode only)
     if (st.session_state.mode == "experimental" and 
-        st.session_state.profile_created and 
+        st.session_state.profile_initialized and 
         st.session_state.show_tutorial):
         render_tutorial()
         return
     
     # Check if tutorial is required but not completed (experimental mode)
     if (st.session_state.mode == "experimental" and 
-        st.session_state.profile_created and 
+        st.session_state.profile_initialized and 
         not st.session_state.tutorial_completed and 
         not st.session_state.show_tutorial):
         st.session_state.show_tutorial = True

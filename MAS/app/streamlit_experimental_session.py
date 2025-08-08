@@ -14,6 +14,8 @@ import streamlit as st
 from datetime import datetime
 from typing import Dict, List, Any, Optional
 
+from streamlit.runtime.state import session_state
+
 # Add the parent directory to the Python path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
@@ -23,6 +25,7 @@ try:
     from MAS.utils.openai_api import OpenAIManager
     from MAS.utils.logging_utils import SessionLogger
     from MAS.utils.mermaid_parser import MermaidParser
+    from MAS.database.mdbservice import *
 except ImportError:
     # Fallback for when running from app directory
     import sys
@@ -34,6 +37,10 @@ except ImportError:
     from utils.openai_api import OpenAIManager
     from utils.logging_utils import SessionLogger
     from utils.mermaid_parser import MermaidParser
+    from database.mdbservice import *
+
+logger = logging.getLogger(__name__)
+
 
 logger = logging.getLogger(__name__)
 
@@ -54,10 +61,11 @@ class StreamlitExperimentalSession:
             "current_concept_map": {"concepts": [], "relationships": []},
             "mode": None
         }
+        self.db_service = None
         self.openai_manager = None
         self.session_logger = None
         self.mermaid_parser = MermaidParser()
-    
+
     def initialize_system(self, mode: str, participant_id: Optional[str] = None):
         """Initialize the MAS system with the specified mode."""
         try:
@@ -70,7 +78,18 @@ class StreamlitExperimentalSession:
                 mode=mode,
                 participant_id=participant_id or f"participant_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
             )
-            
+
+            # TODO: Delete this part of the code and uncomment the code below when the database connection tuning is finished.
+            try: 
+                self.db_service = MDBService()
+                logger.info("    🗃️ Connection to the database established successfully")
+            except DatabaseConnectionException as e:
+                logger.error(f"    ❌🗃️ Could not establish the connection to the database: {e}")
+                st.error(f"Failed to connect to the database: {e}")
+                self.demo_mode_fallback()
+                self.db_service = None
+                return False
+
             # Initialize OpenAI manager for experimental mode
             if mode == "experimental":
                 try:
@@ -93,17 +112,34 @@ class StreamlitExperimentalSession:
                     
                 except Exception as e:
                     st.error(f"Failed to initialize OpenAI integration: {e}")
-                    st.info("Falling back to demo mode")
-                    self.session_data["mode"] = "demo"
+                    self.demo_mode_fallback()
                     self.openai_manager = None
                     self.session_logger = None
-            
+
+                # Initialize database db_service 
+                # TODO: uncomment this part when the tuning of the database connection is finished
+                # TODO: so that the data is sent to the server only when the experimental mode is active.
+                # try: 
+                #     self.db_service = MDBService()
+                #     logger.info("    🗃️ Connection to the database established successfully")
+                # except DatabaseConnectionException as e:
+                #     logger.error("    ❌🗃️ Could not establish the connection to the database!")
+                #     st.error(f"Failed to connect to the database: {e}")
+                #     self.demo_mode_fallback()
+                #     self.db_service = None
+
             return True
             
         except Exception as e:
             st.error(f"Failed to initialize system: {e}")
             return False
-    
+   
+
+    def demo_mode_fallback(self):
+        st.info("Falling back to demo mode")
+        self.session_data["mode"] = "demo"
+
+
     def create_learner_profile_form(self) -> Dict[str, Any]:
         """Create learner profile through Streamlit form."""
         st.header("Learner Profile Creation")
@@ -847,7 +883,11 @@ class StreamlitExperimentalSession:
             csv_filepath = os.path.join(experimental_data_dir, csv_filename)
             
             self._export_csv_data(csv_filepath)
-            
+
+            # Export session data to the sessions database collection
+            if self.db_service:
+                self.db_service.insert_session(self.session_data)
+
             return {
                 "json_file": json_filepath,
                 "csv_file": csv_filepath,
@@ -859,6 +899,15 @@ class StreamlitExperimentalSession:
             st.error(f"Error saving session data: {e}")
             return {"error": str(e)}
     
+
+    def _save_session_to_database(self):
+        """
+        Converts the generated json file into the Session DTO and stores the session in 
+        the database sessions collection.
+        """    
+        
+
+
     def _export_csv_data(self, filepath: str):
         """Export flattened data for statistical analysis."""
         import csv
