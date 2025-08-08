@@ -81,10 +81,11 @@ class StreamlitExperimentalSession:
                 self.db_service = MDBService()
                 logger.info("    🗃️ Connection to the database established successfully")
             except DatabaseConnectionException as e:
-                logger.error("    ❌🗃️ Could not establish the connection to the database!")
+                logger.error(f"    ❌🗃️ Could not establish the connection to the database: {e}")
                 st.error(f"Failed to connect to the database: {e}")
                 self.demo_mode_fallback()
                 self.db_service = None
+                return False
 
             # Initialize OpenAI manager for experimental mode
             if mode == "experimental":
