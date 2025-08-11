@@ -11,7 +11,6 @@ import time
 
 from typing import Dict, List, Any, Optional
 from openai import OpenAI
-from groq import Groq
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -24,64 +23,58 @@ class AIManager:
     """
     Manages AI API calls with fallback model support and error handling.
     """
-    
+
     def __init__(self, config: Optional[Dict[str, Any]] = None):
         """
         Initialize the AI manager.
-        
+
         Args:
             config: Configuration dictionary with API settings
         """
         self.config = config or {}
-        
-        # Set up the client
-        if "client" not in self.config:
-            raise ValueError("Missing config or 'client' key in the config file")
-        
-        client = self.config['client']
-        match client:
-            case 'openai': self._setup_openai_client()
-            case 'groq':   self._setup_groq_client()
-            case _: raise ValueError(f"Specified client '{client}' is not supported")
-        
-        # Model configuration
-        self.current_model = self.primary_model
-        
-        # API parameters
+        client_type = self.config.get("client")
+        if not client_type:
+            raise ValueError("Missing 'client' key in config")
+
+        # Set shared defaults
         self.max_tokens = self.config.get("max_tokens", 500)
         self.temperature = self.config.get("temperature", 0.7)
         self.max_retries = self.config.get("max_retries", 3)
-        
-        # Usage tracking
+
+        # Initialize OpenAI-compatible client
+        if client_type == "openai":
+            api_key = os.getenv("OPENAI_API_KEY")
+            if not api_key:
+                raise ValueError(f"OpenAI was set as the primary client in the config but OPENAI_API_KEY environment variable not found")
+
+            self.client = OpenAI(api_key=api_key)
+            self.client_name = "OpenAI"
+            self.primary_model = self.config.get("primary_model",   "gpt-4o")
+            self.fallback_model = self.config.get("fallback_model", "gpt-4o-mini")
+
+        elif client_type == "groq":
+            api_key = os.getenv("GROQ_API_KEY")
+            if not api_key:
+                raise ValueError("Groq was set as the primary client in the config file but GROQ_API_KEY environment variable not found")
+
+            self.client = OpenAI(
+                api_key=api_key,
+                base_url="https://api.groq.com/openai/v1"
+            )
+            self.client_name = "Groq"
+            self.primary_model = self.config.get("primary_model",   "llama3-70b-8192")
+            self.fallback_model = self.config.get("fallback_model", "llama3-8b-8192")
+
+        else:
+            raise ValueError(f"Unsupported client '{client_type}'")
+
+        # Tracking
+        self.current_model = self.primary_model
         self.api_calls = 0
         self.fallback_count = 0
         self.total_tokens = 0
-        
-        logger.info(f"AI Manager with {self.client_name.upper()} client initialized with primary model: {self.primary_model}")
-    
-    def _setup_openai_client(self):
-        api_key = os.getenv('OPENAI_API_KEY')
-        if not api_key:
-            raise ValueError("OpenAI configured as main AI client but OPENAI_API_KEY environment variable was not detected")
-        
-        self.client = OpenAI(api_key=api_key)
-        self.client_name = 'OpenAI'
 
-        # Model configuration
-        self.primary_model = self.config.get("primary_model", "gpt-4o")
-        self.fallback_model = self.config.get("fallback_model", "gpt-4o-mini")
-
-    def _setup_groq_client(self):
-        api_key = os.getenv('GROQ_API_KEY')
-        if not api_key:
-            raise ValueError("Groq configured as main AI client but GROQ_API_KEY environment variable was not detected")
-        
-        self.client = Groq(api_key=api_key)
-        self.client_name = 'Groq'
-
-        # Model configuration
-        self.primary_model = self.config.get("primary_model", "llama-3.3-70b-versatile")
-        self.fallback_model = self.config.get("fallback_model", "meta-llama/llama-guard-4-12b")
+        logger.info(f"AI Manager initialized: {self.client_name} with primary model {self.primary_model}")
 
     def generate_response(self, 
                          prompt: str, 

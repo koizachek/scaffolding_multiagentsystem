@@ -17,7 +17,7 @@
   "ai_manager": {
     "client": "groq",
     "primary_model": "llama-3.3-70b-versatile",
-    "fallback_model": "meta-llama/llama-guard-4-12b",
+    "fallback_model": "llama-3.1-8b-instant",
     "max_tokens": 500,
     "temperature": 0.7,
     "max_retries": 3

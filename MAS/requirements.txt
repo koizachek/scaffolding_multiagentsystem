@@ -3,9 +3,6 @@ openai
 openai-agents
 python-dotenv
 
-# Alternative prompt generation
-groq
-
 # PDF parsing
 pdfplumber
 PyPDF2
