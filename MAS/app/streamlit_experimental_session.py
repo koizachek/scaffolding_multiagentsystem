@@ -22,7 +22,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(
 
 try:
     from MAS.mas_system import MultiAgentScaffoldingSystem
-    from MAS.utils.openai_api import OpenAIManager
+    from MAS.utils.ai_api import AIManager
     from MAS.utils.logging_utils import SessionLogger
     from MAS.utils.mermaid_parser import MermaidParser
     from MAS.database.mdbservice import *
@@ -34,7 +34,7 @@ except ImportError:
     sys.path.insert(0, parent_dir)
     
     from mas_system import MultiAgentScaffoldingSystem
-    from utils.openai_api import OpenAIManager
+    from utils.ai_api import AIManager
     from utils.logging_utils import SessionLogger
     from utils.mermaid_parser import MermaidParser
     from database.mdbservice import *
@@ -62,7 +62,7 @@ class StreamlitExperimentalSession:
             "mode": None
         }
         self.db_service = None
-        self.openai_manager = None
+        self.ai_manager = None
         self.session_logger = None
         self.mermaid_parser = MermaidParser()
 
@@ -90,11 +90,11 @@ class StreamlitExperimentalSession:
                 self.db_service = None
                 return False
 
-            # Initialize OpenAI manager for experimental mode
+            # Initialize AI manager for experimental mode
             if mode == "experimental":
                 try:
-                    openai_config = self.system.config.get("openai", {})
-                    self.openai_manager = OpenAIManager(openai_config)
+                    ai_manager_config = self.system.config.get("ai_manager", {})
+                    self.ai_manager = AIManager(ai_manager_config)
                     
                     # Initialize session logger
                     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -113,7 +113,7 @@ class StreamlitExperimentalSession:
                 except Exception as e:
                     st.error(f"Failed to initialize OpenAI integration: {e}")
                     self.demo_mode_fallback()
-                    self.openai_manager = None
+                    self.ai_manager = None
                     self.session_logger = None
 
                 # Initialize database db_service 
@@ -477,7 +477,7 @@ class StreamlitExperimentalSession:
         }
         
         # Try OpenAI integration for experimental mode
-        if self.session_data["mode"] == "experimental" and self.openai_manager:
+        if self.session_data["mode"] == "experimental" and self.ai_manager:
             try:
                 # Safely convert concept map data to internal format with robust error handling
                 internal_format = {"concepts": [], "relationships": []}
@@ -546,7 +546,7 @@ class StreamlitExperimentalSession:
                 scaffolding_level = self.session_data.get("learner_profile", {}).get("scaffolding_level", "medium")
                 
                 # Generate scaffolding response with level
-                api_result = self.openai_manager.generate_scaffolding_response(
+                api_result = self.ai_manager.generate_scaffolding_response(
                     agent_type.replace("_scaffolding", ""), 
                     internal_format, 
                     user_response=user_response,
@@ -585,7 +585,7 @@ class StreamlitExperimentalSession:
                 error_msg = f"OpenAI integration failed: {type(e).__name__}: {str(e)}"
                 if self.session_logger:
                     self.session_logger.log_event(
-                        event_type="openai_integration_error",
+                        event_type="ai_integration_error",
                         metadata={
                             "round_number": roundn,
                             "error_type": type(e).__name__,

@@ -14,9 +14,10 @@
     "participant_id_required": true,
     "concept_map_input_method": "mermaid"
   },
-  "openai": {
-    "primary_model": "gpt-4o",
-    "fallback_model": "gpt-4o-mini",
+  "ai_manager": {
+    "client": "groq",
+    "primary_model": "llama-3.3-70b-versatile",
+    "fallback_model": "meta-llama/llama-guard-4-12b",
     "max_tokens": 500,
     "temperature": 0.7,
     "max_retries": 3

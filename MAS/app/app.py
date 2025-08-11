@@ -441,7 +441,7 @@ def render_cm_submit_button():
     # Make the submit button more prominent
     st.markdown("### Submit Your Concept Map")
     
-    col1, col2, col3 = st.columns([1, 2, 1])
+    _, col2, _ = st.columns([1, 2, 1])
     with col2:
         if not st.session_state.followup:
             if st.button("🚀 Submit Concept Map", type='primary', use_container_width=True):

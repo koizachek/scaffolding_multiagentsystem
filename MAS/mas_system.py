@@ -25,7 +25,7 @@ from MAS.agents.base_agent import BaseAgent
 from MAS.utils.logging_utils import setup_logging, SessionLogger
 from MAS.utils.pdf_parser import parse_pdf_to_json
 from MAS.utils.visualization import plot_concept_map
-from MAS.utils.openai_api import OpenAIManager
+from MAS.utils.ai_api import AIManager
 from MAS.utils.mermaid_parser import MermaidParser
 from MAS.utils.session_timer import RoundManager
 from MAS.core.scaffolding_engine import ScaffoldingEngine
@@ -123,8 +123,8 @@ class MultiAgentScaffoldingSystem:
         # Initialize experimental components
         if mode == "experimental":
             # Initialize OpenAI manager
-            openai_config = self.config.get("openai", {})
-            self.openai_manager = OpenAIManager(openai_config)
+            ai_manager_config = self.config.get("ai_manager", {})
+            self.ai_manager = AIManager(ai_manager_config)
             
             # Initialize Mermaid parser
             self.mermaid_parser = MermaidParser()
@@ -152,7 +152,7 @@ class MultiAgentScaffoldingSystem:
             
         else:
             # Demo mode - no real API calls
-            self.openai_manager = None
+            self.ai_manager = None
             self.mermaid_parser = MermaidParser()  # Still need parser for demo
             self.round_manager = None
             self.session_logger = None
@@ -481,7 +481,7 @@ class MultiAgentScaffoldingSystem:
         
         # Generate initial scaffolding prompt
         context = {"round_number": round_number}
-        api_result = self.openai_manager.generate_scaffolding_response(
+        api_result = self.ai_manager.generate_scaffolding_response(
             agent_type.replace("_scaffolding", ""), concept_map, context=context
         )
         
@@ -515,7 +515,7 @@ class MultiAgentScaffoldingSystem:
             })
             
             # Generate agent follow-up
-            api_result = self.openai_manager.generate_scaffolding_response(
+            api_result = self.ai_manager.generate_scaffolding_response(
                 agent_type.replace("_scaffolding", ""), 
                 concept_map, 
                 user_response=user_response,
@@ -682,7 +682,7 @@ class MultiAgentScaffoldingSystem:
             "agent_sequence": self.agent_sequence,
             "session_start": self.round_manager.timer.session_start_time.isoformat() if self.round_manager and self.round_manager.timer.session_start_time else None,
             "rounds": self.session_rounds,
-            "openai_usage": self.openai_manager.get_usage_stats() if self.openai_manager else None,
+            "ai_usage": self.ai_manager.get_usage_stats() if self.ai_manager else None,
             "export_timestamp": datetime.now().isoformat()
         }
         
