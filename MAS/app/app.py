@@ -34,6 +34,7 @@ def init_session_state():
         "tutorial_completed": False,
         "conversation_turn": 0,
         "conversation_history": {},
+        "agent_msg": None,
         "show_tutorial": False
     }
     
@@ -438,18 +439,18 @@ def render_cm_submit_button():
     """Render concept map submit button."""
     st.markdown("---")  # Add a separator
     
+    if st.session_state.followup:
+        st.success("Concept map was submitted successfully!")
+        return
+
     # Make the submit button more prominent
     st.markdown("### Submit Your Concept Map")
     
     _, col2, _ = st.columns([1, 2, 1])
     with col2:
-        if not st.session_state.followup:
-            if st.button("🚀 Submit Concept Map", type='primary', use_container_width=True):
-                st.session_state.submit_request = True
-                st.rerun()
-        else:
-            st.info("⏳ Waiting for concept map submission...")
-
+        if st.button("🚀 Submit Concept Map", type='primary', use_container_width=True, disabled=st.session_state.submit_request):
+            st.session_state.submit_request = True
+            st.rerun() 
 
 def render_followup():
     """Render agent followup interaction with multi-turn conversation support."""
@@ -491,26 +492,27 @@ def render_followup():
             
             # Get agent response
             if st.session_state.experimental_session:
-                agent_msg = st.session_state.experimental_session.get_agent_response(
-                    roundn, 
-                    concept_map_data=current_cm_data,
-                    user_response=previous_user_response,
-                    conversation_turn=conversation_turn
-                )
-                
-                # Add to conversation history in session
-                st.session_state.experimental_session.add_to_conversation_history(
-                    roundn, "agent", agent_msg, {"conversation_turn": conversation_turn}
-                )
+                if not st.session_state.agent_msg:
+                    st.session_state.agent_msg = st.session_state.experimental_session.get_agent_response(
+                        roundn, 
+                        concept_map_data=current_cm_data,
+                        user_response=previous_user_response,
+                        conversation_turn=conversation_turn
+                    )
+                    
+                    # Add to conversation history in session
+                    st.session_state.experimental_session.add_to_conversation_history(
+                        roundn, "agent", st.session_state.agent_msg, {"conversation_turn": conversation_turn}
+                    )
             else:
                 # Demo mode with conversation awareness
                 if conversation_turn == 0:
-                    agent_msg = "This is a demo response. In experimental mode, you would receive personalized AI-powered scaffolding."
+                    st.session_state.agent_msg = "This is a demo response. In experimental mode, you would receive personalized AI-powered scaffolding."
                 else:
-                    agent_msg = f"Thank you for your response. This is demo follow-up #{conversation_turn}. In experimental mode, this would be a contextual response based on your input."
+                    st.session_state.agent_msg = f"Thank you for your response. This is demo follow-up #{conversation_turn}. In experimental mode, this would be a contextual response based on your input."
             
             st.markdown(f"**Current Response:**")
-            st.write(agent_msg)
+            st.write(st.session_state.agent_msg)
         
         # User response area - use unique key based on turn
         current_response_key = f'followup_response_r{roundn}_t{conversation_turn}'
@@ -537,7 +539,7 @@ def render_followup():
                 
                 # Add current exchange to history
                 conversation_history.append({
-                    'agent_message': agent_msg,
+                    'agent_message': st.session_state.agent_msg,
                     'user_response': user_response,
                     'turn': conversation_turn
                 })
@@ -553,6 +555,7 @@ def render_followup():
                 
                 # Increment turn counter for next iteration
                 st.session_state[conversation_turn_key] += 1
+                st.session_state.agent_msg = None
                 st.rerun()
         
         with col2:
@@ -562,7 +565,7 @@ def render_followup():
                 
                 # Add final exchange to history
                 conversation_history.append({
-                    'agent_message': agent_msg,
+                    'agent_message': st.session_state.agent_msg,
                     'user_response': user_response,
                     'turn': conversation_turn
                 })
@@ -588,6 +591,7 @@ def render_followup():
                 # Move to next round
                 st.session_state.followup = False
                 st.session_state.roundn += 1
+                st.session_state.agent_msg = None
                 st.rerun()
         
         with col3:
