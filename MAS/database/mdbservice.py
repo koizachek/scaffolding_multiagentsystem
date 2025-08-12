@@ -1,4 +1,3 @@
-from _typeshed import OpenBinaryMode
 import os, bcrypt, logging
 from typing import Any, Literal
 from dotenv import load_dotenv
