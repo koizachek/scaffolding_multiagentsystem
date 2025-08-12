@@ -1,3 +1,4 @@
+from _typeshed import OpenBinaryMode
 import os, bcrypt, logging
 from typing import Any, Literal
 from dotenv import load_dotenv
@@ -13,11 +14,13 @@ def _construct_uri_from_env() -> str:
 
 logger = logging.getLogger(__name__)
 
-class DatabaseConnectionException(Exception): pass
-class ProfileAlreadyExistsException(Exception): pass
-class ProfileNotFoundException(Exception): pass
-class MissingIndexException(Exception): pass
-class FalsePasswordException(Exception): pass
+class MDBServiceException(Exception): pass
+class IndexOverrideException(MDBServiceException): pass
+class DatabaseConnectionException(MDBServiceException): pass
+class ProfileAlreadyExistsException(MDBServiceException): pass
+class ProfileNotFoundException(MDBServiceException): pass
+class MissingIndexException(MDBServiceException): pass
+class FalsePasswordException(MDBServiceException): pass
 
 class MDBService:
     """Service for interacting with MongoDB Scaffolding database for storing and retrieving session data and profiles."""
@@ -35,8 +38,8 @@ class MDBService:
             self._scaffdb  = self._client['scaffolding'] # scaffolding database
             self._profiles = self._scaffdb['profiles'] # profiles collection (table)
             self._sessions = self._scaffdb['sessions'] # sessions collection (table)
+            self._session_logs = self._scaffdb['session_logs'] # logs collection (table)
             self._load_session_keys()
-            print(type(self._sessions))
         except Exception as e:
             raise DatabaseConnectionException(f"Failed to establish connection with database or retrieve information: {e}") 
    
@@ -63,7 +66,40 @@ class MDBService:
             A list containing all documents that match the query.
         """
         return list(collection.find_one({ key: value }))
-   
+    
+
+    def _add_insertion_timestamp(self, document: List[Dict[Any, Any]]) -> None:
+        """
+        When inserting a new document into the database, adds the insertion time entry.
+
+        Args:
+            document: any python dictionary.
+        Raises:
+            IndexOverrideException: If the document was already inserted, the insertion timestamp should not be redefined.
+        """
+        if 'inserted_at' in document:
+            raise IndexOverrideException("Document already contains a set unmodifiable 'inserted_at' index")
+
+        document['inserted_at'] = datetime.utcnow().isoformat() 
+        
+
+    def insert_session_log(self, session_log: List[Dict[Any, Any]]) -> None:
+        """
+        Inserts a session log record after validating required keys.
+
+        Args:
+            session_log: A dictionary containing session log.
+        Raises:
+            MissingIndexException: If any required session log index is missing.
+        """
+        
+        self._add_insertion_timestamp(session_log)
+        self._session_logs.insert_one(session_log)
+    
+    
+    def get_latest_session_log(self) -> Optional[Dict[Any, Any]]:
+        return self._sessions.find_one(sort=[('inserted_at', DESCENDING)])
+
 
     def insert_many_sessions(self, session_datas: List[Dict[Any, Any]]) -> None:
         """
@@ -90,7 +126,7 @@ class MDBService:
             if key not in session_data:
                 raise MissingIndexException(f"Session data is missing required index key '{key}'")
         
-        session_data['inserted_at'] = datetime.utcnow().isoformat() 
+        self._add_insertion_timestamp(session_data)
         self._sessions.insert_one(session_data)
     
 
