@@ -851,6 +851,10 @@ class StreamlitExperimentalSession:
                     "final_edges": len(self.session_data["current_concept_map"].get("relationships", [])),
                     "export_files": export_info
                 })
+            
+            # Export session log to the database
+            if self.db_service:
+                self.db_service.insert_session_log(self.session_logger.log_entries)
 
             logger.info("Session was finalized successfully") 
             return export_info
@@ -882,7 +886,7 @@ class StreamlitExperimentalSession:
             
             self._export_csv_data(csv_filepath)
 
-            # Export session data to the sessions database collection
+            # Export session data to the database
             if self.db_service:
                 self.db_service.insert_session(self.session_data)
 

@@ -67,7 +67,7 @@ class MDBService:
         return list(collection.find_one({ key: value }))
     
 
-    def _add_insertion_timestamp(self, document: List[Dict[Any, Any]]) -> None:
+    def _add_insertion_timestamp(self, document: Dict[Any, Any]) -> None:
         """
         When inserting a new document into the database, adds the insertion time entry.
 
@@ -91,9 +91,10 @@ class MDBService:
         Raises:
             MissingIndexException: If any required session log index is missing.
         """
-        
-        self._add_insertion_timestamp(session_log)
-        self._session_logs.insert_one(session_log)
+        log = {'logs': session_log}
+
+        self._add_insertion_timestamp(log)
+        self._session_logs.insert_one(log)
     
     
     def get_latest_session_log(self) -> Optional[Dict[Any, Any]]:
