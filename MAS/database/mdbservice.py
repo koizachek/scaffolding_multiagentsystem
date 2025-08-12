@@ -5,6 +5,8 @@ from pymongo import DESCENDING
 from pymongo.mongo_client import MongoClient
 from datetime import datetime
 
+from streamlit.runtime.state import session_state_proxy
+
 from MAS.database.dtos import *
 
 load_dotenv()
@@ -94,11 +96,45 @@ class MDBService:
         log = {'logs': session_log}
 
         self._add_insertion_timestamp(log)
+        log['session_id'] = session_log[0]['session_id']
         self._session_logs.insert_one(log)
     
     
-    def get_latest_session_log(self) -> Optional[Dict[Any, Any]]:
-        return self._sessions.find_one(sort=[('inserted_at', DESCENDING)])
+    def get_last_n_session_logs(self, n: int) -> List[List[Dict[Any, Any]]]:
+        """
+        Returns last n inserted session logs.
+
+        Args:
+            n: amount of session logs to be returned.
+        Returns:
+            A list containing session logs or an empty list if n is a non positive number.
+        """
+        if n <= 0: return []
+
+        return [doc['logs'] for doc in self._session_logs.find(sort=['inserted_at', DESCENDING]).limit(n)]
+
+
+    def get_session_log_by_session_id(self, session_id: str) -> Optional[List[Dict[Any, Any]]]:
+        """
+        Returns the sesson log for the session with the provided session id. 
+
+        Args:
+            session_id: id of the session requesting the log.
+        Returns: Session log as a list of dictionaries or None if no logs were found.
+        """
+        document = self._session_logs.find_one({ 'session_id': session_id })
+        return document['logs'] if document else None
+
+
+    def get_latest_session_log(self) -> Optional[List[Dict[Any, Any]]]:
+        """
+        Returns the last inserted session log.
+
+        Returns:
+            List of log dictionaries or None, if no logs were found.
+        """
+        document = self._session_logs.find_one(sort=['inserted_at', DESCENDING])
+        return document['logs'] if document else None
 
 
     def insert_many_sessions(self, session_datas: List[Dict[Any, Any]]) -> None:
