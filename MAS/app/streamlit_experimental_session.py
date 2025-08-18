@@ -76,17 +76,6 @@ class StreamlitExperimentalSession:
                 participant_id=participant_id or f"participant_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
             )
 
-            # TODO: Delete this part of the code and uncomment the code below when the database connection tuning is finished.
-            try: 
-                self.db_service = MDBService()
-                logger.info("    🗃️ Connection to the database established successfully")
-            except DatabaseConnectionException as e:
-                logger.error(f"    ❌🗃️ Could not establish the connection to the database: {e}")
-                st.error(f"Failed to connect to the database: {e}")
-                self.demo_mode_fallback()
-                self.db_service = None
-                return False
-
             # Initialize AI manager for experimental mode
             if mode == "experimental":
                 try:
@@ -112,18 +101,15 @@ class StreamlitExperimentalSession:
                     self.demo_mode_fallback()
                     self.ai_manager = None
                     self.session_logger = None
-
-                # Initialize database db_service 
-                # TODO: uncomment this part when the tuning of the database connection is finished
-                # TODO: so that the data is sent to the server only when the experimental mode is active.
-                # try: 
-                #     self.db_service = MDBService()
-                #     logger.info("    🗃️ Connection to the database established successfully")
-                # except DatabaseConnectionException as e:
-                #     logger.error("    ❌🗃️ Could not establish the connection to the database!")
-                #     st.error(f"Failed to connect to the database: {e}")
-                #     self.demo_mode_fallback()
-                #     self.db_service = None
+                
+                try: 
+                    self.db_service = MDBService()
+                    logger.info("    🗃️ Connection to the database established successfully")
+                except DatabaseConnectionException as e:
+                    logger.error("    ❌🗃️ Could not establish the connection to the database!")
+                    st.error(f"Failed to connect to the database: {e}")
+                    self.demo_mode_fallback()
+                    self.db_service = None
 
             return True
             
