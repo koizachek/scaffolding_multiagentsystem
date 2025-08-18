@@ -42,31 +42,41 @@ class AIManager:
         self.max_retries = self.config.get("max_retries", 3)
 
         # Initialize OpenAI-compatible client
-        if client_type == "openai":
-            api_key = os.getenv("OPENAI_API_KEY")
-            if not api_key:
-                raise ValueError(f"OpenAI was set as the primary client in the config but OPENAI_API_KEY environment variable not found")
+        match client_type:
+            case "openai":
+                api_key = os.getenv("OPENAI_API_KEY")
+                if not api_key:
+                    raise ValueError(f"OpenAI was set as the primary client in the config but OPENAI_API_KEY environment variable not found")
 
-            self.client = OpenAI(api_key=api_key)
-            self.client_name = "OpenAI"
-            self.primary_model = self.config.get("primary_model",   "gpt-4o")
-            self.fallback_model = self.config.get("fallback_model", "gpt-4o-mini")
+                self.client = OpenAI(api_key=api_key)
+                self.client_name = "OpenAI"
+                self.primary_model = self.config.get("primary_model",   "gpt-4o")
+                self.fallback_model = self.config.get("fallback_model", "gpt-4o-mini")
+            case "groq":
+                api_key = os.getenv("GROQ_API_KEY")
+                if not api_key:
+                    raise ValueError("Groq was set as the primary client in the config file but GROQ_API_KEY environment variable not found")
 
-        elif client_type == "groq":
-            api_key = os.getenv("GROQ_API_KEY")
-            if not api_key:
-                raise ValueError("Groq was set as the primary client in the config file but GROQ_API_KEY environment variable not found")
-
-            self.client = OpenAI(
-                api_key=api_key,
-                base_url="https://api.groq.com/openai/v1"
-            )
-            self.client_name = "Groq"
-            self.primary_model = self.config.get("primary_model",   "llama3-70b-8192")
-            self.fallback_model = self.config.get("fallback_model", "llama3-8b-8192")
-
-        else:
-            raise ValueError(f"Unsupported client '{client_type}'")
+                self.client = OpenAI(
+                    api_key=api_key,
+                    base_url="https://api.groq.com/openai/v1"
+                )
+                self.client_name = "Groq"
+                self.primary_model = self.config.get("primary_model",   "llama3-70b-8192")
+                self.fallback_model = self.config.get("fallback_model", "llama3-8b-8192")
+            case "open_router":
+                api_key = os.getenv("OPEN_ROUTER_API_KEY")
+                if not api_key:
+                    raise ValueError("Open Router was set as the primary client in the config file but OPEN_ROUTER_API_KEY environment variable not found")            
+                self.client = OpenAI(
+                    api_key=api_key,
+                    base_url="https://openrouter.ai/api/v1"
+                )
+                self.client_name = "Open Router"
+                self.primary_model = self.config.get("primary_model",   "openai/gpt-oss-20b:free")
+                self.fallback_model = self.config.get("fallback_model", "qwen/qwen3-coder:free")
+            case _:
+                raise ValueError(f"Unsupported client '{client_type}'")
 
         # Tracking
         self.current_model = self.primary_model
