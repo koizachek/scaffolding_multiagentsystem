@@ -205,6 +205,11 @@ def interactive_conceptmap_component(cm_data: Optional[Dict[str, Any]] = None,
                     
                     elements: {json.dumps(cytoscape_elements)},
                     
+                    // Zoom and pan settings to prevent map from disappearing
+                    minZoom: 0.2,      // Prevents zooming out too far (20% minimum)
+                    maxZoom: 3,        // Prevents zooming in too much (300% maximum)
+                    wheelSensitivity: 0.1,  // Makes scroll wheel zooming smoother
+                    
                     style: [
                         {{
                             selector: 'node',
@@ -325,14 +330,18 @@ def interactive_conceptmap_component(cm_data: Optional[Dict[str, Any]] = None,
                     sendDataToStreamlit();
                 }});
                 
-                // Toolbar buttons
+                // Toolbar buttons with enhanced reset/fit functionality
                 document.getElementById('resetBtn').onclick = function() {{
-                    cy.zoom(1);
-                    cy.center();
+                    cy.zoom(1);  // Reset to 100% zoom
+                    cy.center(); // Center the viewport
+                    cy.fit(50);  // Fit all elements with 50px padding
                 }};
                 
                 document.getElementById('fitBtn').onclick = function() {{
-                    cy.fit();
+                    cy.fit(50);  // Fit all elements to screen with padding
+                    // Ensure zoom stays within bounds
+                    if (cy.zoom() < 0.2) cy.zoom(0.2);
+                    if (cy.zoom() > 3) cy.zoom(3);
                 }};
                 
                 document.getElementById('exportBtn').onclick = function() {{

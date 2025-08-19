@@ -43,7 +43,33 @@
 			font-size: 12px;
 		}
 	</style>
+	<style>
+		.cy-toolbar {
+			position: absolute;
+			top: 10px;
+			right: 10px;
+			z-index: 100;
+			display: flex;
+			gap: 5px;
+		}
+		.cy-toolbar button {
+			padding: 5px 10px;
+			background: #3c3d4a;
+			color: white;
+			border: 1px solid #555;
+			border-radius: 4px;
+			cursor: pointer;
+			font-size: 12px;
+		}
+		.cy-toolbar button:hover {
+			background: #4c4d5a;
+		}
+	</style>
   	<body>
+		<div class="cy-toolbar">
+			<button id="resetViewBtn" title="Reset view to 100% zoom">Reset View</button>
+			<button id="fitScreenBtn" title="Fit all elements to screen">Fit to Screen</button>
+		</div>
 		
 		<div id="labelInputBox" style="
 			position: absolute;
@@ -55,5 +81,88 @@
 			<button id="labelInputSubmit">OK</button>
 		</div>	
 		<div id="cy"></div>
+		
+		<script>
+			// Simple, non-blocking Cytoscape zoom configuration
+			window.addEventListener('load', function() {
+				let cyInstance = null;
+				let attempts = 0;
+				
+				// Simple function to find Cytoscape instance
+				function findCytoscape() {
+					const container = document.getElementById('cy');
+					if (!container) return null;
+					
+					// Check common locations for cy instance
+					if (container._cyreg && container._cyreg.cy) {
+						return container._cyreg.cy;
+					}
+					
+					// Check for global cy variable
+					if (window.cy && typeof window.cy.zoom === 'function') {
+						return window.cy;
+					}
+					
+					return null;
+				}
+				
+				// Setup function
+				function setupCytoscape() {
+					cyInstance = findCytoscape();
+					
+					if (cyInstance) {
+						console.log('Cytoscape found, applying zoom limits');
+						
+						// Apply zoom limits
+						try {
+							if (typeof cyInstance.minZoom === 'function') {
+								cyInstance.minZoom(0.2);
+								cyInstance.maxZoom(3);
+							}
+						} catch (e) {
+							console.warn('Could not set zoom limits:', e);
+						}
+						
+						// Setup buttons
+						const resetBtn = document.getElementById('resetViewBtn');
+						const fitBtn = document.getElementById('fitScreenBtn');
+						
+						if (resetBtn) {
+							resetBtn.addEventListener('click', function() {
+								if (cyInstance) {
+									cyInstance.zoom(1);
+									cyInstance.center();
+								}
+							});
+						}
+						
+						if (fitBtn) {
+							fitBtn.addEventListener('click', function() {
+								if (cyInstance && cyInstance.elements) {
+									const elements = cyInstance.elements();
+									if (elements.length > 0) {
+										cyInstance.fit(elements, 50);
+									}
+								}
+							});
+						}
+						
+						return true;
+					}
+					return false;
+				}
+				
+				// Try to setup immediately
+				if (!setupCytoscape()) {
+					// If not found, try a few more times with delay
+					const checkTimer = setInterval(function() {
+						attempts++;
+						if (setupCytoscape() || attempts > 20) {
+							clearInterval(checkTimer);
+						}
+					}, 500); // Check every 500ms, up to 10 seconds
+				}
+			});
+		</script>
 	</body>
 </html>
