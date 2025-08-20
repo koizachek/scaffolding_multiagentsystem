@@ -208,13 +208,15 @@ class StreamlitExperimentalSession:
         return None
     
     def assess_background_knowledge(self, background: str, prior_knowledge: str) -> int:
-        """Assess background knowledge by comparing against expert concept map."""
-        # Load expert concept map
+        """Assess background knowledge by comparing against AMG task concepts."""
+        # AMG-related expert concepts for the market entry task
         expert_concepts = [
-            "climate change", "global warming", "carbon emissions", "fossil fuels",
-            "renewable energy", "greenhouse effect", "sea level rise", "extreme weather",
-            "deforestation", "ocean acidification", "biodiversity loss", "carbon sequestration",
-            "methane", "permafrost melting", "feedback loops", "policy interventions", "climate justice"
+            "market entry", "market analysis", "target market", "competitive environment",
+            "entry barriers", "legal framework", "startup resources", "entry strategy",
+            "export", "joint venture", "direct investment", "financing",
+            "marketing strategy", "success factors", "international expansion",
+            "market research", "business strategy", "competition", "regulation",
+            "capital", "partnership", "subsidiary", "distribution", "pricing"
         ]
         
         # Combine background and prior knowledge text

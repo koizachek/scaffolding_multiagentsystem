@@ -6,6 +6,10 @@ import streamlit as st
 from conceptmap_component import conceptmap_component, parse_conceptmap
 from streamlit.runtime.state import session_state
 from streamlit_experimental_session import StreamlitExperimentalSession
+from task_content import (
+    STUDY_TITLE, STUDY_INTRODUCTION, TASK_DESCRIPTION, 
+    EXTRA_MATERIALS, INITIAL_CONCEPT_MAP
+)
 
 
 logger = logging.getLogger(__name__)
@@ -63,19 +67,15 @@ def load_contents():
 
 def render_mode_selection():
     """Render mode selection page."""
-    st.header("Multi-Agent Scaffolding System")
+    st.header(STUDY_TITLE)
     st.markdown("---")
     
-    # Display the topic
-    st.subheader("Topic: Climate Change")
-    st.info("In this experiment, you will create a concept map about Climate Change and its related concepts.")
+    # Display the study introduction
+    st.markdown(STUDY_INTRODUCTION)
     
-    st.markdown("""
-    Welcome to the Multi-Agent Scaffolding System! This platform provides an interactive 
-    concept mapping experience with AI-powered scaffolding agents.
+    st.info("**Topic:** International market entry challenges for a German software start-up under the Adaptive Market Gatekeeping (AMG) standard.")
     
-    **Choose your mode:**
-    """)
+    st.markdown("**Choose your mode to begin:**")
     
     col1, col2 = st.columns(2)
     
@@ -374,11 +374,28 @@ def render_header():
     """Render page header."""
     st.header("Multiagent Scaffolding Experiment")
     st.markdown("---")
-    # Display Round 0 as "Baseline" and others as Round 1-4
-    if st.session_state.roundn == 0:
-        st.subheader(f"Round 0 (Baseline) / {st.session_state.max_rounds}")
-    else:
-        st.subheader(f"Round {st.session_state.roundn}/{st.session_state.max_rounds}")
+    
+    # Add resource buttons in the header
+    col1, col2, col3, col4 = st.columns([2, 1, 1, 1])
+    
+    with col1:
+        # Display Round 0 as "Baseline" and others as Round 1-4
+        if st.session_state.roundn == 0:
+            st.subheader(f"Round 0 (Baseline) / {st.session_state.max_rounds}")
+        else:
+            st.subheader(f"Round {st.session_state.roundn}/{st.session_state.max_rounds}")
+    
+    with col2:
+        if st.button("📋 Task Description", type="secondary", use_container_width=True):
+            render_task_dialog()
+    
+    with col3:
+        if st.button("📚 Extra Materials", type="secondary", use_container_width=True):
+            render_materials_dialog()
+    
+    with col4:
+        if st.button("❓ Help", type="secondary", use_container_width=True):
+            render_help_dialog()
     
     # Show mode and participant info
     if st.session_state.mode:
@@ -388,6 +405,34 @@ def render_header():
                 st.caption(f"Participant: {st.session_state.learner_profile['name']}")
         with col2:
             st.caption(f"Mode: {st.session_state.mode.title()}")
+
+
+@st.dialog("Task Description", width='large')
+def render_task_dialog():
+    """Render task description dialog with copy protection."""
+    # Import the protected display function
+    from task_display import display_task_with_protection
+    
+    # Use the protected display
+    display_task_with_protection()
+
+
+@st.dialog("Extra Materials", width='large')
+def render_materials_dialog():
+    """Render extra materials dialog."""
+    # Add CSS to prevent text selection
+    st.markdown("""
+    <style>
+        [data-testid="stDialogContent"] {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+    </style>
+    """, unsafe_allow_html=True)
+    
+    st.markdown(EXTRA_MATERIALS)
 
 
 @st.dialog("How to use a concept map creator?", width='large')

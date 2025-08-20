@@ -10,6 +10,15 @@
     },
 
     "initial_map": {
-	"elements": []
+	"elements": [
+            {
+                "data": {
+                    "id": "amg",
+                    "label": "Adaptive Market Gatekeeping (AMG)",
+                    "x": 400,
+                    "y": 300
+                }
+            }
+        ]
     }
 }
