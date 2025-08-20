@@ -49,9 +49,9 @@ def init_session_state():
         initial_map = copy.deepcopy(st.session_state.contents["initial_map"])
         st.session_state.cmdata = [initial_map]
     
-    # Set max rounds
+    # Set max rounds (now 5 total: round 0 + 4 scaffolding rounds)
     if 'max_rounds' not in st.session_state:
-        st.session_state.max_rounds = st.session_state.contents["rounds"]
+        st.session_state.max_rounds = 5  # Round 0 + 4 scaffolding rounds
 
 
 def load_contents():
@@ -150,10 +150,11 @@ def render_learner_profile():
         # Initialize agent sequence
         st.session_state.agent_sequence = st.session_state.experimental_session.initialize_agent_sequence()
         
-        st.info("🎲 Agent sequence randomized for experimental validity")
-        st.write("**Your agent sequence:**")
-        for i, agent in enumerate(st.session_state.agent_sequence):
-            st.write(f"{i+1}. {agent.replace('_', ' ').title()}")
+        st.info("📋 **Experiment Structure:**")
+        st.write("**Round 0:** Initial Map Creation (No Scaffolding) - Baseline")
+        st.write("**Rounds 1-4:** Agent-guided scaffolding sessions")
+        st.write("")
+        st.write("You will receive guidance from AI agents across 4 rounds to help improve your concept map.")
         
         st.markdown("---")
         st.info("📚 Before starting the experiment, you'll complete a brief tutorial on concept mapping.")
@@ -326,10 +327,15 @@ def render_summary_page():
             st.write(f"**Rounds completed:** {st.session_state.max_rounds}")
         
         with col2:
-            if st.session_state.agent_sequence:
+            # Only show agent names in demo mode
+            if st.session_state.mode == "demo" and st.session_state.agent_sequence:
                 st.write("**Agent order:**")
                 for i, agent in enumerate(st.session_state.agent_sequence):
                     st.write(f"{i+1}. {agent.replace('_', ' ').title()}")
+            elif st.session_state.mode == "experimental":
+                st.write("**Rounds completed:**")
+                st.write("- Round 0: Baseline")
+                st.write("- Rounds 1-4: Scaffolding")
     
     st.write("**Final concept map:**")
     if st.session_state.cmdata and len(st.session_state.cmdata) > st.session_state.roundn:
@@ -347,19 +353,32 @@ def render_summary_page():
 def render_agent_name():
     """Render agent name for current round."""
     roundn = st.session_state.roundn
-    if st.session_state.experimental_session:
-        agent_name = st.session_state.experimental_session.get_agent_name(roundn)
-    else:
-        agent_name = "Demo Agent"
     
-    st.markdown(f'<div style="font-size:20px;">🧙<b> {agent_name} Agent Follow-Up:</div>', unsafe_allow_html=True)
+    # In experimental mode, hide specific agent types from participants
+    if st.session_state.mode == "experimental":
+        if roundn == 0:
+            agent_name = "Initial Map Creation"
+        else:
+            agent_name = "Agent"  # Generic name for all scaffolding agents
+    else:
+        # In demo mode, show the actual agent type
+        if st.session_state.experimental_session:
+            agent_name = st.session_state.experimental_session.get_agent_name(roundn)
+        else:
+            agent_name = "Demo Agent"
+    
+    st.markdown(f'<div style="font-size:20px;">🧙<b> {agent_name} Follow-Up:</b></div>', unsafe_allow_html=True)
 
 
 def render_header():
     """Render page header."""
     st.header("Multiagent Scaffolding Experiment")
     st.markdown("---")
-    st.subheader(f"Round {st.session_state.roundn + 1}/{st.session_state.max_rounds}")
+    # Display Round 0 as "Baseline" and others as Round 1-4
+    if st.session_state.roundn == 0:
+        st.subheader(f"Round 0 (Baseline) / {st.session_state.max_rounds}")
+    else:
+        st.subheader(f"Round {st.session_state.roundn}/{st.session_state.max_rounds}")
     
     # Show mode and participant info
     if st.session_state.mode:

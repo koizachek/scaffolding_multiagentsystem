@@ -21,23 +21,41 @@ class ApplicationSession:
     @staticmethod 
     def initialize_agent_sequence() -> List[str]:
         """
-        Create randomized, non-repeating agent sequence.
+        Create hardcoded agent sequence for experimental consistency.
         """
+        # ideal order (no randomization)
         agents = [
-            "conceptual_scaffolding",
-            "strategic_scaffolding", 
-            "metacognitive_scaffolding",
-            "procedural_scaffolding"
+            "conceptual_scaffolding",    # Round 1 - always first
+            "procedural_scaffolding",     # Round 2 - always second
+            "strategic_scaffolding",      # Round 3 - always third
+            "metacognitive_scaffolding"   # Round 4 - always fourth
         ]
         
-        random.shuffle(agents)
+        # Note: Round 0 is handled separately (no scaffolding agent)
+        # No shuffling - hardcoded order for experimental consistency
         return agents
     
 
     def get_agent_name(self, roundn):
-        return self._agent_sequence[roundn-1].replace('_', ' ').title()
+        # Round 0 is special - no scaffolding agent
+        if roundn == 0:
+            return "Initial Map Creation (No Scaffolding)"
+        
+        # Adjust for 0-based indexing after round 0
+        agent_index = roundn - 1
+        if agent_index < len(self._agent_sequence):
+            return self._agent_sequence[agent_index].replace('_', ' ').title()
+        return "Unknown Agent"
 
     def get_agent_response(self, roundn):
-        agent = self._agent_sequence[roundn-1]
+        # Handle round 0 specially - no scaffolding
+        if roundn == 0:
+            return "Please create your initial concept map on the topic. Take your time to include all the concepts and relationships you think are relevant. When you're ready, submit your concept map to proceed."
+        
+        # Adjust for agent sequence after round 0
+        agent_index = roundn - 1
+        if agent_index >= len(self._agent_sequence):
+            return "Session completed. Thank you for participating!"
+        
+        agent = self._agent_sequence[agent_index]
         return _demo_responses[agent]
-    

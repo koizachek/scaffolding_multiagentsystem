@@ -252,26 +252,29 @@ class StreamlitExperimentalSession:
             return {"nodes": [], "edges": []}
     
     def initialize_agent_sequence(self) -> List[str]:
-        """Create randomized, non-repeating agent sequence."""
+        """Create hardcoded agent sequence for experimental consistency."""
+        # Hardcoded order for all participants (no randomization)
         agents = [
-            "conceptual_scaffolding",
-            "strategic_scaffolding", 
-            "metacognitive_scaffolding",
-            "procedural_scaffolding"
+            "conceptual_scaffolding",    # Round 1 - always first
+            "procedural_scaffolding",     # Round 2 - always second
+            "strategic_scaffolding",      # Round 3 - always third
+            "metacognitive_scaffolding"   # Round 4 - always fourth
         ]
         
-        # Randomize the order
-        random.shuffle(agents)
+        # Note: Round 0 is handled separately (no scaffolding agent)
         
         self.session_data["agent_sequence"] = agents
         
-        # Log the randomized sequence
+        # Log the hardcoded sequence
         if self.session_logger:
             self.session_logger.log_event(
                 event_type="agent_sequence_initialized",
                 metadata={
                     "agent_sequence": agents,
-                    "participant_id": self.session_data["learner_profile"].get("name", "unknown")
+                    "participant_id": self.session_data["learner_profile"].get("name", "unknown"),
+                    "sequence_type": "hardcoded",
+                    "total_rounds": 5,  # Including round 0
+                    "note": "Round 0 is baseline (no scaffolding), followed by 4 scaffolding rounds"
                 }
             )
         
@@ -279,8 +282,14 @@ class StreamlitExperimentalSession:
     
     def get_agent_name(self, roundn: int) -> str:
         """Get formatted agent name for display."""
-        if roundn < len(self.session_data["agent_sequence"]):
-            agent_type = self.session_data["agent_sequence"][roundn]
+        # Round 0 is special - no scaffolding agent
+        if roundn == 0:
+            return "Initial Map Creation (No Scaffolding)"
+        
+        # Adjust for 0-based indexing after round 0
+        agent_index = roundn - 1
+        if agent_index < len(self.session_data["agent_sequence"]):
+            agent_type = self.session_data["agent_sequence"][agent_index]
             return agent_type.replace('_', ' ').title()
         return "Unknown Agent"
     
@@ -446,10 +455,16 @@ class StreamlitExperimentalSession:
     
     def get_agent_response(self, roundn: int, concept_map_data: Optional[Dict[str, Any]] = None, user_response: Optional[str] = None, conversation_turn: int = 0) -> str:
         """Get agent response for the current round."""
-        if roundn >= len(self.session_data["agent_sequence"]):
+        # Handle round 0 specially - no scaffolding
+        if roundn == 0:
+            return "Please create your initial concept map on the topic. Take your time to include all the concepts and relationships you think are relevant. When you're ready, submit your concept map to proceed."
+        
+        # Adjust for agent sequence after round 0
+        agent_index = roundn - 1
+        if agent_index >= len(self.session_data["agent_sequence"]):
             return "Session completed. Thank you for participating!"
         
-        agent_type = self.session_data["agent_sequence"][roundn]
+        agent_type = self.session_data["agent_sequence"][agent_index]
         
         # Demo responses fallback
         demo_responses = {
@@ -610,11 +625,18 @@ class StreamlitExperimentalSession:
     def log_user_response(self, roundn: int, user_response: str, concept_map_data: Optional[Dict[str, Any]] = None):
         """Log user response to scaffolding."""
         if self.session_logger:
+            # Determine agent type (None for round 0)
+            if roundn == 0:
+                agent_type = None
+            else:
+                agent_index = roundn - 1
+                agent_type = self.session_data["agent_sequence"][agent_index] if agent_index < len(self.session_data["agent_sequence"]) else None
+            
             self.session_logger.log_user_input(
                 input_text=user_response,
                 metadata={
                     "round_number": roundn,
-                    "agent_type": self.session_data["agent_sequence"][roundn] if roundn < len(self.session_data["agent_sequence"]) else None,
+                    "agent_type": agent_type,
                     "concept_map_provided": concept_map_data is not None
                 }
             )
@@ -630,12 +652,19 @@ class StreamlitExperimentalSession:
             interaction_metrics = internal_format.get("interaction_metrics", {})
             session_timing = internal_format.get("session_timing", {})
             
+            # Determine agent type (None for round 0)
+            if roundn == 0:
+                agent_type = None
+            else:
+                agent_index = roundn - 1
+                agent_type = self.session_data["agent_sequence"][agent_index] if agent_index < len(self.session_data["agent_sequence"]) else None
+            
             # Add to evolution with enhanced data
             evolution_entry = {
                 "round": roundn,
                 "timestamp": datetime.now().isoformat(),
                 "concept_map": internal_format,
-                "agent_type": self.session_data["agent_sequence"][roundn] if roundn < len(self.session_data["agent_sequence"]) else None,
+                "agent_type": agent_type,
                 "action_history": action_history,
                 "interaction_metrics": interaction_metrics,
                 "session_timing": session_timing
@@ -678,12 +707,19 @@ class StreamlitExperimentalSession:
                     }
                 )
             
+            # Determine agent type (None for round 0)
+            if roundn == 0:
+                agent_type = None
+            else:
+                agent_index = roundn - 1
+                agent_type = self.session_data["agent_sequence"][agent_index] if agent_index < len(self.session_data["agent_sequence"]) else None
+            
             # Create a minimal evolution entry to maintain session continuity
             evolution_entry = {
                 "round": roundn,
                 "timestamp": datetime.now().isoformat(),
                 "concept_map": {"concepts": [], "relationships": [], "error": str(e)},
-                "agent_type": self.session_data["agent_sequence"][roundn] if roundn < len(self.session_data["agent_sequence"]) else None,
+                "agent_type": agent_type,
                 "action_history": [],
                 "interaction_metrics": {},
                 "session_timing": {}
@@ -949,16 +985,28 @@ class StreamlitExperimentalSession:
         if round_key not in self.session_data["conversation_history"]:
             self.session_data["conversation_history"][round_key] = []
         
-        # If speaker is "agent", get the specific agent type for this round
-        if speaker == "agent" and roundn < len(self.session_data["agent_sequence"]):
-            agent_type = self.session_data["agent_sequence"][roundn]
-            speaker_id = agent_type  # Use specific agent type as speaker ID
+        # Determine agent type and speaker ID
+        if speaker == "agent":
+            if roundn == 0:
+                # Round 0 has no agent
+                speaker_id = "system"
+                agent_type = None
+            else:
+                # Get specific agent type for rounds 1-4
+                agent_index = roundn - 1
+                if agent_index < len(self.session_data["agent_sequence"]):
+                    agent_type = self.session_data["agent_sequence"][agent_index]
+                    speaker_id = agent_type
+                else:
+                    speaker_id = speaker
+                    agent_type = None
         else:
-            speaker_id = speaker  # Keep "user" or other speakers as-is
+            speaker_id = speaker
+            agent_type = None
         
         conversation_entry = {
-            "speaker": speaker_id,  # Now includes specific agent type
-            "agent_type": self.session_data["agent_sequence"][roundn] if roundn < len(self.session_data["agent_sequence"]) and speaker == "agent" else None,
+            "speaker": speaker_id,
+            "agent_type": agent_type,
             "message": message,
             "timestamp": datetime.now().isoformat(),
             "metadata": metadata or {}
