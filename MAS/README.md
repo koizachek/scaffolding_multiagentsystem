@@ -84,21 +84,24 @@ This system enables researchers to study:
 - **Concept Map Evolution**: Track how concept maps develop through scaffolded interactions
 - **Agent-Specific Analysis**: Analyze which scaffolding agents are most effective for different learners
 
-## System Overview
+## Recent Updates (August 2025)
 
-The Multi-Agent Scaffolding System (MAS) provides scaffolded feedback on concept maps through four specialized AI agents:
+### Enhanced Experimental Environment
+- **Fixed Scaffolding Sequence**: Implemented hardcoded agent order for consistent experimental conditions
+  - Round 0: Baseline (no scaffolding)
+  - Rounds 1-4: Fixed sequence of scaffolding agents
+- **Task-Specific Configuration**: Modular scaffolding configuration system for different research domains
+- **Copy Protection**: Added comprehensive copy protection for task content to prevent external assistance
+- **Improved Background Assessment**: Enhanced knowledge assessment aligned with task domains
+- **AI Model Flexibility**: Support for multiple AI providers (OpenAI, Groq, Open Router)
 
-- **Conceptual Scaffolding**: Highlights key concepts and relationships, identifies gaps
-- **Strategic Scaffolding**: Offers planning and learning strategies  
-- **Metacognitive Scaffolding**: Prompts self-regulation and reflection
-- **Procedural Scaffolding**: Guides tool usage and concept mapping techniques
-
-Key features:
-- **Randomized agent sequences** for experimental validity
+### Key Features
+- **Fixed agent sequences** for experimental consistency
 - **Personalized learner profiling** with adaptive scaffolding levels
 - **Multi-turn conversations** (up to 5 exchanges per round)
 - **Comprehensive research data logging** with agent-specific tracking
 - **Interactive concept map editor** with real-time feedback
+- **Protected task display** preventing content copying
 
 ## Installation
 
@@ -159,25 +162,29 @@ The system collects:
 - Learning goals and interests
 - **Automatic scaffolding level assignment** based on background knowledge
 
-#### 3. Four-Round Experiment
-Each participant completes **4 rounds** with randomized agent order:
+#### 3. Five-Round Experiment
+Each participant completes **5 rounds** with a fixed scaffolding sequence:
 
 **Round Structure:**
+- **Round 0 (Baseline)**: Initial concept map creation without scaffolding
+- **Rounds 1-4**: Scaffolding rounds with fixed agent sequence
+
+**Each Scaffolding Round Includes:**
 1. **Concept Map Building**: Interactive editor for creating/extending concept maps
-2. **Agent Scaffolding**: Personalized feedback from one of four agent types
+2. **Agent Scaffolding**: Personalized feedback from assigned agent
 3. **Multi-turn Conversation**: Up to 5 exchanges for clarification and deeper scaffolding
 4. **Reflection**: Opportunity to revise concept map based on scaffolding
 
-**Agent Types (Randomized Order):**
-- Conceptual Scaffolding Agent
-- Strategic Scaffolding Agent  
-- Metacognitive Scaffolding Agent
-- Procedural Scaffolding Agent
+**Fixed Agent Sequence (Rounds 1-4):**
+1. Conceptual Scaffolding Agent
+2. Procedural Scaffolding Agent  
+3. Strategic Scaffolding Agent
+4. Metacognitive Scaffolding Agent
 
 #### 4. Data Export
 Automatic generation of research files:
 - **JSON**: Complete session data (`experimental_session_[name]_[timestamp].json`)
-- **CSV**: Flattened data for analysis (`experimental_results_[name]_[timestamp].csv`)
+- Includes all interactions, concept maps, and agent responses
 
 ## Research Data
 
@@ -258,7 +265,12 @@ MAS/
 │   ├── app.py              # Main application entry point
 │   ├── streamlit_experimental_session.py  # Session management
 │   ├── conceptmap_component.py  # Concept map editor
+│   ├── task_content.py     # Task descriptions and materials
+│   ├── task_display.py     # Protected task display module
 │   └── contents.json       # UI content and labels
+├── config/                 # Configuration modules
+│   ├── scaffolding_config.py  # Default scaffolding templates
+│   └── [domain]_scaffolding_config.py  # Domain-specific configs
 ├── agents/                 # AI scaffolding agents
 │   ├── conceptual_scaffolding_agent.py
 │   ├── strategic_scaffolding_agent.py
@@ -266,7 +278,7 @@ MAS/
 │   ├── procedural_scaffolding_agent.py
 │   └── agent_factory.py    # Agent creation and management
 ├── utils/                  # Core utilities
-│   ├── openai_api.py       # AI integration
+│   ├── ai_api.py           # Unified AI integration (OpenAI, Groq, etc.)
 │   ├── logging_utils.py    # Research data logging
 │   └── scaffolding_utils.py # Scaffolding analysis
 ├── examples/data/          # Reference data
@@ -281,7 +293,7 @@ The system uses `MAS/config.json` for configuration:
 
 ```json
 {
-  "max_rounds": 4,
+  "max_rounds": 5,
   "agents": {
     "conceptual_scaffolding": {"enabled": true},
     "strategic_scaffolding": {"enabled": true},
@@ -291,9 +303,27 @@ The system uses `MAS/config.json` for configuration:
   "logging": {
     "log_dir": "logs",
     "log_level": "INFO"
-  }
+  },
+  "client": "openai",
+  "primary_model": "gpt-4o",
+  "fallback_model": "gpt-4o-mini"
 }
 ```
+
+### Task-Specific Configuration
+The system supports modular task configurations through domain-specific config files in `MAS/config/`. Each configuration includes:
+- Domain-specific scaffolding prompts
+- Tailored assessment criteria
+- Custom expert concepts
+- Specialized follow-up templates
+
+### AI Provider Configuration
+Supports multiple AI providers:
+- **OpenAI**: GPT-4 and GPT-3.5 models
+- **Groq**: Llama and other open models
+- **Open Router**: Access to various AI models
+
+Configure by setting the `client` field and providing appropriate API keys.
 
 ## Testing the System
 

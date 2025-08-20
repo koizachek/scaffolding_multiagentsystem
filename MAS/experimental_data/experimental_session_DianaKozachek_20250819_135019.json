@@ -1,0 +1,753 @@
+{
+  "session_id": "session_20250819_134520",
+  "start_time": "2025-08-19T13:45:20.458893",
+  "learner_profile": {
+    "name": "DianaKozachek",
+    "background": "1",
+    "prior_knowledge": "2",
+    "confidence": "1 - Very Low",
+    "interests": "3",
+    "goals": "4",
+    "background_knowledge_score": 0,
+    "scaffolding_level": "high",
+    "zpd_level": "high",
+    "created_at": "2025-08-19T13:45:30.547486"
+  },
+  "agent_sequence": [
+    "procedural_scaffolding",
+    "metacognitive_scaffolding",
+    "conceptual_scaffolding",
+    "strategic_scaffolding"
+  ],
+  "used_agents": [],
+  "rounds": [],
+  "concept_map_evolution": [
+    {
+      "round": 0,
+      "timestamp": "2025-08-19T13:46:02.621607",
+      "concept_map": {
+        "concepts": [],
+        "relationships": [],
+        "action_history": [],
+        "interaction_metrics": {},
+        "session_timing": {},
+        "timestamp": "2025-08-19T13:46:02.607644",
+        "source_format": "streamlit_enhanced"
+      },
+      "agent_type": "procedural_scaffolding",
+      "action_history": [],
+      "interaction_metrics": {},
+      "session_timing": {}
+    },
+    {
+      "round": 0,
+      "timestamp": "2025-08-19T13:46:02.731926",
+      "concept_map": {
+        "concepts": [
+          {
+            "id": "89c53993-aa68-46c3-8bad-2d2300a52d98",
+            "text": "one",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "id": "70242a8f-4745-4598-8b46-d8fbbd2e89a3",
+            "text": "two",
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "relationships": [],
+        "action_history": [],
+        "interaction_metrics": {},
+        "session_timing": {},
+        "timestamp": "2025-08-19T13:46:02.727388",
+        "source_format": "streamlit_enhanced"
+      },
+      "agent_type": "procedural_scaffolding",
+      "action_history": [],
+      "interaction_metrics": {},
+      "session_timing": {}
+    },
+    {
+      "round": 0,
+      "timestamp": "2025-08-19T13:46:28.252209",
+      "concept_map": {
+        "concepts": [
+          {
+            "id": "89c53993-aa68-46c3-8bad-2d2300a52d98",
+            "text": "one",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "id": "70242a8f-4745-4598-8b46-d8fbbd2e89a3",
+            "text": "two",
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "relationships": [],
+        "action_history": [],
+        "interaction_metrics": {},
+        "session_timing": {},
+        "timestamp": "2025-08-19T13:46:28.246570",
+        "source_format": "streamlit_enhanced"
+      },
+      "agent_type": "procedural_scaffolding",
+      "action_history": [],
+      "interaction_metrics": {},
+      "session_timing": {}
+    },
+    {
+      "round": 1,
+      "timestamp": "2025-08-19T13:46:35.246838",
+      "concept_map": {
+        "concepts": [
+          {
+            "id": "89c53993-aa68-46c3-8bad-2d2300a52d98",
+            "text": "one",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "id": "70242a8f-4745-4598-8b46-d8fbbd2e89a3",
+            "text": "two",
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "relationships": [],
+        "action_history": [],
+        "interaction_metrics": {},
+        "session_timing": {},
+        "timestamp": "2025-08-19T13:46:35.240118",
+        "source_format": "streamlit_enhanced"
+      },
+      "agent_type": "metacognitive_scaffolding",
+      "action_history": [],
+      "interaction_metrics": {},
+      "session_timing": {}
+    },
+    {
+      "round": 1,
+      "timestamp": "2025-08-19T13:48:10.191157",
+      "concept_map": {
+        "concepts": [
+          {
+            "id": "89c53993-aa68-46c3-8bad-2d2300a52d98",
+            "text": "one",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "id": "70242a8f-4745-4598-8b46-d8fbbd2e89a3",
+            "text": "two",
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "relationships": [],
+        "action_history": [],
+        "interaction_metrics": {},
+        "session_timing": {},
+        "timestamp": "2025-08-19T13:48:10.183935",
+        "source_format": "streamlit_enhanced"
+      },
+      "agent_type": "metacognitive_scaffolding",
+      "action_history": [],
+      "interaction_metrics": {},
+      "session_timing": {}
+    },
+    {
+      "round": 2,
+      "timestamp": "2025-08-19T13:48:14.210304",
+      "concept_map": {
+        "concepts": [
+          {
+            "id": "89c53993-aa68-46c3-8bad-2d2300a52d98",
+            "text": "one",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "id": "70242a8f-4745-4598-8b46-d8fbbd2e89a3",
+            "text": "two",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "id": "717dd15c-2b30-4763-87dd-6d1ff6893a36",
+            "text": "three",
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "relationships": [],
+        "action_history": [],
+        "interaction_metrics": {},
+        "session_timing": {},
+        "timestamp": "2025-08-19T13:48:14.201926",
+        "source_format": "streamlit_enhanced"
+      },
+      "agent_type": "conceptual_scaffolding",
+      "action_history": [],
+      "interaction_metrics": {},
+      "session_timing": {}
+    },
+    {
+      "round": 2,
+      "timestamp": "2025-08-19T13:48:14.276355",
+      "concept_map": {
+        "concepts": [
+          {
+            "id": "89c53993-aa68-46c3-8bad-2d2300a52d98",
+            "text": "one",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "id": "70242a8f-4745-4598-8b46-d8fbbd2e89a3",
+            "text": "two",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "id": "717dd15c-2b30-4763-87dd-6d1ff6893a36",
+            "text": "three",
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "relationships": [],
+        "action_history": [],
+        "interaction_metrics": {},
+        "session_timing": {},
+        "timestamp": "2025-08-19T13:48:14.267470",
+        "source_format": "streamlit_enhanced"
+      },
+      "agent_type": "conceptual_scaffolding",
+      "action_history": [],
+      "interaction_metrics": {},
+      "session_timing": {}
+    },
+    {
+      "round": 2,
+      "timestamp": "2025-08-19T13:48:14.284037",
+      "concept_map": {
+        "concepts": [
+          {
+            "id": "89c53993-aa68-46c3-8bad-2d2300a52d98",
+            "text": "one",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "id": "70242a8f-4745-4598-8b46-d8fbbd2e89a3",
+            "text": "two",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "id": "717dd15c-2b30-4763-87dd-6d1ff6893a36",
+            "text": "three",
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "relationships": [],
+        "action_history": [],
+        "interaction_metrics": {},
+        "session_timing": {},
+        "timestamp": "2025-08-19T13:48:14.276388",
+        "source_format": "streamlit_enhanced"
+      },
+      "agent_type": "conceptual_scaffolding",
+      "action_history": [],
+      "interaction_metrics": {},
+      "session_timing": {}
+    },
+    {
+      "round": 2,
+      "timestamp": "2025-08-19T13:48:51.960228",
+      "concept_map": {
+        "concepts": [
+          {
+            "id": "89c53993-aa68-46c3-8bad-2d2300a52d98",
+            "text": "one",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "id": "70242a8f-4745-4598-8b46-d8fbbd2e89a3",
+            "text": "two",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "id": "717dd15c-2b30-4763-87dd-6d1ff6893a36",
+            "text": "three",
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "relationships": [],
+        "action_history": [],
+        "interaction_metrics": {},
+        "session_timing": {},
+        "timestamp": "2025-08-19T13:48:51.951878",
+        "source_format": "streamlit_enhanced"
+      },
+      "agent_type": "conceptual_scaffolding",
+      "action_history": [],
+      "interaction_metrics": {},
+      "session_timing": {}
+    },
+    {
+      "round": 3,
+      "timestamp": "2025-08-19T13:48:57.869233",
+      "concept_map": {
+        "concepts": [
+          {
+            "id": "89c53993-aa68-46c3-8bad-2d2300a52d98",
+            "text": "one",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "id": "70242a8f-4745-4598-8b46-d8fbbd2e89a3",
+            "text": "two",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "id": "717dd15c-2b30-4763-87dd-6d1ff6893a36",
+            "text": "three",
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "relationships": [],
+        "action_history": [],
+        "interaction_metrics": {},
+        "session_timing": {},
+        "timestamp": "2025-08-19T13:48:57.861704",
+        "source_format": "streamlit_enhanced"
+      },
+      "agent_type": "strategic_scaffolding",
+      "action_history": [],
+      "interaction_metrics": {},
+      "session_timing": {}
+    },
+    {
+      "round": 3,
+      "timestamp": "2025-08-19T13:48:57.950003",
+      "concept_map": {
+        "concepts": [
+          {
+            "id": "89c53993-aa68-46c3-8bad-2d2300a52d98",
+            "text": "one",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "id": "70242a8f-4745-4598-8b46-d8fbbd2e89a3",
+            "text": "two",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "id": "717dd15c-2b30-4763-87dd-6d1ff6893a36",
+            "text": "three",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "id": "ebcb250d-234b-40e7-ab32-c82bde57b2a6",
+            "text": "four",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "id": "caf4f3f9-c5e1-45d3-b1fe-523998bac41f",
+            "text": "five",
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "relationships": [],
+        "action_history": [],
+        "interaction_metrics": {},
+        "session_timing": {},
+        "timestamp": "2025-08-19T13:48:57.943976",
+        "source_format": "streamlit_enhanced"
+      },
+      "agent_type": "strategic_scaffolding",
+      "action_history": [],
+      "interaction_metrics": {},
+      "session_timing": {}
+    },
+    {
+      "round": 3,
+      "timestamp": "2025-08-19T13:50:18.994730",
+      "concept_map": {
+        "concepts": [
+          {
+            "id": "89c53993-aa68-46c3-8bad-2d2300a52d98",
+            "text": "one",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "id": "70242a8f-4745-4598-8b46-d8fbbd2e89a3",
+            "text": "two",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "id": "717dd15c-2b30-4763-87dd-6d1ff6893a36",
+            "text": "three",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "id": "ebcb250d-234b-40e7-ab32-c82bde57b2a6",
+            "text": "four",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "id": "caf4f3f9-c5e1-45d3-b1fe-523998bac41f",
+            "text": "five",
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "relationships": [],
+        "action_history": [],
+        "interaction_metrics": {},
+        "session_timing": {},
+        "timestamp": "2025-08-19T13:50:18.984476",
+        "source_format": "streamlit_enhanced"
+      },
+      "agent_type": "strategic_scaffolding",
+      "action_history": [],
+      "interaction_metrics": {},
+      "session_timing": {}
+    }
+  ],
+  "current_concept_map": {
+    "concepts": [
+      {
+        "id": "89c53993-aa68-46c3-8bad-2d2300a52d98",
+        "text": "one",
+        "x": 0,
+        "y": 0
+      },
+      {
+        "id": "70242a8f-4745-4598-8b46-d8fbbd2e89a3",
+        "text": "two",
+        "x": 0,
+        "y": 0
+      },
+      {
+        "id": "717dd15c-2b30-4763-87dd-6d1ff6893a36",
+        "text": "three",
+        "x": 0,
+        "y": 0
+      },
+      {
+        "id": "ebcb250d-234b-40e7-ab32-c82bde57b2a6",
+        "text": "four",
+        "x": 0,
+        "y": 0
+      },
+      {
+        "id": "caf4f3f9-c5e1-45d3-b1fe-523998bac41f",
+        "text": "five",
+        "x": 0,
+        "y": 0
+      }
+    ],
+    "relationships": [],
+    "action_history": [],
+    "interaction_metrics": {},
+    "session_timing": {},
+    "timestamp": "2025-08-19T13:50:18.984476",
+    "source_format": "streamlit_enhanced"
+  },
+  "mode": "experimental",
+  "conversation_history": {
+    "round_0": [
+      {
+        "speaker": "procedural_scaffolding",
+        "agent_type": "procedural_scaffolding",
+        "message": "You've started building your concept map with two initial concepts, \"one\" and \"two\" - great beginning. Now, let's think about how these concepts might be connected: what kind of relationship could exist between \"one\" and \"two\" that would add depth to your map? Can you consider what kind of link, such as a causal, hierarchical, or associative relationship, might be relevant between these two concepts?",
+        "timestamp": "2025-08-19T13:46:04.441548",
+        "metadata": {
+          "conversation_turn": 0
+        }
+      },
+      {
+        "speaker": "user",
+        "agent_type": null,
+        "message": " ",
+        "timestamp": "2025-08-19T13:46:28.201176",
+        "metadata": {
+          "conversation_turn": 0,
+          "final": true
+        }
+      }
+    ],
+    "round_1": [
+      {
+        "speaker": "metacognitive_scaffolding",
+        "agent_type": "metacognitive_scaffolding",
+        "message": "You've started with two concepts, \"one\" and \"two\", in your concept map, which is a great foundation for exploring relationships between ideas. As you move forward in this concept mapping session, consider how these concepts might interact or influence each other. What potential relationships can you envision between \"one\" and \"two\" that could enhance the depth and meaning of your concept map?",
+        "timestamp": "2025-08-19T13:46:35.810024",
+        "metadata": {
+          "conversation_turn": 0
+        }
+      },
+      {
+        "speaker": "user",
+        "agent_type": null,
+        "message": "I already added more. what is in the map?",
+        "timestamp": "2025-08-19T13:46:55.385488",
+        "metadata": {
+          "conversation_turn": 0
+        }
+      },
+      {
+        "speaker": "metacognitive_scaffolding",
+        "agent_type": "metacognitive_scaffolding",
+        "message": "I see you're eager to move forward, but let's take a moment to reflect on your current concept map. You've mentioned adding more, but I don't see any new concepts or relationships defined - can you clarify what you mean by \"I already added more\"? What specific changes were you thinking of making to the map, and how do you think they relate to the concepts \"one\" and \"two\"?",
+        "timestamp": "2025-08-19T13:46:55.979063",
+        "metadata": {
+          "conversation_turn": 1
+        }
+      },
+      {
+        "speaker": "user",
+        "agent_type": null,
+        "message": "no, what else is in the map? there are three nodes.",
+        "timestamp": "2025-08-19T13:47:18.863294",
+        "metadata": {
+          "conversation_turn": 1
+        }
+      },
+      {
+        "speaker": "metacognitive_scaffolding",
+        "agent_type": "metacognitive_scaffolding",
+        "message": "I notice that you're expecting to see more elements in the concept map, specifically three nodes, but our current map only shows two concepts: \"one\" and \"two\". Can you take a closer look at the concepts we have so far and think about what might be missing or what relationship could be added to expand our map? What do you think the third node could represent in relation to \"one\" and \"two\"?",
+        "timestamp": "2025-08-19T13:47:19.558971",
+        "metadata": {
+          "conversation_turn": 2
+        }
+      },
+      {
+        "speaker": "user",
+        "agent_type": null,
+        "message": " ",
+        "timestamp": "2025-08-19T13:48:10.151923",
+        "metadata": {
+          "conversation_turn": 2,
+          "final": true
+        }
+      }
+    ],
+    "round_2": [
+      {
+        "speaker": "conceptual_scaffolding",
+        "agent_type": "conceptual_scaffolding",
+        "message": "You've established a solid foundation with three distinct concepts: one, two, and three. Now, let's explore how these concepts might interact with each other - can you think of a potential relationship between any two of these concepts that could help reveal a deeper connection or pattern? What if you considered how these concepts might be related in a sequential or hierarchical manner?",
+        "timestamp": "2025-08-19T13:48:14.865737",
+        "metadata": {
+          "conversation_turn": 0
+        }
+      },
+      {
+        "speaker": "user",
+        "agent_type": null,
+        "message": "what else did I add?",
+        "timestamp": "2025-08-19T13:48:35.379169",
+        "metadata": {
+          "conversation_turn": 0
+        }
+      },
+      {
+        "speaker": "conceptual_scaffolding",
+        "agent_type": "conceptual_scaffolding",
+        "message": "You've taken a moment to reflect on your concept map, noticing that you haven't defined any relationships between \"one,\" \"two,\" and \"three\" yet. This is a great opportunity to think about how these concepts might be connected. What might be a logical relationship between \"one\" and \"two\" that could help you build a foundation for your concept map?",
+        "timestamp": "2025-08-19T13:48:35.924124",
+        "metadata": {
+          "conversation_turn": 1
+        }
+      },
+      {
+        "speaker": "user",
+        "agent_type": null,
+        "message": "no, there are four nodes.",
+        "timestamp": "2025-08-19T13:48:44.698035",
+        "metadata": {
+          "conversation_turn": 1
+        }
+      },
+      {
+        "speaker": "conceptual_scaffolding",
+        "agent_type": "conceptual_scaffolding",
+        "message": "I see you're thinking about the structure of your concept map, and you've mentioned four nodes, but currently, we have three concepts listed: one, two, and three. Can you help me understand how the idea of four nodes relates to these existing concepts, and perhaps we can explore how to connect them? What do you think is the relationship between these concepts that could help us build a more comprehensive map?",
+        "timestamp": "2025-08-19T13:48:45.402329",
+        "metadata": {
+          "conversation_turn": 2
+        }
+      },
+      {
+        "speaker": "user",
+        "agent_type": null,
+        "message": " ",
+        "timestamp": "2025-08-19T13:48:51.906087",
+        "metadata": {
+          "conversation_turn": 2,
+          "final": true
+        }
+      }
+    ],
+    "round_3": [
+      {
+        "speaker": "strategic_scaffolding",
+        "agent_type": "strategic_scaffolding",
+        "message": "You've made significant progress in identifying key concepts, and now it's time to explore how they interact with each other. Considering you have five distinct concepts, think about how they might be grouped or connected to reveal meaningful patterns or themes. What relationships can you envision between concepts \"one\" and \"two\" that could serve as a starting point for building connections throughout your map?",
+        "timestamp": "2025-08-19T13:48:58.607604",
+        "metadata": {
+          "conversation_turn": 0
+        }
+      },
+      {
+        "speaker": "user",
+        "agent_type": null,
+        "message": "what does the map say?",
+        "timestamp": "2025-08-19T13:49:11.645006",
+        "metadata": {
+          "conversation_turn": 0
+        }
+      },
+      {
+        "speaker": "strategic_scaffolding",
+        "agent_type": "strategic_scaffolding",
+        "message": "Let's take a closer look at your concept map, considering you've listed five key concepts. Since you're wondering what the map says, it's likely you're looking to explore connections between these concepts. What relationships do you think might exist between concepts \"one\" and \"two\" that could be a good starting point for defining relationships in your map?",
+        "timestamp": "2025-08-19T13:49:12.253193",
+        "metadata": {
+          "conversation_turn": 1
+        }
+      },
+      {
+        "speaker": "user",
+        "agent_type": null,
+        "message": "I just added another node. ",
+        "timestamp": "2025-08-19T13:49:45.671762",
+        "metadata": {
+          "conversation_turn": 1
+        }
+      },
+      {
+        "speaker": "strategic_scaffolding",
+        "agent_type": "strategic_scaffolding",
+        "message": "You've added a new node to your concept map, which is a great step forward. Now that you have five concepts, let's think about how they might be connected - what relationships can you start to identify between these concepts? How might you use the concepts \"one\" and \"two\" as a starting point to establish some initial relationships on your map?",
+        "timestamp": "2025-08-19T13:49:46.336438",
+        "metadata": {
+          "conversation_turn": 2
+        }
+      },
+      {
+        "speaker": "user",
+        "agent_type": null,
+        "message": "how many nodes are there in total at the moment",
+        "timestamp": "2025-08-19T13:50:01.465758",
+        "metadata": {
+          "conversation_turn": 2
+        }
+      },
+      {
+        "speaker": "strategic_scaffolding",
+        "agent_type": "strategic_scaffolding",
+        "message": "You've taken a great step by inquiring about the total number of nodes, which is currently 5. This suggests you're thinking about the overall structure of your concept map. What do you think is the next logical step in developing your map, now that you have a clear count of your concepts, and how might you begin to establish relationships between them?",
+        "timestamp": "2025-08-19T13:50:02.089990",
+        "metadata": {
+          "conversation_turn": 3
+        }
+      },
+      {
+        "speaker": "user",
+        "agent_type": null,
+        "message": "no, its six.",
+        "timestamp": "2025-08-19T13:50:09.926274",
+        "metadata": {
+          "conversation_turn": 3
+        }
+      },
+      {
+        "speaker": "strategic_scaffolding",
+        "agent_type": "strategic_scaffolding",
+        "message": "It's great that you're thinking beyond the initial concepts, but let's take a step back and focus on the current map. Since you mentioned \"six\", I'm wondering if this new concept is related to one of the existing concepts, such as \"five\", or if it's a completely new idea that challenges the current structure. Can you explain how \"six\" connects to the concepts we already have on the map?",
+        "timestamp": "2025-08-19T13:50:10.831137",
+        "metadata": {
+          "conversation_turn": 4
+        }
+      },
+      {
+        "speaker": "user",
+        "agent_type": null,
+        "message": " ",
+        "timestamp": "2025-08-19T13:50:18.910696",
+        "metadata": {
+          "conversation_turn": 4,
+          "final": true
+        }
+      }
+    ]
+  },
+  "end_time": "2025-08-19T13:50:19.047772",
+  "total_duration_seconds": 298.588879,
+  "total_rounds": 0,
+  "final_concept_map": {
+    "concepts": [
+      {
+        "id": "89c53993-aa68-46c3-8bad-2d2300a52d98",
+        "text": "one",
+        "x": 0,
+        "y": 0
+      },
+      {
+        "id": "70242a8f-4745-4598-8b46-d8fbbd2e89a3",
+        "text": "two",
+        "x": 0,
+        "y": 0
+      },
+      {
+        "id": "717dd15c-2b30-4763-87dd-6d1ff6893a36",
+        "text": "three",
+        "x": 0,
+        "y": 0
+      },
+      {
+        "id": "ebcb250d-234b-40e7-ab32-c82bde57b2a6",
+        "text": "four",
+        "x": 0,
+        "y": 0
+      },
+      {
+        "id": "caf4f3f9-c5e1-45d3-b1fe-523998bac41f",
+        "text": "five",
+        "x": 0,
+        "y": 0
+      }
+    ],
+    "relationships": [],
+    "action_history": [],
+    "interaction_metrics": {},
+    "session_timing": {},
+    "timestamp": "2025-08-19T13:50:18.984476",
+    "source_format": "streamlit_enhanced"
+  }
+}

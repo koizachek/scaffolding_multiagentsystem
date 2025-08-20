@@ -3,6 +3,9 @@ openai
 openai-agents
 python-dotenv
 
+# Image processing for copy protection
+Pillow
+
 # PDF parsing
 pdfplumber
 PyPDF2
