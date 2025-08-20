@@ -10,6 +10,7 @@ from task_content import (
     STUDY_TITLE, STUDY_INTRODUCTION, TASK_DESCRIPTION, 
     EXTRA_MATERIALS, INITIAL_CONCEPT_MAP
 )
+from text_to_image import render_protected_text, render_protected_markdown
 
 
 logger = logging.getLogger(__name__)
@@ -70,9 +71,11 @@ def render_mode_selection():
     st.header(STUDY_TITLE)
     st.markdown("---")
     
-    # Display the study introduction
+    # Display the study introduction as regular text (not protected)
+    st.markdown("### Study Introduction")
     st.markdown(STUDY_INTRODUCTION)
     
+    # Display topic as regular text (not protected)
     st.info("**Topic:** International market entry challenges for a German software start-up under the Adaptive Market Gatekeeping (AMG) standard.")
     
     st.markdown("**Choose your mode to begin:**")
@@ -410,29 +413,21 @@ def render_header():
 @st.dialog("Task Description", width='large')
 def render_task_dialog():
     """Render task description dialog with copy protection."""
-    # Import the protected display function
-    from task_display import display_task_with_protection
+    st.markdown("### 📋 Task Description")
+    st.caption("This content is protected and cannot be copied.")
     
-    # Use the protected display
-    display_task_with_protection()
+    # Render task description as protected image with larger font
+    render_protected_markdown(TASK_DESCRIPTION, width=1100, font_size=20)
 
 
 @st.dialog("Extra Materials", width='large')
 def render_materials_dialog():
-    """Render extra materials dialog."""
-    # Add CSS to prevent text selection
-    st.markdown("""
-    <style>
-        [data-testid="stDialogContent"] {
-            user-select: none;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-        }
-    </style>
-    """, unsafe_allow_html=True)
+    """Render extra materials dialog with copy protection."""
+    st.markdown("### 📚 Extra Materials")
+    st.caption("This content is protected and cannot be copied.")
     
-    st.markdown(EXTRA_MATERIALS)
+    # Render extra materials as protected image with larger font
+    render_protected_markdown(EXTRA_MATERIALS, width=1100, font_size=20)
 
 
 @st.dialog("How to use a concept map creator?", width='large')
