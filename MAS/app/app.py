@@ -36,6 +36,7 @@ def init_session_state():
         "session_initialized": False,
         "profile_initialized": False,
         "pre_questionnaire_completed": False,
+        "tam3_completed": False,
         "session_finalized": False,
         "tutorial_completed": False,
         "conversation_turn": 0,
@@ -71,6 +72,14 @@ def render_mode_selection():
     """Render mode selection page."""
     st.header(STUDY_TITLE)
     st.markdown("---")
+    
+    # Add page refresh warning at the top
+    st.error("""
+    🚫 **DO NOT REFRESH THE PAGE** 
+    
+    Refreshing the page will restart your session from the beginning and you will lose all progress!
+    Please complete the entire experiment in one session.
+    """)
     
     # Display the study introduction as regular text (not protected)
     st.markdown("### Study Introduction")
@@ -290,18 +299,12 @@ def render_summary_page():
     
     # Finalize session if not already done
     if not st.session_state.session_finalized and st.session_state.experimental_session:
-        with st.spinner("Finalizing session and exporting data..."):
+        with st.spinner("Finalizing session and saving data..."):
             export_info = st.session_state.experimental_session.finalize_session()
             st.session_state.session_finalized = True
             
             if "error" not in export_info:
-                st.success("✅ Session data exported successfully!")
-                
-                if st.session_state.mode == "experimental":
-                    st.info("📊 **Data Export Information:**")
-                    st.write(f"- **JSON File:** {export_info.get('json_file', 'N/A')}")
-                    st.write(f"- **CSV File:** {export_info.get('csv_file', 'N/A')}")
-                    st.write(f"- **Participant:** {export_info.get('participant_name', 'N/A')}")
+                st.success("✅ Session data saved successfully!")
     
     st.subheader("Session Summary")
     
@@ -309,27 +312,30 @@ def render_summary_page():
     if st.session_state.experimental_session:
         summary = st.session_state.experimental_session.get_session_summary()
         
+        # Get unique ID from learner profile
+        unique_id = st.session_state.learner_profile.get('unique_id', 'N/A') if st.session_state.learner_profile else 'N/A'
+        
         col1, col2 = st.columns(2)
         
         with col1:
-            st.write(f"**Participant:** {summary.get('participant_name', 'Demo User')}")
+            st.write(f"**Participant Name:** {summary.get('participant_name', 'Demo User')}")
+            st.write(f"**Participant ID:** {unique_id}")
             st.write(f"**Mode:** {summary.get('mode', 'unknown').title()}")
-            st.write(f"**Rounds completed:** {st.session_state.max_rounds}")
         
         with col2:
-            # Only show agent names in demo mode
-            if st.session_state.mode == "demo" and st.session_state.agent_sequence:
-                st.write("**Agent order:**")
-                for i, agent in enumerate(st.session_state.agent_sequence):
-                    st.write(f"{i+1}. {agent.replace('_', ' ').title()}")
-            elif st.session_state.mode == "experimental":
-                st.write("**Rounds completed:**")
-                st.write("- Round 0: Baseline")
-                st.write("- Rounds 1-4: Scaffolding")
+            st.write(f"**Total Rounds Completed:** {st.session_state.max_rounds}")
+            if st.session_state.mode == "experimental":
+                st.write("**Session Structure:**")
+                st.write("- Round 0: Baseline (no scaffolding)")
+                st.write("- Rounds 1-4: Agent-guided scaffolding")
     
-    st.write("**Final concept map:**")
-    if st.session_state.cmdata and len(st.session_state.cmdata) > st.session_state.roundn:
-        conceptmap_component(cm_data=st.session_state.cmdata[st.session_state.roundn-1])
+    # Thank you message
+    st.markdown("---")
+    st.info("""
+    📊 Your responses have been recorded for research purposes.
+    
+    Thank you for your valuable contribution to our research on AI-powered learning scaffolding!
+    """)
     
     # Option to start new session
     st.markdown("---")
@@ -874,7 +880,16 @@ def main():
     # Main session logic
     roundn = st.session_state.roundn
 
+    # Check if all rounds are completed and TAM3 is needed
     if roundn == st.session_state.max_rounds:
+        # TAM3 questionnaire (experimental mode only, after all rounds)
+        if (st.session_state.mode == "experimental" and 
+            not st.session_state.tam3_completed):
+            if st.session_state.experimental_session:
+                st.session_state.experimental_session.render_tam3_questionnaire()
+            return
+        
+        # Show summary page after TAM3 is completed (or immediately in demo mode)
         render_summary_page()
     else:
         render_header()

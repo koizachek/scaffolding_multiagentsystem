@@ -343,6 +343,214 @@ class StreamlitExperimentalSession:
                 # Automatically proceed to tutorial
                 st.rerun()
     
+    def render_tam3_questionnaire(self):
+        """Render TAM3 (Technology Acceptance Model) questionnaire."""
+        import streamlit as st
+        
+        st.header("📊 Technology Acceptance Questionnaire")
+        st.markdown("---")
+        
+        st.info("""
+        Please rate your agreement with the following statements about the scaffolding system you just used.
+        
+        Select a rating from 1 (Strongly Disagree) to 7 (Strongly Agree) for each statement.
+        """)
+        
+        # Define TAM3 items (12 items total)
+        tam3_items = [
+            # Perceived Usefulness (PU)
+            {
+                "construct": "PU",
+                "code": "PU1",
+                "statement": "Using the system improves my learning performance"
+            },
+            {
+                "construct": "PU",
+                "code": "PU2",
+                "statement": "Using the system increases my productivity"
+            },
+            {
+                "construct": "PU",
+                "code": "PU3",
+                "statement": "Using the system enhances my effectiveness"
+            },
+            
+            # Perceived Ease of Use (PEU)
+            {
+                "construct": "PEU",
+                "code": "PEU1",
+                "statement": "Learning to operate the system is easy for me"
+            },
+            {
+                "construct": "PEU",
+                "code": "PEU2",
+                "statement": "I find it easy to get the system to do what I want"
+            },
+            {
+                "construct": "PEU",
+                "code": "PEU3",
+                "statement": "It is easy for me to become skillful at using the system"
+            },
+            
+            # Behavioral Intention (BI)
+            {
+                "construct": "BI",
+                "code": "BI1",
+                "statement": "Assuming I had access, I intend to use the system"
+            },
+            {
+                "construct": "BI",
+                "code": "BI2",
+                "statement": "Given that I had access, I predict I would use the system"
+            },
+            
+            # Perceived Enjoyment (ENJ)
+            {
+                "construct": "ENJ",
+                "code": "ENJ1",
+                "statement": "I find using the system enjoyable"
+            },
+            {
+                "construct": "ENJ",
+                "code": "ENJ2",
+                "statement": "The actual process of using the system is pleasant"
+            },
+            
+            # Trust/Transparency (TR)
+            {
+                "construct": "TR",
+                "code": "TR1",
+                "statement": "I trust the guidance provided by the system"
+            },
+            {
+                "construct": "TR",
+                "code": "TR2",
+                "statement": "The system's scaffolding process is transparent to me"
+            }
+        ]
+        
+        # Randomize item order to reduce bias (but keep consistent within session)
+        import random
+        if "tam3_item_order" not in st.session_state:
+            st.session_state.tam3_item_order = list(range(len(tam3_items)))
+            random.shuffle(st.session_state.tam3_item_order)
+        
+        # Create form
+        with st.form("tam3_questionnaire"):
+            responses = {}
+            
+            # Display items in randomized order
+            for i, item_idx in enumerate(st.session_state.tam3_item_order, 1):
+                item = tam3_items[item_idx]
+                
+                st.markdown(f"**Statement {i} of {len(tam3_items)}**")
+                st.markdown(f"*{item['statement']}*")
+                
+                # Use radio buttons for 7-point Likert scale (like pre-knowledge questionnaire)
+                response = st.radio(
+                    "Select your rating:",
+                    options=[1, 2, 3, 4, 5, 6, 7],
+                    format_func=lambda x: {
+                        1: "1 - Strongly Disagree",
+                        2: "2 - Disagree", 
+                        3: "3 - Somewhat Disagree",
+                        4: "4 - Neutral",
+                        5: "5 - Somewhat Agree",
+                        6: "6 - Agree",
+                        7: "7 - Strongly Agree"
+                    }[x],
+                    key=f"tam3_{item['code']}",
+                    index=None,  # No default selection - user must click
+                    horizontal=True  # Display options horizontally
+                )
+                
+                if response:
+                    responses[item['code']] = {
+                        "construct": item['construct'],
+                        "code": item['code'],
+                        "statement": item['statement'],
+                        "response_value": response,
+                        "item_order": i
+                    }
+                
+                st.markdown("---")
+            
+            submitted = st.form_submit_button("Submit Questionnaire", type="primary")
+            
+            if submitted:
+                # Check if all items are answered
+                if len(responses) < len(tam3_items):
+                    st.error(f"Please answer all {len(tam3_items)} statements before submitting.")
+                    return
+                
+                # Calculate construct averages
+                construct_scores = {}
+                for construct in ["PU", "PEU", "BI", "ENJ", "TR"]:
+                    construct_items = [r for r in responses.values() if r['construct'] == construct]
+                    if construct_items:
+                        avg_score = sum(item['response_value'] for item in construct_items) / len(construct_items)
+                        construct_scores[construct] = round(avg_score, 2)
+                
+                # Generate unique participant ID
+                timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+                unique_id = f"P{timestamp[-6:]}"  # Use last 6 digits of timestamp
+                
+                # Store TAM3 data in session
+                tam3_data = {
+                    "responses": responses,
+                    "construct_scores": construct_scores,
+                    "participant_id": self.session_data.get("learner_profile", {}).get("name", "unknown"),
+                    "unique_id": unique_id,
+                    "timestamp": datetime.now().isoformat(),
+                    "randomized_order": st.session_state.tam3_item_order
+                }
+                
+                # Add unique ID to learner profile
+                if "learner_profile" in self.session_data:
+                    self.session_data["learner_profile"]["unique_id"] = unique_id
+                
+                # Add to session data
+                self.session_data["tam3_questionnaire"] = tam3_data
+                
+                # Log the TAM3 completion with detailed item responses
+                if self.session_logger:
+                    # Log overall TAM3 completion
+                    self.session_logger.log_event(
+                        event_type="tam3_questionnaire_completed",
+                        metadata={
+                            "construct_scores": construct_scores,
+                            "total_items": len(responses),
+                            "participant_id": tam3_data["participant_id"],
+                            "unique_id": unique_id
+                        }
+                    )
+                    
+                    # Log individual item responses for detailed analysis
+                    for code, response_data in responses.items():
+                        self.session_logger.log_event(
+                            event_type="tam3_item_response",
+                            metadata={
+                                "participant_id": tam3_data["participant_id"],
+                                "unique_id": unique_id,
+                                "timestamp": tam3_data["timestamp"],
+                                "construct_name": response_data["construct"],
+                                "item_code": code,
+                                "response_value": response_data["response_value"],
+                                "statement": response_data["statement"],
+                                "item_order": response_data["item_order"],
+                                "construct_type": "core_tam" if response_data["construct"] in ["PU", "PEU", "BI"] else "extended"
+                            }
+                        )
+                
+                # Update session state to mark TAM3 as completed
+                st.session_state.tam3_completed = True
+                
+                st.success("✅ Questionnaire completed! Thank you for your feedback.")
+                st.info("📊 Your responses have been recorded for research purposes.")
+                
+                # Automatically proceed to summary
+                st.rerun()
+    
     def create_learner_profile_form(self) -> Dict[str, Any]:
         """Create learner profile through Streamlit form."""
         st.header("Learner Profile Creation")
@@ -371,10 +579,6 @@ class StreamlitExperimentalSession:
                 background = st.text_area(
                     "Educational/Professional Background*", 
                     help="Brief description of your educational or professional background"
-                )
-                prior_knowledge = st.text_area(
-                    "Prior Knowledge*", 
-                    help="What prior knowledge do you have about the topic you'll be mapping?"
                 )
             
             with col2:
@@ -405,33 +609,31 @@ class StreamlitExperimentalSession:
                 other_factors = st.text_input("Other factors (please specify)", help="Any other learning factors not listed above")
                 if other_factors:
                     learning_factors.append(f"Other: {other_factors}")
-                
-                goals = st.text_area(
-                    "Learning Goals*", 
-                    help="What do you hope to achieve in this session?"
-                )
             
             submitted = st.form_submit_button("Create Profile", type="primary")
             
             if submitted:
                 # Validate required fields
-                if not all([name, age, nationality, background, prior_knowledge, confidence, goals]):
+                if not all([name, age, nationality, background, confidence]):
                     st.error("Please fill in all required fields marked with *")
                     return None
                 
+                # Generate unique participant ID
+                timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+                unique_id = f"P{timestamp[-6:]}"  # Use last 6 digits of timestamp
+                
                 # Assess background knowledge and determine scaffolding level
-                background_score = self.assess_background_knowledge(background, prior_knowledge)
+                background_score = self.assess_background_knowledge(background, "")  # No prior knowledge field anymore
                 scaffolding_level = self.determine_scaffolding_level(background_score)
                 
                 profile = {
                     "name": name.strip(),
+                    "unique_id": unique_id,
                     "age": age,
                     "nationality": nationality.strip(),
                     "background": background.strip(),
-                    "prior_knowledge": prior_knowledge.strip(),
                     "confidence": confidence,
                     "learning_factors": learning_factors,
-                    "goals": goals.strip(),
                     "background_knowledge_score": background_score,
                     "scaffolding_level": scaffolding_level,
                     "zpd_level": scaffolding_level,  # For compatibility
@@ -463,7 +665,7 @@ class StreamlitExperimentalSession:
         
         return None
     
-    def assess_background_knowledge(self, background: str, prior_knowledge: str) -> int:
+    def assess_background_knowledge(self, background: str, prior_knowledge: str = "") -> int:
         """Assess background knowledge by comparing against AMG task concepts."""
         # AMG-related expert concepts for the market entry task
         expert_concepts = [
@@ -475,8 +677,8 @@ class StreamlitExperimentalSession:
             "capital", "partnership", "subsidiary", "distribution", "pricing"
         ]
         
-        # Combine background and prior knowledge text
-        combined_text = (background + " " + prior_knowledge).lower()
+        # Use background text (prior_knowledge parameter kept for compatibility but not used)
+        combined_text = background.lower()
         
         # Count matches with expert concepts
         matches = 0
