@@ -12,8 +12,8 @@ from typing import Optional, Tuple
 
 def text_to_image(
     text: str, 
-    width: int = 1200,  # Increased width for better readability
-    font_size: int = 24,  # Much larger font size
+    width: int = 1000,  # Increased width for better readability
+    font_size: int = 26,  # Much larger font size
     line_height: int = 36,  # Increased line height
     padding: int = 30,  # More padding
     bg_color: Tuple[int, int, int] = (255, 255, 255),
@@ -78,8 +78,8 @@ def text_to_image(
 def render_protected_text(
     text: str,
     title: Optional[str] = None,
-    width: int = 1200,  # Increased width
-    font_size: int = 24,  # Much larger font
+    width: int = 1000,  # Increased width
+    font_size: int = 26,  # Much larger font
     show_warning: bool = True
 ) -> None:
     """
@@ -107,8 +107,8 @@ def render_protected_text(
 
 def render_protected_markdown(
     markdown_text: str,
-    width: int = 1200,  # Increased width
-    font_size: int = 22  # Much larger font
+    width: int = 1000,  # Increased width
+    font_size: int = 26  # Much larger font
 ) -> None:
     """
     Render markdown-formatted text as protected images.
@@ -154,8 +154,8 @@ def render_protected_markdown(
 def create_protected_expander(
     label: str,
     content: str,
-    width: int = 1200,  # Increased width
-    font_size: int = 24  # Much larger font
+    width: int = 1000,  
+    font_size: int = 26  # Much larger font
 ) -> None:
     """
     Create an expander with protected content.
@@ -192,8 +192,8 @@ def encode_image_base64(img: Image.Image) -> str:
 
 def render_protected_html(
     text: str,
-    width: int = 1200,  # Increased width
-    font_size: int = 24  # Much larger font
+    width: int = 1000,  # Increased width
+    font_size: int = 26  # Much larger font
 ) -> None:
     """
     Render text as protected HTML with additional JavaScript protection.
