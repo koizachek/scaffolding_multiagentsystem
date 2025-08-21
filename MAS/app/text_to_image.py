@@ -98,8 +98,9 @@ def render_protected_text(
     # Convert text to image
     img = text_to_image(text, width=width, font_size=font_size)
     
-    # Display image with updated parameter
-    st.image(img, use_container_width=True)
+    # Display image with fixed width for consistent display
+    # 700px fits well in the 750px "large" dialog width
+    st.image(img, width=700)
     
     if show_warning:
         st.caption("📝 This content is protected and cannot be copied.")
@@ -139,8 +140,9 @@ def render_protected_markdown(
                     st.markdown(f"### {title}")
                 if content:
                     img = text_to_image(content.strip(), width=width, font_size=font_size)
-                    # Use native Streamlit rendering with container width scaling
-                    st.image(img, use_container_width=True)
+                    # Use fixed width for consistent display in dialogs
+                    # 700px fits well in the 750px "large" dialog width
+                    st.image(img, width=700)
             elif i == 0 and section.strip():
                 # Handle content before first ###
                 content = section.strip()
@@ -148,8 +150,8 @@ def render_protected_markdown(
                 content = content.replace('*', '')
                 content = content.replace('- ', '• ')
                 img = text_to_image(content, width=width, font_size=font_size)
-                # Use native Streamlit rendering with container width scaling
-                st.image(img, use_container_width=True)
+                # Use fixed width for consistent display in dialogs
+                st.image(img, width=700)
 
 
 def create_protected_expander(
@@ -171,7 +173,8 @@ def create_protected_expander(
         # Clean up content
         clean_content = content.replace('**', '').replace('*', '').replace('- ', '• ')
         img = text_to_image(clean_content.strip(), width=width, font_size=font_size)
-        st.image(img, use_container_width=True)
+        # Use fixed width for consistent display
+        st.image(img, width=700)
         st.caption("📝 This content is protected and cannot be copied.")
 
 
