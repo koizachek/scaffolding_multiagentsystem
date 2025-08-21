@@ -1,0 +1,32 @@
+# Core dependencies
+openai
+openai-agents
+python-dotenv
+
+# Image processing for copy protection
+Pillow
+
+# PDF parsing
+pdfplumber
+PyPDF2
+
+# Graph visualization
+networkx
+matplotlib
+graphviz
+
+# CLI
+click
+
+# Utilities
+numpy
+pandas
+
+# Web Application
+streamlit
+st-conceptmap-cs >= 1.0.2.1
+
+# Database connection
+dnspython
+bcrypt
+pymongo
