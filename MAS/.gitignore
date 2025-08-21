@@ -124,3 +124,6 @@ logs/
 examples/output/
 *.png
 *.pdf
+
+# Ignore experimental data / logging
+MAS/experimental_data/

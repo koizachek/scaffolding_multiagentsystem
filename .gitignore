@@ -20,5 +20,9 @@ examples/output/example_config.json
 examples/output/all_features/concept_map.json
 examples/output/all_features/concept_map.png
 examples/output/all_features/config.json
+experimental_data/
 .venv/
 .env
+
+# Ignore experimental data / logging
+MAS/experimental_data/
