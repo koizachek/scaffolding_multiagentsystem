@@ -145,7 +145,7 @@ class StreamlitExperimentalSession:
                 "options": {
                     "A": "To monitor internal employee satisfaction",
                     "B": "To investigate and evaluate potential markets",
-                    "C": "To test software usability"
+                    "C": "To test software usability in different settings"
                 },
                 "correct": "B"
             },
@@ -153,7 +153,7 @@ class StreamlitExperimentalSession:
                 "id": "target_markets",
                 "question": "Target Markets: What does \"target market\" mean?",
                 "options": {
-                    "A": "The global IT industry in general",
+                    "A": "The location of an industry in general",
                     "B": "The customers already using the product at home",
                     "C": "The selected countries or regions for expansion"
                 },
@@ -164,7 +164,7 @@ class StreamlitExperimentalSession:
                 "question": "Competitive Environment: What does the competitive environment describe?",
                 "options": {
                     "A": "The competitors and their actions in the chosen market",
-                    "B": "The general economic growth rate of the home country",
+                    "B": "The general economic growth rate of the chosen market",
                     "C": "The company's internal team hierarchy"
                 },
                 "correct": "A"
@@ -175,7 +175,7 @@ class StreamlitExperimentalSession:
                 "options": {
                     "A": "The distance between the start-up's headquarters and the target market",
                     "B": "Obstacles that make market entry difficult for new firms",
-                    "C": "The costs of upgrading internal IT systems"
+                    "C": "The costs of entering a chosen market"
                 },
                 "correct": "B"
             },
@@ -183,7 +183,7 @@ class StreamlitExperimentalSession:
                 "id": "legal_framework",
                 "question": "Legal Framework: What is meant by the legal framework?",
                 "options": {
-                    "A": "Cultural preferences of local consumers",
+                    "A": "Preferences of local consumers",
                     "B": "The design of the company's organizational chart",
                     "C": "Laws and regulations in the target market"
                 },
@@ -193,9 +193,9 @@ class StreamlitExperimentalSession:
                 "id": "startup_resources",
                 "question": "Start-up Resources: Which resources are critical for expansion?",
                 "options": {
-                    "A": "A strong company logo and brand colors",
+                    "A": "A strong company branding and mission",
                     "B": "Capital, staff, and know-how",
-                    "C": "Access to inexpensive office furniture"
+                    "C": "Access to talent"
                 },
                 "correct": "B"
             },
@@ -204,7 +204,7 @@ class StreamlitExperimentalSession:
                 "question": "Export: What does an export strategy involve?",
                 "options": {
                     "A": "Outsourcing production to third countries",
-                    "B": "Relocating the entire headquarters abroad",
+                    "B": "Relocating or setting up new offices abroad",
                     "C": "Shipping products from the home country to the new market"
                 },
                 "correct": "C"
@@ -214,7 +214,7 @@ class StreamlitExperimentalSession:
                 "question": "Joint Venture: What is a joint venture?",
                 "options": {
                     "A": "A partnership with a local company in the target market",
-                    "B": "An informal supplier agreement without shared ownership",
+                    "B": "A partnership with a local supplier without shared ownership",
                     "C": "An acquisition of a competitor's patents"
                 },
                 "correct": "A"
@@ -223,8 +223,8 @@ class StreamlitExperimentalSession:
                 "id": "direct_investment",
                 "question": "Direct Investment: What does direct investment mean?",
                 "options": {
-                    "A": "Relying exclusively on e-commerce distribution",
-                    "B": "Licensing technology to other firms",
+                    "A": "Relying on e-commerce distribution",
+                    "B": "Licensing technology to other firms for profit",
                     "C": "Establishing your own subsidiary or branch abroad"
                 },
                 "correct": "C"
@@ -233,7 +233,7 @@ class StreamlitExperimentalSession:
                 "id": "financing",
                 "question": "Financing: What does financing refer to?",
                 "options": {
-                    "A": "Government tax incentives unrelated to funding",
+                    "A": "Government tax incentives related to funding",
                     "B": "Capital available to fund the expansion",
                     "C": "The firm's pricing strategy for customers"
                 },
@@ -243,8 +243,8 @@ class StreamlitExperimentalSession:
                 "id": "marketing_strategy",
                 "question": "Marketing Strategy: What is the goal of a marketing strategy?",
                 "options": {
-                    "A": "To manage financial reporting to investors",
-                    "B": "To reduce production costs in manufacturing",
+                    "A": "To unify messaging to investors",
+                    "B": "To create a path towards a goal market by unifying messages",
                     "C": "To attract and retain customers in the new market"
                 },
                 "correct": "C"
@@ -254,8 +254,8 @@ class StreamlitExperimentalSession:
                 "question": "Success Factors: What are success factors?",
                 "options": {
                     "A": "Key elements that determine whether expansion succeeds",
-                    "B": "Historical GDP growth of the home market",
-                    "C": "The size of the company's office facilities"
+                    "B": "Historical GDP growth in the home market",
+                    "C": "The company's assets, ranging from talents to products"
                 },
                 "correct": "A"
             },
@@ -264,7 +264,7 @@ class StreamlitExperimentalSession:
                 "question": "AMG: How might Adaptive Market Gatekeeping (AMG) affect new entrants?",
                 "options": {
                     "A": "Governments guarantee fair access for every new entrant",
-                    "B": "Start-ups gain automatic advantages over established firms",
+                    "B": "Start-ups gain automatic advantages over established firms as an incentive",
                     "C": "Incumbent firms adapt rules and networks to make entry harder"
                 },
                 "correct": "C"
