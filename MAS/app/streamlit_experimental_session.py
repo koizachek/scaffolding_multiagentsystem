@@ -123,16 +123,251 @@ class StreamlitExperimentalSession:
         self.session_data["mode"] = "demo"
 
 
+    def render_pre_knowledge_questionnaire(self):
+        """Render pre-knowledge questionnaire about task materials."""
+        import streamlit as st
+        
+        st.header("📝 Pre-Knowledge Assessment")
+        st.markdown("---")
+        
+        st.info("""
+        Please answer the following questions about the task materials. 
+        This helps us understand your baseline knowledge before the experiment begins.
+        
+        **Note:** Your answers will not be graded or shown to you. This is purely for research purposes.
+        """)
+        
+        # Define questions with correct answers (for logging only)
+        questions = [
+            {
+                "id": "market_analysis",
+                "question": "Market Analysis: What is the main purpose of market analysis?",
+                "options": {
+                    "A": "To monitor internal employee satisfaction",
+                    "B": "To investigate and evaluate potential markets",
+                    "C": "To test software usability"
+                },
+                "correct": "B"
+            },
+            {
+                "id": "target_markets",
+                "question": "Target Markets: What does \"target market\" mean?",
+                "options": {
+                    "A": "The global IT industry in general",
+                    "B": "The customers already using the product at home",
+                    "C": "The selected countries or regions for expansion"
+                },
+                "correct": "C"
+            },
+            {
+                "id": "competitive_environment",
+                "question": "Competitive Environment: What does the competitive environment describe?",
+                "options": {
+                    "A": "The competitors and their actions in the chosen market",
+                    "B": "The general economic growth rate of the home country",
+                    "C": "The company's internal team hierarchy"
+                },
+                "correct": "A"
+            },
+            {
+                "id": "entry_barriers",
+                "question": "Entry Barriers: What are entry barriers?",
+                "options": {
+                    "A": "The distance between the start-up's headquarters and the target market",
+                    "B": "Obstacles that make market entry difficult for new firms",
+                    "C": "The costs of upgrading internal IT systems"
+                },
+                "correct": "B"
+            },
+            {
+                "id": "legal_framework",
+                "question": "Legal Framework: What is meant by the legal framework?",
+                "options": {
+                    "A": "Cultural preferences of local consumers",
+                    "B": "The design of the company's organizational chart",
+                    "C": "Laws and regulations in the target market"
+                },
+                "correct": "C"
+            },
+            {
+                "id": "startup_resources",
+                "question": "Start-up Resources: Which resources are critical for expansion?",
+                "options": {
+                    "A": "A strong company logo and brand colors",
+                    "B": "Capital, staff, and know-how",
+                    "C": "Access to inexpensive office furniture"
+                },
+                "correct": "B"
+            },
+            {
+                "id": "export",
+                "question": "Export: What does an export strategy involve?",
+                "options": {
+                    "A": "Outsourcing production to third countries",
+                    "B": "Relocating the entire headquarters abroad",
+                    "C": "Shipping products from the home country to the new market"
+                },
+                "correct": "C"
+            },
+            {
+                "id": "joint_venture",
+                "question": "Joint Venture: What is a joint venture?",
+                "options": {
+                    "A": "A partnership with a local company in the target market",
+                    "B": "An informal supplier agreement without shared ownership",
+                    "C": "An acquisition of a competitor's patents"
+                },
+                "correct": "A"
+            },
+            {
+                "id": "direct_investment",
+                "question": "Direct Investment: What does direct investment mean?",
+                "options": {
+                    "A": "Relying exclusively on e-commerce distribution",
+                    "B": "Licensing technology to other firms",
+                    "C": "Establishing your own subsidiary or branch abroad"
+                },
+                "correct": "C"
+            },
+            {
+                "id": "financing",
+                "question": "Financing: What does financing refer to?",
+                "options": {
+                    "A": "Government tax incentives unrelated to funding",
+                    "B": "Capital available to fund the expansion",
+                    "C": "The firm's pricing strategy for customers"
+                },
+                "correct": "B"
+            },
+            {
+                "id": "marketing_strategy",
+                "question": "Marketing Strategy: What is the goal of a marketing strategy?",
+                "options": {
+                    "A": "To manage financial reporting to investors",
+                    "B": "To reduce production costs in manufacturing",
+                    "C": "To attract and retain customers in the new market"
+                },
+                "correct": "C"
+            },
+            {
+                "id": "success_factors",
+                "question": "Success Factors: What are success factors?",
+                "options": {
+                    "A": "Key elements that determine whether expansion succeeds",
+                    "B": "Historical GDP growth of the home market",
+                    "C": "The size of the company's office facilities"
+                },
+                "correct": "A"
+            },
+            {
+                "id": "amg",
+                "question": "AMG: How might Adaptive Market Gatekeeping (AMG) affect new entrants?",
+                "options": {
+                    "A": "Governments guarantee fair access for every new entrant",
+                    "B": "Start-ups gain automatic advantages over established firms",
+                    "C": "Incumbent firms adapt rules and networks to make entry harder"
+                },
+                "correct": "C"
+            }
+        ]
+        
+        with st.form("pre_knowledge_questionnaire"):
+            responses = {}
+            
+            # Display all questions
+            for i, q in enumerate(questions, 1):
+                st.markdown(f"**Question {i} of {len(questions)}**")
+                
+                # Use radio buttons for each question
+                answer = st.radio(
+                    q["question"],
+                    options=["A", "B", "C"],
+                    format_func=lambda x, opts=q["options"]: f"{x}) {opts[x]}",
+                    key=f"q_{q['id']}",
+                    index=None  # No default selection
+                )
+                
+                if answer:
+                    responses[q["id"]] = {
+                        "question": q["question"],
+                        "selected_answer": answer,
+                        "answer_text": q["options"][answer],
+                        "correct_answer": q["correct"],
+                        "is_correct": answer == q["correct"]
+                    }
+                
+                st.markdown("---")
+            
+            submitted = st.form_submit_button("Submit Questionnaire", type="primary")
+            
+            if submitted:
+                # Check if all questions are answered
+                if len(responses) < len(questions):
+                    st.error(f"Please answer all {len(questions)} questions before submitting.")
+                    return
+                
+                # Calculate score (for logging only, not shown to user)
+                score = sum(1 for r in responses.values() if r["is_correct"])
+                
+                # Store questionnaire data in session
+                questionnaire_data = {
+                    "responses": responses,
+                    "score": score,
+                    "total_questions": len(questions),
+                    "percentage": round((score / len(questions)) * 100, 2),
+                    "completed_at": datetime.now().isoformat()
+                }
+                
+                # Add to session data
+                self.session_data["pre_knowledge_questionnaire"] = questionnaire_data
+                
+                # Log the questionnaire completion
+                if self.session_logger:
+                    self.session_logger.log_event(
+                        event_type="pre_knowledge_questionnaire_completed",
+                        metadata={
+                            "score": score,
+                            "total_questions": len(questions),
+                            "percentage": questionnaire_data["percentage"],
+                            "detailed_responses": responses
+                        }
+                    )
+                
+                # Update session state to mark questionnaire as completed
+                st.session_state.pre_questionnaire_completed = True
+                st.session_state.show_tutorial = True
+                
+                st.success("✅ Questionnaire completed! Thank you for your responses.")
+                st.info("📚 Proceeding to the tutorial on concept mapping...")
+                
+                # Automatically proceed to tutorial
+                st.rerun()
+    
     def create_learner_profile_form(self) -> Dict[str, Any]:
         """Create learner profile through Streamlit form."""
         st.header("Learner Profile Creation")
         st.markdown("Please complete your learner profile to personalize your scaffolding experience.")
+        
+        # Add disclaimer
+        st.warning("""
+        **Important Notice:**
+        
+        For the integrity of this research study, we strongly encourage you to:
+        - Use only your own cognitive abilities and the materials provided
+        - Refrain from using ChatGPT or any other AI assistants during the tasks
+        
+        Please note that your browser activity, including tab switching, will be monitored during the experiment to ensure data validity.
+        
+        Your honest participation helps us develop better learning materials for future students. Thank you for your cooperation!
+        """)
         
         with st.form("learner_profile_form"):
             col1, col2 = st.columns(2)
             
             with col1:
                 name = st.text_input("Name*", help="Your name or identifier")
+                age = st.number_input("Age*", min_value=16, max_value=100, help="Your age")
+                nationality = st.text_input("Nationality*", help="Your nationality")
                 background = st.text_area(
                     "Educational/Professional Background*", 
                     help="Brief description of your educational or professional background"
@@ -148,10 +383,29 @@ class StreamlitExperimentalSession:
                     options=["1 - Very Low", "2 - Low", "3 - Moderate", "4 - High", "5 - Very High"],
                     help="How confident do you feel about concept mapping?"
                 )
-                interests = st.text_area(
-                    "Main Interests*", 
-                    help="What are your main interests or areas of focus?"
-                )
+                
+                # Learning factors that could affect outcome
+                st.markdown("**Learning Factors**")
+                st.caption("Please select any factors that may affect your learning (optional):")
+                
+                learning_factors = []
+                if st.checkbox("ADHD"):
+                    learning_factors.append("ADHD")
+                if st.checkbox("AuDHD"):
+                    learning_factors.append("AuDHD")
+                if st.checkbox("Autism Spectrum Disorder"):
+                    learning_factors.append("Autism Spectrum Disorder")
+                if st.checkbox("Visual Processing Disorder"):
+                    learning_factors.append("Visual Processing Disorder")
+                if st.checkbox("Dyslexia"):
+                    learning_factors.append("Dyslexia")
+                if st.checkbox("Dyscalculia"):
+                    learning_factors.append("Dyscalculia")
+                
+                other_factors = st.text_input("Other factors (please specify)", help="Any other learning factors not listed above")
+                if other_factors:
+                    learning_factors.append(f"Other: {other_factors}")
+                
                 goals = st.text_area(
                     "Learning Goals*", 
                     help="What do you hope to achieve in this session?"
@@ -161,7 +415,7 @@ class StreamlitExperimentalSession:
             
             if submitted:
                 # Validate required fields
-                if not all([name, background, prior_knowledge, confidence, interests, goals]):
+                if not all([name, age, nationality, background, prior_knowledge, confidence, goals]):
                     st.error("Please fill in all required fields marked with *")
                     return None
                 
@@ -171,10 +425,12 @@ class StreamlitExperimentalSession:
                 
                 profile = {
                     "name": name.strip(),
+                    "age": age,
+                    "nationality": nationality.strip(),
                     "background": background.strip(),
                     "prior_knowledge": prior_knowledge.strip(),
                     "confidence": confidence,
-                    "interests": interests.strip(),
+                    "learning_factors": learning_factors,
                     "goals": goals.strip(),
                     "background_knowledge_score": background_score,
                     "scaffolding_level": scaffolding_level,

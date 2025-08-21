@@ -35,6 +35,7 @@ def init_session_state():
         "profile_initialisation_started": False,
         "session_initialized": False,
         "profile_initialized": False,
+        "pre_questionnaire_completed": False,
         "session_finalized": False,
         "tutorial_completed": False,
         "conversation_turn": 0,
@@ -78,18 +79,31 @@ def render_mode_selection():
     # Display topic as regular text (not protected)
     st.info("**Topic:** International market entry challenges for a German software start-up under the Adaptive Market Gatekeeping (AMG) standard.")
     
-    st.markdown("**Choose your mode to begin:**")
+    # Add time information
+    st.warning("""
+    ⏱️ **Expected Duration:**
+    - Total experiment time: **Less than 1 hour**
+    - 5 rounds of concept mapping: **5-10 minutes per round**
+    - Additional time for questionnaires and profile setup
+    - Your time will be tracked for research purposes
     
-    col1, col2 = st.columns(2)
+    ⚠️ **Important:** Please complete all steps in order. Experimental data will only be logged after all required items are filled out. 
+    Your careful participation ensures the validity of our research data.
+    """)
     
-    with col1:
-        st.subheader("🔬 Experimental Mode")
+    st.markdown("**Ready to begin the experiment?**")
+    
+    # Center the experimental mode button
+    col1, col2, col3 = st.columns([1, 2, 1])
+    
+    with col2:
+        st.subheader("🔬 Experimental Session")
         st.markdown("""
-        - **Real OpenAI-powered scaffolding**
-        - **Personalized learner profiling**
-        - **Complete session logging**
-        - **Research-grade data export**
-        - Requires OpenAI API key
+        This research study includes:
+        - **AI-powered personalized scaffolding**
+        - **Learner profiling questionnaire**
+        - **5 rounds of concept mapping**
+        - **Data collection for research purposes**
         """)
         
         if st.button("Start Experimental Session", type="primary", use_container_width=True):
@@ -99,47 +113,21 @@ def render_mode_selection():
             # Initialize system
             if st.session_state.experimental_session.initialize_system("experimental"):
                 st.session_state.session_initialized = True
-                st.success("✅ Experimental mode initialized!")
+                st.success("✅ Experimental session initialized!")
                 st.rerun()
             else:
-                st.error("❌ Failed to initialize experimental mode")
-    
-    with col2:
-        st.subheader("🎭 Demo Mode")
-        st.markdown("""
-        - **Static demo responses**
-        - **No API requirements**
-        - **Quick demonstration**
-        - **No data logging**
-        - Perfect for testing
-        """)
-        
-        if st.button("Start Demo Session", type="secondary", use_container_width=True):
-            st.session_state.mode = "demo"
-            st.session_state.experimental_session = StreamlitExperimentalSession()
-            
-            # Initialize system in demo mode
-            if st.session_state.experimental_session.initialize_system("demo"):
-                st.session_state.session_initialized = True
-                st.session_state.profile_initialized = True  # Skip profile for demo
-                
-                # Initialize agent sequence for demo
-                st.session_state.agent_sequence = st.session_state.experimental_session.initialize_agent_sequence()
-                
-                st.success("✅ Demo mode initialized!")
-                st.rerun()
-            else:
-                st.error("❌ Failed to initialize demo mode")
+                st.error("❌ Failed to initialize experimental session. Please check your configuration.")
 
 
 def render_profile_login():
     with st.columns([1, 10, 1])[1]:
-        st.write("To participate in the experiment you have fill in the profile form!")
-        st.info("If you had already participated in the MAS experiments, you might have a saved user profile.")
-        if st.button("Create new profile", type='primary', use_container_width=True):
+        st.header("Welcome to the Experiment")
+        st.write("To participate in this research study, please complete the profile questionnaire.")
+        st.info("Your responses will help us personalize the scaffolding to your learning needs.")
+        
+        if st.button("Begin Profile Setup", type='primary', use_container_width=True):
             st.session_state.profile_initialisation_started = True
             st.rerun()
-        st.button("I already have a profile", use_container_width=True)
 
 
 def render_learner_profile():
@@ -160,10 +148,9 @@ def render_learner_profile():
         st.write("You will receive guidance from AI agents across 4 rounds to help improve your concept map.")
         
         st.markdown("---")
-        st.info("📚 Before starting the experiment, you'll complete a brief tutorial on concept mapping.")
+        st.info("📝 Next, you'll complete a pre-knowledge questionnaire about the task materials.")
         
-        if st.button("Begin Tutorial", type="primary"):
-            st.session_state.show_tutorial = True
+        if st.button("Continue to Pre-Knowledge Questionnaire", type="primary"):
             st.rerun()
 
 
@@ -858,10 +845,19 @@ def main():
         not st.session_state.profile_initialized):
         render_learner_profile()
         return
+    
+    # Pre-knowledge questionnaire (experimental mode only)
+    if (st.session_state.mode == "experimental" and 
+        st.session_state.profile_initialized and 
+        not st.session_state.pre_questionnaire_completed):
+        if st.session_state.experimental_session:
+            st.session_state.experimental_session.render_pre_knowledge_questionnaire()
+        return
 
     # Tutorial flow (experimental mode only)
     if (st.session_state.mode == "experimental" and 
         st.session_state.profile_initialized and 
+        st.session_state.pre_questionnaire_completed and
         st.session_state.show_tutorial):
         render_tutorial()
         return
@@ -869,6 +865,7 @@ def main():
     # Check if tutorial is required but not completed (experimental mode)
     if (st.session_state.mode == "experimental" and 
         st.session_state.profile_initialized and 
+        st.session_state.pre_questionnaire_completed and
         not st.session_state.tutorial_completed and 
         not st.session_state.show_tutorial):
         st.session_state.show_tutorial = True
