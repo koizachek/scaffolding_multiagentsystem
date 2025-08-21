@@ -343,110 +343,121 @@ class StreamlitExperimentalSession:
                 # Automatically proceed to tutorial
                 st.rerun()
     
-    def render_tam3_questionnaire(self):
-        """Render TAM3 (Technology Acceptance Model) questionnaire."""
+    def render_clt_questionnaire(self):
+        """Render Cognitive Load Theory questionnaire."""
         import streamlit as st
         
-        st.header("📊 Technology Acceptance Questionnaire")
+        st.header("📊 Cognitive Load Assessment")
         st.markdown("---")
         
         st.info("""
-        Please rate your agreement with the following statements about the scaffolding system you just used.
+        Please rate your agreement with the following statements about the learning task you just completed.
         
         Select a rating from 1 (Strongly Disagree) to 7 (Strongly Agree) for each statement.
         """)
         
-        # Define TAM3 items (12 items total)
-        tam3_items = [
-            # Perceived Usefulness (PU)
+        # Define CLT items (15 items total)
+        clt_items = [
+            # Intrinsic Cognitive Load (ICL)
             {
-                "construct": "PU",
-                "code": "PU1",
-                "statement": "Using the system improves my learning performance"
+                "construct": "ICL",
+                "code": "ICL1",
+                "statement": "The learning content was difficult to understand."
             },
             {
-                "construct": "PU",
-                "code": "PU2",
-                "statement": "Using the system increases my productivity"
+                "construct": "ICL",
+                "code": "ICL2",
+                "statement": "The explanations of the learning content were difficult to understand."
             },
             {
-                "construct": "PU",
-                "code": "PU3",
-                "statement": "Using the system enhances my effectiveness"
-            },
-            
-            # Perceived Ease of Use (PEU)
-            {
-                "construct": "PEU",
-                "code": "PEU1",
-                "statement": "Learning to operate the system is easy for me"
+                "construct": "ICL",
+                "code": "ICL3",
+                "statement": "The learning content was complex."
             },
             {
-                "construct": "PEU",
-                "code": "PEU2",
-                "statement": "I find it easy to get the system to do what I want"
+                "construct": "ICL",
+                "code": "ICL4",
+                "statement": "The learning content included much complex information."
             },
             {
-                "construct": "PEU",
-                "code": "PEU3",
-                "statement": "It is easy for me to become skillful at using the system"
+                "construct": "ICL",
+                "code": "ICL5",
+                "statement": "Without prior knowledge, the information was not understandable."
             },
             
-            # Behavioral Intention (BI)
+            # Extraneous Cognitive Load (ECL)
             {
-                "construct": "BI",
-                "code": "BI1",
-                "statement": "Assuming I had access, I intend to use the system"
+                "construct": "ECL",
+                "code": "ECL1",
+                "statement": "It was difficult to gain an overview of the structure of the learning material."
             },
             {
-                "construct": "BI",
-                "code": "BI2",
-                "statement": "Given that I had access, I predict I would use the system"
+                "construct": "ECL",
+                "code": "ECL2",
+                "statement": "The design of the learning material made it difficult to recognise links between individual information units."
+            },
+            {
+                "construct": "ECL",
+                "code": "ECL3",
+                "statement": "The learning material was inconveniently designed."
+            },
+            {
+                "construct": "ECL",
+                "code": "ECL4",
+                "statement": "The design of the learning material made it difficult to find relevant information quickly."
+            },
+            {
+                "construct": "ECL",
+                "code": "ECL5",
+                "statement": "Because of the design of the learning material, I had the impression that I could not concentrate on the learning content."
             },
             
-            # Perceived Enjoyment (ENJ)
+            # Germane Cognitive Load (GCL)
             {
-                "construct": "ENJ",
-                "code": "ENJ1",
-                "statement": "I find using the system enjoyable"
+                "construct": "GCL",
+                "code": "GCL1",
+                "statement": "I actively reflected upon the learning content."
             },
             {
-                "construct": "ENJ",
-                "code": "ENJ2",
-                "statement": "The actual process of using the system is pleasant"
-            },
-            
-            # Trust/Transparency (TR)
-            {
-                "construct": "TR",
-                "code": "TR1",
-                "statement": "I trust the guidance provided by the system"
+                "construct": "GCL",
+                "code": "GCL3",
+                "statement": "I made an effort to understand the learning content."
             },
             {
-                "construct": "TR",
-                "code": "TR2",
-                "statement": "The system's scaffolding process is transparent to me"
+                "construct": "GCL",
+                "code": "GCL5",
+                "statement": "I achieved a comprehensive understanding of the learning content."
+            },
+            {
+                "construct": "GCL",
+                "code": "GCL6",
+                "statement": "I was able to expand my prior knowledge with the learning content."
+            },
+            {
+                "construct": "GCL",
+                "code": "GCL7",
+                "statement": "I can apply the knowledge that I acquired through the learning material quickly and accurately."
             }
         ]
         
         # Randomize item order to reduce bias (but keep consistent within session)
         import random
-        if "tam3_item_order" not in st.session_state:
-            st.session_state.tam3_item_order = list(range(len(tam3_items)))
-            random.shuffle(st.session_state.tam3_item_order)
+        if "clt_item_order" not in st.session_state:
+            st.session_state.clt_item_order = list(range(len(clt_items)))
+            random.shuffle(st.session_state.clt_item_order)
         
         # Create form
-        with st.form("tam3_questionnaire"):
+        with st.form("clt_questionnaire"):
             responses = {}
             
             # Display items in randomized order
-            for i, item_idx in enumerate(st.session_state.tam3_item_order, 1):
-                item = tam3_items[item_idx]
+            for i, item_idx in enumerate(st.session_state.clt_item_order, 1):
+                item = clt_items[item_idx]
                 
-                st.markdown(f"**Statement {i} of {len(tam3_items)}**")
+                st.markdown(f"**Statement {i} of {len(clt_items)}**")
                 st.markdown(f"*{item['statement']}*")
                 
-                # Use radio buttons for 7-point Likert scale (like pre-knowledge questionnaire)
+                # Use radio buttons for 7-point Likert scale
                 response = st.radio(
                     "Select your rating:",
                     options=[1, 2, 3, 4, 5, 6, 7],
@@ -459,7 +470,7 @@ class StreamlitExperimentalSession:
                         6: "6 - Agree",
                         7: "7 - Strongly Agree"
                     }[x],
-                    key=f"tam3_{item['code']}",
+                    key=f"clt_{item['code']}",
                     index=None,  # No default selection - user must click
                     horizontal=True  # Display options horizontally
                 )
@@ -479,73 +490,271 @@ class StreamlitExperimentalSession:
             
             if submitted:
                 # Check if all items are answered
-                if len(responses) < len(tam3_items):
-                    st.error(f"Please answer all {len(tam3_items)} statements before submitting.")
+                if len(responses) < len(clt_items):
+                    st.error(f"Please answer all {len(clt_items)} statements before submitting.")
                     return
                 
                 # Calculate construct averages
                 construct_scores = {}
-                for construct in ["PU", "PEU", "BI", "ENJ", "TR"]:
+                for construct in ["ICL", "ECL", "GCL"]:
                     construct_items = [r for r in responses.values() if r['construct'] == construct]
                     if construct_items:
                         avg_score = sum(item['response_value'] for item in construct_items) / len(construct_items)
                         construct_scores[construct] = round(avg_score, 2)
                 
-                # Generate unique participant ID
-                timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-                unique_id = f"P{timestamp[-6:]}"  # Use last 6 digits of timestamp
-                
-                # Store TAM3 data in session
-                tam3_data = {
+                # Store CLT data in session
+                clt_data = {
                     "responses": responses,
                     "construct_scores": construct_scores,
                     "participant_id": self.session_data.get("learner_profile", {}).get("name", "unknown"),
-                    "unique_id": unique_id,
+                    "unique_id": self.session_data.get("learner_profile", {}).get("unique_id", "N/A"),
                     "timestamp": datetime.now().isoformat(),
-                    "randomized_order": st.session_state.tam3_item_order
+                    "randomized_order": st.session_state.clt_item_order
                 }
                 
-                # Add unique ID to learner profile
-                if "learner_profile" in self.session_data:
-                    self.session_data["learner_profile"]["unique_id"] = unique_id
-                
                 # Add to session data
-                self.session_data["tam3_questionnaire"] = tam3_data
+                self.session_data["clt_questionnaire"] = clt_data
                 
-                # Log the TAM3 completion with detailed item responses
+                # Log the CLT completion with detailed item responses
                 if self.session_logger:
-                    # Log overall TAM3 completion
+                    # Log overall CLT completion
                     self.session_logger.log_event(
-                        event_type="tam3_questionnaire_completed",
+                        event_type="clt_questionnaire_completed",
                         metadata={
                             "construct_scores": construct_scores,
                             "total_items": len(responses),
-                            "participant_id": tam3_data["participant_id"],
-                            "unique_id": unique_id
+                            "participant_id": clt_data["participant_id"],
+                            "unique_id": clt_data["unique_id"]
                         }
                     )
                     
                     # Log individual item responses for detailed analysis
                     for code, response_data in responses.items():
                         self.session_logger.log_event(
-                            event_type="tam3_item_response",
+                            event_type="clt_item_response",
                             metadata={
-                                "participant_id": tam3_data["participant_id"],
-                                "unique_id": unique_id,
-                                "timestamp": tam3_data["timestamp"],
+                                "participant_id": clt_data["participant_id"],
+                                "unique_id": clt_data["unique_id"],
+                                "timestamp": clt_data["timestamp"],
                                 "construct_name": response_data["construct"],
                                 "item_code": code,
                                 "response_value": response_data["response_value"],
                                 "statement": response_data["statement"],
-                                "item_order": response_data["item_order"],
-                                "construct_type": "core_tam" if response_data["construct"] in ["PU", "PEU", "BI"] else "extended"
+                                "item_order": response_data["item_order"]
                             }
                         )
                 
-                # Update session state to mark TAM3 as completed
-                st.session_state.tam3_completed = True
+                # Update session state to mark CLT as completed
+                st.session_state.clt_completed = True
                 
-                st.success("✅ Questionnaire completed! Thank you for your feedback.")
+                st.success("✅ Cognitive Load questionnaire completed!")
+                st.info("📊 Proceeding to the Technology Acceptance questionnaire...")
+                
+                # Automatically proceed to UTAUT2
+                st.rerun()
+    
+    def render_utaut2_questionnaire(self):
+        """Render UTAUT2 questionnaire."""
+        import streamlit as st
+        
+        st.header("📋 Technology Acceptance Questionnaire")
+        st.markdown("---")
+        
+        st.info("""
+        Please rate your agreement with the following statements about the agents that helped you during the concept mapping task.
+        
+        Select a rating from 1 (Strongly Disagree) to 7 (Strongly Agree) for each statement.
+        """)
+        
+        # Define UTAUT2 items (14 items total, agent-adapted)
+        utaut2_items = [
+            # Performance Expectancy (PE)
+            {
+                "construct": "PE",
+                "code": "PE1",
+                "statement": "The agents helped me improve the quality of my concept map."
+            },
+            {
+                "construct": "PE",
+                "code": "PE2",
+                "statement": "Using the agents made it easier for me to work on the concept map task."
+            },
+            {
+                "construct": "PE",
+                "code": "PE3",
+                "statement": "The agents supported me in learning and understanding the topic."
+            },
+            {
+                "construct": "PE",
+                "code": "PE4",
+                "statement": "Using the agents increased my chances of performing well on this task."
+            },
+            
+            # Effort Expectancy (EE)
+            {
+                "construct": "EE",
+                "code": "EE1",
+                "statement": "My interaction with the agents was clear and understandable."
+            },
+            {
+                "construct": "EE",
+                "code": "EE2",
+                "statement": "It was easy for me to learn how to use the agents during the experiment."
+            },
+            {
+                "construct": "EE",
+                "code": "EE3",
+                "statement": "I found the agents easy to handle while working on the concept map."
+            },
+            {
+                "construct": "EE",
+                "code": "EE4",
+                "statement": "Overall, it was simple to work with the agents in this task."
+            },
+            
+            # Hedonic Motivation (HM)
+            {
+                "construct": "HM",
+                "code": "HM1",
+                "statement": "Working with the agents was enjoyable."
+            },
+            {
+                "construct": "HM",
+                "code": "HM2",
+                "statement": "I found using the agents engaging."
+            },
+            {
+                "construct": "HM",
+                "code": "HM3",
+                "statement": "I had fun interacting with the agents while building the concept map."
+            },
+            
+            # Behavioral Intention (BI)
+            {
+                "construct": "BI",
+                "code": "BI1",
+                "statement": "I would like to use agents like these again in future learning tasks."
+            },
+            {
+                "construct": "BI",
+                "code": "BI2",
+                "statement": "I would recommend the agents to other students for similar tasks."
+            },
+            {
+                "construct": "BI",
+                "code": "BI3",
+                "statement": "I would speak positively about the agents based on my experience."
+            }
+        ]
+        
+        # Randomize item order to reduce bias (but keep consistent within session)
+        import random
+        if "utaut2_item_order" not in st.session_state:
+            st.session_state.utaut2_item_order = list(range(len(utaut2_items)))
+            random.shuffle(st.session_state.utaut2_item_order)
+        
+        # Create form
+        with st.form("utaut2_questionnaire"):
+            responses = {}
+            
+            # Display items in randomized order
+            for i, item_idx in enumerate(st.session_state.utaut2_item_order, 1):
+                item = utaut2_items[item_idx]
+                
+                st.markdown(f"**Statement {i} of {len(utaut2_items)}**")
+                st.markdown(f"*{item['statement']}*")
+                
+                # Use radio buttons for 7-point Likert scale
+                response = st.radio(
+                    "Select your rating:",
+                    options=[1, 2, 3, 4, 5, 6, 7],
+                    format_func=lambda x: {
+                        1: "1 - Strongly Disagree",
+                        2: "2 - Disagree", 
+                        3: "3 - Somewhat Disagree",
+                        4: "4 - Neutral",
+                        5: "5 - Somewhat Agree",
+                        6: "6 - Agree",
+                        7: "7 - Strongly Agree"
+                    }[x],
+                    key=f"utaut2_{item['code']}",
+                    index=None,  # No default selection - user must click
+                    horizontal=True  # Display options horizontally
+                )
+                
+                if response:
+                    responses[item['code']] = {
+                        "construct": item['construct'],
+                        "code": item['code'],
+                        "statement": item['statement'],
+                        "response_value": response,
+                        "item_order": i
+                    }
+                
+                st.markdown("---")
+            
+            submitted = st.form_submit_button("Submit Questionnaire", type="primary")
+            
+            if submitted:
+                # Check if all items are answered
+                if len(responses) < len(utaut2_items):
+                    st.error(f"Please answer all {len(utaut2_items)} statements before submitting.")
+                    return
+                
+                # Calculate construct averages
+                construct_scores = {}
+                for construct in ["PE", "EE", "HM", "BI"]:
+                    construct_items = [r for r in responses.values() if r['construct'] == construct]
+                    if construct_items:
+                        avg_score = sum(item['response_value'] for item in construct_items) / len(construct_items)
+                        construct_scores[construct] = round(avg_score, 2)
+                
+                # Store UTAUT2 data in session
+                utaut2_data = {
+                    "responses": responses,
+                    "construct_scores": construct_scores,
+                    "participant_id": self.session_data.get("learner_profile", {}).get("name", "unknown"),
+                    "unique_id": self.session_data.get("learner_profile", {}).get("unique_id", "N/A"),
+                    "timestamp": datetime.now().isoformat(),
+                    "randomized_order": st.session_state.utaut2_item_order
+                }
+                
+                # Add to session data
+                self.session_data["utaut2_questionnaire"] = utaut2_data
+                
+                # Log the UTAUT2 completion with detailed item responses
+                if self.session_logger:
+                    # Log overall UTAUT2 completion
+                    self.session_logger.log_event(
+                        event_type="utaut2_questionnaire_completed",
+                        metadata={
+                            "construct_scores": construct_scores,
+                            "total_items": len(responses),
+                            "participant_id": utaut2_data["participant_id"],
+                            "unique_id": utaut2_data["unique_id"]
+                        }
+                    )
+                    
+                    # Log individual item responses for detailed analysis
+                    for code, response_data in responses.items():
+                        self.session_logger.log_event(
+                            event_type="utaut2_item_response",
+                            metadata={
+                                "participant_id": utaut2_data["participant_id"],
+                                "unique_id": utaut2_data["unique_id"],
+                                "timestamp": utaut2_data["timestamp"],
+                                "construct_name": response_data["construct"],
+                                "item_code": code,
+                                "response_value": response_data["response_value"],
+                                "statement": response_data["statement"],
+                                "item_order": response_data["item_order"]
+                            }
+                        )
+                
+                # Update session state to mark UTAUT2 as completed
+                st.session_state.utaut2_completed = True
+                
+                st.success("✅ Technology Acceptance questionnaire completed! Thank you for your feedback.")
                 st.info("📊 Your responses have been recorded for research purposes.")
                 
                 # Automatically proceed to summary
@@ -658,8 +867,7 @@ class StreamlitExperimentalSession:
                     )
                 
                 st.success(f"Profile created for {profile['name']}")
-                st.info(f"Background Knowledge Score: {background_score}/17 concepts")
-                st.info(f"Scaffolding Level Assigned: {scaffolding_level.upper()}")
+                st.info("Your profile has been created successfully. Let's continue with the experiment.")
                 
                 return profile
         
@@ -1322,15 +1530,34 @@ class StreamlitExperimentalSession:
             self.session_data["total_rounds"] = len(self.session_data["rounds"])
             self.session_data["final_concept_map"] = self.session_data["current_concept_map"]
             
+            # Calculate and add map summary statistics
+            final_nodes = len(self.session_data["current_concept_map"].get("concepts", []))
+            final_edges = len(self.session_data["current_concept_map"].get("relationships", []))
+            
+            # Add map_summary to session data for easy identification
+            self.session_data["map_summary"] = {
+                "final_nodes": final_nodes,
+                "final_edges": final_edges,
+                "connectivity_ratio": round(final_edges / max(1, final_nodes), 2),
+                "participant_id": self.session_data.get("learner_profile", {}).get("unique_id", "N/A"),
+                "participant_name": self.session_data.get("learner_profile", {}).get("name", "Unknown")
+            }
+            
             # Save session data
             export_info = self.save_session_data()
             
-            # Log session end
+            # Log session end with map summary
             if self.session_logger:
+                # Log map summary event for easy identification
+                self.session_logger.log_event(
+                    event_type="map_summary",
+                    metadata=self.session_data["map_summary"]
+                )
+                
                 self.session_logger.log_session_end({
                     "total_rounds": len(self.session_data["rounds"]),
-                    "final_nodes": len(self.session_data["current_concept_map"].get("concepts", [])),
-                    "final_edges": len(self.session_data["current_concept_map"].get("relationships", [])),
+                    "final_nodes": final_nodes,
+                    "final_edges": final_edges,
                     "export_files": export_info
                 })
             

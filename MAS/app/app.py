@@ -2,6 +2,7 @@ import json
 import os
 import copy
 import logging
+from datetime import datetime
 import streamlit as st
 from conceptmap_component import conceptmap_component, parse_conceptmap
 from streamlit.runtime.state import session_state
@@ -32,11 +33,14 @@ def init_session_state():
         "submit_request": False,
         "followup": False,
         "roundn": 0,
+        "consent_given": False,
+        "consent_declined": False,
         "profile_initialisation_started": False,
         "session_initialized": False,
         "profile_initialized": False,
         "pre_questionnaire_completed": False,
-        "tam3_completed": False,
+        "clt_completed": False,
+        "utaut2_completed": False,
         "session_finalized": False,
         "tutorial_completed": False,
         "conversation_turn": 0,
@@ -88,6 +92,18 @@ def render_mode_selection():
     # Display topic as regular text (not protected)
     st.info("**Topic:** International market entry challenges for a German software start-up under the Adaptive Market Gatekeeping (AMG) standard.")
     
+    # Task description and resources information
+    st.success("""
+    📋 **Task Description & Resources:**
+    
+    During the experiment, you will have continuous access to:
+    - **Task Description**: The specific problem you need to solve through concept mapping
+    - **Extra Materials**: Additional resources to help you understand the topic
+    
+    These resources will be available via buttons at the top of the screen throughout all rounds.
+    Your task is to create and refine a concept map that represents your understanding of the problem described in these materials.
+    """)
+    
     # Add time information
     st.warning("""
     ⏱️ **Expected Duration:**
@@ -126,6 +142,91 @@ def render_mode_selection():
                 st.rerun()
             else:
                 st.error("❌ Failed to initialize experimental session. Please check your configuration.")
+
+
+def render_consent_form():
+    """Render research consent form."""
+    st.header("📋 Research Study Consent Form")
+    st.markdown("---")
+    
+    # Consent form content
+    with st.container(border=True):
+        st.markdown("""
+        ### Informed Consent for Research Participation
+        
+        You are being invited to participate in a research study titled **"Agentic AI for Higher Education"**. 
+        This study is being done by **Diana Kozachek** from the **University of Saint Gallen, Switzerland**. 
+        You were selected to participate in this study because you are an adult learner interested in educational technology.
+        
+        **Purpose of the Research:**
+        The purpose of this research study is to investigate how AI-powered scaffolding agents can support learning through concept mapping activities. 
+        If you agree to take part in this study, you will be asked to complete an online concept mapping exercise with AI assistance, 
+        followed by questionnaires about your experience. This experiment will take you approximately **45-60 minutes** to complete.
+        
+        **Potential Benefits:**
+        You may not directly benefit from this research; however, we hope that your participation in the study may contribute to 
+        improving educational technology and AI-assisted learning tools for students.
+        
+        **Risks and Confidentiality:**
+        We believe there are no known risks associated with this research study; however, as with any online related activity 
+        the risk of a breach of confidentiality is always possible. To the best of our ability your answers in this study will 
+        remain confidential. We will minimize any risks by:
+        - Storing all data securely with participant IDs rather than names
+        - All published results will be anonymized
+        - Data will be stored on secure servers and deleted after the research is complete
+        
+        **Voluntary Participation:**
+        Your participation in this study is completely voluntary and you can withdraw at any time. 
+        You are free to skip any question that you choose.
+        
+        **Contact Information:**
+        If you have questions about this project or if you have a research-related problem, you may contact the researcher, 
+        **Diana Kozachek** at the University of Saint Gallen. If you have any questions concerning your rights as a research subject, 
+        you may contact the University of Saint Gallen Ethics Committee.
+        
+        **Consent Statement:**
+        By clicking "I agree" below you are indicating that you are at least 18 years old, have read and understood this 
+        consent form and agree to participate in this research study. Please print a copy of this page for your records.
+        """)
+    
+    st.markdown("---")
+    
+    # Consent buttons
+    col1, col2, col3 = st.columns([1, 1, 1])
+    
+    with col1:
+        if st.button("❌ No, I do not agree", type="secondary", use_container_width=True):
+            st.session_state.consent_declined = True
+            st.rerun()
+    
+    with col3:
+        if st.button("✅ Yes, I agree", type="primary", use_container_width=True):
+            st.session_state.consent_given = True
+            
+            # Log consent
+            if st.session_state.experimental_session and st.session_state.experimental_session.session_logger:
+                st.session_state.experimental_session.session_logger.log_event(
+                    event_type="consent_given",
+                    metadata={
+                        "timestamp": datetime.now().isoformat(),
+                        "consent": True
+                    }
+                )
+            
+            st.rerun()
+    
+    # Show message if consent was declined
+    if st.session_state.consent_declined:
+        st.error("""
+        ### Thank you for your interest
+        
+        You have chosen not to participate in this research study. 
+        
+        We respect your decision. If you change your mind, you can refresh the page to start again.
+        
+        Thank you for considering participation in our research.
+        """)
+        st.stop()
 
 
 def render_profile_login():
@@ -290,12 +391,101 @@ def render_tutorial():
         st.rerun()
 
 
+def render_agent_differentiation_question():
+    """Render agent differentiation question before questionnaires."""
+    st.header("🤖 Agent Differentiation")
+    st.markdown("---")
+    
+    st.info("""
+    Before we proceed with the final questionnaires, we'd like to know about your experience with the agents.
+    """)
+    
+    with st.form("agent_differentiation"):
+        st.markdown("**Were you able to differentiate between the different agents that provided scaffolding?**")
+        
+        differentiation = st.radio(
+            "Select your answer:",
+            options=[
+                "Yes, I could clearly tell the agents were different",
+                "Somewhat - I noticed some differences but wasn't sure",
+                "No, all agents seemed the same to me",
+                "I'm not sure"
+            ],
+            index=None  # No default selection
+        )
+        
+        # Optional text field for additional comments
+        st.markdown("**Additional comments (optional):**")
+        comments = st.text_area(
+            "If you noticed differences, what made the agents seem different? If not, why do you think they seemed the same?",
+            height=100,
+            placeholder="Your observations about the agents..."
+        )
+        
+        submitted = st.form_submit_button("Submit", type="primary")
+        
+        if submitted:
+            if not differentiation:
+                st.error("Please select an answer before submitting.")
+                return
+            
+            # Store the response in session data
+            if st.session_state.experimental_session:
+                differentiation_data = {
+                    "differentiation_response": differentiation,
+                    "comments": comments,
+                    "timestamp": datetime.now().isoformat(),
+                    "participant_id": st.session_state.learner_profile.get('unique_id', 'N/A') if st.session_state.learner_profile else 'N/A',
+                    "participant_name": st.session_state.learner_profile.get('name', 'Unknown') if st.session_state.learner_profile else 'Unknown'
+                }
+                
+                # Add to session data
+                st.session_state.experimental_session.session_data["agent_differentiation"] = differentiation_data
+                
+                # Log the response
+                if st.session_state.experimental_session.session_logger:
+                    st.session_state.experimental_session.session_logger.log_event(
+                        event_type="agent_differentiation_response",
+                        metadata=differentiation_data
+                    )
+            
+            # Mark as completed
+            st.session_state.agent_differentiation_completed = True
+            
+            st.success("✅ Thank you for your feedback!")
+            st.info("📊 Proceeding to the Cognitive Load questionnaire...")
+            
+            # Proceed to next questionnaire
+            st.rerun()
+
+
 def render_summary_page():
     """Render session summary page."""
     st.header("Multiagent Scaffolding Experiment")
     st.markdown("---")
     st.write("Thank You for participating in the Multiagent Scaffolding Experiment!")
     st.balloons()
+    
+    # Calculate map summary statistics
+    final_nodes = 0
+    final_edges = 0
+    
+    if st.session_state.experimental_session:
+        final_map = st.session_state.experimental_session.session_data.get("current_concept_map", {})
+        final_nodes = len(final_map.get("concepts", []))
+        final_edges = len(final_map.get("relationships", []))
+        
+        # Log map summary for easy identification
+        if st.session_state.experimental_session.session_logger:
+            st.session_state.experimental_session.session_logger.log_event(
+                event_type="map_summary",
+                metadata={
+                    "final_nodes": final_nodes,
+                    "final_edges": final_edges,
+                    "participant_id": st.session_state.learner_profile.get('unique_id', 'N/A') if st.session_state.learner_profile else 'N/A',
+                    "participant_name": st.session_state.learner_profile.get('name', 'Unknown') if st.session_state.learner_profile else 'Unknown'
+                }
+            )
     
     # Finalize session if not already done
     if not st.session_state.session_finalized and st.session_state.experimental_session:
@@ -328,6 +518,25 @@ def render_summary_page():
                 st.write("**Session Structure:**")
                 st.write("- Round 0: Baseline (no scaffolding)")
                 st.write("- Rounds 1-4: Agent-guided scaffolding")
+    
+    # Display concept map statistics
+    st.markdown("---")
+    st.subheader("📊 Concept Map Statistics")
+    
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        st.metric(label="Total Nodes Created", value=final_nodes)
+    
+    with col2:
+        st.metric(label="Total Edges Created", value=final_edges)
+    
+    with col3:
+        if final_nodes > 0:
+            connectivity = round(final_edges / final_nodes, 2)
+            st.metric(label="Connectivity Ratio", value=connectivity)
+        else:
+            st.metric(label="Connectivity Ratio", value="N/A")
     
     # Thank you message
     st.markdown("---")
@@ -507,6 +716,29 @@ def render_cm_submit_button():
 def render_followup():
     """Render agent followup interaction with multi-turn conversation support."""
     roundn = st.session_state.roundn
+    
+    # Special handling for Round 0 - skip directly to Round 1
+    if roundn == 0:
+        st.success("✅ Initial concept map submitted successfully!")
+        st.info("This was your baseline concept map (Round 0). Now let's proceed with agent-guided scaffolding.")
+        
+        col1, col2, col3 = st.columns([1, 2, 1])
+        with col2:
+            if st.button("Proceed to Round 1", type="primary", use_container_width=True):
+                # Log the round 0 completion
+                if st.session_state.experimental_session:
+                    current_cm_data = st.session_state.cmdata[0] if len(st.session_state.cmdata) > 0 else None
+                    st.session_state.experimental_session.update_concept_map_evolution(0, current_cm_data)
+                    st.session_state.experimental_session.add_to_conversation_history(
+                        0, "system", "Round 0 completed - baseline concept map created", {"final": True}
+                    )
+                
+                # Move to round 1
+                st.session_state.followup = False
+                st.session_state.roundn = 1
+                st.session_state.agent_msg = None
+                st.rerun()
+        return
     
     # Initialize conversation state for this round
     round_key = f"round_{roundn}_conversation"
@@ -836,9 +1068,17 @@ def main():
         render_mode_selection()
         return
     
-    # Learner profile login page (experimental mode only)
+    # Consent form (experimental mode only, after mode selection)
     if (st.session_state.mode == "experimental" and 
         st.session_state.session_initialized and 
+        not st.session_state.consent_given):
+        render_consent_form()
+        return
+    
+    # Learner profile login page (experimental mode only, after consent)
+    if (st.session_state.mode == "experimental" and 
+        st.session_state.session_initialized and 
+        st.session_state.consent_given and
         not st.session_state.profile_initialisation_started and
         not st.session_state.profile_initialized):
         render_profile_login()
@@ -880,16 +1120,31 @@ def main():
     # Main session logic
     roundn = st.session_state.roundn
 
-    # Check if all rounds are completed and TAM3 is needed
+    # Check if all rounds are completed and post-task questionnaires are needed
     if roundn == st.session_state.max_rounds:
-        # TAM3 questionnaire (experimental mode only, after all rounds)
+        # Agent differentiation question (experimental mode only, before CLT)
         if (st.session_state.mode == "experimental" and 
-            not st.session_state.tam3_completed):
-            if st.session_state.experimental_session:
-                st.session_state.experimental_session.render_tam3_questionnaire()
+            not st.session_state.get('agent_differentiation_completed', False)):
+            render_agent_differentiation_question()
             return
         
-        # Show summary page after TAM3 is completed (or immediately in demo mode)
+        # CLT questionnaire (experimental mode only, after agent differentiation)
+        if (st.session_state.mode == "experimental" and 
+            st.session_state.get('agent_differentiation_completed', False) and
+            not st.session_state.get('clt_completed', False)):
+            if st.session_state.experimental_session:
+                st.session_state.experimental_session.render_clt_questionnaire()
+            return
+        
+        # UTAUT2 questionnaire (experimental mode only, after CLT)
+        if (st.session_state.mode == "experimental" and 
+            st.session_state.get('clt_completed', False) and
+            not st.session_state.get('utaut2_completed', False)):
+            if st.session_state.experimental_session:
+                st.session_state.experimental_session.render_utaut2_questionnaire()
+            return
+        
+        # Show summary page after all questionnaires are completed (or immediately in demo mode)
         render_summary_page()
     else:
         render_header()
