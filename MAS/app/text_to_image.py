@@ -12,10 +12,10 @@ from typing import Optional, Tuple
 
 def text_to_image(
     text: str, 
-    width: int = 1200,  # Increased width for better readability
-    font_size: int = 24,  # Much larger font size
-    line_height: int = 36,  # Increased line height
-    padding: int = 30,  # More padding
+    width: int = 1600,  # Further increased width for better readability
+    font_size: int = 28,  # Even larger font size for better visibility
+    line_height: int = 42,  # Increased line height for better spacing
+    padding: int = 40,  # More padding for better margins
     bg_color: Tuple[int, int, int] = (255, 255, 255),
     text_color: Tuple[int, int, int] = (0, 0, 0),
     font_path: Optional[str] = None
@@ -78,8 +78,8 @@ def text_to_image(
 def render_protected_text(
     text: str,
     title: Optional[str] = None,
-    width: int = 1200,  # Increased width
-    font_size: int = 24,  # Much larger font
+    width: int = 1600,  # Further increased width
+    font_size: int = 28,  # Even larger font for better visibility
     show_warning: bool = True
 ) -> None:
     """
@@ -107,12 +107,11 @@ def render_protected_text(
 
 def render_protected_markdown(
     markdown_text: str,
-    width: int = 1200,  # Increased width
-    font_size: int = 22  # Much larger font
+    width: int = 1800,  # Increased for better cloud rendering
+    font_size: int = 32  # Larger font for cloud visibility
 ) -> None:
     """
-    Render markdown-formatted text as protected images.
-    Splits by sections for better rendering.
+    Render markdown-formatted text as protected images using HTML for consistent display.
     
     Args:
         markdown_text: Markdown formatted text
@@ -140,7 +139,17 @@ def render_protected_markdown(
                     st.markdown(f"### {title}")
                 if content:
                     img = text_to_image(content.strip(), width=width, font_size=font_size)
-                    st.image(img, use_container_width=True)
+                    img_base64 = encode_image_base64(img)
+                    
+                    # Use HTML with explicit CSS for consistent rendering
+                    html = f"""
+                    <div style="width:100%; max-width:100%; margin: 0 auto;">
+                        <img src="data:image/png;base64,{img_base64}"
+                             style="width:100%; max-width:100%; height:auto; display:block;"
+                             alt="Protected content">
+                    </div>
+                    """
+                    st.markdown(html, unsafe_allow_html=True)
             elif i == 0 and section.strip():
                 # Handle content before first ###
                 content = section.strip()
@@ -148,14 +157,24 @@ def render_protected_markdown(
                 content = content.replace('*', '')
                 content = content.replace('- ', '• ')
                 img = text_to_image(content, width=width, font_size=font_size)
-                st.image(img, use_container_width=True)
+                img_base64 = encode_image_base64(img)
+                
+                # Use HTML with explicit CSS
+                html = f"""
+                <div style="width:100%; max-width:100%; margin: 0 auto;">
+                    <img src="data:image/png;base64,{img_base64}"
+                         style="width:100%; max-width:100%; height:auto; display:block;"
+                         alt="Protected content">
+                </div>
+                """
+                st.markdown(html, unsafe_allow_html=True)
 
 
 def create_protected_expander(
     label: str,
     content: str,
-    width: int = 1200,  # Increased width
-    font_size: int = 24  # Much larger font
+    width: int = 1600,  # Further increased width
+    font_size: int = 28  # Even larger font for consistency
 ) -> None:
     """
     Create an expander with protected content.
@@ -192,8 +211,8 @@ def encode_image_base64(img: Image.Image) -> str:
 
 def render_protected_html(
     text: str,
-    width: int = 1200,  # Increased width
-    font_size: int = 24  # Much larger font
+    width: int = 1600,  # Further increased width
+    font_size: int = 28  # Even larger font for consistency
 ) -> None:
     """
     Render text as protected HTML with additional JavaScript protection.
