@@ -615,45 +615,21 @@ def render_header():
 @st.dialog("Task Description", width='large')
 def render_task_dialog():
     """Render task description dialog with copy protection."""
-    # Add HTML wrapper for consistent width handling
-    st.markdown("""
-    <style>
-        .stMarkdown {
-            max-width: 100% !important;
-        }
-        div[data-testid="stImage"] {
-            width: 100% !important;
-        }
-    </style>
-    """, unsafe_allow_html=True)
-    
     st.markdown("### 📋 Task Description")
     st.caption("This content is protected and cannot be copied.")
     
-    # Use larger parameters for better cloud visibility
-    render_protected_markdown(TASK_DESCRIPTION, width=1800, font_size=32)
+    # Use optimized resolution and font size for better readability
+    render_protected_markdown(TASK_DESCRIPTION, width=1800, font_size=44)
 
 
 @st.dialog("Extra Materials", width='large')
 def render_materials_dialog():
     """Render extra materials dialog with copy protection."""
-    # Add HTML wrapper for consistent width handling
-    st.markdown("""
-    <style>
-        .stMarkdown {
-            max-width: 100% !important;
-        }
-        div[data-testid="stImage"] {
-            width: 100% !important;
-        }
-    </style>
-    """, unsafe_allow_html=True)
-    
     st.markdown("### 📚 Extra Materials")
     st.caption("This content is protected and cannot be copied.")
     
-    # Use larger parameters for better cloud visibility
-    render_protected_markdown(EXTRA_MATERIALS, width=1800, font_size=32)
+    # Use optimized resolution and font size for better readability
+    render_protected_markdown(EXTRA_MATERIALS, width=1800, font_size=44)
 
 
 @st.dialog("How to use a concept map creator?", width='large')
