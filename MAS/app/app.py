@@ -618,8 +618,8 @@ def render_task_dialog():
     st.markdown("### 📋 Task Description")
     st.caption("This content is protected and cannot be copied.")
     
-    # Use optimized resolution and font size for better readability
-    render_protected_markdown(TASK_DESCRIPTION, width=1800, font_size=44)
+    # Render task description as protected image with larger font
+    render_protected_markdown(TASK_DESCRIPTION, width=1100, font_size=20)
 
 
 @st.dialog("Extra Materials", width='large')
@@ -628,8 +628,8 @@ def render_materials_dialog():
     st.markdown("### 📚 Extra Materials")
     st.caption("This content is protected and cannot be copied.")
     
-    # Use optimized resolution and font size for better readability
-    render_protected_markdown(EXTRA_MATERIALS, width=1800, font_size=44)
+    # Render extra materials as protected image with larger font
+    render_protected_markdown(EXTRA_MATERIALS, width=1100, font_size=20)
 
 
 @st.dialog("How to use a concept map creator?", width='large')

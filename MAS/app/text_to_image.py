@@ -12,10 +12,10 @@ from typing import Optional, Tuple
 
 def text_to_image(
     text: str, 
-    width: int = 1800,  # Optimized resolution for better display
-    font_size: int = 44,  # Larger font for better readability
-    line_height: int = 60,  # Proportionally increased line height
-    padding: int = 50,  # Good padding for margins
+    width: int = 1200,  # Increased width for better readability
+    font_size: int = 24,  # Much larger font size
+    line_height: int = 36,  # Increased line height
+    padding: int = 30,  # More padding
     bg_color: Tuple[int, int, int] = (255, 255, 255),
     text_color: Tuple[int, int, int] = (0, 0, 0),
     font_path: Optional[str] = None
@@ -78,8 +78,8 @@ def text_to_image(
 def render_protected_text(
     text: str,
     title: Optional[str] = None,
-    width: int = 1800,  # Optimized resolution
-    font_size: int = 44,  # Larger font for readability
+    width: int = 1200,  # Increased width
+    font_size: int = 24,  # Much larger font
     show_warning: bool = True
 ) -> None:
     """
@@ -98,9 +98,8 @@ def render_protected_text(
     # Convert text to image
     img = text_to_image(text, width=width, font_size=font_size)
     
-    # Display image with fixed width for consistent display
-    # 700px fits well in the 750px "large" dialog width
-    st.image(img, width=700)
+    # Display image
+    st.image(img, use_container_width=True)
     
     if show_warning:
         st.caption("📝 This content is protected and cannot be copied.")
@@ -108,11 +107,12 @@ def render_protected_text(
 
 def render_protected_markdown(
     markdown_text: str,
-    width: int = 1800,  # Optimized resolution
-    font_size: int = 44  # Larger font for readability
+    width: int = 1200,  # Increased width
+    font_size: int = 22  # Much larger font
 ) -> None:
     """
-    Render markdown-formatted text as protected images using native Streamlit rendering.
+    Render markdown-formatted text as protected images.
+    Splits by sections for better rendering.
     
     Args:
         markdown_text: Markdown formatted text
@@ -140,9 +140,7 @@ def render_protected_markdown(
                     st.markdown(f"### {title}")
                 if content:
                     img = text_to_image(content.strip(), width=width, font_size=font_size)
-                    # Use fixed width for consistent display in dialogs
-                    # 700px fits well in the 750px "large" dialog width
-                    st.image(img, width=700)
+                    st.image(img, use_container_width=True)
             elif i == 0 and section.strip():
                 # Handle content before first ###
                 content = section.strip()
@@ -150,15 +148,14 @@ def render_protected_markdown(
                 content = content.replace('*', '')
                 content = content.replace('- ', '• ')
                 img = text_to_image(content, width=width, font_size=font_size)
-                # Use fixed width for consistent display in dialogs
-                st.image(img, width=700)
+                st.image(img, use_container_width=True)
 
 
 def create_protected_expander(
     label: str,
     content: str,
-    width: int = 1800,  # Optimized resolution
-    font_size: int = 44  # Larger font for readability
+    width: int = 1200,  # Increased width
+    font_size: int = 24  # Much larger font
 ) -> None:
     """
     Create an expander with protected content.
@@ -173,8 +170,7 @@ def create_protected_expander(
         # Clean up content
         clean_content = content.replace('**', '').replace('*', '').replace('- ', '• ')
         img = text_to_image(clean_content.strip(), width=width, font_size=font_size)
-        # Use fixed width for consistent display
-        st.image(img, width=700)
+        st.image(img, use_container_width=True)
         st.caption("📝 This content is protected and cannot be copied.")
 
 
@@ -196,8 +192,8 @@ def encode_image_base64(img: Image.Image) -> str:
 
 def render_protected_html(
     text: str,
-    width: int = 1800,  # Optimized resolution
-    font_size: int = 44  # Larger font for readability
+    width: int = 1200,  # Increased width
+    font_size: int = 24  # Much larger font
 ) -> None:
     """
     Render text as protected HTML with additional JavaScript protection.
