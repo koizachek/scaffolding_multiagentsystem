@@ -33,7 +33,7 @@ AMG_SCAFFOLDING_PROMPT_TEMPLATES = {
     "procedural": {
         "high": [
             "I see {observation}. When mapping AMG's impact, have you considered starting from each AMG mechanism (dynamic adaptation, rule-changing, network control, resource blocking) and tracing how each affects different aspects of market entry?",
-            "Looking at your process, how do you identify which entry strategy concepts should connect to AMG? Have you tried using the Veyra example as a template for creating these relationships?",
+            "Looking at your process, how do you identify which entry strategy concepts should connect to AMG? Have you tried using the example as a template for creating these relationships?",
             "When adding relationships between AMG and other concepts, what labeling approach do you use? Consider using action words like 'blocks', 'influences', 'counters' to show AMG's active role.",
             "I notice your map structure. Have you tried organizing concepts in layers - perhaps AMG mechanisms at one level, entry strategies at another, and resources at a third? This might help visualize the flow of influence.",
             "For showing how the start-up can navigate AMG, what process do you use to identify counter-strategies? Try working backwards from success factors to see what overcomes AMG barriers.",
@@ -80,7 +80,7 @@ AMG_SCAFFOLDING_PROMPT_TEMPLATES = {
         "high": [
             "As you look at your map now, which aspects of AMG do you feel you understand well, and which remain unclear? What makes the unclear parts challenging?",
             "How has your understanding of AMG's role in market entry evolved since you started? What specific insights about AMG have emerged through creating this map?",
-            "Reflecting on the Veyra example, how well does your map capture similar dynamics? What aspects of AMG's impact might you be overlooking?",
+            "Reflecting on the example, how well does your map capture similar dynamics for a software start-up? What aspects of AMG's impact might you be overlooking?",
             "If you had to explain AMG to another start-up founder, what key relationships from your map would you emphasize? What's still missing from that explanation?",
             "Looking at your map, how confident are you that you've captured how a start-up can successfully navigate AMG? What areas need more thought?",
             "What assumptions are you making about how AMG operates? How might challenging these assumptions change your concept map?"

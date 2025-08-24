@@ -50,7 +50,7 @@ class ApplicationSession:
     def get_agent_response(self, roundn):
         # Handle round 0 specially - no scaffolding
         if roundn == 0:
-            return "Please create your initial concept map on the topic. Take your time to include all the concepts and relationships you think are relevant. When you're ready, submit your concept map to proceed."
+            return "Please create your initial concept map with your top 5 most important concepts and relationships. When you're ready, submit your concept map to round 1 to proceed."
         
         # Adjust for agent sequence after round 0
         agent_index = roundn - 1
