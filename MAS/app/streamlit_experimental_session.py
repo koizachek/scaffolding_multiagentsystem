@@ -719,7 +719,7 @@ class StreamlitExperimentalSession:
         st.warning("""
         **Important Notice:**
         
-        All your data will be anonymized throughout the study. We will not collect or record your legal name.
+        All your data will be anonymized throughout the study. We will not collect or record your legal name. You can choose your alias.
                    
         For the integrity of this research study, we strongly encourage you to:
         - Use only your own cognitive abilities and the materials provided
@@ -734,7 +734,7 @@ class StreamlitExperimentalSession:
             col1, col2 = st.columns(2)
             
             with col1:
-                name = st.text_input("Alias*", help="Choose an Alias or identifier")
+                name = st.text_input("Name*", help="Choose an alias or identifier")
                 age = st.number_input("Age*", min_value=18, max_value=100, help="Your age")
                 nationality = st.text_input("Nationality*", help="Your nationality")
                 background = st.text_area(
