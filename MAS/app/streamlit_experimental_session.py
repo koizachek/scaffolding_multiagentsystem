@@ -150,36 +150,6 @@ class StreamlitExperimentalSession:
                 "correct": "B"
             },
             {
-                "id": "target_markets",
-                "question": "Target Markets: What does \"target market\" mean?",
-                "options": {
-                    "A": "The location of an industry in general",
-                    "B": "The customers already using the product at home",
-                    "C": "The selected countries or regions for expansion"
-                },
-                "correct": "C"
-            },
-            {
-                "id": "competitive_environment",
-                "question": "Competitive Environment: What does the competitive environment describe?",
-                "options": {
-                    "A": "The competitors and their actions in the chosen market",
-                    "B": "The general economic growth rate of the chosen market",
-                    "C": "The company's internal team hierarchy"
-                },
-                "correct": "A"
-            },
-            {
-                "id": "entry_barriers",
-                "question": "Entry Barriers: What are entry barriers?",
-                "options": {
-                    "A": "The distance between the start-up's headquarters and the target market",
-                    "B": "Obstacles that make market entry difficult for new firms",
-                    "C": "The costs of entering a chosen market"
-                },
-                "correct": "B"
-            },
-            {
                 "id": "legal_framework",
                 "question": "Legal Framework: What is meant by the legal framework?",
                 "options": {
@@ -238,26 +208,6 @@ class StreamlitExperimentalSession:
                     "C": "The firm's pricing strategy for customers"
                 },
                 "correct": "B"
-            },
-            {
-                "id": "marketing_strategy",
-                "question": "Marketing Strategy: What is the goal of a marketing strategy?",
-                "options": {
-                    "A": "To unify messaging to investors",
-                    "B": "To create a path towards a goal market by unifying messages",
-                    "C": "To attract and retain customers in the new market"
-                },
-                "correct": "C"
-            },
-            {
-                "id": "success_factors",
-                "question": "Success Factors: What are success factors?",
-                "options": {
-                    "A": "Key elements that determine whether expansion succeeds",
-                    "B": "Historical GDP growth in the home market",
-                    "C": "The company's assets, ranging from talents to products"
-                },
-                "correct": "A"
             },
             {
                 "id": "amg",
@@ -769,6 +719,8 @@ class StreamlitExperimentalSession:
         st.warning("""
         **Important Notice:**
         
+        All your data will be anonymized throughout the study. We will not collect or record your legal name.
+                   
         For the integrity of this research study, we strongly encourage you to:
         - Use only your own cognitive abilities and the materials provided
         - Refrain from using ChatGPT or any other AI assistants during the tasks
@@ -782,7 +734,7 @@ class StreamlitExperimentalSession:
             col1, col2 = st.columns(2)
             
             with col1:
-                name = st.text_input("Name*", help="Your name or identifier")
+                name = st.text_input("Name*", help="Choose an Alias or identifier")
                 age = st.number_input("Age*", min_value=16, max_value=100, help="Your age")
                 nationality = st.text_input("Nationality*", help="Your nationality")
                 background = st.text_area(
