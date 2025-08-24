@@ -503,212 +503,212 @@ class StreamlitExperimentalSession:
                 # Automatically proceed to UTAUT2
                 st.rerun()
     
-    def render_utaut2_questionnaire(self):
-        """Render UTAUT2 questionnaire."""
-        import streamlit as st
+    # def render_utaut2_questionnaire(self):
+    #     """Render UTAUT2 questionnaire."""
+    #     import streamlit as st
         
-        st.header("📋 Technology Acceptance Questionnaire")
-        st.markdown("---")
+    #     st.header("📋 Technology Acceptance Questionnaire")
+    #     st.markdown("---")
         
-        st.info("""
-        Please rate your agreement with the following statements about the agents that helped you during the concept mapping task.
+    #     st.info("""
+    #     Please rate your agreement with the following statements about the agents that helped you during the concept mapping task.
         
-        Select a rating from 1 (Strongly Disagree) to 7 (Strongly Agree) for each statement.
-        """)
+    #     Select a rating from 1 (Strongly Disagree) to 7 (Strongly Agree) for each statement.
+    #     """)
         
-        # Define UTAUT2 items (14 items total, agent-adapted)
-        utaut2_items = [
-            # Performance Expectancy (PE)
-            {
-                "construct": "PE",
-                "code": "PE1",
-                "statement": "The agents helped me improve the quality of my concept map."
-            },
-            {
-                "construct": "PE",
-                "code": "PE2",
-                "statement": "Using the agents made it easier for me to work on the concept map task."
-            },
-            {
-                "construct": "PE",
-                "code": "PE3",
-                "statement": "The agents supported me in learning and understanding the topic."
-            },
-            {
-                "construct": "PE",
-                "code": "PE4",
-                "statement": "Using the agents increased my chances of performing well on this task."
-            },
+    #     # Define UTAUT2 items (14 items total, agent-adapted)
+    #     utaut2_items = [
+    #         # Performance Expectancy (PE)
+    #         {
+    #             "construct": "PE",
+    #             "code": "PE1",
+    #             "statement": "The agents helped me improve the quality of my concept map."
+    #         },
+    #         {
+    #             "construct": "PE",
+    #             "code": "PE2",
+    #             "statement": "Using the agents made it easier for me to work on the concept map task."
+    #         },
+    #         {
+    #             "construct": "PE",
+    #             "code": "PE3",
+    #             "statement": "The agents supported me in learning and understanding the topic."
+    #         },
+    #         {
+    #             "construct": "PE",
+    #             "code": "PE4",
+    #             "statement": "Using the agents increased my chances of performing well on this task."
+    #         },
             
-            # Effort Expectancy (EE)
-            {
-                "construct": "EE",
-                "code": "EE1",
-                "statement": "My interaction with the agents was clear and understandable."
-            },
-            {
-                "construct": "EE",
-                "code": "EE2",
-                "statement": "It was easy for me to learn how to use the agents during the experiment."
-            },
-            {
-                "construct": "EE",
-                "code": "EE3",
-                "statement": "I found the agents easy to handle while working on the concept map."
-            },
-            {
-                "construct": "EE",
-                "code": "EE4",
-                "statement": "Overall, it was simple to work with the agents in this task."
-            },
+    #         # Effort Expectancy (EE)
+    #         {
+    #             "construct": "EE",
+    #             "code": "EE1",
+    #             "statement": "My interaction with the agents was clear and understandable."
+    #         },
+    #         {
+    #             "construct": "EE",
+    #             "code": "EE2",
+    #             "statement": "It was easy for me to learn how to use the agents during the experiment."
+    #         },
+    #         {
+    #             "construct": "EE",
+    #             "code": "EE3",
+    #             "statement": "I found the agents easy to handle while working on the concept map."
+    #         },
+    #         {
+    #             "construct": "EE",
+    #             "code": "EE4",
+    #             "statement": "Overall, it was simple to work with the agents in this task."
+    #         },
             
-            # Hedonic Motivation (HM)
-            {
-                "construct": "HM",
-                "code": "HM1",
-                "statement": "Working with the agents was enjoyable."
-            },
-            {
-                "construct": "HM",
-                "code": "HM2",
-                "statement": "I found using the agents engaging."
-            },
-            {
-                "construct": "HM",
-                "code": "HM3",
-                "statement": "I had fun interacting with the agents while building the concept map."
-            },
+    #         # Hedonic Motivation (HM)
+    #         {
+    #             "construct": "HM",
+    #             "code": "HM1",
+    #             "statement": "Working with the agents was enjoyable."
+    #         },
+    #         {
+    #             "construct": "HM",
+    #             "code": "HM2",
+    #             "statement": "I found using the agents engaging."
+    #         },
+    #         {
+    #             "construct": "HM",
+    #             "code": "HM3",
+    #             "statement": "I had fun interacting with the agents while building the concept map."
+    #         },
             
-            # Behavioral Intention (BI)
-            {
-                "construct": "BI",
-                "code": "BI1",
-                "statement": "I would like to use agents like these again in future learning tasks."
-            },
-            {
-                "construct": "BI",
-                "code": "BI2",
-                "statement": "I would recommend the agents to other students for similar tasks."
-            },
-            {
-                "construct": "BI",
-                "code": "BI3",
-                "statement": "I would speak positively about the agents based on my experience."
-            }
-        ]
+    #         # Behavioral Intention (BI)
+    #         {
+    #             "construct": "BI",
+    #             "code": "BI1",
+    #             "statement": "I would like to use agents like these again in future learning tasks."
+    #         },
+    #         {
+    #             "construct": "BI",
+    #             "code": "BI2",
+    #             "statement": "I would recommend the agents to other students for similar tasks."
+    #         },
+    #         {
+    #             "construct": "BI",
+    #             "code": "BI3",
+    #             "statement": "I would speak positively about the agents based on my experience."
+    #         }
+    #     ]
         
-        # Randomize item order to reduce bias (but keep consistent within session)
-        import random
-        if "utaut2_item_order" not in st.session_state:
-            st.session_state.utaut2_item_order = list(range(len(utaut2_items)))
-            random.shuffle(st.session_state.utaut2_item_order)
+    #     # Randomize item order to reduce bias (but keep consistent within session)
+    #     import random
+    #     if "utaut2_item_order" not in st.session_state:
+    #         st.session_state.utaut2_item_order = list(range(len(utaut2_items)))
+    #         random.shuffle(st.session_state.utaut2_item_order)
         
-        # Create form
-        with st.form("utaut2_questionnaire"):
-            responses = {}
+    #     # Create form
+    #     with st.form("utaut2_questionnaire"):
+    #         responses = {}
             
-            # Display items in randomized order
-            for i, item_idx in enumerate(st.session_state.utaut2_item_order, 1):
-                item = utaut2_items[item_idx]
+    #         # Display items in randomized order
+    #         for i, item_idx in enumerate(st.session_state.utaut2_item_order, 1):
+    #             item = utaut2_items[item_idx]
                 
-                st.markdown(f"**Statement {i} of {len(utaut2_items)}**")
-                st.markdown(f"*{item['statement']}*")
+    #             st.markdown(f"**Statement {i} of {len(utaut2_items)}**")
+    #             st.markdown(f"*{item['statement']}*")
                 
-                # Use radio buttons for 7-point Likert scale
-                response = st.radio(
-                    "Select your rating:",
-                    options=[1, 2, 3, 4, 5, 6, 7],
-                    format_func=lambda x: {
-                        1: "1 - Strongly Disagree",
-                        2: "2 - Disagree", 
-                        3: "3 - Somewhat Disagree",
-                        4: "4 - Neutral",
-                        5: "5 - Somewhat Agree",
-                        6: "6 - Agree",
-                        7: "7 - Strongly Agree"
-                    }[x],
-                    key=f"utaut2_{item['code']}",
-                    index=None,  # No default selection - user must click
-                    horizontal=True  # Display options horizontally
-                )
+    #             # Use radio buttons for 7-point Likert scale
+    #             response = st.radio(
+    #                 "Select your rating:",
+    #                 options=[1, 2, 3, 4, 5, 6, 7],
+    #                 format_func=lambda x: {
+    #                     1: "1 - Strongly Disagree",
+    #                     2: "2 - Disagree", 
+    #                     3: "3 - Somewhat Disagree",
+    #                     4: "4 - Neutral",
+    #                     5: "5 - Somewhat Agree",
+    #                     6: "6 - Agree",
+    #                     7: "7 - Strongly Agree"
+    #                 }[x],
+    #                 key=f"utaut2_{item['code']}",
+    #                 index=None,  # No default selection - user must click
+    #                 horizontal=True  # Display options horizontally
+    #             )
                 
-                if response:
-                    responses[item['code']] = {
-                        "construct": item['construct'],
-                        "code": item['code'],
-                        "statement": item['statement'],
-                        "response_value": response,
-                        "item_order": i
-                    }
+    #             if response:
+    #                 responses[item['code']] = {
+    #                     "construct": item['construct'],
+    #                     "code": item['code'],
+    #                     "statement": item['statement'],
+    #                     "response_value": response,
+    #                     "item_order": i
+    #                 }
                 
-                st.markdown("---")
+    #             st.markdown("---")
             
-            submitted = st.form_submit_button("Submit Questionnaire", type="primary")
+    #         submitted = st.form_submit_button("Submit Questionnaire", type="primary")
             
-            if submitted:
-                # Check if all items are answered
-                if len(responses) < len(utaut2_items):
-                    st.error(f"Please answer all {len(utaut2_items)} statements before submitting.")
-                    return
+    #         if submitted:
+    #             # Check if all items are answered
+    #             if len(responses) < len(utaut2_items):
+    #                 st.error(f"Please answer all {len(utaut2_items)} statements before submitting.")
+    #                 return
                 
-                # Calculate construct averages
-                construct_scores = {}
-                for construct in ["PE", "EE", "HM", "BI"]:
-                    construct_items = [r for r in responses.values() if r['construct'] == construct]
-                    if construct_items:
-                        avg_score = sum(item['response_value'] for item in construct_items) / len(construct_items)
-                        construct_scores[construct] = round(avg_score, 2)
+    #             # Calculate construct averages
+    #             construct_scores = {}
+    #             for construct in ["PE", "EE", "HM", "BI"]:
+    #                 construct_items = [r for r in responses.values() if r['construct'] == construct]
+    #                 if construct_items:
+    #                     avg_score = sum(item['response_value'] for item in construct_items) / len(construct_items)
+    #                     construct_scores[construct] = round(avg_score, 2)
                 
-                # Store UTAUT2 data in session
-                utaut2_data = {
-                    "responses": responses,
-                    "construct_scores": construct_scores,
-                    "participant_id": self.session_data.get("learner_profile", {}).get("name", "unknown"),
-                    "unique_id": self.session_data.get("learner_profile", {}).get("unique_id", "N/A"),
-                    "timestamp": datetime.now().isoformat(),
-                    "randomized_order": st.session_state.utaut2_item_order
-                }
+    #             # Store UTAUT2 data in session
+    #             utaut2_data = {
+    #                 "responses": responses,
+    #                 "construct_scores": construct_scores,
+    #                 "participant_id": self.session_data.get("learner_profile", {}).get("name", "unknown"),
+    #                 "unique_id": self.session_data.get("learner_profile", {}).get("unique_id", "N/A"),
+    #                 "timestamp": datetime.now().isoformat(),
+    #                 "randomized_order": st.session_state.utaut2_item_order
+    #             }
                 
-                # Add to session data
-                self.session_data["utaut2_questionnaire"] = utaut2_data
+    #             # Add to session data
+    #             self.session_data["utaut2_questionnaire"] = utaut2_data
                 
-                # Log the UTAUT2 completion with detailed item responses
-                if self.session_logger:
-                    # Log overall UTAUT2 completion
-                    self.session_logger.log_event(
-                        event_type="utaut2_questionnaire_completed",
-                        metadata={
-                            "construct_scores": construct_scores,
-                            "total_items": len(responses),
-                            "participant_id": utaut2_data["participant_id"],
-                            "unique_id": utaut2_data["unique_id"]
-                        }
-                    )
+    #             # Log the UTAUT2 completion with detailed item responses
+    #             if self.session_logger:
+    #                 # Log overall UTAUT2 completion
+    #                 self.session_logger.log_event(
+    #                     event_type="utaut2_questionnaire_completed",
+    #                     metadata={
+    #                         "construct_scores": construct_scores,
+    #                         "total_items": len(responses),
+    #                         "participant_id": utaut2_data["participant_id"],
+    #                         "unique_id": utaut2_data["unique_id"]
+    #                     }
+    #                 )
                     
-                    # Log individual item responses for detailed analysis
-                    for code, response_data in responses.items():
-                        self.session_logger.log_event(
-                            event_type="utaut2_item_response",
-                            metadata={
-                                "participant_id": utaut2_data["participant_id"],
-                                "unique_id": utaut2_data["unique_id"],
-                                "timestamp": utaut2_data["timestamp"],
-                                "construct_name": response_data["construct"],
-                                "item_code": code,
-                                "response_value": response_data["response_value"],
-                                "statement": response_data["statement"],
-                                "item_order": response_data["item_order"]
-                            }
-                        )
+    #                 # Log individual item responses for detailed analysis
+    #                 for code, response_data in responses.items():
+    #                     self.session_logger.log_event(
+    #                         event_type="utaut2_item_response",
+    #                         metadata={
+    #                             "participant_id": utaut2_data["participant_id"],
+    #                             "unique_id": utaut2_data["unique_id"],
+    #                             "timestamp": utaut2_data["timestamp"],
+    #                             "construct_name": response_data["construct"],
+    #                             "item_code": code,
+    #                             "response_value": response_data["response_value"],
+    #                             "statement": response_data["statement"],
+    #                             "item_order": response_data["item_order"]
+    #                         }
+    #                     )
                 
-                # Update session state to mark UTAUT2 as completed
-                st.session_state.utaut2_completed = True
+    #             # Update session state to mark UTAUT2 as completed
+    #             st.session_state.utaut2_completed = True
                 
-                st.success("✅ Technology Acceptance questionnaire completed! Thank you for your feedback.")
-                st.info("📊 Your responses have been recorded for research purposes.")
+    #             st.success("✅ Technology Acceptance questionnaire completed! Thank you for your feedback.")
+    #             st.info("📊 Your responses have been recorded for research purposes.")
                 
-                # Automatically proceed to summary
-                st.rerun()
+    #             # Automatically proceed to summary
+    #             st.rerun()
     
     def create_learner_profile_form(self) -> Dict[str, Any]:
         """Create learner profile through Streamlit form."""

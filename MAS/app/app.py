@@ -114,7 +114,7 @@ def render_mode_selection():
     - Your time will be tracked for research purposes
     
     ⚠️ **Important:** Please complete all steps in order. Experimental data will only be logged after all required items are filled out. 
-    Your careful participation ensures the validity of our research data. The top 10% participants receive a financial bonus.
+    Your careful participation ensures the validity of our research data. The top 10 percent of participants will receive a financial bonus.
     """)
     
     st.markdown("**Ready to begin the experiment?**")
