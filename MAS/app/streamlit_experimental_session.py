@@ -734,7 +734,7 @@ class StreamlitExperimentalSession:
             col1, col2 = st.columns(2)
             
             with col1:
-                name = st.text_input("Name*", help="Choose an alias or identifier")
+                name = st.text_input("Alias*", help="Choose an alias or identifier")
                 age = st.number_input("Age*", min_value=18, max_value=100, help="Your age")
                 nationality = st.text_input("Nationality*", help="Your nationality")
                 background = st.text_area(
@@ -794,7 +794,7 @@ class StreamlitExperimentalSession:
                     "nationality": nationality.strip(),
                     "background": background.strip(),
                     "confidence": confidence,
-                    "learning_factors": learning_factors,
+#                    "learning_factors": learning_factors,
                     "background_knowledge_score": background_score,
                     "scaffolding_level": scaffolding_level,
                     "zpd_level": scaffolding_level,  # For compatibility

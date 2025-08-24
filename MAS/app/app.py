@@ -107,13 +107,13 @@ def render_mode_selection():
     # Add time information
     st.warning("""
     ⏱️ **Expected Duration:**
-    - Total experiment time: **Less than 30 minutes**
-    - 5 rounds of concept mapping: **5-10 minutes per round**
+    - Total experiment time: **Approximately 40 minutes**
+    - 5 rounds of concept mapping: **5 minutes per round**
     - Additional time for questionnaires and profile setup
     - Your time will be tracked for research purposes
     
     ⚠️ **Important:** Please complete all steps in order. Experimental data will only be logged after all required items are filled out. 
-    Your careful participation ensures the validity of our research data.
+    Your careful participation ensures the validity of our research data. The top 10% participants receive a financial bonus.
     """)
     
     st.markdown("**Ready to begin the experiment?**")
