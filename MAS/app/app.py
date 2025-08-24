@@ -40,7 +40,7 @@ def init_session_state():
         "profile_initialized": False,
         "pre_questionnaire_completed": False,
         "clt_completed": False,
-        "utaut2_completed": False,
+#        "utaut2_completed": False,
         "session_finalized": False,
         "tutorial_completed": False,
         "conversation_turn": 0,
@@ -1137,13 +1137,13 @@ def main():
                 st.session_state.experimental_session.render_clt_questionnaire()
             return
         
-        # UTAUT2 questionnaire (experimental mode only, after CLT)
-        if (st.session_state.mode == "experimental" and 
-            st.session_state.get('clt_completed', False) and
-            not st.session_state.get('utaut2_completed', False)):
-            if st.session_state.experimental_session:
-                st.session_state.experimental_session.render_utaut2_questionnaire()
-            return
+        # # UTAUT2 questionnaire (experimental mode only, after CLT)
+        # if (st.session_state.mode == "experimental" and 
+        #     st.session_state.get('clt_completed', False) and
+        #     not st.session_state.get('utaut2_completed', False)):
+        #     if st.session_state.experimental_session:
+        #         st.session_state.experimental_session.render_utaut2_questionnaire()
+        #     return
         
         # Show summary page after all questionnaires are completed (or immediately in demo mode)
         render_summary_page()
