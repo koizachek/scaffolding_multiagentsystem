@@ -96,13 +96,13 @@ def render_mode_selection():
     st.success("""
     📋 **Task Description & Resources:**
     
-    The focus of this study is to assess the helpfulness of instructions via chatbot. During the experiment, you will have continuous access to:
+    This study examines the helpfulness of chatbot instructions in learning. During the experiment, you will have continuous access to:
     - **Task Description**: The specific problem you need to solve through concept mapping
     - **Extra Materials**: Additional resources to help you understand the topic
     - **Aid and Instructions**: From round 1 on, you can interact with a chatbot that assists you in improving your map
     
-    These resources will be available via buttons at the top of the screen throughout all rounds.
-    Your task is to create and refine a concept map that represents your understanding of the problem described in these materials.
+    These resources will be available via buttons at the top of the screen throughout all rounds. The chatbot is below the concept map.
+    Your task is to create and refine a concept map that represents your understanding of the problem described in these materials with the help of the chatbot.
     """)
     
     # Add time information
@@ -156,17 +156,18 @@ def render_consent_form():
         ### Informed Consent for Research Participation
         
         You are being invited to participate in a research study titled **"Agentic AI for Higher Education"**. 
-        This study is being done by **Diana Kozachek** from the **University of Saint Gallen, Switzerland**. 
+        This study is being conducted by **Diana Kozachek** from the **University of St. Gallen, Switzerland**. 
         You were selected to participate in this study because you are an adult learner interested in educational technology.
         
         **Purpose of the Research:**
-        The purpose of this research study is to investigate how AI-powered scaffolding agents can support learning through concept mapping activities. 
+        The purpose of this research study is to investigate how AI-powered agents can support learning through concept mapping activities. 
         If you agree to take part in this study, you will be asked to complete an online concept mapping exercise with AI assistance, 
-        followed by questionnaires about your experience. This experiment will take you approximately **45-60 minutes** to complete.
+        followed by questionnaires about your experience. This experiment will take you approximately **30-45 minutes** to complete.
         
-        **Potential Benefits:**
-        You may not directly benefit from this research; however, we hope that your participation in the study may contribute to 
-        improving educational technology and AI-assisted learning tools for students.
+        **Benefits:**
+        Apart from the paid participation, we hope that your participation in the study may contribute to 
+        improving educational technology and AI-assisted learning tools for students. Therefore, the top 10 percent of participants 
+        receive an financial bonus to be paid upon analysis of all results.
         
         **Risks and Confidentiality:**
         We believe there are no known risks associated with this research study; however, as with any online related activity 
@@ -178,11 +179,10 @@ def render_consent_form():
         
         **Voluntary Participation:**
         Your participation in this study is completely voluntary and you can withdraw at any time. 
-        You are free to skip any question that you choose.
         
         **Contact Information:**
         If you have questions about this project or if you have a research-related problem, you may contact the researcher, 
-        **Diana Kozachek** at the University of Saint Gallen. If you have any questions concerning your rights as a research subject, 
+        **Diana Kozachek** at the University of St. Gallen. If you have any questions concerning your rights as a research subject, 
         you may contact the University of Saint Gallen Ethics Committee.
         
         **Consent Statement:**
