@@ -39,7 +39,7 @@ def text_to_image(
     # Try to use a larger system font for better readability
     try:
         # Try to use a TrueType font with the specified size
-        font = ImageFont.truetype("/System/Library/Fonts/Helvetica.ttc", font_size)
+        font = ImageFont.truetype("/System/Library/Fonts/Arial.ttc", font_size)
     except:
         try:
             # Fallback to Arial if available

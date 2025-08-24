@@ -107,7 +107,7 @@ def render_mode_selection():
     # Add time information
     st.warning("""
     ⏱️ **Expected Duration:**
-    - Total experiment time: **Less than 1 hour**
+    - Total experiment time: **Less than 30 minutes**
     - 5 rounds of concept mapping: **5-10 minutes per round**
     - Additional time for questionnaires and profile setup
     - Your time will be tracked for research purposes

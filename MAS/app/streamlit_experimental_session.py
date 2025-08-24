@@ -734,12 +734,12 @@ class StreamlitExperimentalSession:
             col1, col2 = st.columns(2)
             
             with col1:
-                name = st.text_input("Name*", help="Choose an Alias or identifier")
-                age = st.number_input("Age*", min_value=16, max_value=100, help="Your age")
+                name = st.text_input("Alias*", help="Choose an Alias or identifier")
+                age = st.number_input("Age*", min_value=18, max_value=100, help="Your age")
                 nationality = st.text_input("Nationality*", help="Your nationality")
                 background = st.text_area(
                     "Educational/Professional Background*", 
-                    help="Brief description of your educational or professional background"
+                    help="Brief description of your educational or professional background, such as Undergrad Student of XY/Employee/Retired"
                 )
             
             with col2:
@@ -749,27 +749,27 @@ class StreamlitExperimentalSession:
                     help="How confident do you feel about concept mapping?"
                 )
                 
-                # Learning factors that could affect outcome
-                st.markdown("**Learning Factors**")
-                st.caption("Please select any factors that may affect your learning (optional):")
+                # # Learning factors that could affect outcome
+                # st.markdown("**Learning Factors**")
+                # st.caption("Please select any factors that may affect your learning (optional):")
                 
-                learning_factors = []
-                if st.checkbox("ADHD"):
-                    learning_factors.append("ADHD")
-                if st.checkbox("AuDHD"):
-                    learning_factors.append("AuDHD")
-                if st.checkbox("Autism Spectrum Disorder"):
-                    learning_factors.append("Autism Spectrum Disorder")
-                if st.checkbox("Visual Processing Disorder"):
-                    learning_factors.append("Visual Processing Disorder")
-                if st.checkbox("Dyslexia"):
-                    learning_factors.append("Dyslexia")
-                if st.checkbox("Dyscalculia"):
-                    learning_factors.append("Dyscalculia")
+                # learning_factors = []
+                # if st.checkbox("ADHD"):
+                #     learning_factors.append("ADHD")
+                # if st.checkbox("AuDHD"):
+                #     learning_factors.append("AuDHD")
+                # if st.checkbox("Autism Spectrum Disorder"):
+                #     learning_factors.append("Autism Spectrum Disorder")
+                # if st.checkbox("Visual Processing Disorder"):
+                #     learning_factors.append("Visual Processing Disorder")
+                # if st.checkbox("Dyslexia"):
+                #     learning_factors.append("Dyslexia")
+                # if st.checkbox("Dyscalculia"):
+                #     learning_factors.append("Dyscalculia")
                 
-                other_factors = st.text_input("Other factors (please specify)", help="Any other learning factors not listed above")
-                if other_factors:
-                    learning_factors.append(f"Other: {other_factors}")
+                # other_factors = st.text_input("Other factors (please specify)", help="Any other learning factors not listed above")
+                # if other_factors:
+                #     learning_factors.append(f"Other: {other_factors}")
             
             submitted = st.form_submit_button("Create Profile", type="primary")
             
@@ -1091,7 +1091,7 @@ class StreamlitExperimentalSession:
             "conceptual_scaffolding": "Let's explore the conceptual relationships in your map. How do these concepts connect to form a coherent understanding?",
             "strategic_scaffolding": "Consider the strategic organization of your concept map. What's the most effective way to structure these ideas?",
             "metacognitive_scaffolding": "Reflect on your thinking process. How confident are you about these relationships? What might you be missing?",
-            "procedural_scaffolding": "Let's focus on the procedural aspects. What steps or processes are represented in your concept map?"
+            "procedural_scaffolding": "Let's focus on the procedural aspects. What steps or tools did you utilize in your concept map?"
         }
         
         # Try OpenAI integration for experimental mode
@@ -1177,9 +1177,9 @@ class StreamlitExperimentalSession:
                 
                 # Safely extract response
                 if isinstance(api_result, dict):
-                    response = api_result.get("response", "I apologize, but I'm having trouble generating a response. Please continue with your concept map.")
+                    response = api_result.get("response", "I apologize, but I'm having trouble generating a response. Please continue with your concept map or skip to the next round.")
                 else:
-                    response = str(api_result) if api_result else "I apologize, but I'm having trouble generating a response. Please continue with your concept map."
+                    response = str(api_result) if api_result else "I apologize, but I'm having trouble generating a response. Please continue with your concept map or skip to the next round."
                 
                 # Log the interaction
                 if self.session_logger:
@@ -1221,7 +1221,7 @@ class StreamlitExperimentalSession:
                 "conceptual_scaffolding": f"I see you mentioned '{user_response[:50]}...'. Let's explore how this connects to the broader conceptual framework in your map.",
                 "strategic_scaffolding": f"Based on your response about '{user_response[:50]}...', have you considered alternative organizational strategies?",
                 "metacognitive_scaffolding": f"Your reflection on '{user_response[:50]}...' is interesting. What does this tell you about your learning process?",
-                "procedural_scaffolding": f"You mentioned '{user_response[:50]}...'. How does this procedural approach compare to other methods you could use?"
+                "procedural_scaffolding": f"You mentioned '{user_response[:50]}...'. How does this procedural approach compare to other methods and tools you could use?"
             }
             response = demo_followup_responses.get(agent_type, demo_responses.get(agent_type, "Thank you for your response. Can you elaborate further?"))
         else:
