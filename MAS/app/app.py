@@ -96,9 +96,10 @@ def render_mode_selection():
     st.success("""
     📋 **Task Description & Resources:**
     
-    During the experiment, you will have continuous access to:
+    The focus of this study is to assess the helpfulness of instructions via chatbot. During the experiment, you will have continuous access to:
     - **Task Description**: The specific problem you need to solve through concept mapping
     - **Extra Materials**: Additional resources to help you understand the topic
+    - **Aid and Instructions**: From round 1 on, you can interact with a chatbot that assists you in improving your map
     
     These resources will be available via buttons at the top of the screen throughout all rounds.
     Your task is to create and refine a concept map that represents your understanding of the problem described in these materials.
