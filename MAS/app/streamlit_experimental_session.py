@@ -389,9 +389,16 @@ class StreamlitExperimentalSession:
                 "statement": "I can apply the knowledge that I acquired through the learning material quickly and accurately."
             }
         ]
+        # Add random attention check item
+        attention_check_item = {
+            "construct": "ATTN",
+            "code": "ATTN1",
+            "statement": "To show you are paying attention, please select the number 4."
+        }
+        insert_position = random.randint(0, len(clt_items))
+        clt_items.insert(insert_position, attention_check_item)
         
         # Randomize item order to reduce bias (but keep consistent within session)
-        import random
         if "clt_item_order" not in st.session_state:
             st.session_state.clt_item_order = list(range(len(clt_items)))
             random.shuffle(st.session_state.clt_item_order)
@@ -455,6 +462,13 @@ class StreamlitExperimentalSession:
                     "randomized_order": st.session_state.clt_item_order
                 }
                 
+                # Check attention check
+                attn_response = responses.get("ATTN1", {}).get("response_value")
+                passed_attention_check = attn_response == 4
+                clt_data["passed_attention_check"] = passed_attention_check
+
+
+                
                 # Add to session data
                 self.session_data["clt_questionnaire"] = clt_data
                 
@@ -467,7 +481,8 @@ class StreamlitExperimentalSession:
                             "construct_scores": construct_scores,
                             "total_items": len(responses),
                             "participant_id": clt_data["participant_id"],
-                            "unique_id": clt_data["unique_id"]
+                            "unique_id": clt_data["unique_id"],
+                            "passed_attention_check": clt_data["passed_attention_check"]
                         }
                     )
                     
@@ -591,7 +606,6 @@ class StreamlitExperimentalSession:
     #     ]
         
     #     # Randomize item order to reduce bias (but keep consistent within session)
-    #     import random
     #     if "utaut2_item_order" not in st.session_state:
     #         st.session_state.utaut2_item_order = list(range(len(utaut2_items)))
     #         random.shuffle(st.session_state.utaut2_item_order)
