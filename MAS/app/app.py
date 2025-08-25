@@ -454,9 +454,63 @@ def render_agent_differentiation_question():
             st.session_state.agent_differentiation_completed = True
             
             st.success("✅ Thank you for your feedback!")
-            st.info("📊 Proceeding to the Cognitive Load questionnaire...")
+            st.info("📊 Proceeding to the map adaption question...")
+            st.rerun()
+
+def render_map_adaption_question():
+    """Render self-assessment of concept map adaptation between rounds."""
+    st.header("🗺️ Concept Map Adaptation")
+    st.markdown("---")
+    
+    st.info("""We would like to know how much you think your concept map changed between the rounds.""")
+    
+    with st.form("map_adaptation"):
+        adaptation = st.radio(
+            "Did you adapt your concept map between the rounds?",
+            options=[
+                "Yes, I actively changed or expanded my map between rounds",
+                "Somewhat - I made a few adjustments but mostly kept it the same",
+                "No, I barely changed my map between rounds",
+                "I'm not sure"
+            ],
+            index=None  # No default selection
+        )
+        
+        comments = st.text_area(
+            "Additional comments (optional):",
+            height=100,
+            placeholder="What kinds of changes (if any) did you make to your map?"
+        )
+        
+        submitted = st.form_submit_button("Submit", type="primary")
+        
+        if submitted:
+            if not adaptation:
+                st.error("Please select an answer before submitting.")
+                return
             
-            # Proceed to next questionnaire
+            # Store response
+            if st.session_state.experimental_session:
+                adaptation_data = {
+                    "adaptation_response": adaptation,
+                    "comments": comments,
+                    "timestamp": datetime.now().isoformat(),
+                    "participant_id": st.session_state.learner_profile.get('unique_id', 'N/A') if st.session_state.learner_profile else 'N/A',
+                    "participant_name": st.session_state.learner_profile.get('name', 'Unknown') if st.session_state.learner_profile else 'Unknown'
+                }
+                
+                st.session_state.experimental_session.session_data["map_adaptation"] = adaptation_data
+                
+                if st.session_state.experimental_session.session_logger:
+                    st.session_state.experimental_session.session_logger.log_event(
+                        event_type="map_adaptation_response",
+                        metadata=adaptation_data
+                    )
+            # Mark as completed and proceed
+            st.session_state.map_adaptation_completed = True
+            
+            st.success("✅ Thank you for your feedback!")
+            st.info("📊 Proceeding to the Cognitive Load questionnaire...")
             st.rerun()
 
 
@@ -588,6 +642,7 @@ def render_header():
         # Display Round 0 as "Baseline" and others as Round 1-4
         if st.session_state.roundn == 0:
             st.subheader(f"Round 0 (Baseline) / {st.session_state.max_rounds}")
+
         else:
             st.subheader(f"Round {st.session_state.roundn}/{st.session_state.max_rounds}")
     
@@ -671,7 +726,17 @@ def render_concept_map():
             render_help_dialog()
     with middle:
         st.write(cm_label)
-        
+
+        #example map
+        if roundn == 0:
+            st.markdown("Add up to 5 of your most important concepts and their connections. Here is an example to illustrate what your baseline concept map might look like, before you receive assistance")
+
+            img_path = os.path.join(os.path.dirname(__file__), "..", "examples", "data", "examplemap.png")
+            if os.path.exists(img_path):
+                st.image(img_path, use_container_width=True)
+            else:
+                st.warning(f"⚠️ Example image not found at {img_path}")
+
         # Create a container for the concept map
         try:
             # Ensure we have valid concept map data
@@ -722,7 +787,7 @@ def render_followup():
     if roundn == 0:
         st.success("✅ Initial concept map submitted successfully!")
         st.info("This was your baseline concept map (Round 0). Now let's proceed with agent-guided learning.")
-        
+    
         col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
             if st.button("Proceed to Round 1", type="primary", use_container_width=True):
@@ -1127,6 +1192,12 @@ def main():
         if (st.session_state.mode == "experimental" and 
             not st.session_state.get('agent_differentiation_completed', False)):
             render_agent_differentiation_question()
+            return
+        # Map adaptation question (after differentiation, before CLT)
+        if (st.session_state.mode == "experimental" and
+            st.session_state.get('agent_differentiation_completed', False) and
+            not st.session_state.get('map_adaptation_completed', False)):
+            render_map_adaption_question()
             return
         
         # CLT questionnaire (experimental mode only, after agent differentiation)

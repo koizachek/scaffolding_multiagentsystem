@@ -921,7 +921,7 @@ class StreamlitExperimentalSession:
         """Get formatted agent name for display."""
         # Round 0 is special - no scaffolding agent
         if roundn == 0:
-            return "Initial Map Creation (No Scaffolding)"
+            return "Initial Map Creation"
         
         # Adjust for 0-based indexing after round 0
         agent_index = roundn - 1
