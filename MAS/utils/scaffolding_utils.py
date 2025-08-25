@@ -298,7 +298,8 @@ def analyze_learner_response(response: str, scaffolding_type: str) -> Dict[str, 
 
 def generate_default_prompts(scaffolding_type: str, 
                             scaffolding_intensity: str,
-                            analysis: Optional[Dict[str, Any]] = None) -> List[str]:
+                            analysis: Optional[Dict[str, Any]] = None,
+                            enhanced_concept_map: Optional[Dict[str, Any]] = None) -> List[str]:
     """
     Generate default scaffolding prompts.
     
@@ -306,10 +307,20 @@ def generate_default_prompts(scaffolding_type: str,
         scaffolding_type: Type of scaffolding
         scaffolding_intensity: Intensity of scaffolding
         analysis: Concept map analysis (optional)
+        enhanced_concept_map: Enhanced concept map with resolved labels (optional)
         
     Returns:
         List of default scaffolding prompts
     """
+    # Generate context-aware prompts if we have an enhanced concept map
+    if enhanced_concept_map and analysis:
+        return _generate_context_aware_prompts(
+            scaffolding_type, 
+            scaffolding_intensity, 
+            analysis, 
+            enhanced_concept_map
+        )
+    
     # Default prompts by scaffolding type and intensity
     default_prompts = {
         "strategic": {
@@ -479,3 +490,189 @@ def format_scaffolding_text(text: str, scaffolding_type: str) -> str:
     
     # Format text
     return f"{emoji} {text}"
+
+def _generate_context_aware_prompts(scaffolding_type: str,
+                                   scaffolding_intensity: str,
+                                   analysis: Dict[str, Any],
+                                   enhanced_concept_map: Dict[str, Any]) -> List[str]:
+    """
+    Generate context-aware prompts using resolved concept labels.
+    
+    Args:
+        scaffolding_type: Type of scaffolding
+        scaffolding_intensity: Intensity of scaffolding
+        analysis: Concept map analysis
+        enhanced_concept_map: Enhanced concept map with resolved labels
+        
+    Returns:
+        List of context-aware scaffolding prompts
+    """
+    prompts = []
+    
+    # Get relationships with resolved labels
+    relationships = enhanced_concept_map.get("relationships", enhanced_concept_map.get("edges", []))
+    
+    # Get concepts with labels
+    concepts = enhanced_concept_map.get("concepts", enhanced_concept_map.get("nodes", []))
+    
+    # Build a list of concept labels for reference
+    concept_labels = []
+    for concept in concepts:
+        if isinstance(concept, dict):
+            label = concept.get("label", concept.get("text", concept.get("id", "")))
+            if label:
+                concept_labels.append(label)
+        elif isinstance(concept, str):
+            concept_labels.append(concept)
+    
+    if scaffolding_type == "conceptual":
+        # Generate conceptual prompts with actual concept names
+        if scaffolding_intensity == "high":
+            if relationships:
+                # Pick a specific relationship to discuss
+                rel = relationships[0]
+                source_text = rel.get("source_text", rel.get("source_label", rel.get("source", "")))
+                target_text = rel.get("target_text", rel.get("target_label", rel.get("target", "")))
+                rel_text = rel.get("text", rel.get("relation", "relates to"))
+                
+                prompts.append(
+                    f"You've indicated that '{source_text}' {rel_text} '{target_text}'. "
+                    f"Can you elaborate on this relationship and explain why it's important?"
+                )
+            
+            if len(concept_labels) > 2:
+                prompts.append(
+                    f"How do concepts like '{concept_labels[0]}' and '{concept_labels[1]}' "
+                    f"relate to the overall theme of your concept map?"
+                )
+            
+            prompts.append(
+                "Are there any additional concepts or relationships you're considering adding? "
+                "What would they contribute to your understanding?"
+            )
+        
+        elif scaffolding_intensity == "medium":
+            if concept_labels:
+                central_concept = concept_labels[0] if concept_labels else "your main concept"
+                prompts.append(
+                    f"What makes '{central_concept}' a key concept in your map?"
+                )
+            
+            prompts.append(
+                "How do the relationships you've identified help explain the topic?"
+            )
+        
+        else:  # low
+            prompts.append(
+                "What is the main idea that connects all the concepts in your map?"
+            )
+    
+    elif scaffolding_type == "strategic":
+        if scaffolding_intensity == "high":
+            if concept_labels:
+                prompts.append(
+                    f"How did you decide to position concepts like '{concept_labels[0]}' "
+                    f"in relation to other concepts?"
+                )
+            
+            prompts.append(
+                "What organizing principle did you use to structure your concept map?"
+            )
+            
+            if relationships:
+                prompts.append(
+                    "How did you determine which relationships were most important to include?"
+                )
+        
+        elif scaffolding_intensity == "medium":
+            prompts.append(
+                "What was your strategy for organizing these concepts?"
+            )
+            
+            if len(relationships) > 0:
+                prompts.append(
+                    f"You've identified {len(relationships)} relationships. "
+                    f"How did you decide which connections to make?"
+                )
+        
+        else:  # low
+            prompts.append(
+                "What approach did you take to create this concept map?"
+            )
+    
+    elif scaffolding_type == "metacognitive":
+        if scaffolding_intensity == "high":
+            if concept_labels:
+                prompts.append(
+                    f"How confident are you about your understanding of concepts like "
+                    f"'{concept_labels[0]}' and their relationships?"
+                )
+            
+            prompts.append(
+                "Which parts of your concept map do you feel need more development?"
+            )
+            
+            prompts.append(
+                "How has creating this map changed your understanding of the topic?"
+            )
+        
+        elif scaffolding_intensity == "medium":
+            prompts.append(
+                "What have you learned from creating this concept map?"
+            )
+            
+            if concept_labels:
+                prompts.append(
+                    f"Which concepts (like '{concept_labels[0]}') do you feel you understand well?"
+                )
+        
+        else:  # low
+            prompts.append(
+                "How do you feel about your current understanding of this topic?"
+            )
+    
+    elif scaffolding_type == "procedural":
+        if scaffolding_intensity == "high":
+            prompts.append(
+                "What was your step-by-step process for creating this concept map?"
+            )
+            
+            if relationships:
+                rel = relationships[0]
+                source_text = rel.get("source_text", rel.get("source_label", "one concept"))
+                target_text = rel.get("target_text", rel.get("target_label", "another concept"))
+                prompts.append(
+                    f"How did you identify the relationship between '{source_text}' and '{target_text}'?"
+                )
+            
+            prompts.append(
+                "What techniques did you use to organize your concepts spatially?"
+            )
+        
+        elif scaffolding_intensity == "medium":
+            prompts.append(
+                "What process did you follow to build your concept map?"
+            )
+            
+            if len(concepts) > 0:
+                prompts.append(
+                    f"How did you decide to include these {len(concepts)} concepts?"
+                )
+        
+        else:  # low
+            prompts.append(
+                "Can you describe your process for creating this concept map?"
+            )
+    
+    # If we couldn't generate enough context-aware prompts, add some defaults
+    if len(prompts) < 2:
+        if scaffolding_type == "conceptual":
+            prompts.append("How do the concepts in your map relate to each other?")
+        elif scaffolding_type == "strategic":
+            prompts.append("What was your strategy for organizing these concepts?")
+        elif scaffolding_type == "metacognitive":
+            prompts.append("What aspects of this topic do you understand well?")
+        elif scaffolding_type == "procedural":
+            prompts.append("What steps did you take to create your map?")
+    
+    return prompts

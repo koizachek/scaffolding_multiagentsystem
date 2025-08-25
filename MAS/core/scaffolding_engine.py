@@ -78,8 +78,18 @@ class ScaffoldingEngine:
         logger.info("Conducting scaffolding interaction")
         
         try:
-            # Analyze concept map with previous and expert maps
-            map_analysis = analyze_concept_map(concept_map, previous_map, expert_map)
+            # Build ID-to-text lookup dictionary for concept maps
+            id_to_text = self._build_id_to_text_lookup(concept_map)
+            previous_id_to_text = self._build_id_to_text_lookup(previous_map) if previous_map else {}
+            expert_id_to_text = self._build_id_to_text_lookup(expert_map) if expert_map else {}
+            
+            # Enhance concept maps with resolved labels
+            enhanced_concept_map = self._enhance_map_with_labels(concept_map, id_to_text)
+            enhanced_previous_map = self._enhance_map_with_labels(previous_map, previous_id_to_text) if previous_map else None
+            enhanced_expert_map = self._enhance_map_with_labels(expert_map, expert_id_to_text) if expert_map else None
+            
+            # Analyze concept map with previous and expert maps (using enhanced versions)
+            map_analysis = analyze_concept_map(enhanced_concept_map, enhanced_previous_map, enhanced_expert_map)
             
             # Get current round
             current_round = self.session_state.get("current_round", 0)
@@ -96,11 +106,12 @@ class ScaffoldingEngine:
                 self.interaction_history
             )
             
-            # Generate scaffolding prompts
+            # Generate scaffolding prompts with enhanced map data
             prompts = generate_default_prompts(
                 scaffolding_type,
                 scaffolding_intensity,
-                map_analysis
+                map_analysis,
+                enhanced_concept_map
             )
             
             # Store current interaction
@@ -510,3 +521,103 @@ class ScaffoldingEngine:
             zpd_estimate["scaffolding_needs"][scaffolding_type] = adapted_intensity
             self.session_state["zpd_estimate"] = zpd_estimate
             logger.info(f"Adapted {scaffolding_type} scaffolding intensity to {adapted_intensity}")
+    
+    def _build_id_to_text_lookup(self, concept_map: Optional[Dict[str, Any]]) -> Dict[str, str]:
+        """
+        Build a lookup dictionary from concept IDs to their text labels.
+        
+        Args:
+            concept_map: Concept map containing concepts
+            
+        Returns:
+            Dictionary mapping IDs to text labels
+        """
+        if not concept_map:
+            return {}
+        
+        id_to_text = {}
+        
+        # Handle both 'concepts' and 'nodes' keys for compatibility
+        concepts = concept_map.get("concepts", concept_map.get("nodes", []))
+        
+        for concept in concepts:
+            if isinstance(concept, dict):
+                concept_id = concept.get("id")
+                concept_text = concept.get("text", concept.get("label", concept.get("id", "")))
+                if concept_id:
+                    id_to_text[concept_id] = concept_text
+            elif isinstance(concept, str):
+                # If concepts are stored as strings, use them as both ID and text
+                id_to_text[concept] = concept
+        
+        return id_to_text
+    
+    def _enhance_map_with_labels(self, concept_map: Optional[Dict[str, Any]], 
+                                 id_to_text: Dict[str, str]) -> Optional[Dict[str, Any]]:
+        """
+        Enhance a concept map by adding human-readable labels to relationships.
+        
+        Args:
+            concept_map: Original concept map
+            id_to_text: Dictionary mapping IDs to text labels
+            
+        Returns:
+            Enhanced concept map with resolved labels
+        """
+        if not concept_map:
+            return None
+        
+        # Create a copy to avoid modifying the original
+        enhanced_map = concept_map.copy()
+        
+        # Handle both 'relationships' and 'edges' keys for compatibility
+        relationships = enhanced_map.get("relationships", enhanced_map.get("edges", []))
+        enhanced_relationships = []
+        
+        for rel in relationships:
+            if isinstance(rel, dict):
+                enhanced_rel = rel.copy()
+                
+                # Add resolved text labels
+                source_id = rel.get("source")
+                target_id = rel.get("target")
+                
+                enhanced_rel["source_id"] = source_id
+                enhanced_rel["target_id"] = target_id
+                enhanced_rel["source_text"] = id_to_text.get(source_id, source_id)
+                enhanced_rel["target_text"] = id_to_text.get(target_id, target_id)
+                
+                # Also update the source and target to use text for compatibility
+                enhanced_rel["source_label"] = enhanced_rel["source_text"]
+                enhanced_rel["target_label"] = enhanced_rel["target_text"]
+                
+                enhanced_relationships.append(enhanced_rel)
+            else:
+                enhanced_relationships.append(rel)
+        
+        # Update the map with enhanced relationships
+        if "relationships" in enhanced_map:
+            enhanced_map["relationships"] = enhanced_relationships
+        if "edges" in enhanced_map:
+            enhanced_map["edges"] = enhanced_relationships
+        
+        # Also enhance the nodes/concepts with explicit text labels
+        concepts = enhanced_map.get("concepts", enhanced_map.get("nodes", []))
+        enhanced_concepts = []
+        
+        for concept in concepts:
+            if isinstance(concept, dict):
+                enhanced_concept = concept.copy()
+                concept_id = concept.get("id")
+                if concept_id and concept_id in id_to_text:
+                    enhanced_concept["label"] = id_to_text[concept_id]
+                enhanced_concepts.append(enhanced_concept)
+            else:
+                enhanced_concepts.append(concept)
+        
+        if "concepts" in enhanced_map:
+            enhanced_map["concepts"] = enhanced_concepts
+        if "nodes" in enhanced_map:
+            enhanced_map["nodes"] = enhanced_concepts
+        
+        return enhanced_map

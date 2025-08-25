@@ -1157,6 +1157,27 @@ class StreamlitExperimentalSession:
                             )
                         internal_format = {"concepts": [], "relationships": []}
                 
+                # CRITICAL FIX: Enhance the concept map with resolved labels
+                # Build ID to text lookup dictionary
+                id_to_text = {}
+                for concept in internal_format.get("concepts", []):
+                    concept_id = concept.get("id")
+                    concept_text = concept.get("text", concept.get("label", concept_id))
+                    if concept_id:
+                        id_to_text[concept_id] = concept_text
+                
+                # Enhance relationships with resolved text labels
+                enhanced_relationships = []
+                for rel in internal_format.get("relationships", []):
+                    enhanced_rel = rel.copy()
+                    # Add resolved text labels
+                    enhanced_rel["source_text"] = id_to_text.get(rel.get("source"), rel.get("source"))
+                    enhanced_rel["target_text"] = id_to_text.get(rel.get("target"), rel.get("target"))
+                    enhanced_relationships.append(enhanced_rel)
+                
+                # Update internal format with enhanced relationships
+                internal_format["relationships"] = enhanced_relationships
+                
                 # Get conversation history for this round
                 conversation_history = self.get_conversation_history(roundn)
                 

@@ -330,11 +330,40 @@ INSTRUCTIONS:
         concepts = concept_map.get("concepts", [])
         relationships = concept_map.get("relationships", [])
         
-        concept_list = [f"- {c.get('text', 'Unknown')}" for c in concepts]
-        relationship_list = [
-            f"- {r.get('source', 'A')} → {r.get('text', 'relates to')} → {r.get('target', 'B')}"
-            for r in relationships
-        ]
+        # Build concept list with text labels
+        concept_list = []
+        for c in concepts:
+            # Use 'text' or 'label' field, fallback to 'id' if neither exists
+            label = c.get('text', c.get('label', c.get('id', 'Unknown')))
+            concept_list.append(f"- {label}")
+        
+        # Build relationship list with resolved labels
+        relationship_list = []
+        for r in relationships:
+            # Use enhanced labels if available (from ScaffoldingEngine enhancement)
+            source_label = r.get('source_text', r.get('source_label', r.get('source', 'Unknown')))
+            target_label = r.get('target_text', r.get('target_label', r.get('target', 'Unknown')))
+            relation_text = r.get('text', r.get('relation', 'relates to'))
+            
+            # Final UUID check - if still showing UUIDs, use generic labels
+            # This should rarely happen if UUID resolution is working correctly
+            if '-' in source_label and len(source_label) > 30:  # Likely a UUID
+                # Try to find the concept text from the concepts list
+                source_concept = next((c for c in concepts if c.get('id') == r.get('source')), None)
+                if source_concept:
+                    source_label = source_concept.get('text', source_concept.get('label', 'Unknown Concept'))
+                else:
+                    source_label = 'Unknown Concept'
+                    
+            if '-' in target_label and len(target_label) > 30:  # Likely a UUID
+                # Try to find the concept text from the concepts list
+                target_concept = next((c for c in concepts if c.get('id') == r.get('target')), None)
+                if target_concept:
+                    target_label = target_concept.get('text', target_concept.get('label', 'Unknown Concept'))
+                else:
+                    target_label = 'Unknown Concept'
+            
+            relationship_list.append(f"- {source_label} → {relation_text} → {target_label}")
         
         prompt_parts = [
             f"I'm analyzing a concept map with the following elements:",
