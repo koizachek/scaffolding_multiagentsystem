@@ -197,13 +197,81 @@ class AIManager:
         Returns:
             Generated scaffolding response with metadata
         """
+        # Import scaffolding utilities to get templates
+        try:
+            from MAS.utils.scaffolding_utils import generate_default_prompts
+            from MAS.config.scaffolding_config import (
+                SCAFFOLDING_PROMPT_TEMPLATES,
+                SCAFFOLDING_FOLLOWUP_TEMPLATES,
+                SCAFFOLDING_CONCLUSION_TEMPLATES
+            )
+        except ImportError:
+            from utils.scaffolding_utils import generate_default_prompts
+            from config.scaffolding_config import (
+                SCAFFOLDING_PROMPT_TEMPLATES,
+                SCAFFOLDING_FOLLOWUP_TEMPLATES,
+                SCAFFOLDING_CONCLUSION_TEMPLATES
+            )
+        
+        # Get conversation turn from context
+        conversation_turn = context.get("conversation_turn", 0) if context else 0
+        conversation_history = context.get("conversation_history", []) if context else []
+        
+        # Determine if this is a follow-up or initial prompt
+        is_followup = conversation_turn > 0 and user_response
+        
+        # Get appropriate template based on context
+        if is_followup:
+            # Use follow-up templates for continued conversation
+            templates = SCAFFOLDING_FOLLOWUP_TEMPLATES.get(scaffolding_type, [])
+            if templates:
+                # Select a template that hasn't been used recently
+                used_templates = [msg.get("metadata", {}).get("template_used") 
+                                for msg in conversation_history 
+                                if msg.get("metadata", {}).get("template_used")]
+                
+                available_templates = [t for t in templates if t not in used_templates]
+                if not available_templates:
+                    available_templates = templates  # Reset if all used
+                
+                import random
+                selected_template = random.choice(available_templates)
+            else:
+                selected_template = None
+        else:
+            # Use initial scaffolding templates
+            intensity = "high" if scaffolding_level == "high" else "medium"
+            templates = SCAFFOLDING_PROMPT_TEMPLATES.get(scaffolding_type, {}).get(intensity, [])
+            
+            if templates:
+                # Generate prompts using the utility function with correct signature
+                prompts, used_indices = generate_default_prompts(
+                    scaffolding_type=scaffolding_type,
+                    scaffolding_intensity=scaffolding_level,  # Use scaffolding_level as intensity
+                    analysis=None,  # We'll pass analysis separately if needed
+                    enhanced_concept_map=concept_map,  # Pass the concept map
+                    used_template_indices=[],  # Track used templates
+                    conversation_turn=conversation_turn
+                )
+                # Use the first generated prompt (already personalized)
+                selected_template = prompts[0] if prompts else None
+            else:
+                selected_template = None
+        
         # Build system message based on scaffolding type and level
         system_message = self._get_scaffolding_system_message(scaffolding_type, scaffolding_level)
         
-        # Build prompt with scaffolding level consideration
-        prompt = self._build_scaffolding_prompt(
-            scaffolding_type, concept_map, user_response, context, scaffolding_level
-        )
+        # Build prompt incorporating the selected template
+        if selected_template:
+            # Use the template as the base prompt
+            prompt = self._build_scaffolding_prompt_with_template(
+                selected_template, scaffolding_type, concept_map, user_response, context, scaffolding_level
+            )
+        else:
+            # Fallback to original prompt building
+            prompt = self._build_scaffolding_prompt(
+                scaffolding_type, concept_map, user_response, context, scaffolding_level
+            )
         
         # Generate response
         result = self.generate_response(prompt, system_message)
@@ -213,6 +281,7 @@ class AIManager:
         result["scaffolding_level"] = scaffolding_level
         result["concept_map_nodes"] = len(concept_map.get("concepts", []))
         result["concept_map_edges"] = len(concept_map.get("relationships", []))
+        result["template_used"] = selected_template if selected_template else "none"
         
         return result
     
@@ -317,6 +386,60 @@ INSTRUCTIONS:
         }
         
         return base_messages.get(scaffolding_type, base_messages["conceptual"])
+    
+    def _build_scaffolding_prompt_with_template(self,
+                                              template: str,
+                                              scaffolding_type: str,
+                                              concept_map: Dict[str, Any],
+                                              user_response: Optional[str] = None,
+                                              context: Optional[Dict[str, Any]] = None,
+                                              scaffolding_level: str = "medium") -> str:
+        """Build prompt using a specific template."""
+        
+        # Extract concept map information for context
+        concepts = concept_map.get("concepts", [])
+        relationships = concept_map.get("relationships", [])
+        
+        # Build concept list with text labels
+        concept_list = []
+        id_to_text = {}
+        for c in concepts:
+            label = c.get('text', c.get('label', c.get('id', 'Unknown')))
+            concept_list.append(label)
+            id_to_text[c.get('id', '')] = label
+        
+        # Build relationship descriptions
+        relationship_descriptions = []
+        for r in relationships:
+            source_label = id_to_text.get(r.get('source'), r.get('source_text', r.get('source', 'Unknown')))
+            target_label = id_to_text.get(r.get('target'), r.get('target_text', r.get('target', 'Unknown')))
+            relation_text = r.get('text', r.get('relation', 'relates to'))
+            relationship_descriptions.append(f"{source_label} {relation_text} {target_label}")
+        
+        # Build the prompt
+        prompt_parts = [
+            "You are providing scaffolding for a concept mapping task about Adaptive Market Gatekeeping (AMG).",
+            f"\nCurrent concept map has {len(concepts)} concepts and {len(relationships)} relationships.",
+            f"\nConcepts include: {', '.join(concept_list[:5])}{'...' if len(concept_list) > 5 else ''}",
+        ]
+        
+        if relationship_descriptions:
+            prompt_parts.append(f"\nKey relationships: {'; '.join(relationship_descriptions[:3])}{'...' if len(relationship_descriptions) > 3 else ''}")
+        
+        # Add the template as the main instruction
+        prompt_parts.extend([
+            f"\n\nUse this template as your response (personalize it with specific concepts from the map):",
+            f'"{template}"',
+            "\n\nIMPORTANT: Use the exact structure and style of the template, but replace placeholders with actual concepts from the map.",
+            "Keep the same questioning style and scaffolding approach as shown in the template."
+        ])
+        
+        # Add user response context if available
+        if user_response:
+            prompt_parts.append(f"\n\nThe learner just responded: \"{user_response}\"")
+            prompt_parts.append("Acknowledge their response appropriately while maintaining the scaffolding approach.")
+        
+        return "\n".join(prompt_parts)
     
     def _build_scaffolding_prompt(self, 
                                 scaffolding_type: str,

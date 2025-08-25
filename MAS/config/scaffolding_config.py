@@ -138,11 +138,11 @@ SCAFFOLDING_PROMPT_TEMPLATES = {
 SCAFFOLDING_FOLLOWUP_TEMPLATES = {
     "strategic": [
         # STRATEGY REFINEMENT & ALTERNATIVE APPROACHES
-        "That's an interesting strategy. Have you considered how this approach might work for tackling other complex areas in your map?",
+        "Have you considered how this approach might work for tackling other complex areas in your map?",
         "Based on your approach, what alternative strategy might give you even better results here?",
-        "Given this strategy worked well, how might you adapt it to prioritize the most impactful connections first?",
-        "That's a solid approach. What would be your backup strategy if this method doesn't yield the connections you're looking for?",
-        "Interesting problem-solving approach. How might you scale this strategy to handle the entire AMG integration systematically?",
+        "Given the last strategy worked well, how might you adapt it to prioritize the most impactful connections first?",
+        "What would be your backup strategy if this method doesn't yield the connections you're looking for?",
+        "Reflect on your problem-solving approach. How might you scale this strategy to handle the entire AMG integration systematically?",
         # STRATEGIC PLANNING & NEXT STEPS
         "Given your current strategy, what's your game plan for the next phase of development?",
         "That approach makes sense. How would you strategically sequence your next moves to maximize impact?",
