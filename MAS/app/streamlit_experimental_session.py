@@ -301,9 +301,9 @@ class StreamlitExperimentalSession:
         st.markdown("---")
         
         st.info("""
-        Please rate your agreement with the following statements about the learning task you just completed.
+        Please answer the following statements about the learning task you just completed.
         
-        Select a rating from 1 (Strongly Disagree) to 7 (Strongly Agree) for each statement.
+        Select a rating from 1 (not at all applicable) to 9 (fully applicable) for each statement.
         """)
         
         # Define CLT items (15 items total)
@@ -410,21 +410,14 @@ class StreamlitExperimentalSession:
                 # Use radio buttons for 7-point Likert scale
                 response = st.radio(
                     "Select your rating:",
-                    options=[1, 2, 3, 4, 5, 6, 7],
-                    format_func=lambda x: {
-                        1: "1 - Strongly Disagree",
-                        2: "2 - Disagree", 
-                        3: "3 - Somewhat Disagree",
-                        4: "4 - Neutral",
-                        5: "5 - Somewhat Agree",
-                        6: "6 - Agree",
-                        7: "7 - Strongly Agree"
-                    }[x],
+                    options=list(range(1, 10)), 
+                    format_func=str,
                     key=f"clt_{item['code']}",
-                    index=None,  # No default selection - user must click
-                    horizontal=True  # Display options horizontally
+                    index=None,  
+                    horizontal=True  
                 )
-                
+                st. caption ("1 = Not at all applicable     9 = Fully applicable")
+
                 if response:
                     responses[item['code']] = {
                         "construct": item['construct'],

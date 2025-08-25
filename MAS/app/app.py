@@ -274,7 +274,7 @@ def render_tutorial():
     Welcome! Before starting the experiment, let's learn how to create concept maps effectively.
     
     **What is a concept map?**
-    A concept map is a visual representation of knowledge that shows relationships between concepts using nodes (concepts) and edges (relationships).
+    A concept map is a visual representation of knowledge that shows relationships between concepts using nodes (concepts) and edges (relationships). This concept map is responsive. You can zoom in and out to adapt the content to your screen.
     """)
     
     # Tutorial steps
