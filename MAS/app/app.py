@@ -126,7 +126,7 @@ def render_mode_selection():
         st.subheader("🔬 Experimental Session")
         st.markdown("""
         This research study includes:
-        - **AI-powered personalized scaffolding**
+        - **AI-powered personalized learning**
         - **Learner profiling questionnaire**
         - **5 rounds of concept mapping**
         - **Data collection for research purposes**
@@ -234,7 +234,7 @@ def render_profile_login():
     with st.columns([1, 10, 1])[1]:
         st.header("Welcome to the Experiment")
         st.write("To participate in this research study, please complete the profile questionnaire.")
-        st.info("Your responses will help us personalize the scaffolding to your learning needs.")
+        st.info("Your responses will help us personalize the adaption to your learning needs.")
         
         if st.button("Begin Profile Setup", type='primary', use_container_width=True):
             st.session_state.profile_initialisation_started = True
@@ -253,8 +253,8 @@ def render_learner_profile():
         st.session_state.agent_sequence = st.session_state.experimental_session.initialize_agent_sequence()
         
         st.info("📋 **Experiment Structure:**")
-        st.write("**Round 0:** Initial Map Creation (No Scaffolding) - Baseline")
-        st.write("**Rounds 1-4:** Agent-guided scaffolding sessions")
+        st.write("**Round 0:** Initial Map Creation (No agent) - Baseline")
+        st.write("**Rounds 1-4:** Agent-guided mapping sessions")
         st.write("")
         st.write("You will receive guidance from AI agents across 4 rounds to help improve your concept map.")
         
@@ -402,7 +402,7 @@ def render_agent_differentiation_question():
     """)
     
     with st.form("agent_differentiation"):
-        st.markdown("**Were you able to differentiate between the different agents that provided scaffolding?**")
+        st.markdown("**Were you able to differentiate between the different agents that provided guidance?**")
         
         differentiation = st.radio(
             "Select your answer:",
@@ -517,8 +517,8 @@ def render_summary_page():
             st.write(f"**Total Rounds Completed:** {st.session_state.max_rounds}")
             if st.session_state.mode == "experimental":
                 st.write("**Session Structure:**")
-                st.write("- Round 0: Baseline (no scaffolding)")
-                st.write("- Rounds 1-4: Agent-guided scaffolding")
+                st.write("- Round 0: Baseline (own map)")
+                st.write("- Rounds 1-4: Agent-guided map")
     
     # Display concept map statistics
     st.markdown("---")
@@ -544,7 +544,7 @@ def render_summary_page():
     st.info("""
     📊 Your responses have been recorded for research purposes.
     
-    Thank you for your valuable contribution to our research on AI-powered learning scaffolding!
+    Thank you for your valuable contribution to our research on AI-powered learning!
     """)
     
     # Option to start new session
@@ -721,7 +721,7 @@ def render_followup():
     # Special handling for Round 0 - skip directly to Round 1
     if roundn == 0:
         st.success("✅ Initial concept map submitted successfully!")
-        st.info("This was your baseline concept map (Round 0). Now let's proceed with agent-guided scaffolding.")
+        st.info("This was your baseline concept map (Round 0). Now let's proceed with agent-guided learning.")
         
         col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
@@ -792,7 +792,7 @@ def render_followup():
             else:
                 # Demo mode with conversation awareness
                 if conversation_turn == 0:
-                    st.session_state.agent_msg = "This is a demo response. In experimental mode, you would receive personalized AI-powered scaffolding."
+                    st.session_state.agent_msg = "This is a demo response. In experimental mode, you would receive personalized AI-powered response."
                 else:
                     st.session_state.agent_msg = f"Thank you for your response. This is demo follow-up #{conversation_turn}. In experimental mode, this would be a contextual response based on your input."
             
@@ -803,7 +803,7 @@ def render_followup():
         current_response_key = f'followup_response_r{roundn}_t{conversation_turn}'
         st.text_area(
             label='Your Response', 
-            placeholder="Please respond to the scaffolding above", 
+            placeholder="Please respond to the output above", 
             height=100, 
             key=current_response_key
         )
