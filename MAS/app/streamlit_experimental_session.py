@@ -150,6 +150,16 @@ class StreamlitExperimentalSession:
                 "correct": "B"
             },
             {
+                "id": "attention_check_pre",
+                "question": "Attention Check: Which Answer is in the center?",
+                "options": {
+                    "A": "This answer is the first",
+                    "B": "At the center you may find this answer",
+                    "C": "The last possible answer"
+                },
+                "correct": "B"
+            },
+            {
                 "id": "legal_framework",
                 "question": "Legal Framework: What is meant by the legal framework?",
                 "options": {
