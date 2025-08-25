@@ -299,27 +299,70 @@ def analyze_learner_response(response: str, scaffolding_type: str) -> Dict[str, 
 def generate_default_prompts(scaffolding_type: str, 
                             scaffolding_intensity: str,
                             analysis: Optional[Dict[str, Any]] = None,
-                            enhanced_concept_map: Optional[Dict[str, Any]] = None) -> List[str]:
+                            enhanced_concept_map: Optional[Dict[str, Any]] = None,
+                            used_template_indices: Optional[List[int]] = None,
+                            conversation_turn: int = 0) -> Tuple[List[str], List[int]]:
     """
-    Generate default scaffolding prompts.
+    Generate default scaffolding prompts without repetition.
     
     Args:
         scaffolding_type: Type of scaffolding
-        scaffolding_intensity: Intensity of scaffolding
+        scaffolding_intensity: Intensity of scaffolding (high or medium only)
         analysis: Concept map analysis (optional)
         enhanced_concept_map: Enhanced concept map with resolved labels (optional)
+        used_template_indices: List of already used template indices
+        conversation_turn: Current turn in the conversation
         
     Returns:
-        List of default scaffolding prompts
+        Tuple of (List of scaffolding prompts, List of template indices used)
     """
-    # Generate context-aware prompts if we have an enhanced concept map
-    if enhanced_concept_map and analysis:
-        return _generate_context_aware_prompts(
-            scaffolding_type, 
-            scaffolding_intensity, 
-            analysis, 
-            enhanced_concept_map
-        )
+    from MAS.config.scaffolding_config import SCAFFOLDING_PROMPT_TEMPLATES
+    
+    # Initialize used indices if not provided
+    if used_template_indices is None:
+        used_template_indices = []
+    
+    # Ensure we only use high or medium intensity
+    if scaffolding_intensity not in ["high", "medium"]:
+        scaffolding_intensity = "medium"
+    
+    # Get available templates for this type and intensity
+    available_templates = SCAFFOLDING_PROMPT_TEMPLATES.get(scaffolding_type, {}).get(scaffolding_intensity, [])
+    
+    if not available_templates:
+        # Fallback to medium if high not available
+        available_templates = SCAFFOLDING_PROMPT_TEMPLATES.get(scaffolding_type, {}).get("medium", [])
+    
+    # Filter out already used templates
+    unused_indices = [i for i in range(len(available_templates)) if i not in used_template_indices]
+    
+    # If all templates have been used, we need a fallback strategy
+    if not unused_indices:
+        logger.warning(f"All templates for {scaffolding_type}/{scaffolding_intensity} have been used")
+        # Reset and use all templates again, but try to pick the least recently used
+        unused_indices = list(range(len(available_templates)))
+    
+    # Select template based on context
+    selected_index = _select_best_template_index(
+        unused_indices,
+        available_templates,
+        analysis,
+        enhanced_concept_map,
+        conversation_turn
+    )
+    
+    # Get the selected template
+    selected_template = available_templates[selected_index]
+    
+    # Fill in the template with context
+    filled_prompt = _fill_template_with_context(
+        selected_template,
+        analysis,
+        enhanced_concept_map
+    )
+    
+    # Return the prompt and the index used
+    return [filled_prompt], [selected_index]
     
     # Default prompts by scaffolding type and intensity
     default_prompts = {
@@ -491,10 +534,336 @@ def format_scaffolding_text(text: str, scaffolding_type: str) -> str:
     # Format text
     return f"{emoji} {text}"
 
+def _select_best_template_index(unused_indices: List[int],
+                               available_templates: List[str],
+                               analysis: Optional[Dict[str, Any]],
+                               enhanced_concept_map: Optional[Dict[str, Any]],
+                               conversation_turn: int) -> int:
+    """
+    Select the best template index based on context.
+    
+    Args:
+        unused_indices: List of unused template indices
+        available_templates: All available templates
+        analysis: Concept map analysis
+        enhanced_concept_map: Enhanced concept map
+        conversation_turn: Current conversation turn
+        
+    Returns:
+        Selected template index
+    """
+    if not unused_indices:
+        return 0
+    
+    # Score each unused template based on relevance
+    template_scores = {}
+    
+    for idx in unused_indices:
+        template = available_templates[idx]
+        score = 0
+        
+        # Check for placeholders that can be filled
+        if analysis:
+            if "{observation}" in template and analysis.get("isolated_nodes"):
+                score += 2
+            if "{node_count}" in template and "node_count" in analysis:
+                score += 1
+            if "{edge_count}" in template and "edge_count" in analysis:
+                score += 1
+            if "{concept}" in template and analysis.get("central_nodes"):
+                score += 2
+        
+        # Prefer templates appropriate for conversation turn
+        if conversation_turn == 0:
+            # First turn: prefer broader questions
+            if "overall" in template.lower() or "approach" in template.lower():
+                score += 2
+        else:
+            # Later turns: prefer more specific questions
+            if "specific" in template.lower() or "particular" in template.lower():
+                score += 2
+        
+        template_scores[idx] = score
+    
+    # Sort by score and select the best
+    sorted_indices = sorted(template_scores.keys(), key=lambda x: template_scores[x], reverse=True)
+    return sorted_indices[0] if sorted_indices else unused_indices[0]
+
+
+def _fill_template_with_context(template: str,
+                               analysis: Optional[Dict[str, Any]],
+                               enhanced_concept_map: Optional[Dict[str, Any]]) -> str:
+    """
+    Fill a template with contextual information.
+    
+    Args:
+        template: Template string with placeholders
+        analysis: Concept map analysis
+        enhanced_concept_map: Enhanced concept map
+        
+    Returns:
+        Filled template string
+    """
+    filled = template
+    
+    if analysis:
+        # Fill basic counts
+        if "{node_count}" in filled:
+            filled = filled.replace("{node_count}", str(analysis.get("node_count", 0)))
+        if "{edge_count}" in filled:
+            filled = filled.replace("{edge_count}", str(analysis.get("edge_count", 0)))
+        
+        # Fill observations
+        if "{observation}" in filled:
+            observation = _generate_observation(analysis, enhanced_concept_map)
+            filled = filled.replace("{observation}", observation)
+        
+        # Fill concept references
+        if "{concept}" in filled or "{another_concept}" in filled:
+            concepts = _get_concept_labels(enhanced_concept_map)
+            if concepts:
+                filled = filled.replace("{concept}", concepts[0] if concepts else "a key concept")
+                if "{another_concept}" in filled and len(concepts) > 1:
+                    filled = filled.replace("{another_concept}", concepts[1])
+                elif "{another_concept}" in filled:
+                    filled = filled.replace("{another_concept}", "another concept")
+    
+    return filled
+
+
+def _generate_observation(analysis: Dict[str, Any], 
+                         enhanced_concept_map: Optional[Dict[str, Any]]) -> str:
+    """
+    Generate an observation about the concept map.
+    
+    Args:
+        analysis: Concept map analysis
+        enhanced_concept_map: Enhanced concept map
+        
+    Returns:
+        Observation string
+    """
+    observations = []
+    
+    if analysis.get("isolated_nodes"):
+        count = len(analysis["isolated_nodes"])
+        observations.append(f"you have {count} unconnected concept{'s' if count > 1 else ''}")
+    
+    if analysis.get("connectivity_ratio", 0) < 0.5:
+        observations.append("your map has relatively few connections between concepts")
+    
+    if analysis.get("node_growth", 0) == 0 and analysis.get("edge_growth") is not None:
+        observations.append("your map hasn't grown much from the previous round")
+    
+    if enhanced_concept_map:
+        concepts = _get_concept_labels(enhanced_concept_map)
+        if concepts and len(concepts) > 3:
+            observations.append(f"you've included concepts like '{concepts[0]}' and '{concepts[1]}'")
+    
+    return observations[0] if observations else "your concept map is developing"
+
+
+def _get_concept_labels(enhanced_concept_map: Optional[Dict[str, Any]]) -> List[str]:
+    """
+    Extract concept labels from an enhanced concept map.
+    
+    Args:
+        enhanced_concept_map: Enhanced concept map
+        
+    Returns:
+        List of concept labels
+    """
+    if not enhanced_concept_map:
+        return []
+    
+    labels = []
+    concepts = enhanced_concept_map.get("concepts", enhanced_concept_map.get("nodes", []))
+    
+    for concept in concepts:
+        if isinstance(concept, dict):
+            label = concept.get("label", concept.get("text", concept.get("id", "")))
+            if label and label not in labels:
+                labels.append(label)
+        elif isinstance(concept, str) and concept not in labels:
+            labels.append(concept)
+    
+    return labels
+
+
+def analyze_user_response_type(response: str) -> Dict[str, Any]:
+    """
+    Analyze whether user response is a question or statement, and extract key information.
+    
+    Args:
+        response: User's response text
+        
+    Returns:
+        Dictionary with response analysis
+    """
+    analysis = {
+        "is_question": False,
+        "is_confused": False,
+        "has_concrete_idea": False,
+        "mentions_concepts": [],
+        "response_type": "statement",
+        "key_phrases": []
+    }
+    
+    response_lower = response.lower()
+    
+    # Check if it's a question
+    if "?" in response or any(q in response_lower for q in ["how", "what", "why", "when", "where", "which", "can i", "should i", "could i"]):
+        analysis["is_question"] = True
+        analysis["response_type"] = "question"
+    
+    # Check for confusion indicators
+    confusion_indicators = ["don't understand", "not sure", "confused", "unclear", "difficult", "hard to", "struggling", "don't know", "unsure"]
+    if any(indicator in response_lower for indicator in confusion_indicators):
+        analysis["is_confused"] = True
+        analysis["response_type"] = "confusion"
+    
+    # Check for concrete ideas
+    concrete_indicators = ["i think", "i believe", "in my map", "i've added", "i connected", "i included", "the relationship", "because", "this shows", "demonstrates"]
+    if any(indicator in response_lower for indicator in concrete_indicators):
+        analysis["has_concrete_idea"] = True
+        analysis["response_type"] = "concrete_idea"
+    
+    # Extract mentioned concepts (simple heuristic - words in quotes or capitalized)
+    import re
+    quoted = re.findall(r'"([^"]*)"', response)
+    analysis["mentions_concepts"].extend(quoted)
+    
+    # Extract key phrases for context
+    if "amg" in response_lower:
+        analysis["key_phrases"].append("AMG")
+    if "market" in response_lower:
+        analysis["key_phrases"].append("market")
+    if "strategy" in response_lower or "strategies" in response_lower:
+        analysis["key_phrases"].append("strategy")
+    
+    return analysis
+
+
+def select_appropriate_followup(response: str,
+                               scaffolding_type: str,
+                               used_followup_indices: List[int] = None) -> Tuple[str, int]:
+    """
+    Select an appropriate follow-up based on user response, without repetition.
+    
+    Args:
+        response: User's response
+        scaffolding_type: Type of scaffolding
+        used_followup_indices: List of already used follow-up indices
+        
+    Returns:
+        Tuple of (follow-up text, index used)
+    """
+    from MAS.config.scaffolding_config import SCAFFOLDING_FOLLOWUP_TEMPLATES
+    
+    if used_followup_indices is None:
+        used_followup_indices = []
+    
+    # Analyze the response
+    response_analysis = analyze_user_response_type(response)
+    
+    # Get available follow-ups
+    available_followups = SCAFFOLDING_FOLLOWUP_TEMPLATES.get(scaffolding_type, [])
+    
+    if not available_followups:
+        return "Can you elaborate on that?", -1
+    
+    # Filter out used follow-ups
+    unused_indices = [i for i in range(len(available_followups)) if i not in used_followup_indices]
+    
+    if not unused_indices:
+        # All follow-ups used, generate a contextual one
+        return _generate_contextual_followup(response_analysis, scaffolding_type), -1
+    
+    # Select best follow-up based on response type
+    selected_index = _select_best_followup_index(
+        unused_indices,
+        available_followups,
+        response_analysis,
+        scaffolding_type
+    )
+    
+    return available_followups[selected_index], selected_index
+
+
+def _select_best_followup_index(unused_indices: List[int],
+                               available_followups: List[str],
+                               response_analysis: Dict[str, Any],
+                               scaffolding_type: str) -> int:
+    """
+    Select the best follow-up index based on response analysis.
+    """
+    if not unused_indices:
+        return 0
+    
+    # Score each follow-up based on appropriateness
+    scores = {}
+    
+    for idx in unused_indices:
+        followup = available_followups[idx].lower()
+        score = 0
+        
+        # Match follow-up to response type
+        if response_analysis["has_concrete_idea"]:
+            if "interesting" in followup or "elaborate" in followup:
+                score += 2
+            if "how" in followup or "why" in followup:
+                score += 1
+        
+        if response_analysis["is_confused"]:
+            if "help" in followup or "clarify" in followup:
+                score += 2
+        
+        # Prefer follow-ups that build on mentioned concepts
+        if response_analysis["mentions_concepts"]:
+            if "that" in followup or "this" in followup:
+                score += 1
+        
+        scores[idx] = score
+    
+    # Select highest scoring
+    sorted_indices = sorted(scores.keys(), key=lambda x: scores[x], reverse=True)
+    return sorted_indices[0] if sorted_indices else unused_indices[0]
+
+
+def _generate_contextual_followup(response_analysis: Dict[str, Any], 
+                                 scaffolding_type: str) -> str:
+    """
+    Generate a contextual follow-up when all templates are exhausted.
+    """
+    if response_analysis["is_confused"]:
+        if scaffolding_type == "conceptual":
+            return "Let's think about this differently. What aspects of these concepts are clearest to you?"
+        elif scaffolding_type == "strategic":
+            return "Let's break this down. What's one small step you could take to organize these ideas?"
+        elif scaffolding_type == "procedural":
+            return "Let's simplify the process. What's the first thing you would do?"
+        elif scaffolding_type == "metacognitive":
+            return "That's okay. What parts do you feel you understand, even partially?"
+    
+    elif response_analysis["has_concrete_idea"]:
+        if scaffolding_type == "conceptual":
+            return "That's a good insight. How does this understanding affect other parts of your map?"
+        elif scaffolding_type == "strategic":
+            return "Good thinking. How might you apply this approach to other areas?"
+        elif scaffolding_type == "procedural":
+            return "That's a clear process. What would be your next step?"
+        elif scaffolding_type == "metacognitive":
+            return "You're developing your understanding well. What new questions does this raise?"
+    
+    # Generic fallback
+    return "Thank you for sharing that. Let's continue developing these ideas."
+
+
 def _generate_context_aware_prompts(scaffolding_type: str,
                                    scaffolding_intensity: str,
                                    analysis: Dict[str, Any],
-                                   enhanced_concept_map: Dict[str, Any]) -> List[str]:
+                                   enhanced_concept_map: Dict[str, Any],
+                                   used_template_indices: Optional[List[int]] = None) -> List[str]:
     """
     Generate context-aware prompts using resolved concept labels.
     

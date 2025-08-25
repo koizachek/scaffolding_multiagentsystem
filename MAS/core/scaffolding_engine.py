@@ -56,6 +56,11 @@ class ScaffoldingEngine:
         # Initialize session state
         self.session_state = {}
         
+        # Initialize template tracking
+        self.used_template_indices = {}  # Track per scaffolding type
+        self.used_followup_indices = {}  # Track per scaffolding type
+        self.conversation_turn = 0
+        
         logger.info("Initialized scaffolding engine")
     
     def conduct_scaffolding_interaction(self, 
@@ -106,13 +111,24 @@ class ScaffoldingEngine:
                 self.interaction_history
             )
             
-            # Generate scaffolding prompts with enhanced map data
-            prompts = generate_default_prompts(
+            # Initialize template tracking for this type if needed
+            if scaffolding_type not in self.used_template_indices:
+                self.used_template_indices[scaffolding_type] = []
+            if scaffolding_type not in self.used_followup_indices:
+                self.used_followup_indices[scaffolding_type] = []
+            
+            # Generate scaffolding prompts with enhanced map data and tracking
+            prompts, indices_used = generate_default_prompts(
                 scaffolding_type,
                 scaffolding_intensity,
                 map_analysis,
-                enhanced_concept_map
+                enhanced_concept_map,
+                self.used_template_indices[scaffolding_type],
+                self.conversation_turn
             )
+            
+            # Update used indices
+            self.used_template_indices[scaffolding_type].extend(indices_used)
             
             # Store current interaction
             self.current_scaffolding_type = scaffolding_type
@@ -174,31 +190,50 @@ class ScaffoldingEngine:
             # Store response
             self.current_interaction["responses"].append(response)
             
-            # Determine if a follow-up is needed
-            needs_follow_up = self._needs_follow_up(response)
+            # Analyze the response to determine type
+            from MAS.utils.scaffolding_utils import analyze_user_response_type
+            response_analysis = analyze_user_response_type(response)
             
-            if needs_follow_up:
-                # Generate follow-up
-                follow_up = self._generate_follow_up(
+            # Increment conversation turn
+            self.conversation_turn += 1
+            
+            # Determine follow-up strategy based on response type
+            if response_analysis["is_question"] or response_analysis["is_confused"]:
+                # User needs more scaffolding - provide another prompt from the same type
+                follow_up = self._generate_scaffolding_prompt_for_confusion(
                     response,
-                    self.current_scaffolding_type
+                    response_analysis
                 )
-                
-                # Store follow-up
-                self.current_interaction["follow_ups"].append(follow_up)
-                
-                # Return follow-up
-                return {
-                    "status": "success",
-                    "needs_follow_up": True,
-                    "follow_up": follow_up,
-                    "scaffolding_type": self.current_scaffolding_type
-                }
+            elif response_analysis["has_concrete_idea"]:
+                # User has concrete ideas - use follow-up templates
+                follow_up = self._generate_intelligent_follow_up(
+                    response,
+                    response_analysis
+                )
+            else:
+                # Default follow-up logic
+                needs_follow_up = self._needs_follow_up(response)
+                if needs_follow_up:
+                    follow_up = self._generate_intelligent_follow_up(
+                        response,
+                        response_analysis
+                    )
+                else:
+                    return {
+                        "status": "success",
+                        "needs_follow_up": False
+                    }
             
-            # If no follow-up is needed, return success
+            # Store follow-up
+            self.current_interaction["follow_ups"].append(follow_up)
+            
+            # Return follow-up
             return {
                 "status": "success",
-                "needs_follow_up": False
+                "needs_follow_up": True,
+                "follow_up": follow_up,
+                "scaffolding_type": self.current_scaffolding_type,
+                "response_type": response_analysis["response_type"]
             }
         
         except Exception as e:
@@ -237,9 +272,10 @@ class ScaffoldingEngine:
             # Add interaction to history
             self.interaction_history.append(self.current_interaction)
             
-            # Clear current interaction
+            # Clear current interaction and reset conversation turn
             current_interaction = self.current_interaction
             self.current_interaction = None
+            self.conversation_turn = 0
             
             # Adapt scaffolding intensity for next interaction
             self._adapt_scaffolding_intensity(
@@ -389,9 +425,72 @@ class ScaffoldingEngine:
         # Short responses may indicate low engagement
         return random.random() < 0.3  # 30% chance of follow-up
     
+    def _generate_intelligent_follow_up(self, response: str, response_analysis: Dict[str, Any]) -> str:
+        """
+        Generate an intelligent follow-up based on response analysis.
+        
+        Args:
+            response: Learner response
+            response_analysis: Analysis of the response
+            
+        Returns:
+            Follow-up prompt
+        """
+        from MAS.utils.scaffolding_utils import select_appropriate_followup
+        
+        # Get used indices for this scaffolding type
+        used_indices = self.used_followup_indices.get(self.current_scaffolding_type, [])
+        
+        # Select appropriate follow-up
+        follow_up, index_used = select_appropriate_followup(
+            response,
+            self.current_scaffolding_type,
+            used_indices
+        )
+        
+        # Track used index if valid
+        if index_used >= 0:
+            if self.current_scaffolding_type not in self.used_followup_indices:
+                self.used_followup_indices[self.current_scaffolding_type] = []
+            self.used_followup_indices[self.current_scaffolding_type].append(index_used)
+        
+        return follow_up
+    
+    def _generate_scaffolding_prompt_for_confusion(self, response: str, response_analysis: Dict[str, Any]) -> str:
+        """
+        Generate another scaffolding prompt when user is confused or asking questions.
+        
+        Args:
+            response: Learner response
+            response_analysis: Analysis of the response
+            
+        Returns:
+            Scaffolding prompt
+        """
+        # Get current map analysis from interaction
+        map_analysis = self.current_interaction.get("map_analysis", {})
+        
+        # Generate another prompt from the same scaffolding type
+        prompts, indices_used = generate_default_prompts(
+            self.current_scaffolding_type,
+            self.current_scaffolding_intensity,
+            map_analysis,
+            None,  # We might not have enhanced map in current interaction
+            self.used_template_indices.get(self.current_scaffolding_type, []),
+            self.conversation_turn
+        )
+        
+        # Update used indices
+        if self.current_scaffolding_type not in self.used_template_indices:
+            self.used_template_indices[self.current_scaffolding_type] = []
+        self.used_template_indices[self.current_scaffolding_type].extend(indices_used)
+        
+        # Return the first prompt (we only generate one at a time)
+        return prompts[0] if prompts else "Let me help you think about this differently. What specific aspect would you like to explore?"
+    
     def _generate_follow_up(self, response: str, scaffolding_type: str) -> str:
         """
-        Generate a follow-up prompt based on the learner response.
+        Legacy follow-up generation (kept for compatibility).
         
         Args:
             response: Learner response
@@ -400,23 +499,9 @@ class ScaffoldingEngine:
         Returns:
             Follow-up prompt
         """
-        # Get follow-up templates for this scaffolding type
-        templates = SCAFFOLDING_FOLLOWUP_TEMPLATES.get(scaffolding_type, [])
-        
-        if not templates:
-            # Fallback templates
-            templates = [
-                "That's interesting. Can you tell me more about that?",
-                "Could you elaborate on that point?",
-                "How does that relate to your concept map?",
-                "What made you think of that?"
-            ]
-        
-        # Select a random template
-        template = random.choice(templates)
-        
-        # Return the follow-up prompt
-        return template
+        from MAS.utils.scaffolding_utils import analyze_user_response_type
+        response_analysis = analyze_user_response_type(response)
+        return self._generate_intelligent_follow_up(response, response_analysis)
     
     def _generate_conclusion(self, 
                             scaffolding_type: str,
