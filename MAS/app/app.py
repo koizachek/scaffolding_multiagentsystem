@@ -12,6 +12,13 @@ from task_content import (
     EXTRA_MATERIALS, INITIAL_CONCEPT_MAP
 )
 from text_to_image import render_protected_markdown
+from auto_scroll import (
+    scroll_to_top,
+    auto_scroll_on_round_change,
+    auto_scroll_on_page_transition,
+    auto_scroll_to_agent_response,
+    inject_auto_scroll_styles
+)
 
 
 logger = logging.getLogger(__name__)
@@ -1128,6 +1135,15 @@ def handle_response(response):
 def main():
     """Main application logic."""
     init_session_state()
+    
+    # Inject auto-scroll styles
+    inject_auto_scroll_styles()
+    
+    # Check for page transitions and auto-scroll if needed
+    auto_scroll_on_page_transition()
+    
+    # Check for round changes and auto-scroll if needed
+    auto_scroll_on_round_change()
     
     # Mode selection
     if not st.session_state.mode:

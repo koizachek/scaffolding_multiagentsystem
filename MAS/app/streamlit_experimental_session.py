@@ -1105,7 +1105,8 @@ class StreamlitExperimentalSession:
         
         # CRITICAL FIX: Add pattern detection BEFORE AI generation
         # This ensures interaction patterns are handled properly
-        if user_response is not None and conversation_turn > 0:
+        # FIXED: Removed conversation_turn > 0 condition to ensure pattern detection runs for ALL interactions
+        if user_response is not None:
             try:
                 # Import pattern detection utilities
                 from MAS.utils.scaffolding_utils import analyze_user_response_type
@@ -1331,14 +1332,16 @@ class StreamlitExperimentalSession:
                 handle_help_seeking, handle_gibberish, handle_intention_without_action,
                 handle_domain_question, handle_system_question, handle_disagreement,
                 handle_empty_input, handle_inappropriate_language, handle_off_topic,
-                handle_frustration, handle_premature_ending, generate_concrete_idea_followup
+                handle_frustration, handle_premature_ending, generate_concrete_idea_followup,
+                handle_greeting, handle_minimal_input
             )
         except ImportError:
             from utils.scaffolding_utils import (
                 handle_help_seeking, handle_gibberish, handle_intention_without_action,
                 handle_domain_question, handle_system_question, handle_disagreement,
                 handle_empty_input, handle_inappropriate_language, handle_off_topic,
-                handle_frustration, handle_premature_ending, generate_concrete_idea_followup
+                handle_frustration, handle_premature_ending, generate_concrete_idea_followup,
+                handle_greeting, handle_minimal_input
             )
         
         # Get the pattern type detected
@@ -1351,7 +1354,11 @@ class StreamlitExperimentalSession:
         pattern_response = None
         
         # NEW PATTERNS - Priority handling
-        if pattern_type == "help_seeking":
+        if pattern_type == "greeting":
+            pattern_response = handle_greeting(scaffolding_type_clean)
+        elif pattern_type == "minimal_input":
+            pattern_response = handle_minimal_input(scaffolding_type_clean)
+        elif pattern_type == "help_seeking":
             pattern_response = handle_help_seeking(user_response, scaffolding_type_clean)
         elif pattern_type == "gibberish":
             pattern_response = handle_gibberish(scaffolding_type_clean)

@@ -721,7 +721,8 @@ def analyze_user_response_type(response: str) -> Dict[str, Any]:
         "requires_pattern_response": False,  # CRITICAL: Add this flag
         "is_help_seeking": False,  # NEW: For "what should I do" questions
         "is_gibberish": False,  # NEW: For random text
-        "has_intention_without_action": False  # NEW: For "I can add X" without doing it
+        "has_intention_without_action": False,  # NEW: For "I can add X" without doing it
+        "is_greeting": False  # NEW: For greetings like "hi", "hello"
     }
     
     # Enhanced empty input detection - includes whitespace-only
@@ -733,30 +734,147 @@ def analyze_user_response_type(response: str) -> Dict[str, Any]:
     
     response_lower = response.lower().strip()
     
-    # NEW: Detect gibberish/random text
+    # NEW: Detect minimal/single character input (e, eh, a, etc.)
+    if len(response_lower) <= 2:
+        # Single characters or very short responses that aren't meaningful
+        minimal_patterns = ['e', 'eh', 'ey', 'a', 'ah', 'ok', 'no', 'ye', 'ya']
+        if response_lower in minimal_patterns or (len(response_lower) == 1 and response_lower.isalpha()):
+            analysis["is_minimal_input"] = True
+            analysis["response_type"] = "minimal_input"
+            analysis["requires_pattern_response"] = True
+            return analysis
+    
+    # NEW: Enhanced gibberish/random text detection
     import re
-    # Check for excessive consonants, no vowels, or random character patterns
-    if len(response_lower) > 5:
-        vowel_ratio = len(re.findall(r'[aeiou]', response_lower)) / len(response_lower)
-        consonant_clusters = re.findall(r'[bcdfghjklmnpqrstvwxyz]{5,}', response_lower)
-        special_char_ratio = len(re.findall(r'[^a-z0-9\s]', response_lower)) / len(response_lower)
+    
+    # Multiple gibberish detection strategies
+    if len(response_lower) > 2:  # Check anything longer than minimal input
+        # Remove spaces for analysis
+        text_no_spaces = response_lower.replace(" ", "")
         
-        if vowel_ratio < 0.15 or consonant_clusters or special_char_ratio > 0.3:
-            # Likely gibberish
+        # Strategy 1: Check vowel ratio (too few vowels = likely gibberish)
+        # Include 'y' as a vowel in certain contexts
+        vowel_count = len(re.findall(r'[aeiouy]', text_no_spaces))
+        vowel_ratio = vowel_count / len(text_no_spaces) if text_no_spaces else 0
+        
+        # Strategy 2: Check for excessive consonant clusters
+        consonant_clusters = re.findall(r'[bcdfghjklmnpqrstvwxyz]{5,}', text_no_spaces)
+        
+        # Strategy 3: Check for excessive special characters
+        special_char_count = len(re.findall(r'[^a-z0-9\s]', response_lower))
+        special_char_ratio = special_char_count / len(response_lower)
+        
+        # Strategy 4: Check for repeated character patterns (e.g., "asdfasdf", "qweqweqwe")
+        repeated_patterns = re.findall(r'(.{2,})\1{1,}', text_no_spaces)  # Changed to detect even 2x repetition
+        
+        # Strategy 5: Check for keyboard mashing patterns (e.g., "asdf", "qwerty", "zxcv")
+        keyboard_patterns = [
+            'qwer', 'asdf', 'zxcv', 'qweasd', 'asdzxc', 'qazwsx', 'wsxedc',
+            'poiu', 'lkjh', 'mnbv', 'rtyu', 'fghj', 'vbnm', 'tyui', 'ghjk',
+            'qwertyuiop', 'asdfghjkl', 'zxcvbnm', 'qazxsw', 'wsxcde',
+            '1234', '4321', 'abcd', 'dcba', 'aaaa', 'bbbb', 'cccc'
+        ]
+        has_keyboard_pattern = any(pattern in text_no_spaces for pattern in keyboard_patterns)
+        
+        # Strategy 6: Check for alternating hands keyboard pattern (e.g., "fjfjfj", "dkdkdk")
+        alternating_pattern = re.findall(r'([a-z])([a-z])\1\2{2,}', text_no_spaces)
+        
+        # Strategy 7: Check for single repeated character (e.g., "aaaaa", "zzzzz")
+        single_char_repeat = re.findall(r'([a-z])\1{4,}', text_no_spaces)
+        
+        # Strategy 8: Check for random number-letter mix without meaning
+        # Look for alternating patterns like a1b2c3
+        random_mix = []
+        if re.search(r'[a-z]\d[a-z]\d', text_no_spaces) or re.search(r'\d[a-z]\d[a-z]', text_no_spaces):
+            # Check if it's truly random (not something like "a1b2" in a larger context)
+            if len(re.findall(r'[a-z]\d', text_no_spaces)) >= 3 or len(re.findall(r'\d[a-z]', text_no_spaces)) >= 3:
+                random_mix = ['detected']
+        
+        # Strategy 9: Check if it's just random punctuation or symbols
+        if len(text_no_spaces) == 0 and special_char_count > 2:
+            analysis["is_gibberish"] = True
+            analysis["response_type"] = "gibberish"
+            analysis["requires_pattern_response"] = True
+            return analysis
+        
+        # Determine if gibberish based on multiple factors
+        is_gibberish = False
+        
+        # Check conditions (more lenient for shorter inputs)
+        if len(text_no_spaces) <= 10:
+            # For short inputs, be more strict
+            # Special case: common short words with 'y' as vowel
+            common_y_words = ['why', 'try', 'fly', 'cry', 'dry', 'sky', 'spy', 'shy', 'my', 'by']
+            if response_lower in common_y_words:
+                is_gibberish = False
+            elif (vowel_ratio < 0.1 and len(text_no_spaces) > 3) or \
+               has_keyboard_pattern or \
+               single_char_repeat or \
+               repeated_patterns or \
+               (special_char_ratio > 0.5 and special_char_count > 2) or \
+               (len(text_no_spaces) == 3 and vowel_ratio == 0):  # xyz case
+                is_gibberish = True
+            # Check for mixed keyboard mash with symbols/numbers
+            elif len(text_no_spaces) >= 4 and (
+                (has_keyboard_pattern and special_char_count > 0) or  # qwe!@#
+                (re.search(r'[a-z]{3,}', text_no_spaces) and re.search(r'\d', text_no_spaces) and vowel_ratio < 0.2)  # asdlkj123
+            ):
+                is_gibberish = True
+        else:
+            # For longer inputs, use combined criteria
+            if (vowel_ratio < 0.15) or \
+               consonant_clusters or \
+               (special_char_ratio > 0.3 and special_char_count > 3) or \
+               repeated_patterns or \
+               has_keyboard_pattern or \
+               alternating_pattern or \
+               single_char_repeat or \
+               (random_mix and len(random_mix) > 0):  # More sensitive to number-letter patterns
+                is_gibberish = True
+        
+        # Special check for multiple character repeats (aaabbbccc pattern)
+        multi_char_repeat = re.findall(r'([a-z])\1{2,}', text_no_spaces)
+        if len(multi_char_repeat) >= 2:  # At least 2 different characters repeated
+            is_gibberish = True
+        
+        # Check for gibberish in context (e.g., "qwerty is my password" should be valid)
+        # If the text contains common English words, it's probably not gibberish
+        common_words = ['is', 'my', 'the', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 
+                       'password', 'name', 'code', 'text', 'word', 'key']
+        words = response_lower.split()
+        if len(words) > 2 and any(word in common_words for word in words):
+            # Contains common words in context, probably not gibberish
+            is_gibberish = False
+        
+        # Additional check: If it's mostly numbers with few letters
+        digit_ratio = len(re.findall(r'\d', response_lower)) / len(response_lower) if response_lower else 0
+        if digit_ratio > 0.7 and vowel_ratio < 0.1:
+            is_gibberish = True
+        
+        if is_gibberish:
             analysis["is_gibberish"] = True
             analysis["response_type"] = "gibberish"
             analysis["requires_pattern_response"] = True
             return analysis
     
+    # NEW: Greeting pattern detection - "hi", "hello", etc.
+    greeting_patterns = ['hi', 'hello', 'hey', 'greetings', 'good morning', 'good afternoon', 'good evening']
+    if response_lower.strip() in greeting_patterns or (len(response_lower) <= 10 and any(g in response_lower for g in greeting_patterns)):
+        analysis["is_greeting"] = True
+        analysis["response_type"] = "greeting"
+        analysis["requires_pattern_response"] = True
+        return analysis
+    
     # NEW: Help-seeking pattern - "what should I do", "where is the task", etc.
     help_seeking_patterns = [
-        r'what\s+(should|can|do)\s+i\s+(even\s+)?do',
+        r'what\s+(should|can|do|shall)\s+i\s+(even\s+)?do',
         r'where\s+is\s+the\s+task',
         r'where\s+(is|are)\s+the\s+(instruction|material|resource)',
         r'how\s+do\s+i\s+start',
         r'what\s+am\s+i\s+supposed\s+to\s+do',
         r'i\s+don\'?t\s+know\s+what\s+to\s+do',
-        r'help\s+me\s+understand\s+the\s+task'
+        r'help\s+me\s+understand\s+the\s+task',
+        r'what\s+shall\s+i\s+do'  # Added "shall" variant
     ]
     
     for pattern in help_seeking_patterns:
@@ -1290,6 +1408,58 @@ def handle_premature_ending(scaffolding_type: str) -> str:
         base_response += "Every step you take in building your map matters. What's been your process so far?"
     elif scaffolding_type == "conceptual":
         base_response += "Any connections you've made between concepts are worth exploring. Which relationship seems most important?"
+    
+    return base_response
+
+
+def handle_greeting(scaffolding_type: str) -> str:
+    """
+    Handle greeting inputs like "hi", "hello", etc.
+    NEW Pattern: Greeting
+    
+    Args:
+        scaffolding_type: Current scaffolding type
+        
+    Returns:
+        Appropriate response for greeting
+    """
+    base_response = "Hello! Let's focus on your concept map about AMG and international market entry. "
+    
+    # Add scaffolding-specific guidance
+    if scaffolding_type == "conceptual":
+        base_response += "What concepts have you included so far, and how do they relate to each other?"
+    elif scaffolding_type == "procedural":
+        base_response += "What's your next step in building your concept map?"
+    elif scaffolding_type == "strategic":
+        base_response += "How are you organizing your concepts to show the relationships between AMG and market entry?"
+    elif scaffolding_type == "metacognitive":
+        base_response += "How is your understanding of the AMG topic developing as you work on your map?"
+    
+    return base_response
+
+
+def handle_minimal_input(scaffolding_type: str) -> str:
+    """
+    Handle minimal/single character input like "e", "eh", "a", etc.
+    NEW Pattern: Minimal input
+    
+    Args:
+        scaffolding_type: Current scaffolding type
+        
+    Returns:
+        Appropriate response for minimal input
+    """
+    base_response = "I need more information to understand your response. Please provide a more detailed answer about "
+    
+    # Add scaffolding-specific prompts
+    if scaffolding_type == "conceptual":
+        base_response += "the concepts and relationships in your map. What specific ideas are you working with?"
+    elif scaffolding_type == "procedural":
+        base_response += "your mapping process. Can you describe what steps you're taking?"
+    elif scaffolding_type == "strategic":
+        base_response += "your organizational strategy. How are you structuring your concept map?"
+    elif scaffolding_type == "metacognitive":
+        base_response += "your learning experience. What are you understanding or finding challenging?"
     
     return base_response
 
