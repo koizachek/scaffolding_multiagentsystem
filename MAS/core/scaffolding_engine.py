@@ -427,7 +427,7 @@ class ScaffoldingEngine:
     
     def _generate_intelligent_follow_up(self, response: str, response_analysis: Dict[str, Any]) -> str:
         """
-        Generate an intelligent follow-up based on response analysis.
+        Generate an intelligent follow-up based on response analysis with pattern-specific handling.
         
         Args:
             response: Learner response
@@ -436,8 +436,71 @@ class ScaffoldingEngine:
         Returns:
             Follow-up prompt
         """
-        from MAS.utils.scaffolding_utils import select_appropriate_followup
+        from MAS.utils.scaffolding_utils import (
+            select_appropriate_followup,
+            handle_domain_question,
+            handle_system_question,
+            handle_disagreement,
+            handle_empty_input,
+            handle_inappropriate_language,
+            handle_off_topic,
+            handle_frustration,
+            handle_premature_ending,
+            generate_concrete_idea_followup
+        )
         
+        # Pattern-specific handling based on response type
+        response_type = response_analysis.get("response_type", "statement")
+        
+        # Pattern 3: Empty input
+        if response_analysis.get("is_empty", False):
+            return handle_empty_input(self.current_scaffolding_type)
+        
+        # Pattern 4: Inappropriate language (handle first as it needs redirection)
+        if response_analysis.get("is_inappropriate", False):
+            return handle_inappropriate_language(self.current_scaffolding_type)
+        
+        # Pattern 1.1: Domain questions
+        if response_type == "domain_question":
+            return handle_domain_question(
+                response, 
+                self.current_scaffolding_type,
+                response_analysis.get("key_phrases", [])
+            )
+        
+        # Pattern 1.2: System questions
+        if response_type == "system_question":
+            return handle_system_question(response, self.current_scaffolding_type)
+        
+        # Pattern 2: Disagreement
+        if response_type == "disagreement":
+            return handle_disagreement(
+                response,
+                self.current_scaffolding_type,
+                response_analysis.get("disagreement_type", "general")
+            )
+        
+        # Pattern 6: Off-topic
+        if response_type == "off_topic":
+            return handle_off_topic(self.current_scaffolding_type)
+        
+        # Pattern 7: Frustration
+        if response_type == "frustration":
+            return handle_frustration(response, self.current_scaffolding_type)
+        
+        # Pattern 8: Premature ending
+        if response_type == "premature_ending":
+            return handle_premature_ending(self.current_scaffolding_type)
+        
+        # Pattern 5: Concrete ideas (Critical Fix - only affirm actual ideas)
+        if response_type == "concrete_idea" and response_analysis.get("has_concrete_idea", False):
+            return generate_concrete_idea_followup(
+                response,
+                self.current_scaffolding_type,
+                response_analysis.get("mentions_concepts", [])
+            )
+        
+        # Default: Use template-based follow-ups for other cases
         # Get used indices for this scaffolding type
         used_indices = self.used_followup_indices.get(self.current_scaffolding_type, [])
         

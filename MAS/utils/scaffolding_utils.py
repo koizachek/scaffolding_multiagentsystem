@@ -692,13 +692,13 @@ def _get_concept_labels(enhanced_concept_map: Optional[Dict[str, Any]]) -> List[
 
 def analyze_user_response_type(response: str) -> Dict[str, Any]:
     """
-    Analyze whether user response is a question or statement, and extract key information.
+    Analyze user response to detect interaction patterns and extract key information.
     
     Args:
         response: User's response text
         
     Returns:
-        Dictionary with response analysis
+        Dictionary with comprehensive response analysis
     """
     analysis = {
         "is_question": False,
@@ -706,27 +706,210 @@ def analyze_user_response_type(response: str) -> Dict[str, Any]:
         "has_concrete_idea": False,
         "mentions_concepts": [],
         "response_type": "statement",
-        "key_phrases": []
+        "key_phrases": [],
+        # New pattern detection fields
+        "is_empty": False,
+        "is_domain_question": False,
+        "is_system_question": False,
+        "is_disagreement": False,
+        "disagreement_type": None,
+        "is_inappropriate": False,
+        "is_off_topic": False,
+        "is_frustrated": False,
+        "wants_to_end": False,
+        "needs_encouragement": False,
+        "requires_pattern_response": False,  # CRITICAL: Add this flag
+        "is_help_seeking": False,  # NEW: For "what should I do" questions
+        "is_gibberish": False,  # NEW: For random text
+        "has_intention_without_action": False  # NEW: For "I can add X" without doing it
     }
     
-    response_lower = response.lower()
+    # Enhanced empty input detection - includes whitespace-only
+    if not response or not response.strip() or len(response.strip()) == 0:
+        analysis["is_empty"] = True
+        analysis["response_type"] = "empty_input"
+        analysis["requires_pattern_response"] = True  # Pattern needs handling
+        return analysis
     
-    # Check if it's a question
-    if "?" in response or any(q in response_lower for q in ["how", "what", "why", "when", "where", "which", "can i", "should i", "could i"]):
+    response_lower = response.lower().strip()
+    
+    # NEW: Detect gibberish/random text
+    import re
+    # Check for excessive consonants, no vowels, or random character patterns
+    if len(response_lower) > 5:
+        vowel_ratio = len(re.findall(r'[aeiou]', response_lower)) / len(response_lower)
+        consonant_clusters = re.findall(r'[bcdfghjklmnpqrstvwxyz]{5,}', response_lower)
+        special_char_ratio = len(re.findall(r'[^a-z0-9\s]', response_lower)) / len(response_lower)
+        
+        if vowel_ratio < 0.15 or consonant_clusters or special_char_ratio > 0.3:
+            # Likely gibberish
+            analysis["is_gibberish"] = True
+            analysis["response_type"] = "gibberish"
+            analysis["requires_pattern_response"] = True
+            return analysis
+    
+    # NEW: Help-seeking pattern - "what should I do", "where is the task", etc.
+    help_seeking_patterns = [
+        r'what\s+(should|can|do)\s+i\s+(even\s+)?do',
+        r'where\s+is\s+the\s+task',
+        r'where\s+(is|are)\s+the\s+(instruction|material|resource)',
+        r'how\s+do\s+i\s+start',
+        r'what\s+am\s+i\s+supposed\s+to\s+do',
+        r'i\s+don\'?t\s+know\s+what\s+to\s+do',
+        r'help\s+me\s+understand\s+the\s+task'
+    ]
+    
+    for pattern in help_seeking_patterns:
+        if re.search(pattern, response_lower, re.IGNORECASE):
+            analysis["is_help_seeking"] = True
+            analysis["is_question"] = True
+            analysis["response_type"] = "help_seeking"
+            analysis["requires_pattern_response"] = True
+            return analysis
+    
+    # Pattern 1: Domain/Content Questions
+    domain_indicators = ["what is", "what does", "explain", "tell me about", "how does", "why is", 
+                        "amg", "market", "strategy", "concept", "international", "entry"]
+    if (any(indicator in response_lower for indicator in domain_indicators) and "?" in response) or response_lower == "what?":
+        analysis["is_domain_question"] = True
         analysis["is_question"] = True
         analysis["response_type"] = "question"
+        analysis["requires_pattern_response"] = True  # Pattern needs handling
     
-    # Check for confusion indicators
-    confusion_indicators = ["don't understand", "not sure", "confused", "unclear", "difficult", "hard to", "struggling", "don't know", "unsure"]
+    # Pattern 1: System Questions
+    system_indicators = ["how to use", "how do i", "where is", "button", "tool", "system", 
+                         "interface", "click", "create", "delete", "edit", "map"]
+    if any(indicator in response_lower for indicator in system_indicators) and "?" in response:
+        analysis["is_system_question"] = True
+        analysis["is_question"] = True
+        if not analysis["is_domain_question"]:  # System takes precedence only if not domain
+            analysis["response_type"] = "system_question"
+    
+    # Pattern 2: Disagreement Detection  
+    disagreement_indicators = ["disagree", "don't agree", "not right", "wrong", "incorrect", 
+                              "that's not", "i don't think so", "no!", "no,", "but i think", "however"]
+    if any(indicator in response_lower for indicator in disagreement_indicators) or response_lower == "no":
+        analysis["is_disagreement"] = True
+        analysis["response_type"] = "disagreement"
+        analysis["requires_pattern_response"] = True  # Pattern needs handling
+        
+        # Determine disagreement type
+        if any(word in response_lower for word in ["concept", "relationship", "connection", "meaning"]):
+            analysis["disagreement_type"] = "content"
+        elif any(word in response_lower for word in ["approach", "method", "way", "strategy"]):
+            analysis["disagreement_type"] = "approach"
+        else:
+            analysis["disagreement_type"] = "general"
+    
+    # Pattern 4: Inappropriate Language
+    inappropriate_indicators = ["fuck", "shit", "stupid", "dumb", "hate", "sucks", "awful", "terrible", 
+                               "waste", "useless", "pointless", "damn", "hell", "ass", "bitch", "crap"]
+    if any(indicator in response_lower for indicator in inappropriate_indicators):
+        analysis["is_inappropriate"] = True
+        analysis["needs_encouragement"] = True
+        analysis["response_type"] = "inappropriate_language"
+        analysis["requires_pattern_response"] = True  # Pattern needs handling
+    
+    # Pattern 6: Off-topic Detection (ENHANCED)
+    off_topic_indicators = ["weather", "sports", "news", "politics", "movie", "game", 
+                           "lunch", "dinner", "weekend", "vacation", "something else", 
+                           "different topic", "change subject", "soup", "recipe", "food", 
+                           "cooking", "sauce", "ingredient"]
+    concept_map_terms = ["concept", "map", "node", "edge", "relationship", "amg", "market", 
+                         "strategy", "entry", "barrier", "gatekeeping", "adaptive"]
+    
+    # More strict off-topic detection
+    off_topic_count = sum(1 for indicator in off_topic_indicators if indicator in response_lower)
+    concept_count = sum(1 for term in concept_map_terms if term in response_lower)
+    
+    if off_topic_count > 0 and concept_count == 0:
+        analysis["is_off_topic"] = True
+        analysis["response_type"] = "off_topic"
+        analysis["requires_pattern_response"] = True  # Pattern needs handling
+    
+    # Pattern 7: Frustration/Confusion
+    frustration_indicators = ["frustrated", "frustrating", "annoying", "difficult", "hard", "struggling", 
+                             "can't", "don't get it", "too complex", "overwhelming", "stuck"]
+    if any(indicator in response_lower for indicator in frustration_indicators):
+        analysis["is_frustrated"] = True
+        analysis["needs_encouragement"] = True
+        analysis["response_type"] = "frustration"
+        analysis["requires_pattern_response"] = True  # Pattern needs handling
+    
+    # Pattern 8: Premature Ending
+    ending_indicators = ["i'm done", "i am done", "finished", "stop", "quit", "enough", "that's all", 
+                        "nothing more", "can't think", "out of ideas"]
+    if any(indicator in response_lower for indicator in ending_indicators) and len(response_lower) < 50:
+        analysis["wants_to_end"] = True
+        analysis["response_type"] = "premature_ending"
+        analysis["requires_pattern_response"] = True  # Pattern needs handling
+    
+    # Original confusion detection (enhanced)
+    confusion_indicators = ["don't understand", "not sure", "confused", "unclear", "difficult", 
+                           "hard to", "struggling", "don't know", "unsure", "lost", "help me"]
     if any(indicator in response_lower for indicator in confusion_indicators):
         analysis["is_confused"] = True
-        analysis["response_type"] = "confusion"
+        analysis["needs_encouragement"] = True
+        if analysis["response_type"] == "statement":  # Only override if not already set
+            analysis["response_type"] = "confusion"
     
-    # Check for concrete ideas
-    concrete_indicators = ["i think", "i believe", "in my map", "i've added", "i connected", "i included", "the relationship", "because", "this shows", "demonstrates"]
-    if any(indicator in response_lower for indicator in concrete_indicators):
+    # NEW: Detect intention without action (e.g., "I can add X" but didn't)
+    intention_patterns = [
+        r'i\s+(can|could|should|might|will)\s+add',
+        r'i\s+(want|need)\s+to\s+add',
+        r'maybe\s+i\s+(can|should|will)\s+add',
+        r'i\s+think\s+i\s+(can|should|will)\s+add'
+    ]
+    
+    for pattern in intention_patterns:
+        if re.search(pattern, response_lower, re.IGNORECASE):
+            analysis["has_intention_without_action"] = True
+            # Don't override response_type yet, check for other patterns first
+            
+    # Pattern 5: Concrete Ideas (Critical Fix)
+    # More comprehensive detection of concrete ideas
+    concrete_indicators = [
+        "i think", "i believe", "in my map", "i've added", "i connected", 
+        "i included", "the relationship", "because", "this shows", "demonstrates",
+        "my understanding", "i see", "i noticed", "i realized", "it seems",
+        "amg creates", "amg blocks", "market entry", "barriers", "regulatory",
+        "financing", "joint venture", "export", "strategy", "bidirectional",
+        "influences", "affects", "leads to", "results in", "causes"
+    ]
+    
+    # Check for concrete ideas with more nuanced detection
+    has_concrete_content = any(indicator in response_lower for indicator in concrete_indicators)
+    has_sufficient_length = len(response) > 20
+    
+    # Also check for specific patterns that indicate sharing ideas
+    idea_patterns = [
+        r'\b(amg|market|strategy|financing|export|joint\s+venture)\b.*\b(creates?|blocks?|affects?|influences?)\b',
+        r'\brelationship\s+between\b.*\band\b',
+        r'\b(think|believe)\b.*\b(that|because|since)\b',
+        r'\b(added|included|connected)\b.*\b(node|concept|relationship)\b'
+    ]
+    
+    matches_idea_pattern = any(re.search(pattern, response_lower, re.IGNORECASE) for pattern in idea_patterns)
+    
+    # Check if it's an intention with actual content (not off-topic)
+    if analysis["has_intention_without_action"] and not analysis["is_off_topic"]:
         analysis["has_concrete_idea"] = True
-        analysis["response_type"] = "concrete_idea"
+        analysis["contains_idea"] = True
+        analysis["response_type"] = "intention_without_action"
+        analysis["requires_pattern_response"] = True  # Need to encourage actual action
+    elif (has_concrete_content and has_sufficient_length) or matches_idea_pattern:
+        analysis["has_concrete_idea"] = True
+        analysis["contains_idea"] = True  # Add this field for Pattern 5 detection
+        if analysis["response_type"] == "statement":  # Only override if not already set
+            analysis["response_type"] = "concrete_idea"
+    else:
+        analysis["contains_idea"] = False  # Explicitly set to False when no idea detected
+    
+    # General question detection (if not already categorized)
+    if "?" in response or any(q in response_lower for q in ["how", "what", "why", "when", "where", "which", "can i", "should i", "could i"]):
+        analysis["is_question"] = True
+        if analysis["response_type"] == "statement":
+            analysis["response_type"] = "question"
     
     # Extract mentioned concepts (simple heuristic - words in quotes or capitalized)
     import re
@@ -740,6 +923,10 @@ def analyze_user_response_type(response: str) -> Dict[str, Any]:
         analysis["key_phrases"].append("market")
     if "strategy" in response_lower or "strategies" in response_lower:
         analysis["key_phrases"].append("strategy")
+    if "international" in response_lower:
+        analysis["key_phrases"].append("international")
+    if "entry" in response_lower:
+        analysis["key_phrases"].append("entry")
     
     return analysis
 
@@ -857,6 +1044,377 @@ def _generate_contextual_followup(response_analysis: Dict[str, Any],
     
     # Generic fallback
     return "Thank you for sharing that. Let's continue developing these ideas."
+
+
+def handle_domain_question(response: str, scaffolding_type: str, key_phrases: List[str] = None) -> str:
+    """
+    Handle domain/content questions by referencing task materials.
+    Pattern 1.1: User asks content/domain questions
+    
+    Args:
+        response: User's response
+        scaffolding_type: Current scaffolding type
+        key_phrases: Key phrases extracted from response
+        
+    Returns:
+        Appropriate response for domain questions
+    """
+    base_response = "I see you have a question about the content. Please check the 'Task Description' and 'Extra Materials' buttons at the top of the screen for detailed information about "
+    
+    # Add specific guidance based on key phrases
+    if key_phrases:
+        if "AMG" in key_phrases or "amg" in response.lower():
+            base_response += "Adaptive Market Gatekeeping and its mechanisms. "
+        elif "market" in key_phrases:
+            base_response += "international market entry challenges. "
+        elif "strategy" in key_phrases:
+            base_response += "entry strategies and approaches. "
+        else:
+            base_response += "the concepts you're asking about. "
+    else:
+        base_response += "this topic. "
+    
+    # Add scaffolding-specific guidance
+    if scaffolding_type == "conceptual":
+        base_response += "After reviewing those materials, think about how these concepts relate to each other in your map."
+    elif scaffolding_type == "strategic":
+        base_response += "After reviewing those materials, consider how you might organize these concepts strategically."
+    elif scaffolding_type == "procedural":
+        base_response += "After reviewing those materials, think about the steps to incorporate this into your map."
+    elif scaffolding_type == "metacognitive":
+        base_response += "After reviewing those materials, reflect on how this changes your understanding."
+    
+    return base_response
+
+
+def handle_system_question(response: str, scaffolding_type: str) -> str:
+    """
+    Handle system/interface questions by directing to help.
+    Pattern 1.2: User asks about concept mapping system
+    
+    Args:
+        response: User's response
+        scaffolding_type: Current scaffolding type
+        
+    Returns:
+        Appropriate response for system questions
+    """
+    base_response = "For help with the concept mapping tool, please click the '❓ Help' button at the top right of the screen. It provides detailed instructions on creating nodes, edges, and organizing your map. "
+    
+    # Add scaffolding-specific encouragement
+    if scaffolding_type == "procedural":
+        base_response += "Once you're familiar with the tools, we can focus on your mapping process."
+    elif scaffolding_type == "strategic":
+        base_response += "Once you're comfortable with the interface, we can discuss your strategic approach."
+    elif scaffolding_type == "conceptual":
+        base_response += "After learning the interface, let's focus on the conceptual relationships."
+    elif scaffolding_type == "metacognitive":
+        base_response += "Understanding the tool will help you express your thoughts more effectively."
+    
+    return base_response
+
+
+def handle_disagreement(response: str, scaffolding_type: str, disagreement_type: str) -> str:
+    """
+    Handle user disagreement based on type.
+    Pattern 2: User disagreement
+    
+    Args:
+        response: User's response
+        scaffolding_type: Current scaffolding type
+        disagreement_type: Type of disagreement (content/approach/general)
+        
+    Returns:
+        Appropriate response for disagreement
+    """
+    if disagreement_type == "content":
+        # Pattern 2.1: Content-level disagreement
+        base_response = "I appreciate your perspective. Could you elaborate on why you see it differently? "
+        base_response += "There's often multiple valid ways to understand these relationships. "
+        
+        if scaffolding_type == "conceptual":
+            base_response += "What evidence or reasoning supports your view of this concept?"
+        elif scaffolding_type == "strategic":
+            base_response += "How does your understanding affect your organizational strategy?"
+        else:
+            base_response += "Let's explore your interpretation further."
+            
+    elif disagreement_type == "approach":
+        # Pattern 2.2: Approach disagreement
+        base_response = "Your approach is valid too! There's no single correct way to create a concept map. "
+        base_response += "Feel free to modify or delete any nodes that don't align with your thinking. "
+        
+        if scaffolding_type == "strategic":
+            base_response += "What alternative strategy would you prefer to use?"
+        elif scaffolding_type == "procedural":
+            base_response += "What process feels more natural to you?"
+        else:
+            base_response += "How would you like to proceed instead?"
+            
+    else:
+        # Pattern 2.3: General disagreement
+        base_response = "I understand you have a different view. Let's explore other aspects of your concept map. "
+        
+        if scaffolding_type == "metacognitive":
+            base_response += "What parts of your map do you feel most confident about?"
+        elif scaffolding_type == "conceptual":
+            base_response += "Which relationships in your map feel most clear to you?"
+        else:
+            base_response += "What would you like to focus on next?"
+    
+    return base_response
+
+
+def handle_empty_input(scaffolding_type: str) -> str:
+    """
+    Handle empty user input.
+    Pattern 3: Empty user input
+    
+    Args:
+        scaffolding_type: Current scaffolding type
+        
+    Returns:
+        Appropriate response for empty input
+    """
+    responses = {
+        "strategic": "I notice you haven't typed anything. If you'd like to share your thoughts about your mapping strategy, please type your response. Or if you're ready to move on, you can click 'Finish Round'.",
+        "metacognitive": "It seems you haven't entered a response. Would you like to reflect on your learning process? Please type your thoughts, or click 'Finish Round' if you're ready to proceed.",
+        "procedural": "You haven't typed a response yet. If you'd like to describe your mapping process, please share your thoughts. Otherwise, feel free to click 'Finish Round'.",
+        "conceptual": "I see no response yet. If you have thoughts about the concepts and their relationships, please type them. Or click 'Finish Round' to continue."
+    }
+    
+    return responses.get(scaffolding_type, "Please type your response if you'd like to continue the conversation, or click 'Finish Round' to proceed to the next round.")
+
+
+def handle_inappropriate_language(scaffolding_type: str) -> str:
+    """
+    Handle inappropriate language with gentle reminder.
+    Pattern 4: Inappropriate language
+    
+    Args:
+        scaffolding_type: Current scaffolding type
+        
+    Returns:
+        Appropriate response for inappropriate language
+    """
+    base_response = "I understand this can be challenging. Let's keep our discussion respectful and focused on improving your concept map. "
+    
+    # Add scaffolding-specific redirection
+    if scaffolding_type == "metacognitive":
+        base_response += "What aspects of the learning process are you finding most difficult?"
+    elif scaffolding_type == "strategic":
+        base_response += "What strategies might help you work through this challenge?"
+    elif scaffolding_type == "procedural":
+        base_response += "Let's break down the process into smaller, manageable steps."
+    elif scaffolding_type == "conceptual":
+        base_response += "Which concepts would you like to clarify first?"
+    
+    return base_response
+
+
+def handle_off_topic(scaffolding_type: str) -> str:
+    """
+    Handle off-topic responses by redirecting to task.
+    Pattern 6: Off-topic responses
+    
+    Args:
+        scaffolding_type: Current scaffolding type
+        
+    Returns:
+        Appropriate response for off-topic content
+    """
+    base_response = "Let's refocus on your concept map about international market entry and AMG. "
+    
+    # Add scaffolding-specific redirection
+    if scaffolding_type == "conceptual":
+        base_response += "What concepts from the task materials have you included in your map?"
+    elif scaffolding_type == "strategic":
+        base_response += "How are you organizing the concepts related to market entry challenges?"
+    elif scaffolding_type == "procedural":
+        base_response += "What's your next step in developing your concept map?"
+    elif scaffolding_type == "metacognitive":
+        base_response += "How is your understanding of the AMG topic developing?"
+    
+    return base_response
+
+
+def handle_frustration(response: str, scaffolding_type: str) -> str:
+    """
+    Handle learning frustration with encouragement.
+    Pattern 7: Learning process confusion/frustration
+    
+    Args:
+        response: User's response
+        scaffolding_type: Current scaffolding type
+        
+    Returns:
+        Encouraging response for frustration
+    """
+    base_response = "I understand this can feel overwhelming. Concept mapping is an iterative process - it's perfectly normal to feel challenged. "
+    base_response += "Remember, there's no perfect map, just your evolving understanding. "
+    
+    # Add scaffolding-specific encouragement
+    if scaffolding_type == "metacognitive":
+        base_response += "You're doing well by reflecting on your learning. What small insight have you gained so far?"
+    elif scaffolding_type == "strategic":
+        base_response += "Let's simplify your strategy. What's one connection you feel confident about?"
+    elif scaffolding_type == "procedural":
+        base_response += "Let's take it step by step. What's one thing you can add or modify right now?"
+    elif scaffolding_type == "conceptual":
+        base_response += "Start with what you know. Which concept feels clearest to you?"
+    
+    return base_response
+
+
+def handle_premature_ending(scaffolding_type: str) -> str:
+    """
+    Handle premature session ending attempts.
+    Pattern 8: Premature session ending
+    
+    Args:
+        scaffolding_type: Current scaffolding type
+        
+    Returns:
+        Encouraging response to continue
+    """
+    base_response = "I see you might want to finish, but your contribution is valuable for this research. "
+    base_response += "Completing all rounds helps us understand how learners develop concept maps. "
+    base_response += "You're making good progress! "
+    
+    # Add scaffolding-specific encouragement
+    if scaffolding_type == "metacognitive":
+        base_response += "Even small reflections about your learning are helpful. What's one thing you've noticed?"
+    elif scaffolding_type == "strategic":
+        base_response += "Your mapping strategy, even if simple, provides valuable insights. Can you share one approach you've used?"
+    elif scaffolding_type == "procedural":
+        base_response += "Every step you take in building your map matters. What's been your process so far?"
+    elif scaffolding_type == "conceptual":
+        base_response += "Any connections you've made between concepts are worth exploring. Which relationship seems most important?"
+    
+    return base_response
+
+
+def handle_help_seeking(response: str, scaffolding_type: str) -> str:
+    """
+    Handle help-seeking questions like "what should I do?" or "where is the task?"
+    NEW Pattern: Help-seeking
+    
+    Args:
+        response: User's response
+        scaffolding_type: Current scaffolding type
+        
+    Returns:
+        Appropriate response directing to resources
+    """
+    base_response = "I see you need guidance on getting started. Please check the 'Task Description' button at the top of the screen for detailed information about the AMG concept mapping task. "
+    base_response += "The 'Extra Materials' button provides additional resources about international market entry and AMG mechanisms. "
+    
+    # Add scaffolding-specific guidance
+    if scaffolding_type == "conceptual":
+        base_response += "Start by adding key concepts from the materials, like 'AMG', 'market entry barriers', and 'gatekeeping mechanisms'."
+    elif scaffolding_type == "procedural":
+        base_response += "Begin by clicking to add nodes for main concepts, then connect them with labeled relationships."
+    elif scaffolding_type == "strategic":
+        base_response += "Consider organizing your map with AMG at the center and its effects branching outward."
+    elif scaffolding_type == "metacognitive":
+        base_response += "Think about what you already know about market entry and build from there."
+    
+    return base_response
+
+
+def handle_gibberish(scaffolding_type: str) -> str:
+    """
+    Handle gibberish or random text input.
+    NEW Pattern: Gibberish
+    
+    Args:
+        scaffolding_type: Current scaffolding type
+        
+    Returns:
+        Appropriate response for gibberish input
+    """
+    base_response = "I didn't quite understand that. Let's refocus on your concept map. "
+    
+    # Add scaffolding-specific redirection
+    if scaffolding_type == "conceptual":
+        base_response += "What concepts from the AMG materials would you like to explore?"
+    elif scaffolding_type == "procedural":
+        base_response += "What's your next step in building your concept map?"
+    elif scaffolding_type == "strategic":
+        base_response += "How are you planning to organize your AMG concepts?"
+    elif scaffolding_type == "metacognitive":
+        base_response += "What aspects of AMG are you finding clear or confusing?"
+    
+    return base_response
+
+
+def handle_intention_without_action(response: str, scaffolding_type: str) -> str:
+    """
+    Handle when user says they'll add something but doesn't actually do it.
+    NEW Pattern: Intention without action
+    
+    Args:
+        response: User's response
+        scaffolding_type: Current scaffolding type
+        
+    Returns:
+        Encouraging response to take action
+    """
+    # Extract what they mentioned adding (simple extraction)
+    import re
+    match = re.search(r'add\s+(.+?)(?:\.|$)', response.lower())
+    concept_mentioned = match.group(1) if match else "that concept"
+    
+    base_response = f"Good idea to add {concept_mentioned}! "
+    base_response += "Go ahead and add it to your concept map now - click to create a new node and label it. "
+    
+    # Add scaffolding-specific encouragement
+    if scaffolding_type == "conceptual":
+        base_response += "Once you've added it, think about how it relates to your existing concepts."
+    elif scaffolding_type == "procedural":
+        base_response += "After adding the node, you can create edges to show its relationships."
+    elif scaffolding_type == "strategic":
+        base_response += "Consider where to position it strategically in relation to other concepts."
+    elif scaffolding_type == "metacognitive":
+        base_response += "Adding it will help solidify your understanding of how it fits in the bigger picture."
+    
+    return base_response
+
+
+def generate_concrete_idea_followup(response: str, scaffolding_type: str, mentions_concepts: List[str] = None) -> str:
+    """
+    Generate appropriate follow-up for concrete ideas (Pattern 5 fix).
+    Only use affirmative responses when user actually shares ideas.
+    
+    Args:
+        response: User's response
+        scaffolding_type: Current scaffolding type
+        mentions_concepts: Concepts mentioned by user
+        
+    Returns:
+        Action-oriented follow-up
+    """
+    # Pattern 5.2 & 5.3: Ask if map reflects ideas and suggest additions
+    base_response = ""
+    
+    if mentions_concepts and len(mentions_concepts) > 0:
+        base_response = f"You've mentioned interesting ideas about {', '.join(mentions_concepts[:2])}. "
+    else:
+        base_response = "You've shared some valuable insights. "
+    
+    base_response += "Does your current concept map reflect these ideas? "
+    
+    # Add scaffolding-specific call to action
+    if scaffolding_type == "conceptual":
+        base_response += "Consider adding these concepts as new nodes or strengthening the relationships that represent these ideas."
+    elif scaffolding_type == "strategic":
+        base_response += "You might reorganize your map to better highlight these strategic insights you've identified."
+    elif scaffolding_type == "procedural":
+        base_response += "Try implementing this process you've described by adding or modifying the relevant connections."
+    elif scaffolding_type == "metacognitive":
+        base_response += "Based on this reflection, what changes would better represent your evolved understanding?"
+    
+    return base_response
 
 
 def _generate_context_aware_prompts(scaffolding_type: str,

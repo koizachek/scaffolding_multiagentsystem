@@ -1091,7 +1091,7 @@ class StreamlitExperimentalSession:
         return result
     
     def get_agent_response(self, roundn: int, concept_map_data: Optional[Dict[str, Any]] = None, user_response: Optional[str] = None, conversation_turn: int = 0) -> str:
-        """Get agent response for the current round."""
+        """Get agent response for the current round with pattern detection."""
         # Handle round 0 specially - no scaffolding
         if roundn == 0:
             return "Please create your initial concept map on the topic. Take your time to include all the concepts and relationships you think are relevant. When you're ready, submit your concept map to proceed."
@@ -1102,6 +1102,46 @@ class StreamlitExperimentalSession:
             return "Session completed. Thank you for participating!"
         
         agent_type = self.session_data["agent_sequence"][agent_index]
+        
+        # CRITICAL FIX: Add pattern detection BEFORE AI generation
+        # This ensures interaction patterns are handled properly
+        if user_response is not None and conversation_turn > 0:
+            try:
+                # Import pattern detection utilities
+                from MAS.utils.scaffolding_utils import analyze_user_response_type
+            except ImportError:
+                from utils.scaffolding_utils import analyze_user_response_type
+            
+            # Analyze user response for patterns
+            response_analysis = analyze_user_response_type(user_response)
+            
+            # Check if a pattern was detected that needs special handling
+            if response_analysis.get("requires_pattern_response", False):
+                # Generate pattern-specific response while maintaining agent context
+                pattern_response = self._generate_pattern_response(
+                    agent_type=agent_type,
+                    response_analysis=response_analysis,
+                    user_response=user_response,
+                    concept_map_data=concept_map_data,
+                    roundn=roundn,
+                    conversation_turn=conversation_turn
+                )
+                
+                if pattern_response:
+                    # Log the pattern-based response
+                    if self.session_logger:
+                        self.session_logger.log_agent_response(
+                            agent_type=agent_type,
+                            response_text=pattern_response,
+                            metadata={
+                                "round_number": roundn,
+                                "conversation_turn": conversation_turn,
+                                "response_type": "pattern_based",
+                                "pattern_detected": response_analysis.get("response_type", "unknown"),
+                                "concept_map_nodes": len(concept_map_data.get("elements", [])) if isinstance(concept_map_data, dict) and concept_map_data else 0
+                            }
+                        )
+                    return pattern_response
         
         # Demo responses fallback
         demo_responses = {
@@ -1279,6 +1319,101 @@ class StreamlitExperimentalSession:
             )
         
         return response
+    
+    def _generate_pattern_response(self, agent_type: str, response_analysis: Dict[str, Any], 
+                                  user_response: str, concept_map_data: Optional[Dict[str, Any]], 
+                                  roundn: int, conversation_turn: int) -> Optional[str]:
+        """Generate pattern-specific response while maintaining agent scaffolding context."""
+        
+        # Import handler functions from scaffolding_utils
+        try:
+            from MAS.utils.scaffolding_utils import (
+                handle_help_seeking, handle_gibberish, handle_intention_without_action,
+                handle_domain_question, handle_system_question, handle_disagreement,
+                handle_empty_input, handle_inappropriate_language, handle_off_topic,
+                handle_frustration, handle_premature_ending, generate_concrete_idea_followup
+            )
+        except ImportError:
+            from utils.scaffolding_utils import (
+                handle_help_seeking, handle_gibberish, handle_intention_without_action,
+                handle_domain_question, handle_system_question, handle_disagreement,
+                handle_empty_input, handle_inappropriate_language, handle_off_topic,
+                handle_frustration, handle_premature_ending, generate_concrete_idea_followup
+            )
+        
+        # Get the pattern type detected
+        pattern_type = response_analysis.get("response_type", "unknown")
+        
+        # Extract scaffolding type without "_scaffolding" suffix for handlers
+        scaffolding_type_clean = agent_type.replace("_scaffolding", "")
+        
+        # Route to appropriate handler based on pattern type
+        pattern_response = None
+        
+        # NEW PATTERNS - Priority handling
+        if pattern_type == "help_seeking":
+            pattern_response = handle_help_seeking(user_response, scaffolding_type_clean)
+        elif pattern_type == "gibberish":
+            pattern_response = handle_gibberish(scaffolding_type_clean)
+        elif pattern_type == "intention_without_action":
+            pattern_response = handle_intention_without_action(user_response, scaffolding_type_clean)
+        
+        # EXISTING PATTERNS
+        elif pattern_type == "empty_input":
+            pattern_response = handle_empty_input(scaffolding_type_clean)
+        elif pattern_type == "inappropriate_language":
+            pattern_response = handle_inappropriate_language(scaffolding_type_clean)
+        elif pattern_type == "disagreement":
+            disagreement_type = response_analysis.get("disagreement_type", "general")
+            pattern_response = handle_disagreement(user_response, scaffolding_type_clean, disagreement_type)
+        elif pattern_type == "question":
+            # Differentiate between domain and system questions
+            if response_analysis.get("is_domain_question"):
+                key_phrases = response_analysis.get("key_phrases", [])
+                pattern_response = handle_domain_question(user_response, scaffolding_type_clean, key_phrases)
+            elif response_analysis.get("is_system_question"):
+                pattern_response = handle_system_question(user_response, scaffolding_type_clean)
+            else:
+                # Generic question handling - let AI handle it
+                pattern_response = None
+        elif pattern_type == "frustration":
+            pattern_response = handle_frustration(user_response, scaffolding_type_clean)
+        elif pattern_type == "off_topic":
+            pattern_response = handle_off_topic(scaffolding_type_clean)
+        elif pattern_type == "premature_ending":
+            pattern_response = handle_premature_ending(scaffolding_type_clean)
+        
+        # Pattern 5: Concrete Ideas (Critical Fix)
+        elif pattern_type == "concrete_idea" and response_analysis.get("contains_idea", False):
+            # Only affirm if user actually shared an idea
+            mentions_concepts = response_analysis.get("mentions_concepts", [])
+            pattern_response = generate_concrete_idea_followup(user_response, scaffolding_type_clean, mentions_concepts)
+        
+        # For conversational engagement pattern (Pattern 5 critical fix)
+        elif pattern_type == "conversational" and response_analysis.get("contains_idea", False):
+            # Only affirm if user actually shared an idea
+            pattern_response = self._generate_idea_affirmation_response(
+                agent_type, user_response, concept_map_data
+            )
+        
+        return pattern_response
+    
+    def _generate_idea_affirmation_response(self, agent_type: str, user_response: str, 
+                                           concept_map_data: Optional[Dict[str, Any]]) -> str:
+        """Generate appropriate affirmation when user shares actual ideas (Pattern 5 fix)."""
+        
+        # Extract the user's idea (first 50 chars for context)
+        idea_snippet = user_response[:50] + "..." if len(user_response) > 50 else user_response
+        
+        # Agent-specific idea affirmations with call to action
+        idea_responses = {
+            "conceptual_scaffolding": f"That's an interesting conceptual insight about '{idea_snippet}'. Does your concept map reflect this understanding? Consider adding a node or relationship to capture this idea.",
+            "procedural_scaffolding": f"Good procedural thinking about '{idea_snippet}'. How can you incorporate this into your mapping process? Try adding it as a labeled relationship.",
+            "strategic_scaffolding": f"Interesting strategic perspective on '{idea_snippet}'. How does this fit into your overall map organization? Consider repositioning related concepts to highlight this.",
+            "metacognitive_scaffolding": f"That's valuable reflection about '{idea_snippet}'. What does this tell you about your understanding? How confident are you in representing this in your map?"
+        }
+        
+        return idea_responses.get(agent_type, f"I see you mentioned '{idea_snippet}'. How does this relate to your concept map?")
     
     def log_user_response(self, roundn: int, user_response: str, concept_map_data: Optional[Dict[str, Any]] = None):
         """Log user response to scaffolding."""
