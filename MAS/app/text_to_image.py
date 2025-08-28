@@ -10,6 +10,19 @@ import base64
 import textwrap
 from typing import Optional, Tuple
 
+
+@st.cache_data
+def get_protected_task_image(task_text: str, width: int = 800, font_size: int = 28):
+    return text_to_image(task_text, width=width, font_size=font_size)
+
+
+def render_static_task(task_text: str, title: str = "Task Description"):
+    st.markdown(f"### {title}")
+    img = get_protected_task_image(task_text, width=800, font_size=28)
+    st.image(img, use_container_width=True)
+    st.caption("📝 This content is protected and cannot be copied.")
+
+
 def text_to_image(
     text: str, 
     width: int = 1000,  # Increased width for better readability
@@ -73,36 +86,6 @@ def text_to_image(
         y_position += line_height
     
     return img
-
-
-def render_protected_text(
-    text: str,
-    title: Optional[str] = None,
-    width: int = 800,  # Increased width
-    font_size: int = 28,  # Much larger font
-    show_warning: bool = True
-) -> None:
-    """
-    Render text as a protected image in Streamlit.
-    
-    Args:
-        text: Text to display
-        title: Optional title
-        width: Image width
-        font_size: Font size
-        show_warning: Whether to show copy protection warning
-    """
-    if title:
-        st.markdown(f"### {title}")
-    
-    # Convert text to image
-    img = text_to_image(text, width=width, font_size=font_size)
-    
-    # Display image
-    st.image(img, use_container_width=True)
-    
-    if show_warning:
-        st.caption("📝 This content is protected and cannot be copied.")
 
 
 def render_protected_markdown(

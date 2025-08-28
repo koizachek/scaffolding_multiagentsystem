@@ -1,11 +1,11 @@
 """
-Scaffolding Configuration
+Scaffolding Configuratio
 
     Conceptual → Focus on the conceptual connections and their correctness in terms of content: what is it about? is this correct?
-    Procedural → Focus on tool and resource handling, process orientation: which tools can I use? what steps can I take?
-    Strategic → Focus on planing, order, structure and solution strategies and approaches: how can I solve this?
+    Procedural → Focus on tool and resource handling on a process level: which tools can I use? what steps can I take?
+    Strategic → Focus on strategies and approaches: how can I solve this problem?
     Metacognitive → Focus on self-assessment, regulation, learning process on a meta-level: how can I improve this further? 
-
+    
 This module provides configuration for scaffolding, including prompt templates.
 """
 

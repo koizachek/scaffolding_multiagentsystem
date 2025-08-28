@@ -11,7 +11,7 @@ from task_content import (
     STUDY_TITLE, STUDY_INTRODUCTION, TASK_DESCRIPTION, 
     EXTRA_MATERIALS, INITIAL_CONCEPT_MAP
 )
-from text_to_image import render_protected_text, render_protected_markdown
+from text_to_image import render_protected_markdown
 
 
 logger = logging.getLogger(__name__)
@@ -729,7 +729,7 @@ def render_concept_map():
 
         #example map
         if roundn == 0:
-            st.markdown("Add up to 5 of your most important concepts and their connections. Here is an example to illustrate what your baseline concept map might look like, before you receive assistance")
+            st.markdown("Add a minimum of 3, and up to 6 of your most important concepts and their connections. Here is an example to illustrate what your baseline concept map might look like, before you receive assistance")
 
             img_path = os.path.join(os.path.dirname(__file__), "..", "examples", "data", "examplemap.png")
             if os.path.exists(img_path):
