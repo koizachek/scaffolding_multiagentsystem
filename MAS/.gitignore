@@ -127,3 +127,9 @@ examples/output/
 
 # Ignore experimental data / logging
 MAS/experimental_data/
+
+#testfiles
+MAS/app/testing_fixes
+
+#old files
+/MAS/app/app Kopie.py

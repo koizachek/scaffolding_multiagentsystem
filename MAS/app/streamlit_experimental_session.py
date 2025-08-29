@@ -911,7 +911,7 @@ class StreamlitExperimentalSession:
                     "participant_id": self.session_data["learner_profile"].get("name", "unknown"),
                     "sequence_type": "hardcoded",
                     "total_rounds": 5,  # Including round 0
-                    "note": "Round 0 is baseline (no scaffolding), followed by 4 scaffolding rounds"
+                    "note": "Round 1 is baseline (no scaffolding), followed by 4 scaffolding rounds"
                 }
             )
         

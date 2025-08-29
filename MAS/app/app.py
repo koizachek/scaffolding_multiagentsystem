@@ -3,6 +3,7 @@ import os
 import copy
 import logging
 from datetime import datetime
+from typing import Dict, Optional
 import streamlit as st
 from conceptmap_component import conceptmap_component, parse_conceptmap
 from streamlit.runtime.state import session_state
@@ -12,13 +13,6 @@ from task_content import (
     EXTRA_MATERIALS, INITIAL_CONCEPT_MAP
 )
 from text_to_image import render_protected_markdown
-from auto_scroll import (
-    scroll_to_top,
-    auto_scroll_on_round_change,
-    auto_scroll_on_page_transition,
-    auto_scroll_to_agent_response,
-    inject_auto_scroll_styles
-)
 
 
 logger = logging.getLogger(__name__)
@@ -27,7 +21,6 @@ logger = logging.getLogger(__name__)
 # Session State Initialization
 def init_session_state():
     """Initialize session state with experimental session support."""
-    # Load contents first
     if "contents" not in st.session_state:
         st.session_state.contents = load_contents()
     
@@ -62,14 +55,12 @@ def init_session_state():
     
     # Initialize concept map data separately to avoid corruption
     if "cmdata" not in st.session_state or not isinstance(st.session_state.cmdata, list):
-        # Make a deep copy of the initial map to avoid reference issues
-        import copy
         initial_map = copy.deepcopy(st.session_state.contents["initial_map"])
         st.session_state.cmdata = [initial_map]
     
-    # Set max rounds (now 5 total: round 0 + 4 scaffolding rounds)
+    # Set max rounds (now 5 total: round 1 + 4 scaffolding rounds)
     if 'max_rounds' not in st.session_state:
-        st.session_state.max_rounds = 5  # Round 0 + 4 scaffolding rounds
+        st.session_state.max_rounds = 5  # Round 1 + 4 scaffolding rounds
 
 
 def load_contents():
@@ -77,6 +68,8 @@ def load_contents():
     path = os.path.join(os.path.dirname(__file__), "contents.json")
     with open(path) as f:
         return json.load(f)
+
+
 
 
 def render_mode_selection():
@@ -284,7 +277,6 @@ def render_tutorial():
     A concept map is a visual representation of knowledge that shows relationships between concepts using nodes (concepts) and edges (relationships). This concept map is responsive. You can zoom in and out to adapt the content to your screen.
     """)
     
-    # Tutorial steps
     tutorial_steps = [
         {
             "title": "Step 1: Creating Nodes (Concepts)",
@@ -721,6 +713,7 @@ def render_help_dialog():
                 """)
 
 
+
 def render_concept_map():
     """Render concept map editor."""
     roundn = st.session_state.roundn
@@ -733,17 +726,7 @@ def render_concept_map():
             render_help_dialog()
     with middle:
         st.write(cm_label)
-
-        #example map
-        if roundn == 0:
-            st.markdown("Add a minimum of 3, and up to 6 of your most important concepts and their connections. Here is an example to illustrate what your baseline concept map might look like, before you receive assistance")
-
-            img_path = os.path.join(os.path.dirname(__file__), "..", "examples", "data", "examplemap.png")
-            if os.path.exists(img_path):
-                st.image(img_path, use_container_width=True)
-            else:
-                st.warning(f"⚠️ Example image not found at {img_path}")
-
+        
         # Create a container for the concept map
         try:
             # Ensure we have valid concept map data
@@ -767,7 +750,6 @@ def render_concept_map():
             response = None
     
     return response
-
 
 def render_cm_submit_button():
     """Render concept map submit button."""
@@ -793,8 +775,8 @@ def render_followup():
     # Special handling for Round 0 - skip directly to Round 1
     if roundn == 0:
         st.success("✅ Initial concept map submitted successfully!")
-        st.info("This was your baseline concept map (Round 0). Now let's proceed with agent-guided learning.")
-    
+        st.info("This was your baseline concept map (Round 0). Now let's proceed with agent-guided scaffolding.")
+        
         col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
             if st.button("Proceed to Round 1", type="primary", use_container_width=True):
@@ -958,13 +940,15 @@ def render_followup():
                 if remaining_turns > 0:
                     st.caption(f"Turns remaining: {remaining_turns}")
                 else:
-                    st.caption("Max turns reached")
+                    st.caption("Max turns remaining")
         
         # Show instructions
         if conversation_turn == 0:
             st.info("💡 **Tip:** You can have up to 5 exchanges with the agent in this round. Use 'Continue Conversation' for follow-up questions or 'Finish Round' when ready to proceed.")
         elif conversation_turn >= max_user_messages - 1:
             st.warning("⚠️ This is your final exchange for this round. Click 'Finish Round' to proceed.")
+
+
 
 
 def handle_response(response):
@@ -1131,19 +1115,9 @@ def handle_response(response):
             f"   ℹ️ No action taken (response: {response is not None}, submit_request: {st.session_state.submit_request}, followup: {st.session_state.followup})"
         )
 
-
 def main():
     """Main application logic."""
     init_session_state()
-    
-    # Inject auto-scroll styles
-    inject_auto_scroll_styles()
-    
-    # Check for page transitions and auto-scroll if needed
-    auto_scroll_on_page_transition()
-    
-    # Check for round changes and auto-scroll if needed
-    auto_scroll_on_round_change()
     
     # Mode selection
     if not st.session_state.mode:
@@ -1247,7 +1221,6 @@ def main():
 
         if st.session_state.followup:
             render_followup()
-
 
 if __name__ == "__main__":
     main()
