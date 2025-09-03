@@ -15,7 +15,7 @@
     "concept_map_input_method": "mermaid"
   },
   "ai_manager": {
-    "client": "groq",
+    "client": "openai",
     "primary_model": "llama-3.3-70b-versatile",
     "fallback_model": "llama-3.1-8b-instant",
     "max_tokens": 500,
