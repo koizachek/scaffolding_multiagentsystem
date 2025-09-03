@@ -27,6 +27,8 @@ def init_session_state():
     # Auto Scroll
     if 'scroll_to_top' not in st.session_state:
         st.session_state.scroll_to_top = False
+    if "scroll_to_task_description" not in st.session_state:
+        st.session_state.scroll_to_task_description = False
     if st.session_state.scroll_to_top:
         scroll_to_here(0, key='top')
         st.session_state.scroll_to_top = False
@@ -733,6 +735,7 @@ def render_help_dialog():
 
 def render_concept_map():
     """Render concept map editor."""
+    print("Rendering concept map...")
     roundn = st.session_state.roundn
     contents = st.session_state.contents
     cm_label = contents["labels"]["extend" if roundn else "initial"]["header"]
@@ -746,27 +749,26 @@ def render_concept_map():
 
         # Create a container for the concept map
         try:
+            print(roundn, len(st.session_state.cmdata))
             # Ensure we have valid concept map data
             if roundn < len(st.session_state.cmdata) and isinstance(st.session_state.cmdata[roundn], dict):
                 cm_data = st.session_state.cmdata[roundn]
             else:
                 # Use initial map if we don't have data for this round
                 cm_data = st.session_state.contents["initial_map"]
+                print(f"Using initial map: {cm_data}")
 
             # Debug: Check data type before passing to component
             if not isinstance(cm_data, dict):
                 st.error(f"Invalid concept map data type: {type(cm_data)}")
                 cm_data = st.session_state.contents["initial_map"]
 
-            response = conceptmap_component(
-                cm_data=cm_data,
-                submit_request=st.session_state.submit_request
-            )
+
         except Exception as e:
             st.error(f"Error rendering concept map: {e}")
             response = None
 
-    return response
+    return cm_data
 
 
 def render_cm_submit_button():
@@ -922,7 +924,8 @@ def render_followup():
             # Finish round button
             if (len(user_response) > 0 and
                     st.button("Finish Round", type='primary', use_container_width=True,
-                              key=f"finish_r{roundn}_t{conversation_turn}", on_click=scroll)):
+                              key=f"finish_r{roundn}_t{conversation_turn}")):
+
 
                 # Add final exchange to history
                 conversation_history.append({
@@ -953,6 +956,7 @@ def render_followup():
                 st.session_state.followup = False
                 st.session_state.roundn += 1
                 st.session_state.agent_msg = None
+                st.session_state.scroll_to_task_description = True
                 st.rerun()
 
         with col3:
@@ -1025,7 +1029,7 @@ def handle_response(response):
                     if e.get("data", {}).get("id") == node_id
                 )
                 logger.info(
-                    f"🆕 Node created: {node_data.get('label', '')} (id: {node_id}, x: {node_data.get('x')}, y: {node_data.get('y')})"
+                    f"Node created: {node_data.get('label', '')} (id: {node_id}, x: {node_data.get('x')}, y: {node_data.get('y')})"
                 )
                 if (
                         st.session_state.experimental_session
@@ -1133,7 +1137,7 @@ def handle_response(response):
         st.session_state.submit_request = False
     else:
         logger.info(
-            f"   ℹ️ No action taken (response: {response is not None}, submit_request: {st.session_state.submit_request}, followup: {st.session_state.followup})"
+            f"No action taken (response: {response is not None}, submit_request: {st.session_state.submit_request}, followup: {st.session_state.followup})"
         )
 
 
@@ -1231,10 +1235,17 @@ def main():
         # Show summary page after all questionnaires are completed (or immediately in demo mode)
         render_summary_page()
     else:
+        cm_data = render_concept_map()
+        if st.session_state.scroll_to_task_description:
+            scroll_to_here(0, "task_top")
+            st.session_state.scroll_to_task_description = False
+
         render_header()
 
-        # Render concept map first
-        response = render_concept_map()
+        response = conceptmap_component(
+            cm_data=cm_data,
+            submit_request=st.session_state.submit_request
+        )
 
         # Then render submit button
         render_cm_submit_button()
@@ -1243,6 +1254,8 @@ def main():
 
         if st.session_state.followup:
             render_followup()
+
+
 
 
 if __name__ == "__main__":
