@@ -763,7 +763,6 @@ def render_concept_map():
 
         except Exception as e:
             st.error(f"Error rendering concept map: {e}")
-            response = None
 
     return cm_data
 
