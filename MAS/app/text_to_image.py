@@ -5,6 +5,7 @@ Renders text as images to prevent copying while maintaining readability.
 
 import streamlit as st
 from PIL import Image, ImageDraw, ImageFont
+from pathlib import Path
 import io
 import base64
 import textwrap
@@ -24,67 +25,54 @@ def render_static_task(task_text: str, title: str = "Task Description"):
 
 
 def text_to_image(
-    text: str, 
-    width: int = 1000,  # Increased width for better readability
-    font_size: int = 26,  # Much larger font size
-    line_height: int = 36,  # Increased line height
-    padding: int = 30,  # More padding
-    bg_color: Tuple[int, int, int] = (255, 255, 255),
-    text_color: Tuple[int, int, int] = (0, 0, 0),
-    font_path: Optional[str] = None
+        text: str,
+        width: int = 1000,
+        font_size: int = 26,
+        line_height: int = 36,
+        padding: int = 30,
+        bg_color: Tuple[int, int, int] = (255, 255, 255),
+        text_color: Tuple[int, int, int] = (0, 0, 0),
+        font_path: Optional[str] = None,
+        scale: int = 3  # for high-resolution rendering
 ) -> Image.Image:
     """
-    Convert text to an image for copy protection.
-    
-    Args:
-        text: Text to render
-        width: Image width in pixels
-        font_size: Font size
-        line_height: Line spacing
-        padding: Padding around text
-        bg_color: Background color (RGB)
-        text_color: Text color (RGB)
-        font_path: Optional path to custom font
-    
-    Returns:
-        PIL Image object
+    Convert text to a high-resolution image using a bundled TrueType font.
     """
-    # Try to use a larger system font for better readability
+    # scale everything for high-resolution
+    width *= scale
+    font_size *= scale
+    line_height *= scale
+    padding *= scale
+
+    # Load font
+    font_path = Path(__file__).parent / "DejaVuSans.ttf"
     try:
-        # Try to use a TrueType font with the specified size
-        font = ImageFont.truetype("/System/Library/Fonts/Arial.ttc", font_size)
-    except:
-        try:
-            # Fallback to Arial if available
-            font = ImageFont.truetype("Arial", font_size)
-        except:
-            # Use default font but try to scale it
-            font = ImageFont.load_default()
-    
-    # Wrap text to fit width - adjust for larger font
-    chars_per_line = int(width / (font_size * 0.6))  # Better approximation for character width
+        font = ImageFont.truetype(str(font_path), font_size)
+    except IOError:
+        font = ImageFont.load_default()
+        st.warning("Could not load custom font, using default font.")
+
+    # Wrap text
+    chars_per_line = int(width / (font_size * 0.6))
     wrapper = textwrap.TextWrapper(width=chars_per_line)
     lines = []
-    for paragraph in text.split('\n'):
+    for paragraph in text.split("\n"):
         if paragraph.strip():
-            wrapped = wrapper.wrap(paragraph)
-            lines.extend(wrapped)
+            lines.extend(wrapper.wrap(paragraph))
         else:
-            lines.append('')  # Preserve empty lines
-    
-    # Calculate image height
-    height = (len(lines) * line_height) + (2 * padding)
-    
-    # Create image
-    img = Image.new('RGB', (width, height), bg_color)
+            lines.append("")
+
+    # Calculate height
+    height = (len(lines) * line_height) + 2 * padding
+    img = Image.new("RGB", (width, height), bg_color)
     draw = ImageDraw.Draw(img)
-    
+
     # Draw text
-    y_position = padding
+    y = padding
     for line in lines:
-        draw.text((padding, y_position), line, fill=text_color, font=font)
-        y_position += line_height
-    
+        draw.text((padding, y), line, fill=text_color, font=font)
+        y += line_height
+
     return img
 
 
