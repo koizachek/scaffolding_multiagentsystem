@@ -735,7 +735,6 @@ def render_help_dialog():
 
 def render_concept_map():
     """Render concept map editor."""
-    print("Rendering concept map...")
     roundn = st.session_state.roundn
     contents = st.session_state.contents
     cm_label = contents["labels"]["extend" if roundn else "initial"]["header"]
@@ -749,14 +748,12 @@ def render_concept_map():
 
         # Create a container for the concept map
         try:
-            print(roundn, len(st.session_state.cmdata))
             # Ensure we have valid concept map data
             if roundn < len(st.session_state.cmdata) and isinstance(st.session_state.cmdata[roundn], dict):
                 cm_data = st.session_state.cmdata[roundn]
             else:
                 # Use initial map if we don't have data for this round
                 cm_data = st.session_state.contents["initial_map"]
-                print(f"Using initial map: {cm_data}")
 
             # Debug: Check data type before passing to component
             if not isinstance(cm_data, dict):
