@@ -70,6 +70,31 @@ def load_contents():
         return json.load(f)
 
 
+def get_current_round_data(round_num):
+    """Get current round data for concept map."""
+    # Ensure we have enough slots in cmdata
+    while len(st.session_state.cmdata) <= round_num:
+        if len(st.session_state.cmdata) > 0:
+            # Copy the previous round's data as starting point
+            previous_map = copy.deepcopy(st.session_state.cmdata[-1])
+            st.session_state.cmdata.append(previous_map)
+        else:
+            # First round uses initial map
+            st.session_state.cmdata.append(st.session_state.contents["initial_map"])
+    
+    return st.session_state.cmdata[round_num]
+
+
+def ensure_cm_slot(round_num):
+    """Guarantee that cmdata[round_num] exists."""
+    while len(st.session_state.cmdata) <= round_num:
+        if len(st.session_state.cmdata) > 0:
+            # Copy the previous round's data as starting point
+            previous_map = copy.deepcopy(st.session_state.cmdata[-1])
+            st.session_state.cmdata.append(previous_map)
+        else:
+            # First round uses initial map
+            st.session_state.cmdata.append(st.session_state.contents["initial_map"])
 
 
 def render_mode_selection():
@@ -783,6 +808,9 @@ def render_followup():
                 # Log the round 0 completion
                 if st.session_state.experimental_session:
                     current_cm_data = st.session_state.cmdata[0] if len(st.session_state.cmdata) > 0 else None
+                # Log the round 0 completion with experimental session
+                if st.session_state.experimental_session:
+                    current_cm_data = st.session_state.cmdata[0] if len(st.session_state.cmdata) > 0 else None
                     st.session_state.experimental_session.update_concept_map_evolution(0, current_cm_data)
                     st.session_state.experimental_session.add_to_conversation_history(
                         0, "system", "Round 0 completed - baseline concept map created", {"final": True}
@@ -949,6 +977,104 @@ def render_followup():
             st.warning("⚠️ This is your final exchange for this round. Click 'Finish Round' to proceed.")
 
 
+def capture_concept_map_data(roundn: int, concept_map_response: Dict) -> None:
+    """Capture concept map data for experimental analysis with comprehensive logging."""
+    
+    # 1. Store in session state for UI persistence
+    ensure_cm_slot(roundn)
+    st.session_state.cmdata[roundn] = concept_map_response
+    
+    # 2. Log to experimental session for research data
+    if st.session_state.experimental_session:
+        st.session_state.experimental_session.update_concept_map_evolution(
+            roundn, concept_map_response
+        )
+    
+    # 3. Log detailed interaction data for research analysis
+    if st.session_state.experimental_session and st.session_state.experimental_session.session_logger:
+        # Extract element counts for research metrics
+        elements = concept_map_response.get("elements", [])
+        if isinstance(elements, dict):
+            dict_elements = []
+            dict_elements.extend(elements.get("nodes", []))
+            dict_elements.extend(elements.get("edges", []))
+        else:
+            dict_elements = [e for e in elements if isinstance(e, dict)]
+        
+        nodes = [e for e in dict_elements if "source" not in e.get("data", {})]
+        edges = [e for e in dict_elements if "source" in e.get("data", {})]
+        
+        st.session_state.experimental_session.session_logger.log_event(
+            event_type="concept_map_captured",
+            metadata={
+                "round_number": roundn,
+                "nodes_count": len(nodes),
+                "edges_count": len(edges),
+                "total_elements": len(dict_elements),
+                "participant_id": st.session_state.learner_profile.get("unique_id") if st.session_state.learner_profile else "unknown",
+                "agent_type": get_current_agent_type(roundn),
+                "capture_timestamp": datetime.now().isoformat(),
+                "experimental_data": {
+                    "concept_map_data": concept_map_response,
+                    "session_id": st.session_state.experimental_session.session_data["session_id"]
+                }
+            }
+        )
+
+
+def get_current_agent_type(roundn: int) -> Optional[str]:
+    """Get the current agent type for the given round."""
+    if roundn == 0:
+        return None  # Round 0 has no agent
+    
+    agent_index = roundn - 1
+    if (st.session_state.experimental_session and 
+        agent_index < len(st.session_state.experimental_session.session_data.get("agent_sequence", []))):
+        return st.session_state.experimental_session.session_data["agent_sequence"][agent_index]
+    
+    return None
+
+
+def ensure_round_transition_data_integrity(from_round: int, to_round: int):
+    """Ensure data integrity during round transitions for experimental analysis."""
+    
+    # 1. Capture final state of current round
+    if from_round < len(st.session_state.cmdata):
+        current_map_data = st.session_state.cmdata[from_round]
+    else:
+        current_map_data = st.session_state.contents["initial_map"]
+    
+    # 2. Log round transition for research analysis
+    if st.session_state.experimental_session and st.session_state.experimental_session.session_logger:
+        st.session_state.experimental_session.session_logger.log_event(
+            event_type="round_transition",
+            metadata={
+                "from_round": from_round,
+                "to_round": to_round,
+                "final_map_data": current_map_data,
+                "transition_timestamp": datetime.now().isoformat(),
+                "participant_id": st.session_state.learner_profile.get("unique_id") if st.session_state.learner_profile else "unknown",
+                "experimental_session_id": st.session_state.experimental_session.session_data["session_id"]
+            }
+        )
+    
+    # 3. Initialize next round with proper baseline for experimental continuity
+    if to_round == 1:  # Special handling for Round 0 → Round 1 (baseline → scaffolding)
+        # Copy baseline map as starting point for scaffolding rounds
+        ensure_cm_slot(to_round)
+        st.session_state.cmdata[to_round] = copy.deepcopy(current_map_data)
+        
+        # Log baseline preservation for research analysis
+        if st.session_state.experimental_session and st.session_state.experimental_session.session_logger:
+            st.session_state.experimental_session.session_logger.log_event(
+                event_type="baseline_map_preserved",
+                metadata={
+                    "baseline_round": from_round,
+                    "scaffolding_round": to_round,
+                    "baseline_data": current_map_data,
+                    "preservation_timestamp": datetime.now().isoformat()
+                }
+            )
 
 
 def handle_response(response):
@@ -1118,6 +1244,7 @@ def handle_response(response):
 def main():
     """Main application logic."""
     init_session_state()
+    
     
     # Mode selection
     if not st.session_state.mode:
