@@ -183,6 +183,12 @@ Each participant completes **5 rounds** with a fixed scaffolding sequence:
 Automatic generation of research files:
 - **JSON**: Complete session data (`experimental_session_[name]_[timestamp].json`)
 
+Export Logic:
+1. Real-time logging → /MAS/app/logs/ (detailed events)
+2. Session completion → /MAS/experimental_data/ (research files)
+3. Database export → MongoDB (structured queries)
+4. Streamlit state → /MAS/app/MAS/logs/ (UI data)
+
 ## Research Data
 
 ### What Gets Logged
