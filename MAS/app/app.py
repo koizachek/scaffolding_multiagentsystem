@@ -746,6 +746,16 @@ def render_concept_map():
     with middle:
         st.write(cm_label)
 
+        #example map
+        if roundn == 0:
+            st.markdown("Add a minimum of 3, and up to 6 of your most important concepts and their connections. Here is an example to illustrate what your baseline concept map might look like, before you receive assistance")
+
+            img_path = os.path.join(os.path.dirname(__file__), "..", "examples", "data", "examplemap.png")
+            if os.path.exists(img_path):
+                st.image(img_path, use_container_width=True)
+            else:
+                st.warning(f"⚠️ Example image not found at {img_path}")
+        
         # Create a container for the concept map
         try:
             # Ensure we have valid concept map data
