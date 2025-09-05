@@ -412,6 +412,7 @@ def render_tutorial():
                 st.session_state.tutorial_completed = True
                 st.session_state.show_tutorial = False
                 st.success("🎉 Tutorial completed! You're ready to start the experiment.")
+                st.session_state.scroll_to_top = True
                 st.rerun()
 
     # Skip option
@@ -419,6 +420,7 @@ def render_tutorial():
     if st.button("Skip Tutorial", type="secondary"):
         st.session_state.tutorial_completed = True
         st.session_state.show_tutorial = False
+        st.session_state.scroll_to_top = True
         st.rerun()
 
 
@@ -831,6 +833,7 @@ def render_followup():
 
         col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
+            # TODO
             if st.button("Proceed to Round 1", type="primary", use_container_width=True):
                 # Log the round 0 completion
                 if st.session_state.experimental_session:
@@ -847,6 +850,7 @@ def render_followup():
                 st.session_state.followup = False
                 st.session_state.roundn = 1
                 st.session_state.agent_msg = None
+                st.session_state.scroll_to_top = True
                 st.rerun()
         return
 
@@ -1298,6 +1302,7 @@ def main():
             st.session_state.session_initialized and
             not st.session_state.consent_given):
         render_consent_form()
+        st.components.v1.html(scroll_js)
         return
 
     # Learner profile login page (experimental mode only, after consent)
@@ -1323,6 +1328,7 @@ def main():
             not st.session_state.pre_questionnaire_completed):
         if st.session_state.experimental_session:
             st.session_state.experimental_session.render_pre_knowledge_questionnaire()
+        st.components.v1.html(scroll_js)
         return
 
     # Tutorial flow (experimental mode only)
@@ -1331,6 +1337,7 @@ def main():
             st.session_state.pre_questionnaire_completed and
             st.session_state.show_tutorial):
         render_tutorial()
+        st.components.v1.html(scroll_js)
         return
 
     # Check if tutorial is required but not completed (experimental mode)
@@ -1365,6 +1372,7 @@ def main():
                 not st.session_state.get('clt_completed', False)):
             if st.session_state.experimental_session:
                 st.session_state.experimental_session.render_clt_questionnaire()
+            st.components.v1.html(scroll_js)
             return
 
         # # UTAUT2 questionnaire (experimental mode only, after CLT)
