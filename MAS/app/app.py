@@ -699,10 +699,10 @@ def render_header():
     with col1:
         # Display Round 0 as "Baseline" and others as Round 1-4
         if st.session_state.roundn == 0:
-            st.subheader(f"Round 0 (Baseline) / {st.session_state.max_rounds}")
+            st.subheader(f"Round 0 (Baseline) / {st.session_state.max_rounds - 1}")
 
         else:
-            st.subheader(f"Round {st.session_state.roundn}/{st.session_state.max_rounds}")
+            st.subheader(f"Round {st.session_state.roundn}/{st.session_state.max_rounds - 1}")
 
     with col2:
         if st.button("📋 Task Description", type="secondary", use_container_width=True):
