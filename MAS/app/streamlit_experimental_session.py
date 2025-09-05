@@ -764,16 +764,70 @@ class StreamlitExperimentalSession:
         Your honest participation helps us develop better learning materials for future students. Thank you for your cooperation!
         """)
         
+        # Define dropdown options
+        nationality_options = [
+            "Please select...",
+            "Afghan", "Albanian", "Algerian", "American", "Andorran", "Angolan", "Argentine", 
+            "Armenian", "Australian", "Austrian", "Azerbaijani", "Bahamian", "Bahraini", 
+            "Bangladeshi", "Barbadian", "Belarusian", "Belgian", "Belizean", "Beninese", 
+            "Bhutanese", "Bolivian", "Bosnian", "Brazilian", "British", "Bruneian", "Bulgarian", 
+            "Burkinabe", "Burmese", "Burundian", "Cambodian", "Cameroonian", "Canadian", 
+            "Cape Verdean", "Central African", "Chadian", "Chilean", "Chinese", "Colombian", 
+            "Comoran", "Congolese", "Costa Rican", "Croatian", "Cuban", "Cypriot", "Czech", 
+            "Danish", "Djiboutian", "Dominican", "Dutch", "East Timorese", "Ecuadorean", 
+            "Egyptian", "Emirian", "Equatorial Guinean", "Eritrean", "Estonian", "Ethiopian", 
+            "Fijian", "Filipino", "Finnish", "French", "Gabonese", "Gambian", "Georgian", 
+            "German", "Ghanaian", "Greek", "Grenadian", "Guatemalan", "Guinea-Bissauan", 
+            "Guinean", "Guyanese", "Haitian", "Herzegovinian", "Honduran", "Hungarian", 
+            "Icelandic", "Indian", "Indonesian", "Iranian", "Iraqi", "Irish", "Israeli", 
+            "Italian", "Ivorian", "Jamaican", "Japanese", "Jordanian", "Kazakhstani", 
+            "Kenyan", "Kittian and Nevisian", "Kuwaiti", "Kyrgyz", "Laotian", "Latvian", 
+            "Lebanese", "Liberian", "Libyan", "Liechtensteiner", "Lithuanian", "Luxembourgish", 
+            "Macedonian", "Malagasy", "Malawian", "Malaysian", "Maldivan", "Malian", "Maltese", 
+            "Marshallese", "Mauritanian", "Mauritian", "Mexican", "Micronesian", "Moldovan", 
+            "Monacan", "Mongolian", "Montenegrin", "Moroccan", "Mosotho", "Motswana", 
+            "Mozambican", "Namibian", "Nauruan", "Nepalese", "New Zealander", "Nicaraguan", 
+            "Nigerian", "Nigerien", "North Korean", "Norwegian", "Omani", "Pakistani", 
+            "Palauan", "Palestinian", "Panamanian", "Papua New Guinean", "Paraguayan", 
+            "Peruvian", "Polish", "Portuguese", "Qatari", "Romanian", "Russian", "Rwandan", 
+            "Saint Lucian", "Salvadoran", "Samoan", "San Marinese", "Sao Tomean", "Saudi", 
+            "Scottish", "Senegalese", "Serbian", "Seychellois", "Sierra Leonean", "Singaporean", 
+            "Slovakian", "Slovenian", "Solomon Islander", "Somali", "South African", 
+            "South Korean", "South Sudanese", "Spanish", "Sri Lankan", "Sudanese", "Surinamer", 
+            "Swazi", "Swedish", "Swiss", "Syrian", "Taiwanese", "Tajik", "Tanzanian", "Thai", 
+            "Togolese", "Tongan", "Trinidadian or Tobagonian", "Tunisian", "Turkish", 
+            "Turkmen", "Tuvaluan", "Ugandan", "Ukrainian", "Uruguayan", "Uzbekistani", 
+            "Venezuelan", "Vietnamese", "Welsh", "Yemenite", "Zambian", "Zimbabwean",
+            "Other", "Prefer not to say"
+        ]
+        
+        education_options = [
+            "Please select...",
+            "High School Diploma/Secondary Education",
+            "Some College/University (no degree)",
+            "Associate Degree/Diploma",
+            "Bachelor's Degree",
+            "Master's Degree",
+            "Doctoral Degree (PhD/MD/JD/etc.)",
+            "Professional Certification",
+            "Other"
+        ]
+        
         with st.form("learner_profile_form"):
             col1, col2 = st.columns(2)
             
             with col1:
                 name = st.text_input("Alias*", help="Choose an alias or identifier")
                 age = st.number_input("Age*", min_value=18, max_value=100, help="Your age")
-                nationality = st.text_input("Nationality*", help="Your nationality")
-                background = st.text_area(
-                    "Educational/Professional Background*", 
-                    help="Brief description of your educational or professional background, such as Undergrad Student of XY/Employee/Retired"
+                nationality = st.selectbox(
+                    "Nationality*", 
+                    options=nationality_options,
+                    help="Select your nationality"
+                )
+                background = st.selectbox(
+                    "Highest Educational Level*", 
+                    options=education_options,
+                    help="Select your highest completed educational level"
                 )
             
             with col2:
@@ -816,6 +870,15 @@ class StreamlitExperimentalSession:
                 # Validate required fields
                 if not all([name, age, nationality, background, confidence, confidencechat]):
                     st.error("Please fill in all required fields marked with *")
+                    return None
+                
+                # Validate dropdown selections (ensure not default values)
+                if nationality == "Please select...":
+                    st.error("Please select your nationality from the dropdown menu")
+                    return None
+                
+                if background == "Please select...":
+                    st.error("Please select your highest educational level from the dropdown menu")
                     return None
                 
                 # Generate unique participant ID
