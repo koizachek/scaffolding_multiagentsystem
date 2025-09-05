@@ -40,6 +40,7 @@ def init_session_state():
         "roundn": 0,
         "consent_given": False,
         "consent_declined": False,
+        "attention_check_failed": False,
         "profile_initialisation_started": False,
         "session_initialized": False,
         "profile_initialized": False,
@@ -259,6 +260,23 @@ def render_consent_form():
         Thank you for considering participation in our research.
         """)
         st.stop()
+
+
+def render_attention_check_failure():
+    """Render attention check failure page."""
+    st.header("❌ Attention Check Failed")
+    st.markdown("---")
+
+    st.error("""
+    ### Thank you for your interest
+
+    You have failed the attention check and cannot participate in this research study.
+
+    We require participants to carefully read and respond to all questions to ensure data quality.
+
+    Thank you for your time and consideration.
+    """)
+    st.stop()
 
 
 def render_profile_login():
@@ -1328,6 +1346,12 @@ def main():
         if st.session_state.experimental_session:
             st.session_state.experimental_session.render_pre_knowledge_questionnaire()
         st.components.v1.html(scroll_js)
+        return
+
+    # Attention check failure page (experimental mode only, after pre-questionnaire)
+    if (st.session_state.mode == "experimental" and
+            st.session_state.attention_check_failed):
+        render_attention_check_failure()
         return
 
     # Tutorial flow (experimental mode only)

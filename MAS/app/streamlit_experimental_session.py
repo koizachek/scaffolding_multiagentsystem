@@ -269,6 +269,57 @@ class StreamlitExperimentalSession:
                 
                 # Calculate score (for logging only, not shown to user)
                 score = sum(1 for r in responses.values() if r["is_correct"])
+                 
+                
+                # Attention check (all questions are answered at this point)
+                attention_check_response = responses.get("attention_check_pre")
+                attention_check_failed = not attention_check_response.get("is_correct", False)
+
+                if attention_check_failed:
+                    # Log the attention check failure
+                    if self.session_logger:
+                        self.session_logger.log_event(
+                            event_type="attention_check_failed",
+                            metadata={
+                                "question_id": "attention_check_pre",
+                                "selected_answer": attention_check_response.get("selected_answer", "N/A"),
+                                "correct_answer": attention_check_response.get("correct_answer", "B"),
+                                "participant_id": self.session_data.get("learner_profile", {}).get("unique_id", "N/A"),
+                                "timestamp": datetime.now().isoformat()
+                            }
+                        )
+
+                    # Critical: set BOTH flags so the app renders the failure page on next run
+                    st.session_state.attention_check_failed = True
+                    st.session_state.pre_questionnaire_completed = True
+                    # Ensure we do NOT show the tutorial in failure case
+                    st.session_state.show_tutorial = False
+
+                    # Persist questionnaire data with explicit failure marker
+                    self.session_data["pre_knowledge_questionnaire"] = {
+                        "responses": responses,
+                        "score": score,
+                        "total_questions": len(questions),
+                        "percentage": round((score / len(questions)) * 100, 2),
+                        "completed_at": datetime.now().isoformat(),
+                        "attention_check_passed": False
+                    }
+
+                    if self.session_logger:
+                        self.session_logger.log_event(
+                            event_type="pre_knowledge_questionnaire_completed",
+                            metadata={
+                                "score": score,
+                                "total_questions": len(questions),
+                                "percentage": round((score / len(questions)) * 100, 2),
+                                "detailed_responses": responses,
+                                "attention_check_passed": False
+                            }
+                        )
+
+                    # Immediately re-render so the app-level routing shows the fail page
+                    st.rerun()
+                    return
                 
                 # Store questionnaire data in session
                 questionnaire_data = {
@@ -276,7 +327,8 @@ class StreamlitExperimentalSession:
                     "score": score,
                     "total_questions": len(questions),
                     "percentage": round((score / len(questions)) * 100, 2),
-                    "completed_at": datetime.now().isoformat()
+                    "completed_at": datetime.now().isoformat(),
+                    "attention_check_passed": True
                 }
                 
                 # Add to session data
@@ -290,7 +342,8 @@ class StreamlitExperimentalSession:
                             "score": score,
                             "total_questions": len(questions),
                             "percentage": questionnaire_data["percentage"],
-                            "detailed_responses": responses
+                            "detailed_responses": responses,
+                            "attention_check_passed": True
                         }
                     )
                 
