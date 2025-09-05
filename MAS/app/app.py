@@ -788,7 +788,7 @@ def render_concept_map():
         # example map
         if roundn == 0:
             st.markdown(
-                "Add a minimum of 3, and up to 6 of your most important concepts and their connections. Here is an example to illustrate what your baseline concept map might look like, before you receive assistance")
+                "Please read the Task Description and the Extra Materials carefully. Add a minimum of 3, and up to 5 of your most important concepts and their connections in this round. Here is an example to illustrate what your baseline concept map might look like, before you receive assistance")
 
             img_path = os.path.join(os.path.dirname(__file__), "..", "examples", "data", "examplemap.png")
             if os.path.exists(img_path):
