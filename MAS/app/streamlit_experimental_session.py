@@ -597,7 +597,7 @@ class StreamlitExperimentalSession:
                 "options": {
                     "A": "To monitor internal employee satisfaction",
                     "B": "To investigate and evaluate potential markets",
-                    "C": "To test software usability in different markets"
+                    "C": "To test software usability in market settings"
                 },
                 "correct": "B"
             },
@@ -615,7 +615,7 @@ class StreamlitExperimentalSession:
                 "id": "startup_resources",
                 "question": "Start-up Resources: Which resources are critical for expansion?",
                 "options": {
-                    "A": "A strong company branding and mission",
+                    "A": "A strong company branding and a mission",
                     "B": "Capital, staff, and know-how",
                     "C": "Access to local talent"
                 },
