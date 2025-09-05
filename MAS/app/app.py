@@ -833,7 +833,6 @@ def render_followup():
 
         col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
-            # TODO
             if st.button("Proceed to Round 1", type="primary", use_container_width=True):
                 # Log the round 0 completion
                 if st.session_state.experimental_session:
