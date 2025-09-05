@@ -146,7 +146,7 @@ class StreamlitExperimentalSession:
                 "options": {
                     "A": "To monitor internal employee satisfaction",
                     "B": "To investigate and evaluate potential markets",
-                    "C": "To test software usability in different settings"
+                    "C": "To test software usability in market settings"
                 },
                 "correct": "B"
             },
@@ -164,8 +164,8 @@ class StreamlitExperimentalSession:
                 "id": "legal_framework",
                 "question": "Legal Framework: What is meant by the legal framework?",
                 "options": {
-                    "A": "Preferences of local consumers",
-                    "B": "The design of the company's organizational chart",
+                    "A": "Legal preferences of local consumers",
+                    "B": "The design of the company's legal chart",
                     "C": "Laws and regulations in the target market"
                 },
                 "correct": "C"
@@ -174,9 +174,9 @@ class StreamlitExperimentalSession:
                 "id": "startup_resources",
                 "question": "Start-up Resources: Which resources are critical for expansion?",
                 "options": {
-                    "A": "A strong company branding and mission",
+                    "A": "A strong company branding and a mission",
                     "B": "Capital, staff, and know-how",
-                    "C": "Access to talent"
+                    "C": "Access to local talent"
                 },
                 "correct": "B"
             },
@@ -597,7 +597,7 @@ class StreamlitExperimentalSession:
                 "options": {
                     "A": "To monitor internal employee satisfaction",
                     "B": "To investigate and evaluate potential markets",
-                    "C": "To test software usability in different settings"
+                    "C": "To test software usability in different markets"
                 },
                 "correct": "B"
             },
@@ -605,8 +605,8 @@ class StreamlitExperimentalSession:
                 "id": "legal_framework",
                 "question": "Legal Framework: What is meant by the legal framework?",
                 "options": {
-                    "A": "Preferences of local consumers",
-                    "B": "The design of the company's organizational chart",
+                    "A": "Legal preferences of local consumers",
+                    "B": "The design of the company's legal chart",
                     "C": "Laws and regulations in the target market"
                 },
                 "correct": "C"
@@ -617,7 +617,7 @@ class StreamlitExperimentalSession:
                 "options": {
                     "A": "A strong company branding and mission",
                     "B": "Capital, staff, and know-how",
-                    "C": "Access to talent"
+                    "C": "Access to local talent"
                 },
                 "correct": "B"
             },
