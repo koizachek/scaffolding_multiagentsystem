@@ -27,11 +27,7 @@ def init_session_state():
     # Auto Scroll
     if 'scroll_to_top' not in st.session_state:
         st.session_state.scroll_to_top = False
-    if "scroll_to_task_description" not in st.session_state:
-        st.session_state.scroll_to_task_description = False
-    if st.session_state.scroll_to_top:
-        scroll_to_here(0, key='top')
-        st.session_state.scroll_to_top = False
+
 
     # Initialize other defaults
     defaults = {
@@ -49,13 +45,13 @@ def init_session_state():
         "profile_initialized": False,
         "pre_questionnaire_completed": False,
         "clt_completed": False,
-        #        "utaut2_completed": False,
+        "post_questionnaire_completed": False,
         "session_finalized": False,
         "tutorial_completed": False,
         "conversation_turn": 0,
         "conversation_history": {},
         "agent_msg": None,
-        "show_tutorial": False,
+        "show_tutorial": False
     }
 
     for key, value in defaults.items():
@@ -72,15 +68,38 @@ def init_session_state():
         st.session_state.max_rounds = 5  # Round 1 + 4 scaffolding rounds
 
 
-def scroll():
-    st.session_state.scroll_to_top = True
-
-
 def load_contents():
     """Load contents configuration."""
     path = os.path.join(os.path.dirname(__file__), "contents.json")
     with open(path) as f:
         return json.load(f)
+
+
+def get_current_round_data(round_num):
+    """Get current round data for concept map."""
+    # Ensure we have enough slots in cmdata
+    while len(st.session_state.cmdata) <= round_num:
+        if len(st.session_state.cmdata) > 0:
+            # Copy the previous round's data as starting point
+            previous_map = copy.deepcopy(st.session_state.cmdata[-1])
+            st.session_state.cmdata.append(previous_map)
+        else:
+            # First round uses initial map
+            st.session_state.cmdata.append(st.session_state.contents["initial_map"])
+
+    return st.session_state.cmdata[round_num]
+
+
+def ensure_cm_slot(round_num):
+    """Guarantee that cmdata[round_num] exists."""
+    while len(st.session_state.cmdata) <= round_num:
+        if len(st.session_state.cmdata) > 0:
+            # Copy the previous round's data as starting point
+            previous_map = copy.deepcopy(st.session_state.cmdata[-1])
+            st.session_state.cmdata.append(previous_map)
+        else:
+            # First round uses initial map
+            st.session_state.cmdata.append(st.session_state.contents["initial_map"])
 
 
 def render_mode_selection():
@@ -144,7 +163,7 @@ def render_mode_selection():
         - **Data collection for research purposes**
         """)
 
-        if st.button("Start Experimental Session", type="primary", use_container_width=True, on_click=scroll):
+        if st.button("Start Experimental Session", type="primary", use_container_width=True):
             st.session_state.mode = "experimental"
             st.session_state.experimental_session = StreamlitExperimentalSession()
 
@@ -213,7 +232,7 @@ def render_consent_form():
             st.rerun()
 
     with col3:
-        if st.button("✅ Yes, I agree", type="primary", use_container_width=True, on_click=scroll):
+        if st.button("✅ Yes, I agree", type="primary", use_container_width=True):
             st.session_state.consent_given = True
 
             # Log consent
@@ -273,7 +292,7 @@ def render_learner_profile():
         st.markdown("---")
         st.info("📝 Next, you'll complete a pre-knowledge questionnaire about the task materials.")
 
-        if st.button("Continue to Pre-Knowledge Questionnaire", type="primary", on_click=scroll):
+        if st.button("Continue to Pre-Knowledge Questionnaire", type="primary"):
             st.rerun()
 
 
@@ -385,7 +404,7 @@ def render_tutorial():
 
     with col3:
         if st.session_state.tutorial_step < len(tutorial_steps) - 1:
-            if st.button("Next →", type="primary", on_click=scroll):
+            if st.button("Next →", type="primary"):
                 st.session_state.tutorial_step += 1
                 st.rerun()
         else:
@@ -393,13 +412,15 @@ def render_tutorial():
                 st.session_state.tutorial_completed = True
                 st.session_state.show_tutorial = False
                 st.success("🎉 Tutorial completed! You're ready to start the experiment.")
+                st.session_state.scroll_to_top = True
                 st.rerun()
 
     # Skip option
     st.markdown("---")
-    if st.button("Skip Tutorial", type="secondary", on_click=scroll):
+    if st.button("Skip Tutorial", type="secondary"):
         st.session_state.tutorial_completed = True
         st.session_state.show_tutorial = False
+        st.session_state.scroll_to_top = True
         st.rerun()
 
 
@@ -532,9 +553,9 @@ def render_map_adaption_question():
 
 def render_summary_page():
     """Render session summary page."""
-    st.header("Multiagent Scaffolding Experiment")
+    st.header("Concept Mapping Experiment")
     st.markdown("---")
-    st.write("Thank You for participating in the Multiagent Scaffolding Experiment!")
+    st.write("Thank You for participating in the Concept Mapping Experiment!")
     st.balloons()
 
     # Calculate map summary statistics
@@ -622,7 +643,7 @@ def render_summary_page():
 
     # Option to start new session
     st.markdown("---")
-    if st.button("Start New Session", type="primary"):
+    if st.button("Please return to Prolific", type="primary"):
         # Clear session state
         for key in list(st.session_state.keys()):
             del st.session_state[key]
@@ -651,7 +672,7 @@ def render_agent_name():
 
 def render_header():
     """Render page header."""
-    st.header("Multiagent Scaffolding Experiment")
+    st.header("Concept Mapping Experiment")
     st.markdown("---")
 
     # Add resource buttons in the header
@@ -746,16 +767,17 @@ def render_concept_map():
     with middle:
         st.write(cm_label)
 
-        #example map
+        # example map
         if roundn == 0:
-            st.markdown("Add a minimum of 3, and up to 6 of your most important concepts and their connections. Here is an example to illustrate what your baseline concept map might look like, before you receive assistance")
+            st.markdown(
+                "Add a minimum of 3, and up to 6 of your most important concepts and their connections. Here is an example to illustrate what your baseline concept map might look like, before you receive assistance")
 
             img_path = os.path.join(os.path.dirname(__file__), "..", "examples", "data", "examplemap.png")
             if os.path.exists(img_path):
                 st.image(img_path, use_container_width=True)
             else:
                 st.warning(f"⚠️ Example image not found at {img_path}")
-        
+
         # Create a container for the concept map
         try:
             # Ensure we have valid concept map data
@@ -770,11 +792,15 @@ def render_concept_map():
                 st.error(f"Invalid concept map data type: {type(cm_data)}")
                 cm_data = st.session_state.contents["initial_map"]
 
-
+            response = conceptmap_component(
+                cm_data=cm_data,
+                submit_request=st.session_state.submit_request
+            )
         except Exception as e:
             st.error(f"Error rendering concept map: {e}")
+            response = None
 
-    return cm_data
+    return response
 
 
 def render_cm_submit_button():
@@ -803,12 +829,15 @@ def render_followup():
     # Special handling for Round 0 - skip directly to Round 1
     if roundn == 0:
         st.success("✅ Initial concept map submitted successfully!")
-        st.info("This was your baseline concept map (Round 0). Now let's proceed with agent-guided scaffolding.")
+        st.info("This was your baseline concept map (Round 0). Now let's proceed with agent-guided experiment.")
 
         col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
-            if st.button("Proceed to Round 1", type="primary", use_container_width=True, on_click=scroll):
+            if st.button("Proceed to Round 1", type="primary", use_container_width=True):
                 # Log the round 0 completion
+                if st.session_state.experimental_session:
+                    current_cm_data = st.session_state.cmdata[0] if len(st.session_state.cmdata) > 0 else None
+                # Log the round 0 completion with experimental session
                 if st.session_state.experimental_session:
                     current_cm_data = st.session_state.cmdata[0] if len(st.session_state.cmdata) > 0 else None
                     st.session_state.experimental_session.update_concept_map_evolution(0, current_cm_data)
@@ -820,6 +849,7 @@ def render_followup():
                 st.session_state.followup = False
                 st.session_state.roundn = 1
                 st.session_state.agent_msg = None
+                st.session_state.scroll_to_top = True
                 st.rerun()
         return
 
@@ -932,7 +962,6 @@ def render_followup():
                     st.button("Finish Round", type='primary', use_container_width=True,
                               key=f"finish_r{roundn}_t{conversation_turn}")):
 
-
                 # Add final exchange to history
                 conversation_history.append({
                     'agent_message': st.session_state.agent_msg,
@@ -962,7 +991,7 @@ def render_followup():
                 st.session_state.followup = False
                 st.session_state.roundn += 1
                 st.session_state.agent_msg = None
-                st.session_state.scroll_to_task_description = True
+                st.session_state.scroll_to_top = True
                 st.rerun()
 
         with col3:
@@ -980,6 +1009,108 @@ def render_followup():
                 "💡 **Tip:** You can have up to 5 exchanges with the agent in this round. Use 'Continue Conversation' for follow-up questions or 'Finish Round' when ready to proceed.")
         elif conversation_turn >= max_user_messages - 1:
             st.warning("⚠️ This is your final exchange for this round. Click 'Finish Round' to proceed.")
+
+
+def capture_concept_map_data(roundn: int, concept_map_response: Dict) -> None:
+    """Capture concept map data for experimental analysis with comprehensive logging."""
+
+    # 1. Store in session state for UI persistence
+    ensure_cm_slot(roundn)
+    st.session_state.cmdata[roundn] = concept_map_response
+
+    # 2. Log to experimental session for research data
+    if st.session_state.experimental_session:
+        st.session_state.experimental_session.update_concept_map_evolution(
+            roundn, concept_map_response
+        )
+
+    # 3. Log detailed interaction data for research analysis
+    if st.session_state.experimental_session and st.session_state.experimental_session.session_logger:
+        # Extract element counts for research metrics
+        elements = concept_map_response.get("elements", [])
+        if isinstance(elements, dict):
+            dict_elements = []
+            dict_elements.extend(elements.get("nodes", []))
+            dict_elements.extend(elements.get("edges", []))
+        else:
+            dict_elements = [e for e in elements if isinstance(e, dict)]
+
+        nodes = [e for e in dict_elements if "source" not in e.get("data", {})]
+        edges = [e for e in dict_elements if "source" in e.get("data", {})]
+
+        st.session_state.experimental_session.session_logger.log_event(
+            event_type="concept_map_captured",
+            metadata={
+                "round_number": roundn,
+                "nodes_count": len(nodes),
+                "edges_count": len(edges),
+                "total_elements": len(dict_elements),
+                "participant_id": st.session_state.learner_profile.get(
+                    "unique_id") if st.session_state.learner_profile else "unknown",
+                "agent_type": get_current_agent_type(roundn),
+                "capture_timestamp": datetime.now().isoformat(),
+                "experimental_data": {
+                    "concept_map_data": concept_map_response,
+                    "session_id": st.session_state.experimental_session.session_data["session_id"]
+                }
+            }
+        )
+
+
+def get_current_agent_type(roundn: int) -> Optional[str]:
+    """Get the current agent type for the given round."""
+    if roundn == 0:
+        return None  # Round 0 has no agent
+
+    agent_index = roundn - 1
+    if (st.session_state.experimental_session and
+            agent_index < len(st.session_state.experimental_session.session_data.get("agent_sequence", []))):
+        return st.session_state.experimental_session.session_data["agent_sequence"][agent_index]
+
+    return None
+
+
+def ensure_round_transition_data_integrity(from_round: int, to_round: int):
+    """Ensure data integrity during round transitions for experimental analysis."""
+
+    # 1. Capture final state of current round
+    if from_round < len(st.session_state.cmdata):
+        current_map_data = st.session_state.cmdata[from_round]
+    else:
+        current_map_data = st.session_state.contents["initial_map"]
+
+    # 2. Log round transition for research analysis
+    if st.session_state.experimental_session and st.session_state.experimental_session.session_logger:
+        st.session_state.experimental_session.session_logger.log_event(
+            event_type="round_transition",
+            metadata={
+                "from_round": from_round,
+                "to_round": to_round,
+                "final_map_data": current_map_data,
+                "transition_timestamp": datetime.now().isoformat(),
+                "participant_id": st.session_state.learner_profile.get(
+                    "unique_id") if st.session_state.learner_profile else "unknown",
+                "experimental_session_id": st.session_state.experimental_session.session_data["session_id"]
+            }
+        )
+
+    # 3. Initialize next round with proper baseline for experimental continuity
+    if to_round == 1:  # Special handling for Round 0 → Round 1 (baseline → scaffolding)
+        # Copy baseline map as starting point for scaffolding rounds
+        ensure_cm_slot(to_round)
+        st.session_state.cmdata[to_round] = copy.deepcopy(current_map_data)
+
+        # Log baseline preservation for research analysis
+        if st.session_state.experimental_session and st.session_state.experimental_session.session_logger:
+            st.session_state.experimental_session.session_logger.log_event(
+                event_type="baseline_map_preserved",
+                metadata={
+                    "baseline_round": from_round,
+                    "scaffolding_round": to_round,
+                    "baseline_data": current_map_data,
+                    "preservation_timestamp": datetime.now().isoformat()
+                }
+            )
 
 
 def handle_response(response):
@@ -1035,7 +1166,7 @@ def handle_response(response):
                     if e.get("data", {}).get("id") == node_id
                 )
                 logger.info(
-                    f"Node created: {node_data.get('label', '')} (id: {node_id}, x: {node_data.get('x')}, y: {node_data.get('y')})"
+                    f"🆕 Node created: {node_data.get('label', '')} (id: {node_id}, x: {node_data.get('x')}, y: {node_data.get('y')})"
                 )
                 if (
                         st.session_state.experimental_session
@@ -1143,13 +1274,22 @@ def handle_response(response):
         st.session_state.submit_request = False
     else:
         logger.info(
-            f"No action taken (response: {response is not None}, submit_request: {st.session_state.submit_request}, followup: {st.session_state.followup})"
+            f"   ℹ️ No action taken (response: {response is not None}, submit_request: {st.session_state.submit_request}, followup: {st.session_state.followup})"
         )
 
 
 def main():
     """Main application logic."""
     init_session_state()
+    st.markdown('<a id="top"></a>', unsafe_allow_html=True)
+    scroll_js = """
+           <script>
+               const topAnchor = parent.document.getElementById('top');
+               if (topAnchor) {
+                   topAnchor.scrollIntoView({behavior: 'smooth'});
+               }
+           </script>
+           """
 
     # Mode selection
     if not st.session_state.mode:
@@ -1161,6 +1301,7 @@ def main():
             st.session_state.session_initialized and
             not st.session_state.consent_given):
         render_consent_form()
+        st.components.v1.html(scroll_js)
         return
 
     # Learner profile login page (experimental mode only, after consent)
@@ -1186,6 +1327,7 @@ def main():
             not st.session_state.pre_questionnaire_completed):
         if st.session_state.experimental_session:
             st.session_state.experimental_session.render_pre_knowledge_questionnaire()
+        st.components.v1.html(scroll_js)
         return
 
     # Tutorial flow (experimental mode only)
@@ -1194,6 +1336,7 @@ def main():
             st.session_state.pre_questionnaire_completed and
             st.session_state.show_tutorial):
         render_tutorial()
+        st.components.v1.html(scroll_js)
         return
 
     # Check if tutorial is required but not completed (experimental mode)
@@ -1210,12 +1353,12 @@ def main():
 
     # Check if all rounds are completed and post-task questionnaires are needed
     if roundn == st.session_state.max_rounds:
-        # Agent differentiation question (experimental mode only, before CLT)
+        # Agent differentiation question (experimental mode only, after CLT)
         if (st.session_state.mode == "experimental" and
                 not st.session_state.get('agent_differentiation_completed', False)):
             render_agent_differentiation_question()
             return
-        # Map adaptation question (after differentiation, before CLT)
+        # Map adaptation question (after differentiation, after CLT)
         if (st.session_state.mode == "experimental" and
                 st.session_state.get('agent_differentiation_completed', False) and
                 not st.session_state.get('map_adaptation_completed', False)):
@@ -1228,30 +1371,26 @@ def main():
                 not st.session_state.get('clt_completed', False)):
             if st.session_state.experimental_session:
                 st.session_state.experimental_session.render_clt_questionnaire()
+            st.components.v1.html(scroll_js)
             return
 
-        # # UTAUT2 questionnaire (experimental mode only, after CLT)
-        # if (st.session_state.mode == "experimental" and
-        #     st.session_state.get('clt_completed', False) and
-        #     not st.session_state.get('utaut2_completed', False)):
-        #     if st.session_state.experimental_session:
-        #         st.session_state.experimental_session.render_utaut2_questionnaire()
-        #     return
+        # # post questionnaire (experimental mode only, after CLT)
+        if (st.session_state.mode == "experimental" and
+             st.session_state.get('clt_completed', False) and
+             not st.session_state.get('post_questionnaire_completed', False)):
+             if st.session_state.experimental_session:
+                 st.session_state.experimental_session.render_post_knowledge_questionnaire()
+             st.components.v1.html(scroll_js)
+             return
 
         # Show summary page after all questionnaires are completed (or immediately in demo mode)
         render_summary_page()
     else:
-        cm_data = render_concept_map()
-        if st.session_state.scroll_to_task_description:
-            scroll_to_here(0, "task_top")
-            st.session_state.scroll_to_task_description = False
-
         render_header()
 
-        response = conceptmap_component(
-            cm_data=cm_data,
-            submit_request=st.session_state.submit_request
-        )
+        # Render concept map first
+        response = render_concept_map()
+
 
         # Then render submit button
         render_cm_submit_button()
@@ -1261,7 +1400,9 @@ def main():
         if st.session_state.followup:
             render_followup()
 
-
+    if st.session_state.scroll_to_top:
+        st.components.v1.html(scroll_js)
+        st.session_state.scroll_to_top = False
 
 
 if __name__ == "__main__":
