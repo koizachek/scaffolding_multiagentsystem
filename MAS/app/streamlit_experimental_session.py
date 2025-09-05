@@ -122,6 +122,7 @@ class StreamlitExperimentalSession:
         st.info("Falling back to demo mode")
         self.session_data["mode"] = "demo"
 
+            
 
     def render_pre_knowledge_questionnaire(self):
         """Render pre-knowledge questionnaire about task materials."""
@@ -516,221 +517,184 @@ class StreamlitExperimentalSession:
                 st.session_state.clt_completed = True
                 
                 st.success("✅ Cognitive Load questionnaire completed!")
-                st.info("📊 Proceeding to the Technology Acceptance questionnaire...")
+                st.info("📊 Proceeding to the Post Knowledge questionnaire...")
                 
-                # Automatically proceed to UTAUT2
+                # Automatically proceed to post knowledge
                 st.rerun()
-    
-    # def render_utaut2_questionnaire(self):
-    #     """Render UTAUT2 questionnaire."""
-    #     import streamlit as st
-        
-    #     st.header("📋 Technology Acceptance Questionnaire")
-    #     st.markdown("---")
-        
-    #     st.info("""
-    #     Please rate your agreement with the following statements about the agents that helped you during the concept mapping task.
-        
-    #     Select a rating from 1 (Strongly Disagree) to 7 (Strongly Agree) for each statement.
-    #     """)
-        
-    #     # Define UTAUT2 items (14 items total, agent-adapted)
-    #     utaut2_items = [
-    #         # Performance Expectancy (PE)
-    #         {
-    #             "construct": "PE",
-    #             "code": "PE1",
-    #             "statement": "The agents helped me improve the quality of my concept map."
-    #         },
-    #         {
-    #             "construct": "PE",
-    #             "code": "PE2",
-    #             "statement": "Using the agents made it easier for me to work on the concept map task."
-    #         },
-    #         {
-    #             "construct": "PE",
-    #             "code": "PE3",
-    #             "statement": "The agents supported me in learning and understanding the topic."
-    #         },
-    #         {
-    #             "construct": "PE",
-    #             "code": "PE4",
-    #             "statement": "Using the agents increased my chances of performing well on this task."
-    #         },
-            
-    #         # Effort Expectancy (EE)
-    #         {
-    #             "construct": "EE",
-    #             "code": "EE1",
-    #             "statement": "My interaction with the agents was clear and understandable."
-    #         },
-    #         {
-    #             "construct": "EE",
-    #             "code": "EE2",
-    #             "statement": "It was easy for me to learn how to use the agents during the experiment."
-    #         },
-    #         {
-    #             "construct": "EE",
-    #             "code": "EE3",
-    #             "statement": "I found the agents easy to handle while working on the concept map."
-    #         },
-    #         {
-    #             "construct": "EE",
-    #             "code": "EE4",
-    #             "statement": "Overall, it was simple to work with the agents in this task."
-    #         },
-            
-    #         # Hedonic Motivation (HM)
-    #         {
-    #             "construct": "HM",
-    #             "code": "HM1",
-    #             "statement": "Working with the agents was enjoyable."
-    #         },
-    #         {
-    #             "construct": "HM",
-    #             "code": "HM2",
-    #             "statement": "I found using the agents engaging."
-    #         },
-    #         {
-    #             "construct": "HM",
-    #             "code": "HM3",
-    #             "statement": "I had fun interacting with the agents while building the concept map."
-    #         },
-            
-    #         # Behavioral Intention (BI)
-    #         {
-    #             "construct": "BI",
-    #             "code": "BI1",
-    #             "statement": "I would like to use agents like these again in future learning tasks."
-    #         },
-    #         {
-    #             "construct": "BI",
-    #             "code": "BI2",
-    #             "statement": "I would recommend the agents to other students for similar tasks."
-    #         },
-    #         {
-    #             "construct": "BI",
-    #             "code": "BI3",
-    #             "statement": "I would speak positively about the agents based on my experience."
-    #         }
-    #     ]
-        
-    #     # Randomize item order to reduce bias (but keep consistent within session)
-    #     if "utaut2_item_order" not in st.session_state:
-    #         st.session_state.utaut2_item_order = list(range(len(utaut2_items)))
-    #         random.shuffle(st.session_state.utaut2_item_order)
-        
-    #     # Create form
-    #     with st.form("utaut2_questionnaire"):
-    #         responses = {}
-            
-    #         # Display items in randomized order
-    #         for i, item_idx in enumerate(st.session_state.utaut2_item_order, 1):
-    #             item = utaut2_items[item_idx]
                 
-    #             st.markdown(f"**Statement {i} of {len(utaut2_items)}**")
-    #             st.markdown(f"*{item['statement']}*")
-                
-    #             # Use radio buttons for 7-point Likert scale
-    #             response = st.radio(
-    #                 "Select your rating:",
-    #                 options=[1, 2, 3, 4, 5, 6, 7],
-    #                 format_func=lambda x: {
-    #                     1: "1 - Strongly Disagree",
-    #                     2: "2 - Disagree", 
-    #                     3: "3 - Somewhat Disagree",
-    #                     4: "4 - Neutral",
-    #                     5: "5 - Somewhat Agree",
-    #                     6: "6 - Agree",
-    #                     7: "7 - Strongly Agree"
-    #                 }[x],
-    #                 key=f"utaut2_{item['code']}",
-    #                 index=None,  # No default selection - user must click
-    #                 horizontal=True  # Display options horizontally
-    #             )
-                
-    #             if response:
-    #                 responses[item['code']] = {
-    #                     "construct": item['construct'],
-    #                     "code": item['code'],
-    #                     "statement": item['statement'],
-    #                     "response_value": response,
-    #                     "item_order": i
-    #                 }
-                
-    #             st.markdown("---")
-            
-    #         submitted = st.form_submit_button("Submit Questionnaire", type="primary")
-            
-    #         if submitted:
-    #             # Check if all items are answered
-    #             if len(responses) < len(utaut2_items):
-    #                 st.error(f"Please answer all {len(utaut2_items)} statements before submitting.")
-    #                 return
-                
-    #             # Calculate construct averages
-    #             construct_scores = {}
-    #             for construct in ["PE", "EE", "HM", "BI"]:
-    #                 construct_items = [r for r in responses.values() if r['construct'] == construct]
-    #                 if construct_items:
-    #                     avg_score = sum(item['response_value'] for item in construct_items) / len(construct_items)
-    #                     construct_scores[construct] = round(avg_score, 2)
-                
-    #             # Store UTAUT2 data in session
-    #             utaut2_data = {
-    #                 "responses": responses,
-    #                 "construct_scores": construct_scores,
-    #                 "participant_id": self.session_data.get("learner_profile", {}).get("name", "unknown"),
-    #                 "unique_id": self.session_data.get("learner_profile", {}).get("unique_id", "N/A"),
-    #                 "timestamp": datetime.now().isoformat(),
-    #                 "randomized_order": st.session_state.utaut2_item_order
-    #             }
-                
-    #             # Add to session data
-    #             self.session_data["utaut2_questionnaire"] = utaut2_data
-                
-    #             # Log the UTAUT2 completion with detailed item responses
-    #             if self.session_logger:
-    #                 # Log overall UTAUT2 completion
-    #                 self.session_logger.log_event(
-    #                     event_type="utaut2_questionnaire_completed",
-    #                     metadata={
-    #                         "construct_scores": construct_scores,
-    #                         "total_items": len(responses),
-    #                         "participant_id": utaut2_data["participant_id"],
-    #                         "unique_id": utaut2_data["unique_id"]
-    #                     }
-    #                 )
-                    
-    #                 # Log individual item responses for detailed analysis
-    #                 for code, response_data in responses.items():
-    #                     self.session_logger.log_event(
-    #                         event_type="utaut2_item_response",
-    #                         metadata={
-    #                             "participant_id": utaut2_data["participant_id"],
-    #                             "unique_id": utaut2_data["unique_id"],
-    #                             "timestamp": utaut2_data["timestamp"],
-    #                             "construct_name": response_data["construct"],
-    #                             "item_code": code,
-    #                             "response_value": response_data["response_value"],
-    #                             "statement": response_data["statement"],
-    #                             "item_order": response_data["item_order"]
-    #                         }
-    #                     )
-                
-    #             # Update session state to mark UTAUT2 as completed
-    #             st.session_state.utaut2_completed = True
-                
-    #             st.success("✅ Technology Acceptance questionnaire completed! Thank you for your feedback.")
-    #             st.info("📊 Your responses have been recorded for research purposes.")
-                
-    #             # Automatically proceed to summary
-    #             st.rerun()
+
+    def render_post_knowledge_questionnaire(self):
+        """Render Post Knowledge questionnaire."""
+        import streamlit as st
+
+        st.header("📋 Last Questions: Your Learning Gains")
+        st.markdown("---")
+
+        st.info(
+            """
+            Please answer the following questions about the task materials. This helps us understand your knowledge gains after the experiment.
+            """
+        )
+
+        # Define questions with correct answers (for logging only)
+        questions = [
+            {
+                "id": "market_analysis",
+                "question": "Market Analysis: What is the main purpose of market analysis?",
+                "options": {
+                    "A": "To monitor internal employee satisfaction",
+                    "B": "To investigate and evaluate potential markets",
+                    "C": "To test software usability in different settings"
+                },
+                "correct": "B"
+            },
+            {
+                "id": "legal_framework",
+                "question": "Legal Framework: What is meant by the legal framework?",
+                "options": {
+                    "A": "Preferences of local consumers",
+                    "B": "The design of the company's organizational chart",
+                    "C": "Laws and regulations in the target market"
+                },
+                "correct": "C"
+            },
+            {
+                "id": "startup_resources",
+                "question": "Start-up Resources: Which resources are critical for expansion?",
+                "options": {
+                    "A": "A strong company branding and mission",
+                    "B": "Capital, staff, and know-how",
+                    "C": "Access to talent"
+                },
+                "correct": "B"
+            },
+            {
+                "id": "export",
+                "question": "Export: What does an export strategy involve?",
+                "options": {
+                    "A": "Outsourcing production to third countries",
+                    "B": "Relocating or setting up new offices abroad",
+                    "C": "Shipping products from the home country to the new market"
+                },
+                "correct": "C"
+            },
+            {
+                "id": "joint_venture",
+                "question": "Joint Venture: What is a joint venture?",
+                "options": {
+                    "A": "A partnership with a local company in the target market",
+                    "B": "A partnership with a local supplier without shared ownership",
+                    "C": "An acquisition of a competitor's patents"
+                },
+                "correct": "A"
+            },
+            {
+                "id": "direct_investment",
+                "question": "Direct Investment: What does direct investment mean?",
+                "options": {
+                    "A": "Relying on e-commerce distribution",
+                    "B": "Licensing technology to other firms for profit",
+                    "C": "Establishing your own subsidiary or branch abroad"
+                },
+                "correct": "C"
+            },
+            {
+                "id": "financing",
+                "question": "Financing: What does financing refer to?",
+                "options": {
+                    "A": "Government tax incentives related to funding",
+                    "B": "Capital available to fund the expansion",
+                    "C": "The firm's pricing strategy for customers"
+                },
+                "correct": "B"
+            },
+            {
+                "id": "amg",
+                "question": "AMG: How might Adaptive Market Gatekeeping (AMG) affect new entrants?",
+                "options": {
+                    "A": "Governments guarantee fair access for every new entrant",
+                    "B": "Start-ups gain automatic advantages over established firms as an incentive",
+                    "C": "Incumbent firms adapt rules and networks to make entry harder"
+                },
+                "correct": "C"
+            }
+        ]
+
+        with st.form("post_knowledge_questionnaire"):
+            responses = {}
+
+            # Display all questions
+            for i, q in enumerate(questions, 1):
+                st.markdown(f"**Question {i} of {len(questions)}**")
+
+                # Use radio buttons for each question
+                answer = st.radio(
+                    q["question"],
+                    options=["A", "B", "C"],
+                    format_func=lambda x, opts=q["options"]: f"{x}) {opts[x]}",
+                    key=f"post_q_{q['id']}",
+                    index=None  # No default selection
+                )
+
+                if answer:
+                    responses[q["id"]] = {
+                        "question": q["question"],
+                        "selected_answer": answer,
+                        "answer_text": q["options"][answer],
+                        "correct_answer": q["correct"],
+                        "is_correct": answer == q["correct"]
+                    }
+
+                st.markdown("---")
+
+            submitted = st.form_submit_button("Submit Questionnaire", type="primary")
+
+            if submitted:
+                # Check if all questions are answered
+                if len(responses) < len(questions):
+                    st.error(f"Please answer all {len(questions)} questions before submitting.")
+                    return
+
+                # Calculate score (for logging only, not shown to user)
+                score = sum(1 for r in responses.values() if r["is_correct"])
+
+                # Store questionnaire data in session
+                questionnaire_data = {
+                    "responses": responses,
+                    "score": score,
+                    "total_questions": len(questions),
+                    "percentage": round((score / len(questions)) * 100, 2),
+                    "completed_at": datetime.now().isoformat()
+                }
+
+                # Add to session data
+                self.session_data["post_knowledge_questionnaire"] = questionnaire_data
+
+                # Log the questionnaire completion
+                if self.session_logger:
+                    self.session_logger.log_event(
+                        event_type="post_knowledge_questionnaire_completed",
+                        metadata={
+                            "score": score,
+                            "total_questions": len(questions),
+                            "percentage": questionnaire_data["percentage"],
+                            "detailed_responses": responses
+                        }
+                    )
+
+                # Update session state to mark questionnaire as completed
+                st.session_state.post_questionnaire_completed = True
+                st.success("✅ Questionnaire completed! Thank you for your responses.")
+                st.info("Finishing the Experiment")
+
+                # Automatically proceed
+                st.rerun()
+
     
     def create_learner_profile_form(self) -> Dict[str, Any]:
         """Create learner profile through Streamlit form."""
         st.header("Learner Profile Creation")
-        st.markdown("Please complete your learner profile to personalize your scaffolding experience.")
+        st.markdown("Please complete your learner profile to personalize your experience.")
         
         # Add disclaimer
         st.warning("""
@@ -765,7 +729,12 @@ class StreamlitExperimentalSession:
                     options=["1 - Very Low", "2 - Low", "3 - Moderate", "4 - High", "5 - Very High"],
                     help="How confident do you feel about concept mapping?"
                 )
-                
+
+                confidencechat = st.selectbox(
+                    "Confidence in Chatbot Interactions*",
+                    options=["1 - Very Low", "2 - Low", "3 - Moderate", "4 - High", "5 - Very High"],
+                    help="How confident do you feel about interacting with a chatbot?"
+                )
                 # # Learning factors that could affect outcome
                 # st.markdown("**Learning Factors**")
                 # st.caption("Please select any factors that may affect your learning (optional):")
@@ -792,7 +761,7 @@ class StreamlitExperimentalSession:
             
             if submitted:
                 # Validate required fields
-                if not all([name, age, nationality, background, confidence]):
+                if not all([name, age, nationality, background, confidence, confidencechat]):
                     st.error("Please fill in all required fields marked with *")
                     return None
                 
@@ -811,6 +780,7 @@ class StreamlitExperimentalSession:
                     "nationality": nationality.strip(),
                     "background": background.strip(),
                     "confidence": confidence,
+                    "confidencechat": confidencechat,
 #                    "learning_factors": learning_factors,
                     "background_knowledge_score": background_score,
                     "scaffolding_level": scaffolding_level,
@@ -830,7 +800,7 @@ class StreamlitExperimentalSession:
                             "background_assessment": {
                                 "score": background_score,
                                 "scaffolding_level": scaffolding_level,
-                                "reasoning": f"Background knowledge score {background_score} → {scaffolding_level} scaffolding"
+                                "reasoning": f"Background knowledge score {background_score} → {scaffolding_level} assistance"
                             }
                         }
                     )
@@ -866,7 +836,7 @@ class StreamlitExperimentalSession:
         return matches
     
     def determine_scaffolding_level(self, background_score: int) -> str:
-        """Determine scaffolding level based on background knowledge score."""
+        """Determine assistance level based on background knowledge score."""
         # Higher background knowledge = lower scaffolding needed
         if background_score >= 8:  # High knowledge (8+ concepts mentioned)
             return "low"     # Low scaffolding needed

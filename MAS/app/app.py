@@ -45,7 +45,7 @@ def init_session_state():
         "profile_initialized": False,
         "pre_questionnaire_completed": False,
         "clt_completed": False,
-        #        "utaut2_completed": False,
+        "post_questionnaire_completed": False,
         "session_finalized": False,
         "tutorial_completed": False,
         "conversation_turn": 0,
@@ -553,9 +553,9 @@ def render_map_adaption_question():
 
 def render_summary_page():
     """Render session summary page."""
-    st.header("Multiagent Scaffolding Experiment")
+    st.header("Concept Mapping Experiment")
     st.markdown("---")
-    st.write("Thank You for participating in the Multiagent Scaffolding Experiment!")
+    st.write("Thank You for participating in the Concept Mapping Experiment!")
     st.balloons()
 
     # Calculate map summary statistics
@@ -643,7 +643,7 @@ def render_summary_page():
 
     # Option to start new session
     st.markdown("---")
-    if st.button("Start New Session", type="primary"):
+    if st.button("Please return to Prolific", type="primary"):
         # Clear session state
         for key in list(st.session_state.keys()):
             del st.session_state[key]
@@ -672,7 +672,7 @@ def render_agent_name():
 
 def render_header():
     """Render page header."""
-    st.header("Multiagent Scaffolding Experiment")
+    st.header("Concept Mapping Experiment")
     st.markdown("---")
 
     # Add resource buttons in the header
@@ -829,7 +829,7 @@ def render_followup():
     # Special handling for Round 0 - skip directly to Round 1
     if roundn == 0:
         st.success("✅ Initial concept map submitted successfully!")
-        st.info("This was your baseline concept map (Round 0). Now let's proceed with agent-guided scaffolding.")
+        st.info("This was your baseline concept map (Round 0). Now let's proceed with agent-guided experiment.")
 
         col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
@@ -1353,12 +1353,12 @@ def main():
 
     # Check if all rounds are completed and post-task questionnaires are needed
     if roundn == st.session_state.max_rounds:
-        # Agent differentiation question (experimental mode only, before CLT)
+        # Agent differentiation question (experimental mode only, after CLT)
         if (st.session_state.mode == "experimental" and
                 not st.session_state.get('agent_differentiation_completed', False)):
             render_agent_differentiation_question()
             return
-        # Map adaptation question (after differentiation, before CLT)
+        # Map adaptation question (after differentiation, after CLT)
         if (st.session_state.mode == "experimental" and
                 st.session_state.get('agent_differentiation_completed', False) and
                 not st.session_state.get('map_adaptation_completed', False)):
@@ -1374,13 +1374,14 @@ def main():
             st.components.v1.html(scroll_js)
             return
 
-        # # UTAUT2 questionnaire (experimental mode only, after CLT)
-        # if (st.session_state.mode == "experimental" and
-        #     st.session_state.get('clt_completed', False) and
-        #     not st.session_state.get('utaut2_completed', False)):
-        #     if st.session_state.experimental_session:
-        #         st.session_state.experimental_session.render_utaut2_questionnaire()
-        #     return
+        # # post questionnaire (experimental mode only, after CLT)
+        if (st.session_state.mode == "experimental" and
+             st.session_state.get('clt_completed', False) and
+             not st.session_state.get('post_questionnaire_completed', False)):
+             if st.session_state.experimental_session:
+                 st.session_state.experimental_session.render_post_knowledge_questionnaire()
+             st.components.v1.html(scroll_js)
+             return
 
         # Show summary page after all questionnaires are completed (or immediately in demo mode)
         render_summary_page()
