@@ -13,12 +13,12 @@ This module provides configuration for scaffolding, including prompt templates.
 SCAFFOLDING_PROMPT_TEMPLATES = {
     "strategic": {
         "high": [
-            "I notice that {observation}. Could you walk me through your process for organizing the concepts in your map? What was your overall strategy to solve the challenges that AMG imposes?",
-            "Looking at your concept map, I see that {observation}. What approach did you use to decide which concepts to include first and how to arrange them?",
+            "I notice that {observation}. What was your overall strategy to solve the challenges that AMG imposes?",
+            "Looking at your concept map, I see that {observation}. What approach do you use to solve the barriers imposed by AMG?",
             "Your map has {node_count} concepts and {edge_count} relationships. What might be a logical next step in expanding this area?",
             "What strategy did you use to determine which relationships to include in your map? Are there other important connections you considered but didn't include?",
             # LÖSUNGSSTRATEGIEN & PROBLEMANSÄTZE
-            "Looking at your challenge with {observation}, what strategy would be most effective here? Have you considered breaking this down into smaller, manageable problems?",
+            "Looking at your challenge with {observation}, what strategy would be most effective here? Have you considered breaking this down into smaller concepts?",
             "I see that {observation}. What approach would you take to tackle this systematically? Which problem-solving method fits best for this type of challenge?",
             "Your map shows {node_count} concepts. What's your strategy for prioritizing which areas to develop first? Which approach would give you the biggest impact?",
             "What problem-solving strategy did you use when deciding how to organize these relationships? Would an alternative approach work better?",
@@ -46,10 +46,10 @@ SCAFFOLDING_PROMPT_TEMPLATES = {
             "As you look at your concept map now, which parts do you feel most confident about, and which parts are you less certain about?",
             "How has your understanding of {concept} changed since you started working on this concept map? What specific insights have you gained?",
             "If you were to explain what you've learned about this topic to someone else, what key points would you emphasize based on your concept map?",
-            "What questions do you still have about this topic that aren't addressed in your current concept map?",
+            "What questions do you still have about this topic that aren't addressed in your current concept map? Can you find a space for these thoughts on your map?",
             "How would you assess your current understanding of the relationships between {concept} and {another_concept}? What areas might need more exploration?",
             # SELBSTMONITORING & VERSTÄNDNISKONTROLLE
-            "How did you approach the organization of your concept map? What was your idea behind re-placing {concept}?",
+            "How did you mentally approach the creation of your concept map? What was your idea behind re-placing {concept}?",
             "As you review {observation}, how well do you understand the connections you've made?",
             "What's your internal gauge telling you about {concept}? Where do you feel solid versus uncertain?",
             "How are you monitoring whether your understanding of AMG is complete? What internal checks are you running?",
@@ -75,14 +75,14 @@ SCAFFOLDING_PROMPT_TEMPLATES = {
             # KONKRETE ARBEITSSCHRITTE & METHODEN
             "I notice that {observation}. Let me walk you through a systematic method for adding complex relationships: First identify the concepts, then determine the relationship type, then create the linking phrase.",
             "When creating relationships between concepts, follow this procedure: 1) Select your starting concept, 2) Brainstorm all possible connections, 3) Evaluate each connection's validity, 4) Create precise linking phrases. Which concept do you find challenging?",
-            "Let's talk about your mapping flow. Did you start from AMG, trace each pathway, check for missing links, verify relationship labels? You managed to do that already with {concept}, can you think of another concept, that could fit in?",
+            "Let's talk about your workflow. Did you start from AMG, trace each pathway, check for missing links, verify relationship labels? You managed to do that already with {concept}, can you think of another concept, that could fit in?",
             "To ensure AMG integration, follow these steps: 1) List all AMG mechanisms, 2) Check each concept for AMG relevance, 3) Create explicit AMG connections, 4) Verify comprehensive coverage. Which step needs attention?",
             # TOOL-NUTZUNG & TECHNISCHE SCHRITTE
             "Here's the step-by-step process for {concept} categorization: Identify themes, group it with related concepts, create category labels, organize spatially. Which step requires guidance?",
             "To check map completeness systematically: 1) List key course concepts, 2) Verify each appears in your map, 3) Check for adequate connections, 4) Identify gaps. Let's work through this process.",
             # alt
             "I notice that {observation}. Would you like some guidance on how to add more complex relationships between concepts in your map? What specific aspects of the concept mapping process are you finding challenging?",
-            "Let's talk about your concept mapping workflow. How do you typically approach the process of creating and revising your map? Are there specific techniques you'd like help with?",
+            "How do you typically approach the process of creating and revising your map? Are there specific techniques you'd like help with?",
             "When reviewing your concept map, what systematic approach do you use to identify areas for improvement? Have you tried starting from one concept and tracing all its possible connections?",
             "What procedure do you follow to make sure each key factor is represented in your map?",
             "Have you tried grouping your concepts by categories (e.g., financial resources, environment, strategies)?",
@@ -99,10 +99,10 @@ SCAFFOLDING_PROMPT_TEMPLATES = {
     "conceptual": {
         "high": [
             # FACHINHALT & THEORETISCHES VERSTÄNDNIS
-            "I notice that {observation}. The theoretical connection between '{concept}' and market entry barriers might relate to AMG's mechanism of resource blocking. How does this framework help explain what you're seeing?",
+            "I notice that {observation}. The connection between '{concept}' and market entry barriers might relate to AMG's mechanism of resource blocking. How does this framework help explain what you're seeing?",
             "Your map shows {concept} but doesn't capture all underlying principles that AMG operates through dynamic adaptation yet. How might this core concept influence the relationships you've mapped?",
             "The concept of {concept} could relate to competitive advantages in international markets. How does this theoretical understanding change how you see these relationships?",
-            "AMG as a theoretical construct involves four core mechanisms: dynamic adaptation, rule-changing, network control, and resource blocking. How does {concept} relate to any of these theoretical foundations?",
+            "AMG involves four core mechanisms: dynamic adaptation, rule-changing, network control, and resource blocking. How does {concept} relate to any of these theoretical foundations?",
             "The relationship between {concept} and market success relates to established internationalization theory. What theoretical principles are underlying the connections you've made?",
             # PRINZIPIEN & MECHANISMEN
             "What fundamental business principle explains why {concept} and {another_concept} are connected in international market entry?",
@@ -111,8 +111,8 @@ SCAFFOLDING_PROMPT_TEMPLATES = {
             "What underlying economic principle governs how {concept} influences market entry success under AMG conditions?",
             "The theoretical mechanism behind {concept} involves stakeholder dynamics. How does this principle connect to other concepts in your domain?",
             # alt
-            "Your map includes {node_count} concepts. Can you explain your thinking behind the relationship between [concept A] and [concept B]? What meta-concept supports their connection?",
-            "I'm curious about the area of your map dealing with {concept}. This seems important but could be developed further. What additional concepts might be related to this area?",
+            "Your map includes {node_count} concepts. Can you explain your thinking behind the relationship between [concept A] and [concept B]?",
+            "I'm curious about the area of your map dealing with {concept}. What additional concepts might be related to this area?",
             "What might be some underlying principles or mechanisms that connect '{concept}' in your map? How do these deeper connections help explain the relationships you've shown?",
             "Looking at your map, how does AMG influence the relationship between {concept} and another factor (e.g., Financing or Legal Framework)?",
             "How does {concept} connect with the mechanisms of AMG (dynamic adaptation, rule-changing, network control, resource blocking)?",
