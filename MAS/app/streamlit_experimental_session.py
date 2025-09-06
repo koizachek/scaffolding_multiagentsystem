@@ -1198,82 +1198,8 @@ class StreamlitExperimentalSession:
         
         agent_type = self.session_data["agent_sequence"][agent_index]
         
-        # Handle neutral agent (CG_NEUTRAL condition)
-        if agent_type == "neutral":
-            try:
-                # Import and use NeutralAgent
-                from MAS.agents.neutral_agent import NeutralAgent
-            except ImportError:
-                from agents.neutral_agent import NeutralAgent
-            
-            neutral_agent = NeutralAgent()
-            
-            # Convert concept map data to internal format for neutral agent
-            internal_format = {"concepts": [], "relationships": []}
-            if concept_map_data is not None:
-                try:
-                    internal_format = self.convert_streamlit_to_internal_format(concept_map_data)
-                except Exception as e:
-                    logger.warning(f"Failed to convert concept map for neutral agent: {e}")
-            
-            # Handle pattern responses for neutral agent
-            if user_response is not None:
-                try:
-                    from MAS.utils.scaffolding_utils import analyze_user_response_type
-                except ImportError:
-                    from utils.scaffolding_utils import analyze_user_response_type
-                
-                response_analysis = analyze_user_response_type(user_response)
-                
-                if response_analysis.get("requires_pattern_response", False):
-                    pattern_type = response_analysis.get("response_type", "unknown")
-                    pattern_response = neutral_agent.handle_pattern_response(
-                        pattern_type, user_response, internal_format
-                    )
-                    
-                    # Log neutral pattern response
-                    if self.session_logger:
-                        self.session_logger.log_agent_response(
-                            agent_type=agent_type,
-                            response_text=pattern_response,
-                            metadata={
-                                "round_number": roundn,
-                                "conversation_turn": conversation_turn,
-                                "response_type": "neutral_pattern_based",
-                                "pattern_detected": pattern_type,
-                                "experimental_condition": self.session_data.get("experimental_condition", "unknown"),
-                                "concept_map_nodes": len(internal_format.get("concepts", []))
-                            }
-                        )
-                    return pattern_response
-            
-            # Generate neutral response
-            neutral_response = neutral_agent.generate_response(
-                user_message=user_response,
-                concept_map=internal_format,
-                context={"round_number": roundn, "conversation_turn": conversation_turn}
-            )
-            
-            # Log neutral response
-            if self.session_logger:
-                self.session_logger.log_agent_response(
-                    agent_type=agent_type,
-                    response_text=neutral_response,
-                    metadata={
-                        "round_number": roundn,
-                        "conversation_turn": conversation_turn,
-                        "response_type": "neutral",
-                        "experimental_condition": self.session_data.get("experimental_condition", "unknown"),
-                        "concept_map_nodes": len(internal_format.get("concepts", [])),
-                        "concept_map_edges": len(internal_format.get("relationships", []))
-                    }
-                )
-            
-            return neutral_response
-        
-        # CRITICAL FIX: Add pattern detection BEFORE AI generation
-        # This ensures interaction patterns are handled properly
-        # FIXED: Removed conversation_turn > 0 condition to ensure pattern detection runs for ALL interactions
+        # CRITICAL FIX: Add pattern detection BEFORE agent-specific handling
+        # This ensures interaction patterns are handled properly for ALL agents
         if user_response is not None:
             try:
                 # Import pattern detection utilities
@@ -1313,6 +1239,48 @@ class StreamlitExperimentalSession:
                         )
                     return pattern_response
         
+        # Handle neutral agent for non-pattern responses
+        if agent_type == "neutral":
+            try:
+                # Import and use NeutralAgent for non-pattern responses
+                from MAS.agents.neutral_agent import NeutralAgent
+            except ImportError:
+                from agents.neutral_agent import NeutralAgent
+            
+            neutral_agent = NeutralAgent()
+            
+            # Convert concept map data to internal format for neutral agent
+            internal_format = {"concepts": [], "relationships": []}
+            if concept_map_data is not None:
+                try:
+                    internal_format = self.convert_streamlit_to_internal_format(concept_map_data)
+                except Exception as e:
+                    logger.warning(f"Failed to convert concept map for neutral agent: {e}")
+            
+            # Generate neutral response
+            neutral_response = neutral_agent.generate_response(
+                user_message=user_response,
+                concept_map=internal_format,
+                context={"round_number": roundn, "conversation_turn": conversation_turn}
+            )
+            
+            # Log neutral response
+            if self.session_logger:
+                self.session_logger.log_agent_response(
+                    agent_type=agent_type,
+                    response_text=neutral_response,
+                    metadata={
+                        "round_number": roundn,
+                        "conversation_turn": conversation_turn,
+                        "response_type": "neutral",
+                        "experimental_condition": self.session_data.get("experimental_condition", "unknown"),
+                        "concept_map_nodes": len(internal_format.get("concepts", [])),
+                        "concept_map_edges": len(internal_format.get("relationships", []))
+                    }
+                )
+            
+            return neutral_response
+        
         # Demo responses fallback
         demo_responses = {
             "conceptual_scaffolding": "Let's explore the conceptual relationships in your map. How do these concepts connect to form a coherent understanding?",
@@ -1321,8 +1289,8 @@ class StreamlitExperimentalSession:
             "procedural_scaffolding": "Let's focus on the procedural aspects. What steps or tools did you utilize in your concept map?"
         }
         
-        # Try OpenAI integration for experimental mode
-        if self.session_data["mode"] == "experimental" and self.ai_manager:
+        # Try OpenAI integration for experimental mode (only for scaffolding agents)
+        if self.session_data["mode"] == "experimental" and self.ai_manager and agent_type != "neutral":
             try:
                 # Safely convert concept map data to internal format with robust error handling
                 internal_format = {"concepts": [], "relationships": []}
@@ -1504,7 +1472,7 @@ class StreamlitExperimentalSession:
                 handle_domain_question, handle_system_question, handle_disagreement,
                 handle_empty_input, handle_inappropriate_language, handle_off_topic,
                 handle_frustration, handle_premature_ending, generate_concrete_idea_followup,
-                handle_greeting, handle_minimal_input
+                handle_greeting, handle_minimal_input, handle_reassurance_seeking
             )
         except ImportError:
             from utils.scaffolding_utils import (
@@ -1512,16 +1480,66 @@ class StreamlitExperimentalSession:
                 handle_domain_question, handle_system_question, handle_disagreement,
                 handle_empty_input, handle_inappropriate_language, handle_off_topic,
                 handle_frustration, handle_premature_ending, generate_concrete_idea_followup,
-                handle_greeting, handle_minimal_input
+                handle_greeting, handle_minimal_input, handle_reassurance_seeking
             )
         
         # Get the pattern type detected
         pattern_type = response_analysis.get("response_type", "unknown")
         
+        # Handle neutral agent patterns with neutral responses
+        if agent_type == "neutral":
+            # Convert concept map data for neutral agent
+            internal_format = {"concepts": [], "relationships": []}
+            if concept_map_data is not None:
+                try:
+                    internal_format = self.convert_streamlit_to_internal_format(concept_map_data)
+                except Exception as e:
+                    logger.warning(f"Failed to convert concept map for neutral pattern: {e}")
+            
+            # Load expert map for comparison
+            expert_map = self.load_expert_map()
+            
+            # Handle patterns with neutral responses
+            if pattern_type == "reassurance_seeking":
+                return handle_reassurance_seeking(user_response, internal_format, expert_map)
+            elif pattern_type == "help_seeking":
+                return "Please check the 'Task Description' and 'Extra Materials' buttons for guidance. Continue working on your concept map as instructed."
+            elif pattern_type == "empty_input":
+                return "Please type your response or click 'Finish Round' to continue to the next round."
+            elif pattern_type == "gibberish":
+                return "I didn't understand that. Please continue with your concept mapping task as described."
+            elif pattern_type == "greeting":
+                return "Hello! Please continue with your concept mapping task as described in the instructions."
+            elif pattern_type == "minimal_input":
+                return "Thanks for the update. Please continue developing your concept map as outlined in the task."
+            elif pattern_type in ["domain_question", "system_question", "question"]:
+                return "That's something for you to decide based on the task instructions. Continue working as you think appropriate."
+            elif pattern_type == "disagreement":
+                return "I understand you have a different view. Please continue with your concept mapping as you see fit."
+            elif pattern_type == "inappropriate_language":
+                return "Let's keep our discussion focused on the concept mapping task. Please continue working as instructed."
+            elif pattern_type == "off_topic":
+                return "Please focus on the concept mapping task as described. Continue building your map according to the instructions."
+            elif pattern_type == "frustration":
+                return "Please take your time with the concept mapping task. Continue working according to the provided instructions."
+            elif pattern_type == "premature_ending":
+                return "Your contribution is valuable for this research. Please continue with the concept mapping task as outlined."
+            elif pattern_type in ["concrete_idea", "conversational", "intention_without_action"]:
+                # Acknowledge without scaffolding
+                idea_snippet = user_response[:30] + "..." if len(user_response) > 30 else user_response
+                return f"I see you mentioned '{idea_snippet}'. Continue developing your concept map as you think best."
+            else:
+                # Default neutral response
+                node_count = len(internal_format.get("concepts", []))
+                if node_count > 0:
+                    return f"Thanks for the update. Your map has {node_count} concepts so far - please continue as instructed."
+                else:
+                    return "Thanks for the update. Please continue with your concept mapping task as described."
+        
         # Extract scaffolding type without "_scaffolding" suffix for handlers
         scaffolding_type_clean = agent_type.replace("_scaffolding", "")
         
-        # Route to appropriate handler based on pattern type
+        # Route to appropriate handler based on pattern type for scaffolding agents
         pattern_response = None
         
         # NEW PATTERNS - Priority handling
@@ -1535,6 +1553,16 @@ class StreamlitExperimentalSession:
             pattern_response = handle_gibberish(scaffolding_type_clean)
         elif pattern_type == "intention_without_action":
             pattern_response = handle_intention_without_action(user_response, scaffolding_type_clean)
+        elif pattern_type == "reassurance_seeking":
+            # Convert concept map for scaffolding agents too
+            internal_format = {"concepts": [], "relationships": []}
+            if concept_map_data is not None:
+                try:
+                    internal_format = self.convert_streamlit_to_internal_format(concept_map_data)
+                except Exception as e:
+                    logger.warning(f"Failed to convert concept map for reassurance pattern: {e}")
+            expert_map = self.load_expert_map()
+            pattern_response = handle_reassurance_seeking(user_response, internal_format, expert_map)
         
         # EXISTING PATTERNS
         elif pattern_type == "empty_input":

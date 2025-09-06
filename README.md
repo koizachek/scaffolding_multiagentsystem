@@ -76,30 +76,79 @@ The system is built with a hierarchical multi-agent architecture:
    - Provides context-awareness to other agents based on latest learner state
    - Enables targeted, relevant feedback by tracking changes over time
 
+## Experimental Conditions
+
+The system implements three experimental conditions for controlled hypothesis testing:
+
+### **EG_SEQ (Treatment Group)**
+- **Agent Sequence**: Conceptual → Procedural → Strategic → Metacognitive
+- **Purpose**: Optimal scaffolding sequence based on educational theory
+- **Scaffolding**: Full AI-powered scaffolding with personalized responses
+- **Expected Outcome**: Best learning gains due to theoretically-grounded sequence
+
+### **CG_WRONG_SEQ (Control Group 1)**
+- **Agent Sequence**: Metacognitive → Strategic → Procedural → Conceptual
+- **Purpose**: Suboptimal scaffolding sequence for comparison
+- **Scaffolding**: Same AI-powered scaffolding but in reverse order
+- **Expected Outcome**: Lower learning gains due to poor sequence timing
+
+### **CG_NEUTRAL (Control Group 2)**
+- **Agent Sequence**: Neutral → Neutral → Neutral → Neutral
+- **Purpose**: No scaffolding control group
+- **Scaffolding**: Context-aware acknowledgments without learning guidance
+- **Expected Outcome**: Baseline learning gains without scaffolding support
+
+### **Balanced Assignment System**
+- **Method**: Deterministic hash-based assignment using session ID
+- **Distribution**: Approximately equal participants per condition (~67 each for 200 total)
+- **Persistence**: Condition assignment remains constant across all rounds
+- **Logging**: All interactions tagged with experimental condition for analysis
+
+### **NeutralAgent Features**
+- **Context-Aware**: References actual concept map content and progress
+- **Non-Scaffolding**: Provides acknowledgments without learning guidance
+- **Pattern Handling**: Uses same filter system as scaffolding agents
+- **Progress Feedback**: Compares to expert map expectations without scaffolding
+- **Natural Conversation**: Responds appropriately to questions, help-seeking, etc.
+
 ## Research Goals
 
 This system enables researchers to study:
-- **Scaffolding Effectiveness**: Compare different types of educational scaffolding (conceptual, strategic, metacognitive, procedural)
+- **Scaffolding Sequence Effectiveness**: Compare optimal vs. suboptimal agent ordering
+- **Scaffolding vs. No Scaffolding**: Test scaffolding impact against neutral control
+- **Agent-Specific Analysis**: Analyze which scaffolding agents are most effective
 - **Learner Adaptation**: How learners respond to personalized scaffolding based on their profiles
-- **Concept Map Evolution**: Track how concept maps develop through scaffolded interactions
-- **Agent-Specific Analysis**: Analyze which scaffolding agents are most effective for different learners
+- **Concept Map Evolution**: Track how concept maps develop through different conditions
+- **Conversation Patterns**: Analyze interaction differences across experimental groups
 
-## Recent Updates (August 2025)
+## Recent Updates (September 2025)
+
+### Experimental Conditions for Controlled Studies
+- **Three Experimental Conditions**: Implemented balanced assignment system for hypothesis testing
+  - **EG_SEQ** (Treatment): conceptual → procedural → strategic → metacognitive
+  - **CG_WRONG_SEQ** (Control): metacognitive → strategic → procedural → conceptual  
+  - **CG_NEUTRAL** (Control): neutral → neutral → neutral → neutral
+- **Balanced Assignment**: Deterministic hash-based assignment ensuring equal distribution (~67 participants per condition)
+- **NeutralAgent**: Context-aware control agent providing acknowledgments without scaffolding
 
 ### Enhanced Experimental Environment
-- **Fixed Scaffolding Sequence**: Implemented hardcoded agent order for consistent experimental conditions
-  - Round 0: Baseline (no scaffolding)
-  - Rounds 1-4: Fixed sequence of scaffolding agents
+- **Fixed Scaffolding Sequence**: Implemented condition-based agent sequences for consistent experimental conditions
+  - Round 0: Baseline (no scaffolding) - same for all conditions
+  - Rounds 1-4: Condition-specific agent sequences
 - **Task-Specific Configuration**: Modular scaffolding configuration system for different research domains
 - **Copy Protection**: Added comprehensive copy protection for task content to prevent external assistance
 - **Improved Background Assessment**: Enhanced knowledge assessment aligned with task domains
+- **AI Model Flexibility**: Support for multiple AI providers (OpenAI, Groq, Open Router)
 
 ### Key Features
+- **Experimental condition assignment** with balanced participant distribution
+- **Context-aware neutral agent** for control group studies
 - **Personalized learner profiling** with adaptive scaffolding levels
 - **Multi-turn conversations** (up to 5 exchanges per round)
-- **Comprehensive research data logging** with agent-specific tracking
+- **Comprehensive research data logging** with experimental condition tracking
 - **Interactive concept map editor** with real-time feedback
 - **Protected task display** preventing content copying
+- **Enhanced pattern detection** for natural conversation handling
 
 ## Installation
 

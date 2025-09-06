@@ -722,7 +722,8 @@ def analyze_user_response_type(response: str) -> Dict[str, Any]:
         "is_help_seeking": False,  # NEW: For "what should I do" questions
         "is_gibberish": False,  # NEW: For random text
         "has_intention_without_action": False,  # NEW: For "I can add X" without doing it
-        "is_greeting": False  # NEW: For greetings like "hi", "hello"
+        "is_greeting": False,  # NEW: For greetings like "hi", "hello"
+        "is_reassurance_seeking": False  # NEW: For "how am I doing?" questions
     }
     
     # Enhanced empty input detection - includes whitespace-only
@@ -882,6 +883,30 @@ def analyze_user_response_type(response: str) -> Dict[str, Any]:
             analysis["is_help_seeking"] = True
             analysis["is_question"] = True
             analysis["response_type"] = "help_seeking"
+            analysis["requires_pattern_response"] = True
+            return analysis
+    
+    # NEW: Reassurance-seeking pattern - "how am I doing?", "how would you rate my map?", etc.
+    reassurance_patterns = [
+        r'how\s+am\s+i\s+doing',
+        r'how\s+would\s+you\s+rate',
+        r'is\s+this\s+(good|correct|right|okay|ok)',
+        r'am\s+i\s+on\s+(the\s+right\s+)?track',
+        r'what\s+do\s+you\s+think\s+(of\s+my|about\s+my)',
+        r'how\'?s\s+my\s+(progress|map|work)',
+        r'is\s+my\s+map\s+(good|okay|ok|correct)',
+        r'how\s+is\s+my\s+(concept\s+)?map',
+        r'what\'?s\s+your\s+(opinion|thoughts?)\s+(on|about)',
+        r'do\s+you\s+think\s+(this\s+is|i\'?m)',
+        r'feedback\s+on\s+my',
+        r'evaluate\s+my'
+    ]
+    
+    for pattern in reassurance_patterns:
+        if re.search(pattern, response_lower, re.IGNORECASE):
+            analysis["is_reassurance_seeking"] = True
+            analysis["is_question"] = True
+            analysis["response_type"] = "reassurance_seeking"
             analysis["requires_pattern_response"] = True
             return analysis
     
@@ -1547,6 +1572,72 @@ def handle_intention_without_action(response: str, scaffolding_type: str) -> str
         base_response += "Consider where to position it strategically in relation to other concepts."
     elif scaffolding_type == "metacognitive":
         base_response += "Adding it will help solidify your understanding of how it fits in the bigger picture."
+    
+    return base_response
+
+
+def handle_reassurance_seeking(response: str, concept_map: Optional[Dict[str, Any]] = None, expert_map: Optional[Dict[str, Any]] = None) -> str:
+    """
+    Handle reassurance-seeking questions with context-aware progress feedback.
+    NEW Pattern: Reassurance-seeking
+    
+    Args:
+        response: User's response
+        concept_map: Current concept map data
+        expert_map: Expert concept map for comparison
+        
+    Returns:
+        Context-aware reassurance response
+    """
+    # Extract map information
+    node_count = 0
+    edge_count = 0
+    concept_labels = []
+    
+    if concept_map:
+        concepts = concept_map.get("concepts", [])
+        relationships = concept_map.get("relationships", [])
+        node_count = len(concepts)
+        edge_count = len(relationships)
+        
+        # Get concept labels for context
+        for c in concepts[:3]:  # First 3 concepts
+            label = c.get('text', c.get('label', c.get('id', 'concept')))
+            # Avoid showing UUIDs
+            if '-' not in label or len(label) < 30:
+                concept_labels.append(label)
+    
+    # Compare to expert expectations (typical AMG maps have 5-8 concepts)
+    if node_count >= 6:
+        progress_assessment = "making excellent progress"
+    elif node_count >= 4:
+        progress_assessment = "developing well"
+    elif node_count >= 2:
+        progress_assessment = "getting started nicely"
+    else:
+        progress_assessment = "beginning to explore the topic"
+    
+    # Build context-aware response
+    if concept_labels:
+        if len(concept_labels) == 1:
+            concept_context = f"concepts like '{concept_labels[0]}'"
+        elif len(concept_labels) == 2:
+            concept_context = f"concepts like '{concept_labels[0]}' and '{concept_labels[1]}'"
+        else:
+            concept_context = f"concepts like '{concept_labels[0]}', '{concept_labels[1]}', and '{concept_labels[2]}'"
+    else:
+        concept_context = "your concept map"
+    
+    # Generate response based on progress
+    if node_count >= 4:
+        base_response = f"Your map has {node_count} concepts and {edge_count} connections, showing you're {progress_assessment} with the AMG task. "
+        base_response += f"You've included important {concept_context} - there's always room to discover new connections by examining how AMG mechanisms interact with these concepts."
+    elif node_count >= 2:
+        base_response = f"With {node_count} concepts including {concept_context}, you're {progress_assessment}. "
+        base_response += "You can feel free to think outside the given examples and add your own observations about how AMG influences market entry."
+    else:
+        base_response = f"You're {progress_assessment} - concept maps typically develop with 5-8 key concepts. "
+        base_response += "There are always new relationships to discover when you examine how AMG aspects interact with different market entry factors."
     
     return base_response
 
