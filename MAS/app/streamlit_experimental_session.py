@@ -10,6 +10,7 @@ import sys
 import json
 import random
 import logging
+import hashlib
 import streamlit as st
 from datetime import datetime
 from typing import Dict, List, Any, Optional
@@ -40,6 +41,16 @@ except ImportError:
     from database.mdbservice import *
 
 logger = logging.getLogger(__name__)
+
+# Experimental conditions for balanced assignment
+EXPERIMENTAL_CONDITIONS = ['EG_SEQ', 'CG_WRONG_SEQ', 'CG_NEUTRAL']
+
+# Agent sequences for each experimental condition
+AGENT_SEQUENCES = {
+    'EG_SEQ': ["conceptual_scaffolding", "procedural_scaffolding", "strategic_scaffolding", "metacognitive_scaffolding"],
+    'CG_WRONG_SEQ': ["metacognitive_scaffolding", "strategic_scaffolding", "procedural_scaffolding", "conceptual_scaffolding"],
+    'CG_NEUTRAL': ["neutral", "neutral", "neutral", "neutral"]
+}
 
 
 class StreamlitExperimentalSession:
@@ -921,6 +932,45 @@ class StreamlitExperimentalSession:
         else:  # Low knowledge (0-3 concepts)
             return "high"    # High scaffolding needed
     
+    def assign_experimental_condition(self) -> str:
+        """
+        Assign experimental condition using deterministic balanced assignment.
+        
+        Returns:
+            Assigned experimental condition (EG_SEQ, CG_WRONG_SEQ, or CG_NEUTRAL)
+        """
+        # Check if condition already assigned
+        if "experimental_condition" in self.session_data:
+            return self.session_data["experimental_condition"]
+        
+        # Use session ID for deterministic balanced assignment
+        session_id = self.session_data["session_id"]
+        
+        # Convert to number and mod by 3 for balanced distribution
+        hash_value = int(hashlib.md5(session_id.encode()).hexdigest(), 16)
+        condition_index = hash_value % 3
+        
+        assigned_condition = EXPERIMENTAL_CONDITIONS[condition_index]
+        
+        # Store in session data
+        self.session_data["experimental_condition"] = assigned_condition
+        
+        # Log the assignment
+        if self.session_logger:
+            self.session_logger.log_event(
+                event_type="experimental_condition_assigned",
+                metadata={
+                    "experimental_condition": assigned_condition,
+                    "session_id": session_id,
+                    "assignment_method": "deterministic_hash",
+                    "condition_index": condition_index,
+                    "timestamp": datetime.now().isoformat()
+                }
+            )
+        
+        logger.info(f"Assigned experimental condition: {assigned_condition}")
+        return assigned_condition
+    
     def load_expert_map(self) -> Dict[str, Any]:
         """Load the expert concept map for comparison."""
         try:
@@ -935,29 +985,28 @@ class StreamlitExperimentalSession:
             return {"nodes": [], "edges": []}
     
     def initialize_agent_sequence(self) -> List[str]:
-        """Create hardcoded agent sequence for experimental consistency."""
-        # Hardcoded order for all participants (no randomization)
-        agents = [
-            "conceptual_scaffolding",    # Round 1 - always first
-            "procedural_scaffolding",     # Round 2 - always second
-            "strategic_scaffolding",      # Round 3 - always third
-            "metacognitive_scaffolding"   # Round 4 - always fourth
-        ]
+        """Create agent sequence based on assigned experimental condition."""
+        # Assign experimental condition for this session
+        experimental_condition = self.assign_experimental_condition()
+        
+        # Get agent sequence based on experimental condition
+        agents = AGENT_SEQUENCES.get(experimental_condition, AGENT_SEQUENCES['EG_SEQ'])
         
         # Note: Round 0 is handled separately (no scaffolding agent)
         
         self.session_data["agent_sequence"] = agents
         
-        # Log the hardcoded sequence
+        # Log the condition-based sequence
         if self.session_logger:
             self.session_logger.log_event(
                 event_type="agent_sequence_initialized",
                 metadata={
                     "agent_sequence": agents,
+                    "experimental_condition": experimental_condition,
                     "participant_id": self.session_data["learner_profile"].get("name", "unknown"),
-                    "sequence_type": "hardcoded",
+                    "sequence_type": "experimental_condition_based",
                     "total_rounds": 5,  # Including round 0
-                    "note": "Round 1 is baseline (no scaffolding), followed by 4 scaffolding rounds"
+                    "note": f"Round 0 is baseline (no scaffolding), followed by 4 rounds with {experimental_condition} condition"
                 }
             )
         
@@ -1149,6 +1198,79 @@ class StreamlitExperimentalSession:
         
         agent_type = self.session_data["agent_sequence"][agent_index]
         
+        # Handle neutral agent (CG_NEUTRAL condition)
+        if agent_type == "neutral":
+            try:
+                # Import and use NeutralAgent
+                from MAS.agents.neutral_agent import NeutralAgent
+            except ImportError:
+                from agents.neutral_agent import NeutralAgent
+            
+            neutral_agent = NeutralAgent()
+            
+            # Convert concept map data to internal format for neutral agent
+            internal_format = {"concepts": [], "relationships": []}
+            if concept_map_data is not None:
+                try:
+                    internal_format = self.convert_streamlit_to_internal_format(concept_map_data)
+                except Exception as e:
+                    logger.warning(f"Failed to convert concept map for neutral agent: {e}")
+            
+            # Handle pattern responses for neutral agent
+            if user_response is not None:
+                try:
+                    from MAS.utils.scaffolding_utils import analyze_user_response_type
+                except ImportError:
+                    from utils.scaffolding_utils import analyze_user_response_type
+                
+                response_analysis = analyze_user_response_type(user_response)
+                
+                if response_analysis.get("requires_pattern_response", False):
+                    pattern_type = response_analysis.get("response_type", "unknown")
+                    pattern_response = neutral_agent.handle_pattern_response(
+                        pattern_type, user_response, internal_format
+                    )
+                    
+                    # Log neutral pattern response
+                    if self.session_logger:
+                        self.session_logger.log_agent_response(
+                            agent_type=agent_type,
+                            response_text=pattern_response,
+                            metadata={
+                                "round_number": roundn,
+                                "conversation_turn": conversation_turn,
+                                "response_type": "neutral_pattern_based",
+                                "pattern_detected": pattern_type,
+                                "experimental_condition": self.session_data.get("experimental_condition", "unknown"),
+                                "concept_map_nodes": len(internal_format.get("concepts", []))
+                            }
+                        )
+                    return pattern_response
+            
+            # Generate neutral response
+            neutral_response = neutral_agent.generate_response(
+                user_message=user_response,
+                concept_map=internal_format,
+                context={"round_number": roundn, "conversation_turn": conversation_turn}
+            )
+            
+            # Log neutral response
+            if self.session_logger:
+                self.session_logger.log_agent_response(
+                    agent_type=agent_type,
+                    response_text=neutral_response,
+                    metadata={
+                        "round_number": roundn,
+                        "conversation_turn": conversation_turn,
+                        "response_type": "neutral",
+                        "experimental_condition": self.session_data.get("experimental_condition", "unknown"),
+                        "concept_map_nodes": len(internal_format.get("concepts", [])),
+                        "concept_map_edges": len(internal_format.get("relationships", []))
+                    }
+                )
+            
+            return neutral_response
+        
         # CRITICAL FIX: Add pattern detection BEFORE AI generation
         # This ensures interaction patterns are handled properly
         # FIXED: Removed conversation_turn > 0 condition to ensure pattern detection runs for ALL interactions
@@ -1185,6 +1307,7 @@ class StreamlitExperimentalSession:
                                 "conversation_turn": conversation_turn,
                                 "response_type": "pattern_based",
                                 "pattern_detected": response_analysis.get("response_type", "unknown"),
+                                "experimental_condition": self.session_data.get("experimental_condition", "unknown"),
                                 "concept_map_nodes": len(concept_map_data.get("elements", [])) if isinstance(concept_map_data, dict) and concept_map_data else 0
                             }
                         )
@@ -1317,7 +1440,8 @@ class StreamlitExperimentalSession:
                             "model_used": api_result.get("model_used") if isinstance(api_result, dict) else "unknown",
                             "tokens_used": api_result.get("tokens_used") if isinstance(api_result, dict) else 0,
                             "concept_map_nodes": len(internal_format.get("concepts", [])),
-                            "concept_map_edges": len(internal_format.get("relationships", []))
+                            "concept_map_edges": len(internal_format.get("relationships", [])),
+                            "experimental_condition": self.session_data.get("experimental_condition", "unknown")
                         }
                     )
                 
@@ -1361,6 +1485,7 @@ class StreamlitExperimentalSession:
                     "round_number": roundn,
                     "conversation_turn": conversation_turn,
                     "response_type": "demo",
+                    "experimental_condition": self.session_data.get("experimental_condition", "unknown"),
                     "concept_map_nodes": len(concept_map_data.get("elements", [])) if isinstance(concept_map_data, dict) and concept_map_data else 0
                 }
             )
@@ -1816,6 +1941,7 @@ class StreamlitExperimentalSession:
                 "round_number": round_num,
                 "agent_type": round_data.get("agent_type", ""),
                 "agent_sequence": ",".join(self.session_data["agent_sequence"]),
+                "experimental_condition": self.session_data.get("experimental_condition", "unknown"),
                 "node_count": len(nodes),
                 "edge_count": len(edges),
                 "mode": self.session_data.get("mode", "unknown")
