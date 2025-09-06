@@ -565,7 +565,7 @@ def render_map_adaption_question():
             st.session_state.map_adaptation_completed = True
 
             st.success("✅ Thank you for your feedback!")
-            st.info("📊 Proceeding to the Cognitive Load questionnaire...")
+            st.info("📋 Proceeding to the learning gains questionnaire...")
             st.rerun()
 
 
@@ -1377,35 +1377,35 @@ def main():
 
     # Check if all rounds are completed and post-task questionnaires are needed
     if roundn == st.session_state.max_rounds:
-        # Agent differentiation question (experimental mode only, after CLT)
+        # Agent differentiation question (experimental mode only)
         if (st.session_state.mode == "experimental" and
                 not st.session_state.get('agent_differentiation_completed', False)):
             render_agent_differentiation_question()
             return
-        # Map adaptation question (after differentiation, after CLT)
+        # Map adaptation question (after differentiation)
         if (st.session_state.mode == "experimental" and
                 st.session_state.get('agent_differentiation_completed', False) and
                 not st.session_state.get('map_adaptation_completed', False)):
             render_map_adaption_question()
             return
 
-        # CLT questionnaire (experimental mode only, after agent differentiation)
+        # Post-knowledge questionnaire (experimental mode only, after map adaptation - measure learning gains immediately)
         if (st.session_state.mode == "experimental" and
-                st.session_state.get('agent_differentiation_completed', False) and
-                not st.session_state.get('clt_completed', False)):
-            if st.session_state.experimental_session:
-                st.session_state.experimental_session.render_clt_questionnaire()
-            st.components.v1.html(scroll_js)
-            return
-
-        # # post questionnaire (experimental mode only, after CLT)
-        if (st.session_state.mode == "experimental" and
-             st.session_state.get('clt_completed', False) and
+             st.session_state.get('map_adaptation_completed', False) and
              not st.session_state.get('post_questionnaire_completed', False)):
              if st.session_state.experimental_session:
                  st.session_state.experimental_session.render_post_knowledge_questionnaire()
              st.components.v1.html(scroll_js)
              return
+
+        # CLT questionnaire (experimental mode only, after post-knowledge questionnaire)
+        if (st.session_state.mode == "experimental" and
+                st.session_state.get('post_questionnaire_completed', False) and
+                not st.session_state.get('clt_completed', False)):
+            if st.session_state.experimental_session:
+                st.session_state.experimental_session.render_clt_questionnaire()
+            st.components.v1.html(scroll_js)
+            return
 
         # Show summary page after all questionnaires are completed (or immediately in demo mode)
         render_summary_page()

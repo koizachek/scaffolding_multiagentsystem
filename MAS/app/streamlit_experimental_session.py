@@ -560,12 +560,12 @@ class StreamlitExperimentalSession:
         """Render Post Knowledge questionnaire."""
         import streamlit as st
 
-        st.header("📋 Last Questions: Your Learning Gains")
+        st.header("📋 Your Learning Gains")
         st.markdown("---")
 
         st.info(
             """
-            Please answer the following questions about the task materials. This helps us understand your knowledge gains after the experiment.
+            Please answer the following questions. This helps us understand your knowledge gains after the experiment.
             """
         )
 
@@ -698,7 +698,7 @@ class StreamlitExperimentalSession:
                 # Update session state to mark questionnaire as completed
                 st.session_state.post_questionnaire_completed = True
                 st.success("✅ Questionnaire completed! Thank you for your responses.")
-                st.info("Finishing the Experiment")
+                st.info("📊 Proceeding to the Cognitive Load questionnaire...")
 
                 # Automatically proceed
                 st.rerun()
