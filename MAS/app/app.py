@@ -622,7 +622,7 @@ def render_summary_page():
 
         with col1:
             st.write(f"**Participant Name:** {summary.get('participant_name', 'Demo User')}")
-            st.write(f"**Participant ID:** {unique_id}")
+            st.write(f"**Prolific Experiment ID:** {unique_id}")
             st.write(f"**Mode:** {summary.get('mode', 'unknown').title()}")
 
         with col2:
@@ -659,13 +659,9 @@ def render_summary_page():
     Thank you for your valuable contribution to our research on AI-powered learning!
     """)
 
-    # Option to start new session
+    # Leading back to Prolific
     st.markdown("---")
-    if st.button("Please return to Prolific", type="primary"):
-        # Clear session state
-        for key in list(st.session_state.keys()):
-            del st.session_state[key]
-        st.rerun()
+    st.link_button("Please return to Prolific", "https://app.prolific.com/submissions/complete?cc=C1EF9RLL", type="primary")
 
 
 def render_agent_name():

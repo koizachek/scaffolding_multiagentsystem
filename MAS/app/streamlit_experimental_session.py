@@ -852,9 +852,8 @@ class StreamlitExperimentalSession:
                     st.error("Please select your highest educational level from the dropdown menu")
                     return None
                 
-                # Generate unique participant ID
-                timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-                unique_id = f"P{timestamp[-6:]}"  # Use last 6 digits of timestamp
+                # Use fixed Prolific completion code as unique ID
+                unique_id = "C1EF9RLL"
                 
                 # Assess background knowledge and determine scaffolding level
                 background_score = self.assess_background_knowledge(background, "")  # No prior knowledge field anymore
