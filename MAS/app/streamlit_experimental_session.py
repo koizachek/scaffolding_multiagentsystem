@@ -161,16 +161,6 @@ class StreamlitExperimentalSession:
                 "correct": "B"
             },
             {
-                "id": "legal_framework",
-                "question": "Legal Framework: What is meant by the legal framework?",
-                "options": {
-                    "A": "Legal preferences of local consumers",
-                    "B": "The design of the company's legal chart",
-                    "C": "Laws and regulations in the target market"
-                },
-                "correct": "C"
-            },
-            {
                 "id": "startup_resources",
                 "question": "Start-up Resources: Which resources are critical for expansion?",
                 "options": {
@@ -209,16 +199,6 @@ class StreamlitExperimentalSession:
                     "C": "Establishing your own subsidiary or branch abroad"
                 },
                 "correct": "C"
-            },
-            {
-                "id": "financing",
-                "question": "Financing: What does financing refer to?",
-                "options": {
-                    "A": "Government tax incentives related to funding",
-                    "B": "Capital available to fund the expansion",
-                    "C": "The firm's pricing strategy for customers"
-                },
-                "correct": "B"
             },
             {
                 "id": "amg",
@@ -602,16 +582,6 @@ class StreamlitExperimentalSession:
                 "correct": "B"
             },
             {
-                "id": "legal_framework",
-                "question": "Legal Framework: What is meant by the legal framework?",
-                "options": {
-                    "A": "Legal preferences of local consumers",
-                    "B": "The design of the company's legal chart",
-                    "C": "Laws and regulations in the target market"
-                },
-                "correct": "C"
-            },
-            {
                 "id": "startup_resources",
                 "question": "Start-up Resources: Which resources are critical for expansion?",
                 "options": {
@@ -650,16 +620,6 @@ class StreamlitExperimentalSession:
                     "C": "Establishing your own subsidiary or branch abroad"
                 },
                 "correct": "C"
-            },
-            {
-                "id": "financing",
-                "question": "Financing: What does financing refer to?",
-                "options": {
-                    "A": "Government tax incentives related to funding",
-                    "B": "Capital available to fund the expansion",
-                    "C": "The firm's pricing strategy for customers"
-                },
-                "correct": "B"
             },
             {
                 "id": "amg",

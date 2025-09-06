@@ -45,25 +45,23 @@ Use the interface provided to create a concept map that shows how the following 
 ### Concepts to be included (with your own concrete naming):
 
 1. Market Analysis (investigation of potential markets, situation of competitors in the target market)
-2. Legal Framework (laws, regulations)
-3. Start-up Resources (capital, staff, know-how)
-4. Entry Strategies (paths to market):
+2. Resources (capital, staff, know-how)
+3. Entry Strategies (paths to market):
    - Export (shipping goods from home country)
    - Joint Venture (partnership with local company)
    - Direct Investment (establishing own subsidiary)
-5. Financing (available capital)
-6. AMG (Adaptive Market Gatekeeping – see above)
+4. AMG (Adaptive Market Gatekeeping – see above)
 
 ### Requirements
 
 - Use concrete relevant concepts (e.g., you may use "Credit" as a node when talking about "Financing")
 - Connect the concepts with short labeled arrows. Examples of labels: influences, enables, prevents, is a prerequisite for, reinforces, reduces, etc.
-- Create at least 10 connections, and more if they make sense
+- Create at least 6 connections, and more if they make sense
 - Pay special attention to: How does AMG affect the other factors
 
 ### Format
 
-You will work on this task in 5 rounds (approx. 5–10 minutes each). In each round, you can expand and refine your map.
+You will work on this task in 5 rounds (approx. 5–10 minutes each). In each round, you can expand and refine your map with the help of chatbots.
 
 **Tip:** Start with the obvious connections and then gradually add more complex relationships. Remember: AMG is a mechanism used by established firms – consider how it impacts the various aspects of market entry.
 """
@@ -73,18 +71,14 @@ EXTRA_MATERIALS = """
 
 **1. Market Analysis** – The systematic process of collecting and evaluating information about potential markets. It typically covers market size, expected growth, customer demand, and relevant economic, social, and technological trends, as well as competition, including the number of rivals, their relative market shares, strategies, reflecting the level of rivalry and the availability of alternatives for customers. The Success Factors in the Market Analysis include key determinants such as product-market fit, adaptability to local needs, reliable partners, competitive pricing, and efficient supply chains.
 
-**2. Legal Framework** – The set of national and international laws, regulations, and standards that govern business activity in the target market. It includes commercial law, labor law, taxation, intellectual property, and industry-specific rules.
+**2. Resources** – The financial, human, and knowledge-based assets that a start-up can draw upon. These include capital reserves, skilled staff, managerial expertise, technological know-how, and access to professional networks.
 
-**3. Start-up Resources** – The financial, human, and knowledge-based assets that a start-up can draw upon. These include capital reserves, skilled staff, managerial expertise, technological know-how, and access to professional networks.
-
-**4. Entry Strategies** – The strategic approaches by which a company enters a new market. Each strategy implies different levels of risk, control, and resource commitment.
+**3. Entry Strategies** – The strategic approaches by which a company enters a new market. Each strategy implies different levels of risk, control, and resource commitment.
    - **Export** – Entering the foreign market by shipping goods directly from the home country, with minimal local presence.
    - **Joint Venture** – Forming a cooperative arrangement with a local company to share resources, risks, and market knowledge.
    - **Direct Investment** – Establishing a wholly owned subsidiary or branch in the foreign market, allowing full control but requiring high initial investment, a need for already strong brand loyalty of existing players, navigating complex regulations, or limited distribution channels.
 
-**5. Financing** – The methods by which a start-up secures the capital required for market entry. This may involve equity financing (investors), debt financing (loans), or alternative funding sources such as venture capital or grants.
-
-**6. AMG (Adaptive Market Gatekeeping)** – A hypothetical mechanism designed to regulate and evaluate entry into new markets. It functions as a dynamic filter that adapts to contextual conditions, determining whether a firm can access or progress in a specific environment.
+**4. AMG (Adaptive Market Gatekeeping)** – A mechanism designed to regulate and evaluate entry into new markets. It functions as a dynamic filter that adapts to contextual conditions, determining whether a firm can access or progress in a specific environment.
 """
 
 # Initial concept map for the AMG task
