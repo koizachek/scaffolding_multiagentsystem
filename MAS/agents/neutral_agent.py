@@ -92,13 +92,13 @@ class NeutralAgent:
     def _get_acknowledgment_templates(self, observation: str, node_count: int, edge_count: int) -> List[str]:
         """Templates for acknowledging user input."""
         return [
-            f"Thanks for sharing your thoughts about {observation}. Continue developing your concept map as you think best.",
+            f"You already have added concepts such as {observation}. Continue developing your concept map as you think best.",
             f"I see you're working with {observation}. Keep building your map according to the task requirements.",
-            f"Thanks for the update about {observation}. Please continue with your concept mapping as outlined in the task.",
+            f"You already have added concepts such as {observation}. Please continue with your concept mapping as outlined in the task.",
             f"I notice you're exploring {observation}. Feel free to keep developing your map however you'd like.",
-            f"Thanks for letting me know about your progress with {observation}. Continue working on the task as described.",
+            f"I see your progress with {observation}. Continue working on the task as described.",
             f"I can see you've been thinking about {observation}. Please continue with the concept mapping task.",
-            f"Thanks for the information about {observation}. Keep working on your concept map as instructed."
+            f"I can grasp your ideas about {observation}. Keep working on your concept map as instructed."
         ]
     
     def _get_progress_templates(self, observation: str, node_count: int, edge_count: int) -> List[str]:
@@ -107,7 +107,7 @@ class NeutralAgent:
             f"I notice your map has {node_count} concepts so far. Please continue working on it as described in the instructions.",
             f"Your concept map currently shows {node_count} concepts and {edge_count} connections. Keep going with your work.",
             f"I see you have {node_count} concepts in your map now. Continue building it according to the task description.",
-            f"Thanks for letting me know about your progress with {node_count} concepts. Keep working on the task as outlined.",
+            f"Seeing your progress with {node_count} concepts, you may keep working on the task as outlined.",
             f"I can see your map has grown to {node_count} concepts and {edge_count} relationships. Please continue as instructed.",
             f"I notice you're working with {observation} in your {node_count}-concept map. Continue developing it as you see fit.",
             f"Your concept map with {node_count} concepts is taking shape. Keep building according to the task requirements."
@@ -126,11 +126,11 @@ class NeutralAgent:
     def _get_general_templates(self) -> List[str]:
         """General neutral templates."""
         return [
-            "Thanks for the update on your concept mapping work. Continue developing it as you see fit.",
+            "Just continue developing it as you see fit.",
             "I appreciate you sharing your progress. Keep working on the task according to the provided instructions.",
-            "Thanks for letting me know how things are going. Please continue with your concept map development.",
+            "Please continue with your concept map development.",
             "I see you're making progress on your concept map. Keep going with the task as described.",
-            "Thanks for the information about your work. Continue building your concept map as outlined."
+            "Continue building your concept map as outlined in the ressources."
         ]
     
     def _get_question_response_templates(self) -> List[str]:

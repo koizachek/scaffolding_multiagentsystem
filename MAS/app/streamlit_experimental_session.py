@@ -623,6 +623,16 @@ class StreamlitExperimentalSession:
                 "correct": "A"
             },
             {
+                "id": "attention_check_post",
+                "question": "Attention Check: Which Answer is in the center?",
+                "options": {
+                    "A": "This answer is the first",
+                    "B": "At the center you may find this answer",
+                    "C": "The last possible answer"
+                },
+                "correct": "B"
+            },
+            {
                 "id": "direct_investment",
                 "question": "Direct Investment: What does direct investment mean?",
                 "options": {
@@ -682,13 +692,32 @@ class StreamlitExperimentalSession:
                 # Calculate score (for logging only, not shown to user)
                 score = sum(1 for r in responses.values() if r["is_correct"])
 
+                # Check attention check
+                attention_check_response = responses.get("attention_check_post")
+                attention_check_failed = not attention_check_response.get("is_correct", False)
+
+                if attention_check_failed:
+                    # Log the attention check failure
+                    if self.session_logger:
+                        self.session_logger.log_event(
+                            event_type="attention_check_failed",
+                            metadata={
+                                "question_id": "attention_check_post",
+                                "selected_answer": attention_check_response.get("selected_answer", "N/A"),
+                                "correct_answer": attention_check_response.get("correct_answer", "B"),
+                                "participant_id": self.session_data.get("learner_profile", {}).get("unique_id", "N/A"),
+                                "timestamp": datetime.now().isoformat()
+                            }
+                        )
+
                 # Store questionnaire data in session
                 questionnaire_data = {
                     "responses": responses,
                     "score": score,
                     "total_questions": len(questions),
                     "percentage": round((score / len(questions)) * 100, 2),
-                    "completed_at": datetime.now().isoformat()
+                    "completed_at": datetime.now().isoformat(),
+                    "attention_check_passed": not attention_check_failed
                 }
 
                 # Add to session data
@@ -702,7 +731,8 @@ class StreamlitExperimentalSession:
                             "score": score,
                             "total_questions": len(questions),
                             "percentage": questionnaire_data["percentage"],
-                            "detailed_responses": responses
+                            "detailed_responses": responses,
+                            "attention_check_passed": not attention_check_failed
                         }
                     )
 
@@ -784,12 +814,25 @@ class StreamlitExperimentalSession:
             "Other"
         ]
         
+        gender_options = [
+            "Please select...",
+            "Female",
+            "Male",
+            "Non-binary",
+            "Other/Prefer not to tell"
+        ]
+        
         with st.form("learner_profile_form"):
             col1, col2 = st.columns(2)
             
             with col1:
                 name = st.text_input("Alias*", help="Choose an alias or identifier")
                 age = st.number_input("Age*", min_value=18, max_value=100, help="Your age")
+                gender = st.selectbox(
+                    "Gender*",
+                    options=gender_options,
+                    help="Select your gender"
+                )
                 nationality = st.selectbox(
                     "Nationality*", 
                     options=nationality_options,
@@ -839,11 +882,15 @@ class StreamlitExperimentalSession:
             
             if submitted:
                 # Validate required fields
-                if not all([name, age, nationality, background, confidence, confidencechat]):
+                if not all([name, age, gender, nationality, background, confidence, confidencechat]):
                     st.error("Please fill in all required fields marked with *")
                     return None
                 
                 # Validate dropdown selections (ensure not default values)
+                if gender == "Please select...":
+                    st.error("Please select your gender from the dropdown menu")
+                    return None
+                
                 if nationality == "Please select...":
                     st.error("Please select your nationality from the dropdown menu")
                     return None
@@ -863,6 +910,7 @@ class StreamlitExperimentalSession:
                     "name": name.strip(),
                     "unique_id": unique_id,
                     "age": age,
+                    "gender": gender.strip(),
                     "nationality": nationality.strip(),
                     "background": background.strip(),
                     "confidence": confidence,
