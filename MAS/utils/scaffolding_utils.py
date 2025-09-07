@@ -866,6 +866,27 @@ def analyze_user_response_type(response: str) -> Dict[str, Any]:
         analysis["requires_pattern_response"] = True
         return analysis
     
+    # NEW: Interface/System Help pattern - "how to add nodes", "where to click", etc.
+    interface_help_patterns = [
+        r'how\s+(can|do)\s+i\s+(add|create|make)\s+(nodes?|concepts?|connections?|edges?|relationships?)',
+        r'where\s+(can|do)\s+i\s+(add|create|click)',
+        r'how\s+to\s+(add|create|make|use)',
+        r'where\s+is\s+the\s+(button|tool|interface)',
+        r'how\s+does\s+(this|the)\s+(tool|interface|system)\s+work',
+        r'how\s+can\s+i\s+add\s+nodes?',
+        r'where\s+can\s+i\s+add\s+new\s+nodes?',
+        r'how\s+do\s+i\s+create\s+(nodes?|connections?|edges?)',
+        r'where\s+do\s+i\s+click\s+to'
+    ]
+    
+    for pattern in interface_help_patterns:
+        if re.search(pattern, response_lower, re.IGNORECASE):
+            analysis["is_interface_help"] = True
+            analysis["is_question"] = True
+            analysis["response_type"] = "interface_help"
+            analysis["requires_pattern_response"] = True
+            return analysis
+
     # NEW: Help-seeking pattern - "what should I do", "where is the task", etc.
     help_seeking_patterns = [
         r'what\s+(should|can|do|shall)\s+i\s+(even\s+)?do',
@@ -1574,6 +1595,20 @@ def handle_intention_without_action(response: str, scaffolding_type: str) -> str
         base_response += "Adding it will help solidify your understanding of how it fits in the bigger picture."
     
     return base_response
+
+
+def handle_interface_help(response: str) -> str:
+    """
+    Handle interface/system help questions - UNIVERSAL for all agents.
+    NEW Pattern: Interface help (applies to neutral AND scaffolding agents)
+    
+    Args:
+        response: User's response
+        
+    Returns:
+        Standard interface help response
+    """
+    return "For help with creating nodes and connections, please click the '❓ Help' button next to the task description."
 
 
 def handle_reassurance_seeking(response: str, concept_map: Optional[Dict[str, Any]] = None, expert_map: Optional[Dict[str, Any]] = None) -> str:

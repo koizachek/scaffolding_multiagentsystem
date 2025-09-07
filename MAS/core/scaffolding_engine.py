@@ -194,6 +194,22 @@ class ScaffoldingEngine:
             from MAS.utils.scaffolding_utils import analyze_user_response_type
             response_analysis = analyze_user_response_type(response)
             
+            # CRITICAL: Check for interface help FIRST before any other logic
+            if response_analysis.get("is_interface_help", False):
+                from MAS.utils.scaffolding_utils import handle_interface_help
+                interface_help_response = handle_interface_help(response)
+                
+                # Store the interface help response as a follow-up
+                self.current_interaction["follow_ups"].append(interface_help_response)
+                
+                return {
+                    "status": "success",
+                    "needs_follow_up": True,
+                    "follow_up": interface_help_response,
+                    "scaffolding_type": self.current_scaffolding_type,
+                    "response_type": "interface_help"
+                }
+            
             # Increment conversation turn
             self.conversation_turn += 1
             
@@ -446,11 +462,43 @@ class ScaffoldingEngine:
             handle_off_topic,
             handle_frustration,
             handle_premature_ending,
-            generate_concrete_idea_followup
+            generate_concrete_idea_followup,
+            handle_greeting,
+            handle_minimal_input,
+            handle_help_seeking,
+            handle_gibberish,
+            handle_intention_without_action,
+            handle_reassurance_seeking
         )
         
         # Pattern-specific handling based on response type
         response_type = response_analysis.get("response_type", "statement")
+        
+        # UNIVERSAL INTERFACE HELP PATTERN - applies to ALL agents
+        if response_analysis.get("is_interface_help", False):
+            from MAS.utils.scaffolding_utils import handle_interface_help
+            return handle_interface_help(response)
+        
+        # NEW UNIVERSAL PATTERNS - apply to ALL agents
+        if response_analysis.get("is_greeting", False):
+            return handle_greeting(self.current_scaffolding_type)
+        
+        if response_analysis.get("is_minimal_input", False):
+            return handle_minimal_input(self.current_scaffolding_type)
+        
+        if response_analysis.get("is_gibberish", False):
+            return handle_gibberish(self.current_scaffolding_type)
+        
+        if response_analysis.get("is_help_seeking", False):
+            return handle_help_seeking(response, self.current_scaffolding_type)
+        
+        if response_analysis.get("is_reassurance_seeking", False):
+            # Get current concept map for context-aware reassurance
+            concept_map = self.current_interaction.get("map_analysis", {})
+            return handle_reassurance_seeking(response, concept_map)
+        
+        if response_analysis.get("has_intention_without_action", False):
+            return handle_intention_without_action(response, self.current_scaffolding_type)
         
         # Pattern 3: Empty input
         if response_analysis.get("is_empty", False):

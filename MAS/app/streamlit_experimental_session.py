@@ -185,7 +185,7 @@ class StreamlitExperimentalSession:
                 "id": "export",
                 "question": "Export: What does an export strategy involve?",
                 "options": {
-                    "A": "Outsourcing production to third countries",
+                    "A": "Outsourcing production to the new market",
                     "B": "Relocating or setting up new offices abroad",
                     "C": "Shipping products from the home country to the new market"
                 },
@@ -197,7 +197,7 @@ class StreamlitExperimentalSession:
                 "options": {
                     "A": "A partnership with a local company in the target market",
                     "B": "A partnership with a local supplier without shared ownership",
-                    "C": "An acquisition of a competitor's patents"
+                    "C": "An acquisition of a competitor's patents to produce locally"
                 },
                 "correct": "A"
             },
@@ -217,7 +217,7 @@ class StreamlitExperimentalSession:
                 "options": {
                     "A": "Governments guarantee fair access for every new entrant",
                     "B": "Start-ups gain automatic advantages over established firms as an incentive",
-                    "C": "Incumbent firms adapt rules and networks to make entry harder"
+                    "C": "Incumbent firms adapt rules and networks to make entry harder for competitors"
                 },
                 "correct": "C"
             }
@@ -606,7 +606,7 @@ class StreamlitExperimentalSession:
                 "id": "export",
                 "question": "Export: What does an export strategy involve?",
                 "options": {
-                    "A": "Outsourcing production to third countries",
+                    "A": "Outsourcing production to the new market",
                     "B": "Relocating or setting up new offices abroad",
                     "C": "Shipping products from the home country to the new market"
                 },
@@ -618,7 +618,7 @@ class StreamlitExperimentalSession:
                 "options": {
                     "A": "A partnership with a local company in the target market",
                     "B": "A partnership with a local supplier without shared ownership",
-                    "C": "An acquisition of a competitor's patents"
+                    "C": "An acquisition of a competitor's patents to produce locally"
                 },
                 "correct": "A"
             },
@@ -648,7 +648,7 @@ class StreamlitExperimentalSession:
                 "options": {
                     "A": "Governments guarantee fair access for every new entrant",
                     "B": "Start-ups gain automatic advantages over established firms as an incentive",
-                    "C": "Incumbent firms adapt rules and networks to make entry harder"
+                    "C": "Incumbent firms adapt rules and networks to make entry harder for competitors"
                 },
                 "correct": "C"
             }
@@ -1547,7 +1547,14 @@ class StreamlitExperimentalSession:
             expert_map = self.load_expert_map()
             
             # Handle patterns with neutral responses
-            if pattern_type == "reassurance_seeking":
+            if pattern_type == "interface_help":
+                # CRITICAL FIX: Neutral agent should also use universal interface help
+                try:
+                    from MAS.utils.scaffolding_utils import handle_interface_help
+                except ImportError:
+                    from utils.scaffolding_utils import handle_interface_help
+                return handle_interface_help(user_response)
+            elif pattern_type == "reassurance_seeking":
                 return handle_reassurance_seeking(user_response, internal_format, expert_map)
             elif pattern_type == "help_seeking":
                 return "Please check the 'Task Description' and 'Extra Materials' buttons for guidance. Continue working on your concept map as instructed."
@@ -1589,8 +1596,17 @@ class StreamlitExperimentalSession:
         # Route to appropriate handler based on pattern type for scaffolding agents
         pattern_response = None
         
+        # CRITICAL FIX: Interface help pattern - UNIVERSAL for ALL agents (highest priority)
+        if pattern_type == "interface_help":
+            # Import the universal interface help handler
+            try:
+                from MAS.utils.scaffolding_utils import handle_interface_help
+            except ImportError:
+                from utils.scaffolding_utils import handle_interface_help
+            pattern_response = handle_interface_help(user_response)
+        
         # NEW PATTERNS - Priority handling
-        if pattern_type == "greeting":
+        elif pattern_type == "greeting":
             pattern_response = handle_greeting(scaffolding_type_clean)
         elif pattern_type == "minimal_input":
             pattern_response = handle_minimal_input(scaffolding_type_clean)
