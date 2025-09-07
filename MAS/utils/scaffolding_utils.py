@@ -841,10 +841,17 @@ def analyze_user_response_type(response: str) -> Dict[str, Any]:
         # Check for gibberish in context (e.g., "qwerty is my password" should be valid)
         # If the text contains common English words, it's probably not gibberish
         common_words = ['is', 'my', 'the', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 
-                       'password', 'name', 'code', 'text', 'word', 'key']
+                       'password', 'name', 'code', 'text', 'word', 'key', 'what', 'are', 'how',
+                       'why', 'when', 'where', 'which', 'who', 'can', 'do', 'does', 'will',
+                       'would', 'should', 'could', 'resources', 'strategies', 'barriers',
+                       'entry', 'market', 'analysis', 'factors', 'mechanisms']
         words = response_lower.split()
-        if len(words) > 2 and any(word in common_words for word in words):
+        if len(words) > 1 and any(word in common_words for word in words):
             # Contains common words in context, probably not gibberish
+            is_gibberish = False
+        
+        # CRITICAL FIX: Never flag obvious questions as gibberish
+        if "?" in response and any(q_word in response_lower for q_word in ["what", "how", "why", "when", "where", "which", "who"]):
             is_gibberish = False
         
         # Additional check: If it's mostly numbers with few letters
@@ -932,8 +939,9 @@ def analyze_user_response_type(response: str) -> Dict[str, Any]:
             return analysis
     
     # Pattern 1: Domain/Content Questions
-    domain_indicators = ["what is", "what does", "explain", "tell me about", "how does", "why is", 
-                        "amg", "market", "strategy", "concept", "international", "entry"]
+    domain_indicators = ["what is", "what does", "what are", "explain", "tell me about", "how does", "why is", 
+                        "amg", "market", "strategy", "concept", "international", "entry", "resources", 
+                        "barriers", "factors", "mechanisms", "veyra", "analysis"]
     if (any(indicator in response_lower for indicator in domain_indicators) and "?" in response) or response_lower == "what?":
         analysis["is_domain_question"] = True
         analysis["is_question"] = True

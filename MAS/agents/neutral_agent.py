@@ -78,6 +78,15 @@ class NeutralAgent:
         if user_message and len(user_message.strip()) > 0:
             response_analysis = analyze_user_response_type(user_message)
             
+            # CRITICAL FIX: AGGRESSIVE question detection - catch ALL domain questions
+            user_lower = user_message.lower().strip()
+            
+            # Force question routing for ANY domain-related content
+            if (any(word in user_lower for word in ["what", "amg", "resources", "strategy", "strategies", "market", "analysis", "entry", "export", "joint", "investment", "capital", "financing", "gatekeeping"]) or
+                user_message.strip().endswith("?") or
+                "what is" in user_lower or "what are" in user_lower):
+                return self._handle_question(user_message, concept_map, concept_labels, missing_concepts)
+            
             # Handle specific patterns that need special responses
             if response_analysis.get("requires_pattern_response", False):
                 return self._handle_pattern_response(user_message, response_analysis, concept_map)
@@ -100,17 +109,19 @@ class NeutralAgent:
         """Identify concepts missing from task requirements."""
         # Required concept areas from task
         required_areas = {
-            "market_analysis": ["Market Analysis", "market analysis", "target markets", "competitive environment", "competition"],
-            "resources": ["Resources", "resources", "capital", "staff", "financing", "know-how", "expertise"],
-            "entry_strategies": ["Export", "export", "Joint Venture", "joint venture", "Direct Investment", "direct investment", "entry strategies"],
-            "amg": ["AMG", "Adaptive Market Gatekeeping", "gatekeeping", "amg"]
+            "market_analysis": ["market analysis", "target markets", "competitive environment", "competition"],
+            "resources": ["resources", "capital", "staff", "financing", "know-how", "expertise"],
+            "entry_strategies": ["export", "joint venture", "direct investment", "entry strategies"],
+            "amg": ["amg", "adaptive market gatekeeping", "gatekeeping"]
         }
         
         missing = []
-        current_lower = [c.lower() for c in current_concepts]
+        # Join all current concepts into one string for better matching
+        current_text = " ".join(current_concepts).lower()
         
         for area, keywords in required_areas.items():
-            if not any(keyword.lower() in current_lower for keyword in keywords):
+            # Check if ANY keyword appears in the combined text
+            if not any(keyword in current_text for keyword in keywords):
                 if area == "market_analysis":
                     missing.append("Market Analysis")
                 elif area == "resources":
@@ -124,6 +135,23 @@ class NeutralAgent:
     
     def _handle_pattern_response(self, user_message: str, response_analysis: Dict[str, Any], concept_map: Optional[Dict[str, Any]]) -> str:
         """Handle special patterns that need specific responses."""
+        
+        # CRITICAL FIX: Handle domain questions FIRST - route to question handler
+        if response_analysis.get("is_domain_question", False) or response_analysis.get("is_question", False):
+            # Extract map information for question handler
+            concept_labels = []
+            missing_concepts = []
+            
+            if concept_map:
+                concepts = concept_map.get("concepts", [])
+                for c in concepts:
+                    label = c.get('text', c.get('label', c.get('id', 'concept')))
+                    if '-' not in label or len(label) < 30:
+                        concept_labels.append(label)
+                missing_concepts = self._identify_missing_concepts(concept_labels)
+            
+            # Route to question handler for factual responses
+            return self._handle_question(user_message, concept_map, concept_labels, missing_concepts)
         
         # Handle interface/system questions - direct to help (use pattern analysis result)
         if response_analysis.get("is_interface_help", False):
@@ -196,19 +224,57 @@ class NeutralAgent:
             return self._suggest_connections(concept_labels)
         
         # Questions about AMG
-        if "amg" in user_lower or "adaptive market gatekeeping" in user_lower:
+        if "amg" in user_lower or "adaptive market gatekeeping" in user_lower or "gatekeeping" in user_lower:
             return self._explain_amg()
         
-        # Questions about entry strategies
-        if any(phrase in user_lower for phrase in ["entry strategies", "export", "joint venture", "direct investment"]):
+        # Questions about entry strategies - enhanced patterns
+        if any(phrase in user_lower for phrase in ["entry strategies", "entry strategy", "export", "joint venture", "direct investment"]) or \
+           re.search(r'\bwhat\s+(is|are)\s+entry\s+strateg', user_lower) or \
+           re.search(r'\bentry\s+strateg', user_lower) or \
+           (re.search(r'\bwhat\s+(is|are)\s+strateg', user_lower) and "entry" not in user_lower):
             return self._explain_entry_strategies()
+        
+        # Questions about market analysis - enhanced patterns  
+        if any(phrase in user_lower for phrase in ["market analysis", "market research", "competitive environment", "competition", "target market", "market size"]) or \
+           re.search(r'\bwhat\s+(is|are)\s+market\s+analysis', user_lower):
+            return self._explain_market_analysis()
+        
+        # Questions about resources - enhanced patterns
+        if any(phrase in user_lower for phrase in ["resources", "capital", "financing", "staff", "know-how", "expertise", "funding"]) or \
+           re.search(r'\bwhat\s+(is|are)\s+resources?', user_lower) or \
+           re.search(r'\bresources?\b', user_lower):
+            return self._explain_resources()
+        
+        # Questions about success factors
+        if any(phrase in user_lower for phrase in ["success factors", "product-market fit", "competitive pricing", "supply chain"]):
+            return self._explain_success_factors()
+        
+        # Questions about legal framework
+        if any(phrase in user_lower for phrase in ["legal framework", "regulations", "legal", "compliance", "standards"]):
+            return self._explain_legal_framework()
+        
+        # Questions about entry barriers
+        if any(phrase in user_lower for phrase in ["entry barriers", "barriers", "obstacles", "challenges"]):
+            return self._explain_entry_barriers()
+        
+        # Questions about marketing strategy
+        if any(phrase in user_lower for phrase in ["marketing strategy", "marketing", "distribution", "pricing"]):
+            return self._explain_marketing_strategy()
+        
+        # Questions about the Veyra example
+        if any(phrase in user_lower for phrase in ["veyra", "german software", "japanese market", "example"]):
+            return self._explain_veyra_example()
+        
+        # Questions about mechanisms
+        if any(phrase in user_lower for phrase in ["dynamic adaptation", "rule-changing", "network control", "resource blocking", "mechanisms"]):
+            return self._explain_amg_mechanisms()
         
         # Questions about task requirements
         if any(phrase in user_lower for phrase in ["task", "requirement", "supposed to", "need to"]):
             return self._explain_task_requirements(concept_map)
         
-        # Default question response
-        return "Please check the 'Task Description' and 'Extra Materials' buttons for detailed information about the concepts and requirements."
+        # Default question response - provide helpful guidance
+        return "I can provide factual information about AMG, market analysis, resources, entry strategies, success factors, legal frameworks, or any other concepts from the task materials. What specific topic would you like to know about?"
     
     def _suggest_missing_concepts(self, current_concepts: List[str], missing_concepts: List[str]) -> str:
         """Suggest specific missing concepts based on task requirements."""
@@ -218,23 +284,23 @@ class NeutralAgent:
             else:
                 current_text = ""
             
-            return f"{current_text}You still need to include: {', '.join(missing_concepts)}. The task requires concepts from all four main areas: Market Analysis, Resources, Entry Strategies, and AMG."
+            return f"{current_text}You still need to include: {', '.join(missing_concepts)}. The task requires concepts from all four main areas: Market Analysis, Resources, and Entry Strategies. Find how-to guides above the concept map."
         else:
-            return f"You have the main concept areas covered with {', '.join(current_concepts[:4])}. You can add more specific concepts like 'Financing', 'Target Markets', 'Competitive Environment', or 'Success Factors'."
+            return f"You have the main concept areas covered with {', '.join(current_concepts[:4])}. You can add more specific concepts like 'Financing', 'Target Markets', 'Competitive Environment', or 'Success Factors'. Find how-to guides above the concept map."
     
     def _provide_next_steps(self, concept_map: Optional[Dict[str, Any]], missing_concepts: List[str]) -> str:
         """Provide specific next steps based on current map state."""
         if not concept_map or len(concept_map.get("concepts", [])) == 0:
-            return "Start by adding the core concept 'AMG (Adaptive Market Gatekeeping)' to your map. Then add concepts for Market Analysis, Resources, and Entry Strategies."
+            return "Start by adding the core concept 'AMG (Adaptive Market Gatekeeping)' to your map. Then add concepts for Market Analysis, Resources, and Entry Strategies. Find how-to guides above the concept map."
         
         if missing_concepts:
-            return f"Add the missing concept areas: {', '.join(missing_concepts)}. Then create labeled connections showing how AMG affects these other factors."
+            return f"Add the missing concept areas: {', '.join(missing_concepts)}. Then create labeled connections showing how AMG affects these other factors. Find how-to guides above the concept map."
         
         edge_count = len(concept_map.get("relationships", []))
         if edge_count < 6:
             return f"You have {edge_count} connections but need at least 6. Add more relationships showing how AMG influences Market Analysis, Resources, and Entry Strategies."
         
-        return "Your map covers the main areas. You can refine it by adding more specific concepts or strengthening the relationships between AMG and other factors."
+        return "Your map covers the main areas. You can refine it by adding more specific concepts or strengthening the relationships between AMG and other factors. Find how-to guides above the concept map."
     
     def _suggest_connections(self, concept_labels: List[str]) -> str:
         """Suggest specific connections based on current concepts."""
@@ -258,9 +324,9 @@ class NeutralAgent:
             suggestions.append("Resources → Entry Strategies (enables)")
         
         if suggestions:
-            return f"You could connect: {', '.join(suggestions[:3])}. The task requires at least 6 connections showing how AMG affects other factors."
+            return f"You could connect: {', '.join(suggestions[:3])}. The task requires at least 6 connections showing how AMG affects other factors. Find how-to guides above the concept map."
         else:
-            return "Add connections like: AMG → Entry Barriers (increases), Resources → Entry Strategies (determines), Market Analysis → Target Markets (identifies)."
+            return "Add connections like: AMG → Entry Barriers (increases), Resources → Entry Strategies (determines), Market Analysis → Target Markets (identifies). Find how-to guides above the concept map."
     
     def _explain_amg(self) -> str:
         """Explain AMG using task materials."""
@@ -276,6 +342,38 @@ class NeutralAgent:
         edge_count = len(concept_map.get("relationships", [])) if concept_map else 0
         
         return f"The task requires concepts from four areas (Market Analysis, Resources, Entry Strategies, AMG) and at least 6 connections. You currently have {node_count} concepts and {edge_count} connections. Focus on how AMG affects the other factors."
+    
+    def _explain_market_analysis(self) -> str:
+        """Explain market analysis from task materials."""
+        return "Market Analysis is the systematic process of collecting and evaluating information about potential markets. It covers market size, expected growth, customer demand, economic/social/technological trends, and competition including number of rivals, market shares, strategies, and rivalry levels. Success Factors include product-market fit, adaptability to local needs, reliable partners, competitive pricing, and efficient supply chains."
+    
+    def _explain_resources(self) -> str:
+        """Explain resources from task materials."""
+        return "Resources are the financial, human, and knowledge-based assets that a start-up can draw upon. These include capital reserves, skilled staff, managerial expertise, technological know-how, and access to professional networks. Resources determine which entry strategies are feasible and how well a company can compete."
+    
+    def _explain_success_factors(self) -> str:
+        """Explain success factors from task materials."""
+        return "Success Factors in Market Analysis include key determinants such as product-market fit (how well the product meets market needs), adaptability to local needs, reliable partners, competitive pricing, and efficient supply chains. These factors determine whether market entry will be successful."
+    
+    def _explain_legal_framework(self) -> str:
+        """Explain legal framework and regulations."""
+        return "Legal Framework refers to the regulatory environment in the target market, including industry standards, certification requirements, compliance rules, and informal market rules. AMG can influence this framework through rule-changing mechanisms, where established firms alter standards to their advantage."
+    
+    def _explain_entry_barriers(self) -> str:
+        """Explain entry barriers from task materials."""
+        return "Entry Barriers are obstacles that make it difficult for new companies to enter a market. These include strong brand loyalty of existing players, complex regulations, limited distribution channels, and high initial investment requirements. AMG increases these barriers through dynamic adaptation and resource blocking."
+    
+    def _explain_marketing_strategy(self) -> str:
+        """Explain marketing strategy from task materials."""
+        return "Marketing Strategy involves how a company promotes and distributes its products in the target market. This includes pricing decisions, distribution channels, and promotional activities. AMG can restrict marketing strategy through network control, where established firms control key suppliers and distribution channels."
+    
+    def _explain_veyra_example(self) -> str:
+        """Explain the Veyra example from task materials."""
+        return "Veyra is a German software start-up wanting to enter the Japanese market. Through AMG, local competitors can: introduce new technical standards that only their products meet, secure exclusive agreements with key distributors, and temporarily lower prices to make market entry unprofitable for the start-up."
+    
+    def _explain_amg_mechanisms(self) -> str:
+        """Explain the four AMG mechanisms in detail."""
+        return "AMG uses four mechanisms: 1) Dynamic adaptation - established firms monitor new start-ups and flexibly adjust defensive strategies, 2) Rule-changing - using influence to alter industry standards and certification requirements, 3) Network control - controlling key suppliers, distribution channels, and partner networks, 4) Resource blocking - tying up scarce resources like skilled workers and production capacity."
     
     def _handle_concrete_idea(self, user_message: str, concept_map: Optional[Dict[str, Any]], concept_labels: List[str]) -> str:
         """Handle when user shares concrete ideas - agree and suggest implementation."""
@@ -301,7 +399,7 @@ class NeutralAgent:
     def _provide_contextual_guidance(self, concept_map: Optional[Dict[str, Any]], concept_labels: List[str], missing_concepts: List[str]) -> str:
         """Provide contextual guidance based on current map state."""
         if not concept_map or len(concept_map.get("concepts", [])) == 0:
-            return "Start by adding the main concepts: AMG (Adaptive Market Gatekeeping), Market Analysis, Resources, and Entry Strategies. Then connect them to show how AMG affects market entry."
+            return "Start by adding the connections to the core concept: AMG (Adaptive Market Gatekeeping), Market Analysis, Resources, and Entry Strategies. Then connect them to show how AMG affects market entry."
         
         if missing_concepts:
             return f"You have {', '.join(concept_labels[:3])}. Add the missing areas: {', '.join(missing_concepts)}."
@@ -315,7 +413,7 @@ class NeutralAgent:
     def _provide_progress_guidance(self, concept_map: Optional[Dict[str, Any]], concept_labels: List[str], missing_concepts: List[str]) -> str:
         """Provide progress-based guidance when no user input."""
         if not concept_map or len(concept_map.get("concepts", [])) == 0:
-            return "Begin by adding the core concept 'AMG (Adaptive Market Gatekeeping)' and the three other main areas: Market Analysis, Resources, and Entry Strategies."
+            return "Begin by adding connections to the core concept 'AMG (Adaptive Market Gatekeeping)' and the three other main areas: Market Analysis, Resources, and Entry Strategies."
         
         if missing_concepts:
             return f"Looking at your current concepts {', '.join(concept_labels[:3])}, you still need: {', '.join(missing_concepts)}."

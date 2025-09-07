@@ -1245,9 +1245,8 @@ class StreamlitExperimentalSession:
         
         agent_type = self.session_data["agent_sequence"][agent_index]
         
-        # CRITICAL FIX: Add pattern detection BEFORE agent-specific handling
-        # This ensures interaction patterns are handled properly for ALL agents
-        if user_response is not None:
+        # Apply pattern detection to ALL agents including neutral agent
+        if user_response is not None and agent_type != "neutral":
             try:
                 # Import pattern detection utilities
                 from MAS.utils.scaffolding_utils import analyze_user_response_type
@@ -1286,10 +1285,10 @@ class StreamlitExperimentalSession:
                         )
                     return pattern_response
         
-        # Handle neutral agent for non-pattern responses
+        # Handle neutral agent - ALWAYS route to neutral agent, bypass pattern detection for domain questions
         if agent_type == "neutral":
             try:
-                # Import and use NeutralAgent for non-pattern responses
+                # Import and use NeutralAgent for ALL responses
                 from MAS.agents.neutral_agent import NeutralAgent
             except ImportError:
                 from agents.neutral_agent import NeutralAgent
@@ -1304,7 +1303,7 @@ class StreamlitExperimentalSession:
                 except Exception as e:
                     logger.warning(f"Failed to convert concept map for neutral agent: {e}")
             
-            # Generate neutral response
+            # CRITICAL FIX: Always use neutral agent for ALL responses, including domain questions
             neutral_response = neutral_agent.generate_response(
                 user_message=user_response,
                 concept_map=internal_format,
@@ -1319,7 +1318,7 @@ class StreamlitExperimentalSession:
                     metadata={
                         "round_number": roundn,
                         "conversation_turn": conversation_turn,
-                        "response_type": "neutral",
+                        "response_type": "neutral_direct",
                         "experimental_condition": self.session_data.get("experimental_condition", "unknown"),
                         "concept_map_nodes": len(internal_format.get("concepts", [])),
                         "concept_map_edges": len(internal_format.get("relationships", []))
@@ -1565,8 +1564,8 @@ class StreamlitExperimentalSession:
             elif pattern_type == "greeting":
                 return "Hello! Please continue with your concept mapping task as described in the instructions."
             elif pattern_type == "minimal_input":
-                return "Thanks for the update. Please continue developing your concept map as outlined in the task."
-            elif pattern_type in ["domain_question", "system_question", "question"]:
+                return "Please continue developing your concept map as outlined in the task."
+            elif pattern_type == "system_question":
                 return "That's something for you to decide based on the task instructions. Continue working as you think appropriate."
             elif pattern_type == "disagreement":
                 return "I understand you have a different view. Please continue with your concept mapping as you see fit."
@@ -1586,9 +1585,9 @@ class StreamlitExperimentalSession:
                 # Default neutral response
                 node_count = len(internal_format.get("concepts", []))
                 if node_count > 0:
-                    return f"Thanks for the update. Your map has {node_count} concepts so far - please continue as instructed."
+                    return f"Your map has {node_count} concepts so far - please continue as instructed."
                 else:
-                    return "Thanks for the update. Please continue with your concept mapping task as described."
+                    return "Please continue with your concept mapping task as described."
         
         # Extract scaffolding type without "_scaffolding" suffix for handlers
         scaffolding_type_clean = agent_type.replace("_scaffolding", "")
