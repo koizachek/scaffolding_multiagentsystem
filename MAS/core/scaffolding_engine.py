@@ -100,23 +100,16 @@ class ScaffoldingEngine:
             current_round = self.session_state.get("current_round", 0)
             
             # Get enabled scaffolding types
-            # enabled_types = ["strategic", "metacognitive", "procedural", "conceptual"]
-            # weights = {"strategic": 1.0, "metacognitive": 1.0, "procedural": 1.0, "conceptual": 1.0}
+            enabled_types = ["strategic", "metacognitive", "procedural", "conceptual"]
+            weights = {"strategic": 1.0, "metacognitive": 1.0, "procedural": 1.0, "conceptual": 1.0}
             
-            # Wrong scaffolding group order: metacognitive, strategic, procedural, conceptual
-            fixed_sequence = ["metacognitive", "strategic", "procedural", "conceptual"]
-            round_index = current_round % len(fixed_sequence)
-            scaffolding_type = fixed_sequence[round_index]
-            scaffolding_intensity = "medium"  # Default intensity
-            selection_reasoning = f"Wrong scaffolding group experiment - Round {current_round + 1}: {scaffolding_type}"
-            
-            # dynamic selection 
-            # scaffolding_type, scaffolding_intensity, selection_reasoning = select_scaffolding_type(
-            #     map_analysis,
-            #     enabled_types,
-            #     weights,
-            #     self.interaction_history
-            # )
+            # Select scaffolding type
+            scaffolding_type, scaffolding_intensity, selection_reasoning = select_scaffolding_type(
+                map_analysis,
+                enabled_types,
+                weights,
+                self.interaction_history
+            )
             
             # Initialize template tracking for this type if needed
             if scaffolding_type not in self.used_template_indices:

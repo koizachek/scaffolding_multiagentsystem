@@ -23,16 +23,16 @@ class ApplicationSession:
         """
         Create hardcoded agent sequence for experimental consistency.
         """
-        # Original ideal order was: conceptual, procedural, strategic, metacognitive
-        # Wrong scaffolding group order: metacognitive, strategic, procedural, conceptual
+        # ideal order (no randomization)
         agents = [
-            "metacognitive_scaffolding",  # Round 1 - TEMP: was conceptual
-            "strategic_scaffolding",      # Round 2 - TEMP: was procedural  
-            "procedural_scaffolding",     # Round 3 - TEMP: was strategic
-            "conceptual_scaffolding"      # Round 4 - TEMP: was metacognitive
+            "conceptual_scaffolding",    # Round 1 - always first
+            "procedural_scaffolding",     # Round 2 - always second
+            "strategic_scaffolding",      # Round 3 - always third
+            "metacognitive_scaffolding"   # Round 4 - always fourth
         ]
         
         # Note: Round 0 is handled separately (no scaffolding agent)
+        # No shuffling - hardcoded order for experimental consistency
         return agents
     
 
