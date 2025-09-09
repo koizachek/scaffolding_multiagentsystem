@@ -981,23 +981,24 @@ class StreamlitExperimentalSession:
     
     def assign_experimental_condition(self) -> str:
         """
-        Assign experimental condition using deterministic balanced assignment.
+        TEMPORARY: Force assignment to CG_WRONG_SEQ for "Wrong scaffolding group" experiment.
         
         Returns:
-            Assigned experimental condition (EG_SEQ, CG_WRONG_SEQ, or CG_NEUTRAL)
+            Always returns CG_WRONG_SEQ (Wrong scaffolding group)
         """
         # Check if condition already assigned
         if "experimental_condition" in self.session_data:
             return self.session_data["experimental_condition"]
         
-        # Use session ID for deterministic balanced assignment
-        session_id = self.session_data["session_id"]
+        # TEMPORARY: Force assignment to wrong scaffolding group
+        # Original code used deterministic balanced assignment
+        # session_id = self.session_data["session_id"]
+        # hash_value = int(hashlib.md5(session_id.encode()).hexdigest(), 16)
+        # condition_index = hash_value % 3
+        # assigned_condition = EXPERIMENTAL_CONDITIONS[condition_index]
         
-        # Convert to number and mod by 3 for balanced distribution
-        hash_value = int(hashlib.md5(session_id.encode()).hexdigest(), 16)
-        condition_index = hash_value % 3
-        
-        assigned_condition = EXPERIMENTAL_CONDITIONS[condition_index]
+        # TEMPORARY: Always assign wrong scaffolding group
+        assigned_condition = "CG_WRONG_SEQ"
         
         # Store in session data
         self.session_data["experimental_condition"] = assigned_condition
@@ -1008,14 +1009,14 @@ class StreamlitExperimentalSession:
                 event_type="experimental_condition_assigned",
                 metadata={
                     "experimental_condition": assigned_condition,
-                    "session_id": session_id,
-                    "assignment_method": "deterministic_hash",
-                    "condition_index": condition_index,
+                    "session_id": self.session_data["session_id"],
+                    "assignment_method": "TEMPORARY_FORCED_WRONG_SEQ",
+                    "condition_index": "FORCED",
                     "timestamp": datetime.now().isoformat()
                 }
             )
         
-        logger.info(f"Assigned experimental condition: {assigned_condition}")
+        logger.info(f"experimental condition: {assigned_condition}")
         return assigned_condition
     
     def load_expert_map(self) -> Dict[str, Any]:

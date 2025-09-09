@@ -356,8 +356,16 @@ class MultiAgentScaffoldingSystem:
             "procedural_scaffolding"
         ]
         
-        # Randomize order per participant
-        random.shuffle(scaffolding_agents)
+        # random.shuffle(scaffolding_agents)
+        
+        # Original order was: conceptual, strategic, metacognitive, procedural (randomized)
+        # Wrong scaffolding group order: metacognitive, strategic, procedural, conceptual
+        scaffolding_agents = [
+            "metacognitive_scaffolding",    # Round 1
+            "strategic_scaffolding",        # Round 2  
+            "procedural_scaffolding",       # Round 3
+            "conceptual_scaffolding"        # Round 4
+        ]
         
         self.agent_sequence = scaffolding_agents
         self.session_state["agent_sequence"] = scaffolding_agents
