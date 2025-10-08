@@ -1,0 +1,36 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: >-
+  Multi-Agent Scaffolding System for Higher Education
+  Research
+message: Please use this citation
+type: software
+authors:
+  - given-names: Diana
+    family-names: Kozachek
+    email: diana.kozachek@unisg.ch
+    affiliation: University of St. Gallen
+    orcid: 'https://orcid.org/0000-0001-8302-1007'
+  - given-names: Andreas
+    name-particle: Göldi
+    orcid: 'https://orcid.org/0000-0002-0631-4567'
+    affiliation: University of St. Gallen
+  - given-names: Kristian
+    name-particle: Schwarz
+    affiliation: University of Kassel
+  - given-names: Ashkan
+    name-particle: Kiafard
+    affiliation: University of Kassel
+repository-code: 'https://github.com/koizachek/scaffolding_multiagentsystem'
+abstract: >-
+  This project was developed as a prototype for higher
+  education research on scaffolding mechanisms. 
+keywords:
+  - Agentic AI
+  - Higher Education
+  - Scaffolding
+license: MIT
+version: '1.0'
+date-released: '2025-08-01'
