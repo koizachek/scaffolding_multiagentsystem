@@ -361,87 +361,87 @@ class StreamlitExperimentalSession:
         Waehle fur jede Aussage eine Bewertung von 1 (trifft gar nicht zu) bis 9 (trifft voll zu).
         """)
         
-        # Define CLT items (15 items total)
+        # Define CLT items (15 items total) – deutsche Originalformulierungen (Krieglstein et al., 2023)
         clt_items = [
             # Intrinsic Cognitive Load (ICL)
             {
                 "construct": "ICL",
                 "code": "ICL1",
-                "statement": "The learning content was difficult to understand."
+                "statement": "Die Lerninhalte waren schwer zu verstehen."
             },
             {
                 "construct": "ICL",
                 "code": "ICL2",
-                "statement": "The explanations of the learning content were difficult to understand."
+                "statement": "Die Erklarungen des Lerninhalts waren schwer nachvollziehbar."
             },
             {
                 "construct": "ICL",
                 "code": "ICL3",
-                "statement": "The learning content was complex."
+                "statement": "Die Lerninhalte waren komplex."
             },
             {
                 "construct": "ICL",
                 "code": "ICL4",
-                "statement": "The learning content included much complex information."
+                "statement": "Die Lerninhalte enthielten viele komplexe Informationen."
             },
             {
                 "construct": "ICL",
                 "code": "ICL5",
-                "statement": "Without prior knowledge, the information was not understandable."
+                "statement": "Ohne Vorwissen waren die Informationen nicht verstandlich."
             },
             
             # Extraneous Cognitive Load (ECL)
             {
                 "construct": "ECL",
                 "code": "ECL1",
-                "statement": "It was difficult to gain an overview of the structure of the learning material."
+                "statement": "Es war schwierig, einen Ueberblick ueber den Aufbau des Lernmaterials zu erlangen."
             },
             {
                 "construct": "ECL",
                 "code": "ECL2",
-                "statement": "The design of the learning material made it difficult to recognise links between individual information units."
+                "statement": "Die Gestaltung des Lernmaterials machte es schwer, die Zusammenhaenge zwischen den einzelnen Informationen herzustellen."
             },
             {
                 "construct": "ECL",
                 "code": "ECL3",
-                "statement": "The learning material was inconveniently designed."
+                "statement": "Das Lernmaterial war unguenstig gestaltet."
             },
             {
                 "construct": "ECL",
                 "code": "ECL4",
-                "statement": "The design of the learning material made it difficult to find relevant information quickly."
+                "statement": "Die Gestaltung des Lernmaterials machte es schwierig, wichtige Informationen zuegig zu finden."
             },
             {
                 "construct": "ECL",
                 "code": "ECL5",
-                "statement": "Because of the design of the learning material, I had the impression that I could not concentrate on the learning content."
+                "statement": "Aufgrund der Gestaltung des Lernmaterials hatte ich das Gefuehl, mich nicht auf die Lerninhalte konzentrieren zu koennen."
             },
             
             # Germane Cognitive Load (GCL)
             {
                 "construct": "GCL",
                 "code": "GCL1",
-                "statement": "I actively reflected upon the learning content."
+                "statement": "Ich habe aktiv ueber die Lerninhalte nachgedacht."
             },
             {
                 "construct": "GCL",
                 "code": "GCL3",
-                "statement": "I made an effort to understand the learning content."
+                "statement": "Ich habe mich bemueht, die Lerninhalte zu verstehen."
             },
             {
                 "construct": "GCL",
                 "code": "GCL5",
-                "statement": "I achieved a comprehensive understanding of the learning content."
+                "statement": "Ich habe ein umfassendes Verstaendnis der Lerninhalte erlangt."
             },
             {
                 "construct": "GCL",
                 "code": "GCL6",
-                "statement": "I was able to expand my prior knowledge with the learning content."
+                "statement": "Ich konnte mein bestehendes Wissen mit den Lerninhalten erweitern."
             },
             {
                 "construct": "GCL",
                 "code": "GCL7",
-                "statement": "I can apply the knowledge that I acquired through the learning material quickly and accurately."
+                "statement": "Das Wissen, das ich durch das Lernmaterial erworben habe, kann ich schnell und sicher anwenden."
             }
         ]
         # Add random attention check item
