@@ -1,5 +1,5 @@
 """
-Multi-Agent Scaffolding System
+Multi-Agent Scaffolding System GERMAN VERSION
 
 This module provides the main system class for the multi-agent scaffolding system.
 It initializes the system, creates the agents, and handles the interaction flow.

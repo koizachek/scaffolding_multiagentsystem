@@ -1,5 +1,5 @@
 """
-Scaffolding Utilities
+Scaffolding Utilities GERMAN VERSION
 
 This module provides utility functions for scaffolding in the multi-agent scaffolding system.
 """
@@ -708,7 +708,7 @@ def analyze_user_response_type(response: str) -> Dict[str, Any]:
         "response_type": "statement",
         "key_phrases": [],
         # New pattern detection fields
-        "is_empty": False,
+        "is_empty": False,  
         "is_domain_question": False,
         "is_system_question": False,
         "is_disagreement": False,
@@ -719,11 +719,11 @@ def analyze_user_response_type(response: str) -> Dict[str, Any]:
         "wants_to_end": False,
         "needs_encouragement": False,
         "requires_pattern_response": False,  # CRITICAL: Add this flag
-        "is_help_seeking": False,  # NEW: For "what should I do" questions
-        "is_gibberish": False,  # NEW: For random text
-        "has_intention_without_action": False,  # NEW: For "I can add X" without doing it
-        "is_greeting": False,  # NEW: For greetings like "hi", "hello"
-        "is_reassurance_seeking": False  # NEW: For "how am I doing?" questions
+        "is_help_seeking": False,  # For "what should I do" questions
+        "is_gibberish": False,  # For random text
+        "has_intention_without_action": False,  # For "I can add X" without doing it
+        "is_greeting": False,  # For greetings like "hi", "hello"
+        "is_reassurance_seeking": False  # For "how am I doing?" questions
     }
     
     # Enhanced empty input detection - includes whitespace-only
@@ -1196,26 +1196,26 @@ def _generate_contextual_followup(response_analysis: Dict[str, Any],
     """
     if response_analysis["is_confused"]:
         if scaffolding_type == "conceptual":
-            return "Let's think about this differently. What aspects of these concepts are clearest to you?"
+            return "Lass uns anders daruber nachdenken. Welche Aspekte dieser Konzepte sind dir am klarsten?"
         elif scaffolding_type == "strategic":
-            return "Let's break this down. What's one small step you could take to organize these ideas?"
+            return "Lass es uns aufteilen. Welchen kleinen Schritt kannst du machen, um diese Ideen zu ordnen?"
         elif scaffolding_type == "procedural":
-            return "Let's simplify the process. What's the first thing you would do?"
+            return "Lass uns den Prozess vereinfachen. Was ware dein erster Schritt?"
         elif scaffolding_type == "metacognitive":
-            return "That's okay. What parts do you feel you understand, even partially?"
+            return "Das ist okay. Welche Teile verstehst du, zumindest teilweise?"
     
     elif response_analysis["has_concrete_idea"]:
         if scaffolding_type == "conceptual":
-            return "That's a good insight. How does this understanding affect other parts of your map?"
+            return "Gute Einsicht. Wie beeinflusst dieses Verstandnis andere Teile deiner Map?"
         elif scaffolding_type == "strategic":
-            return "Good thinking. How might you apply this approach to other areas?"
+            return "Guter Gedanke. Wie kannst du diesen Ansatz auf andere Bereiche ubertragen?"
         elif scaffolding_type == "procedural":
-            return "That's a clear process. What would be your next step?"
+            return "Das ist ein klarer Prozess. Was ware dein nachster Schritt?"
         elif scaffolding_type == "metacognitive":
-            return "You're developing your understanding well. What new questions does this raise?"
+            return "Du entwickelst dein Verstandnis gut weiter. Welche neuen Fragen entstehen daraus?"
     
     # Generic fallback
-    return "Thank you for sharing that. Let's continue developing these ideas."
+    return "Danke fur deine Antwort. Lass uns diese Ideen weiter ausarbeiten."
 
 
 def handle_domain_question(response: str, scaffolding_type: str, key_phrases: List[str] = None) -> str:
@@ -1231,30 +1231,30 @@ def handle_domain_question(response: str, scaffolding_type: str, key_phrases: Li
     Returns:
         Appropriate response for domain questions
     """
-    base_response = "I see you have a question about the content. Please check the 'Task Description' and 'Extra Materials' buttons at the top of the screen for detailed information about "
+    base_response = "Ich sehe, du hast eine Inhaltsfrage. Bitte nutze die Buttons 'Task Description' und 'Extra Materials' oben fur detaillierte Informationen zu "
     
     # Add specific guidance based on key phrases
     if key_phrases:
         if "AMG" in key_phrases or "amg" in response.lower():
-            base_response += "Adaptive Market Gatekeeping and its mechanisms. "
+            base_response += "Adaptive Market Gatekeeping und seinen Mechanismen. "
         elif "market" in key_phrases:
-            base_response += "international market entry challenges. "
+            base_response += "Herausforderungen beim internationalen Markteintritt. "
         elif "strategy" in key_phrases:
-            base_response += "entry strategies and approaches. "
+            base_response += "Markteintrittsstrategien und -ansatzen. "
         else:
-            base_response += "the concepts you're asking about. "
+            base_response += "den Konzepten, nach denen du fragst. "
     else:
-        base_response += "this topic. "
+        base_response += "diesem Thema. "
     
     # Add scaffolding-specific guidance
     if scaffolding_type == "conceptual":
-        base_response += "After reviewing those materials, think about how these concepts relate to each other in your map."
+        base_response += "Uberlege nach dem Lesen, wie diese Konzepte in deiner Map zusammenhangen."
     elif scaffolding_type == "strategic":
-        base_response += "After reviewing those materials, consider how you might organize these concepts strategically."
+        base_response += "Uberlege danach, wie du die Konzepte strategisch anordnen kannst."
     elif scaffolding_type == "procedural":
-        base_response += "After reviewing those materials, think about the steps to incorporate this into your map."
+        base_response += "Denke uber die Schritte nach, um dies in deine Map einzubauen."
     elif scaffolding_type == "metacognitive":
-        base_response += "After reviewing those materials, reflect on how this changes your understanding."
+        base_response += "Reflektiere, wie das dein Verstandnis verandert."
     
     return base_response
 
@@ -1271,17 +1271,17 @@ def handle_system_question(response: str, scaffolding_type: str) -> str:
     Returns:
         Appropriate response for system questions
     """
-    base_response = "For help with the concept mapping tool, please click the '❓ Help' button at the top right of the screen. It provides detailed instructions on creating nodes, edges, and organizing your map. "
+    base_response = "Fur Hilfe zum Concept-Mapping-Tool klicke auf den Button '❓ Help' oben rechts. Dort findest du Anleitungen zum Erstellen von Knoten, Kanten und zum Strukturieren deiner Map. "
     
     # Add scaffolding-specific encouragement
     if scaffolding_type == "procedural":
-        base_response += "Once you're familiar with the tools, we can focus on your mapping process."
+        base_response += "Wenn du mit den Tools vertraut bist, konzentrieren wir uns auf deinen Mapping-Prozess."
     elif scaffolding_type == "strategic":
-        base_response += "Once you're comfortable with the interface, we can discuss your strategic approach."
+        base_response += "Wenn du dich mit dem Interface wohlfuhlst, konnen wir deine strategische Herangehensweise besprechen."
     elif scaffolding_type == "conceptual":
-        base_response += "After learning the interface, let's focus on the conceptual relationships."
+        base_response += "Sobald du das Interface kennst, schauen wir auf die konzeptuellen Beziehungen."
     elif scaffolding_type == "metacognitive":
-        base_response += "Understanding the tool will help you express your thoughts more effectively."
+        base_response += "Wenn du das Tool verstehst, kannst du deine Gedanken besser ausdrucken."
     
     return base_response
 
@@ -1301,38 +1301,38 @@ def handle_disagreement(response: str, scaffolding_type: str, disagreement_type:
     """
     if disagreement_type == "content":
         # Pattern 2.1: Content-level disagreement
-        base_response = "I appreciate your perspective. Could you elaborate on why you see it differently? "
-        base_response += "There's often multiple valid ways to understand these relationships. "
+        base_response = "Danke fur deine Perspektive. Kannst du erlautern, warum du es anders siehst? "
+        base_response += "Oft gibt es mehrere legitime Sichtweisen auf diese Beziehungen. "
         
         if scaffolding_type == "conceptual":
-            base_response += "What evidence or reasoning supports your view of this concept?"
+            base_response += "Welche Hinweise oder welches Denken stutzen deine Sicht auf dieses Konzept?"
         elif scaffolding_type == "strategic":
-            base_response += "How does your understanding affect your organizational strategy?"
+            base_response += "Wie beeinflusst dein Verstandnis deine strategische Anordnung?"
         else:
-            base_response += "Let's explore your interpretation further."
+            base_response += "Lass uns deine Interpretation weiter erkunden."
             
     elif disagreement_type == "approach":
         # Pattern 2.2: Approach disagreement
-        base_response = "Your approach is valid too! There's no single correct way to create a concept map. "
-        base_response += "Feel free to modify or delete any nodes that don't align with your thinking. "
+        base_response = "Dein Ansatz ist ebenfalls valide! Es gibt keinen einzigen richtigen Weg, eine Concept Map zu erstellen. "
+        base_response += "Passe gerne Knoten an oder losche sie, wenn sie nicht zu deinem Denken passen. "
         
         if scaffolding_type == "strategic":
-            base_response += "What alternative strategy would you prefer to use?"
+            base_response += "Welche alternative Strategie wurde dir besser passen?"
         elif scaffolding_type == "procedural":
-            base_response += "What process feels more natural to you?"
+            base_response += "Welcher Prozess fühlt sich fur dich naturlicher an?"
         else:
-            base_response += "How would you like to proceed instead?"
+            base_response += "Wie mochtest du stattdessen vorgehen?"
             
     else:
         # Pattern 2.3: General disagreement
-        base_response = "I understand you have a different view. Let's explore other aspects of your concept map. "
+        base_response = "Ich verstehe, dass du es anders siehst. Lass uns andere Aspekte deiner Concept Map betrachten. "
         
         if scaffolding_type == "metacognitive":
-            base_response += "What parts of your map do you feel most confident about?"
+            base_response += "Bei welchen Teilen deiner Map fühlst du dich am sichersten?"
         elif scaffolding_type == "conceptual":
-            base_response += "Which relationships in your map feel most clear to you?"
+            base_response += "Welche Beziehungen in deiner Map sind fur dich am klarsten?"
         else:
-            base_response += "What would you like to focus on next?"
+            base_response += "Worauf mochtest du als Nächstes den Fokus legen?"
     
     return base_response
 
@@ -1349,13 +1349,13 @@ def handle_empty_input(scaffolding_type: str) -> str:
         Appropriate response for empty input
     """
     responses = {
-        "strategic": "I notice you haven't typed anything. If you'd like to share your thoughts about your mapping strategy, please type your response. Or if you're ready to move on, you can click 'Finish Round'.",
-        "metacognitive": "It seems you haven't entered a response. Would you like to reflect on your learning process? Please type your thoughts, or click 'Finish Round' if you're ready to proceed.",
-        "procedural": "You haven't typed a response yet. If you'd like to describe your mapping process, please share your thoughts. Otherwise, feel free to click 'Finish Round'.",
-        "conceptual": "I see no response yet. If you have thoughts about the concepts and their relationships, please type them. Or click 'Finish Round' to continue."
+        "strategic": "Du hast noch nichts geschrieben. Wenn du deine Strategie teilen mochtest, tippe deine Antwort. Wenn du bereit bist weiterzugehen, klicke auf 'Finish Round'.",
+        "metacognitive": "Es scheint, du hast nichts eingegeben. Willst du deinen Lernprozess reflektieren? Schreibe deine Gedanken oder klicke auf 'Finish Round', wenn du fortfahren willst.",
+        "procedural": "Noch keine Antwort. Wenn du deinen Mapping-Prozess beschreiben mochtest, teile ihn gerne. Ansonsten kannst du auf 'Finish Round' klicken.",
+        "conceptual": "Noch keine Antwort. Wenn du Gedanken zu Konzepten und Beziehungen hast, tippe sie bitte oder klicke auf 'Finish Round', um weiterzumachen."
     }
     
-    return responses.get(scaffolding_type, "Please type your response if you'd like to continue the conversation, or click 'Finish Round' to proceed to the next round.")
+    return responses.get(scaffolding_type, "Tippe deine Antwort, wenn du weitermachen mochtest, oder klicke auf 'Finish Round', um zur nachsten Runde zu gehen.")
 
 
 def handle_inappropriate_language(scaffolding_type: str) -> str:
@@ -1369,17 +1369,17 @@ def handle_inappropriate_language(scaffolding_type: str) -> str:
     Returns:
         Appropriate response for inappropriate language
     """
-    base_response = "I understand this can be challenging. Let's keep our discussion respectful and focused on improving your concept map. "
+    base_response = "Ich verstehe, dass das herausfordernd sein kann. Lass uns respektvoll bleiben und uns auf die Verbesserung deiner Concept Map konzentrieren. "
     
     # Add scaffolding-specific redirection
     if scaffolding_type == "metacognitive":
-        base_response += "What aspects of the learning process are you finding most difficult?"
+        base_response += "Welche Aspekte des Lernprozesses fallen dir am schwersten?"
     elif scaffolding_type == "strategic":
-        base_response += "What strategies might help you work through this challenge?"
+        base_response += "Welche Strategien konnten dir helfen, diese Herausforderung zu meistern?"
     elif scaffolding_type == "procedural":
-        base_response += "Let's break down the process into smaller, manageable steps."
+        base_response += "Lass uns den Prozess in kleinere, handhabbare Schritte aufteilen."
     elif scaffolding_type == "conceptual":
-        base_response += "Which concepts would you like to clarify first?"
+        base_response += "Welche Konzepte mochtest du zuerst klaren?"
     
     return base_response
 
@@ -1395,17 +1395,17 @@ def handle_off_topic(scaffolding_type: str) -> str:
     Returns:
         Appropriate response for off-topic content
     """
-    base_response = "Let's refocus on your concept map about international market entry and AMG. "
+    base_response = "Lass uns wieder auf deine Concept Map zu internationalem Markteintritt und AMG fokussieren. "
     
     # Add scaffolding-specific redirection
     if scaffolding_type == "conceptual":
-        base_response += "What concepts from the task materials have you included in your map?"
+        base_response += "Welche Konzepte aus den Materialien hast du bereits in deiner Map?"
     elif scaffolding_type == "strategic":
-        base_response += "How are you organizing the concepts related to market entry challenges?"
+        base_response += "Wie ordnest du die Konzepte zu den Markteintrittsherausforderungen?"
     elif scaffolding_type == "procedural":
-        base_response += "What's your next step in developing your concept map?"
+        base_response += "Was ist dein nachster Schritt beim Ausbau deiner Concept Map?"
     elif scaffolding_type == "metacognitive":
-        base_response += "How is your understanding of the AMG topic developing?"
+        base_response += "Wie entwickelt sich dein Verstandnis zum AMG-Thema?"
     
     return base_response
 
@@ -1422,18 +1422,18 @@ def handle_frustration(response: str, scaffolding_type: str) -> str:
     Returns:
         Encouraging response for frustration
     """
-    base_response = "I understand this can feel overwhelming. Concept mapping is an iterative process - it's perfectly normal to feel challenged. "
-    base_response += "Remember, there's no perfect map, just your evolving understanding. "
+    base_response = "Ich verstehe, dass das uberfordernd wirken kann. Concept Mapping ist ein iterativer Prozess – es ist normal, sich gefordert zu fuhlen. "
+    base_response += "Denke daran: Es gibt keine perfekte Map, nur dein wachsendes Verstandnis. "
     
     # Add scaffolding-specific encouragement
     if scaffolding_type == "metacognitive":
-        base_response += "You're doing well by reflecting on your learning. What small insight have you gained so far?"
+        base_response += "Gut, dass du uber dein Lernen reflektierst. Welche kleine Erkenntnis hast du bisher gewonnen?"
     elif scaffolding_type == "strategic":
-        base_response += "Let's simplify your strategy. What's one connection you feel confident about?"
+        base_response += "Lass uns deine Strategie vereinfachen. Welche Verbindung macht dich sicher?"
     elif scaffolding_type == "procedural":
-        base_response += "Let's take it step by step. What's one thing you can add or modify right now?"
+        base_response += "Gehen wir Schritt fur Schritt. Was kannst du jetzt sofort hinzufugen oder anpassen?"
     elif scaffolding_type == "conceptual":
-        base_response += "Start with what you know. Which concept feels clearest to you?"
+        base_response += "Starte mit dem, was du sicher weisst. Welches Konzept ist dir am klarsten?"
     
     return base_response
 
@@ -1449,19 +1449,19 @@ def handle_premature_ending(scaffolding_type: str) -> str:
     Returns:
         Encouraging response to continue
     """
-    base_response = "I see you might want to finish, but your contribution is valuable for this research. "
-    base_response += "Completing all rounds helps us understand how learners develop concept maps. "
-    base_response += "You're making good progress! "
+    base_response = "Ich sehe, du mochtest vielleicht aufhoren, aber dein Beitrag ist wertvoll fur diese Forschung. "
+    base_response += "Alle Runden abzuschliessen hilft uns zu verstehen, wie Lernende Concept Maps entwickeln. "
+    base_response += "Du machst gute Fortschritte! "
     
     # Add scaffolding-specific encouragement
     if scaffolding_type == "metacognitive":
-        base_response += "Even small reflections about your learning are helpful. What's one thing you've noticed?"
+        base_response += "Auch kleine Reflexionen uber dein Lernen sind hilfreich. Was ist dir aufgefallen?"
     elif scaffolding_type == "strategic":
-        base_response += "Your mapping strategy, even if simple, provides valuable insights. Can you share one approach you've used?"
+        base_response += "Deine Mapping-Strategie, auch wenn sie einfach ist, liefert wertvolle Einblicke. Kannst du einen Ansatz teilen, den du genutzt hast?"
     elif scaffolding_type == "procedural":
-        base_response += "Every step you take in building your map matters. What's been your process so far?"
+        base_response += "Jeder Schritt beim Aufbau deiner Map zahlt. Wie war dein Prozess bisher?"
     elif scaffolding_type == "conceptual":
-        base_response += "Any connections you've made between concepts are worth exploring. Which relationship seems most important?"
+        base_response += "Alle Verbindungen zwischen Konzepten sind interessant. Welche Beziehung erscheint dir am wichtigsten?"
     
     return base_response
 
@@ -1477,17 +1477,17 @@ def handle_greeting(scaffolding_type: str) -> str:
     Returns:
         Appropriate response for greeting
     """
-    base_response = "Hello! Let's focus on your concept map about AMG and international market entry. "
+    base_response = "Hallo! Lass uns auf deine Concept Map zu AMG und internationalem Markteintritt fokussieren. "
     
     # Add scaffolding-specific guidance
     if scaffolding_type == "conceptual":
-        base_response += "What concepts have you included so far, and how do they relate to each other?"
+        base_response += "Welche Konzepte hast du bisher aufgenommen und wie hangen sie zusammen?"
     elif scaffolding_type == "procedural":
-        base_response += "What's your next step in building your concept map?"
+        base_response += "Was ist dein nachster Schritt beim Aufbau deiner Concept Map?"
     elif scaffolding_type == "strategic":
-        base_response += "How are you organizing your concepts to show the relationships between AMG and market entry?"
+        base_response += "Wie ordnest du deine Konzepte, um die Beziehungen zwischen AMG und Markteintritt zu zeigen?"
     elif scaffolding_type == "metacognitive":
-        base_response += "How is your understanding of the AMG topic developing as you work on your map?"
+        base_response += "Wie entwickelt sich dein Verstandnis des AMG-Themas, wahrend du an der Map arbeitest?"
     
     return base_response
 
@@ -1503,17 +1503,17 @@ def handle_minimal_input(scaffolding_type: str) -> str:
     Returns:
         Appropriate response for minimal input
     """
-    base_response = "I need more information to understand your response. Please provide a more detailed answer about "
+    base_response = "Ich brauche mehr Informationen, um deine Antwort zu verstehen. Bitte gib eine detailliertere Antwort zu "
     
     # Add scaffolding-specific prompts
     if scaffolding_type == "conceptual":
-        base_response += "the concepts and relationships in your map. What specific ideas are you working with?"
+        base_response += "den Konzepten und Beziehungen in deiner Map. Mit welchen konkreten Ideen arbeitest du?"
     elif scaffolding_type == "procedural":
-        base_response += "your mapping process. Can you describe what steps you're taking?"
+        base_response += "deinem Mapping-Prozess. Welche Schritte gehst du gerade?"
     elif scaffolding_type == "strategic":
-        base_response += "your organizational strategy. How are you structuring your concept map?"
+        base_response += "deiner Organisationsstrategie. Wie strukturierst du deine Concept Map?"
     elif scaffolding_type == "metacognitive":
-        base_response += "your learning experience. What are you understanding or finding challenging?"
+        base_response += "deiner Lernerfahrung. Was verstehst du gut und was ist noch herausfordernd?"
     
     return base_response
 
@@ -1530,18 +1530,18 @@ def handle_help_seeking(response: str, scaffolding_type: str) -> str:
     Returns:
         Appropriate response directing to resources
     """
-    base_response = "I see you need guidance on getting started. Please check the 'Task Description' button at the top of the screen for detailed information about the AMG concept mapping task. "
-    base_response += "The 'Extra Materials' button provides additional resources about international market entry and AMG mechanisms. "
+    base_response = "Ich sehe, du brauchst Starthilfe. Bitte nutze den Button 'Task Description' oben fur Details zur AMG-Concept-Mapping-Aufgabe. "
+    base_response += "Uber den Button 'Extra Materials' findest du weitere Inhalte zu internationalem Markteintritt und AMG-Mechanismen. "
     
     # Add scaffolding-specific guidance
     if scaffolding_type == "conceptual":
-        base_response += "Start by adding key concepts from the materials, like 'AMG', 'market entry barriers', and 'gatekeeping mechanisms'."
+        base_response += "Beginne mit Schlusselfaktoren aus den Materialien wie 'AMG', 'Markteintrittsbarrieren' und 'Gatekeeping-Mechanismen'."
     elif scaffolding_type == "procedural":
-        base_response += "Begin by clicking to add nodes for main concepts, then connect them with labeled relationships."
+        base_response += "Fuge Hauptkonzepte als Knoten hinzu und verbinde sie dann mit beschrifteten Beziehungen."
     elif scaffolding_type == "strategic":
-        base_response += "Consider organizing your map with AMG at the center and its effects branching outward."
+        base_response += "Ordne deine Map so, dass AMG im Zentrum steht und die Effekte nach aussen verzweigen."
     elif scaffolding_type == "metacognitive":
-        base_response += "Think about what you already know about market entry and build from there."
+        base_response += "Uberlege, was du bereits uber Markteintritt weisst, und baue darauf auf."
     
     return base_response
 
@@ -1557,17 +1557,17 @@ def handle_gibberish(scaffolding_type: str) -> str:
     Returns:
         Appropriate response for gibberish input
     """
-    base_response = "I didn't quite understand that. Let's refocus on your concept map. "
+    base_response = "Das habe ich nicht ganz verstanden. Lass uns wieder auf deine Concept Map fokussieren. "
     
     # Add scaffolding-specific redirection
     if scaffolding_type == "conceptual":
-        base_response += "What concepts from the AMG materials would you like to explore?"
+        base_response += "Welche Konzepte aus den AMG-Materialien mochtest du genauer betrachten?"
     elif scaffolding_type == "procedural":
-        base_response += "What's your next step in building your concept map?"
+        base_response += "Was ist dein nachster Schritt beim Aufbau deiner Concept Map?"
     elif scaffolding_type == "strategic":
-        base_response += "How are you planning to organize your AMG concepts?"
+        base_response += "Wie planst du, deine AMG-Konzepte zu ordnen?"
     elif scaffolding_type == "metacognitive":
-        base_response += "What aspects of AMG are you finding clear or confusing?"
+        base_response += "Welche Aspekte von AMG sind fur dich klar oder noch verwirrend?"
     
     return base_response
 
@@ -1589,18 +1589,18 @@ def handle_intention_without_action(response: str, scaffolding_type: str) -> str
     match = re.search(r'add\s+(.+?)(?:\.|$)', response.lower())
     concept_mentioned = match.group(1) if match else "that concept"
     
-    base_response = f"Good idea to add {concept_mentioned}! "
-    base_response += "Go ahead and add it to your concept map now - click to create a new node and label it. "
+    base_response = f"Gute Idee, {concept_mentioned} hinzuzufugen! "
+    base_response += "Fuge es jetzt in deine Concept Map ein - klicke, um einen neuen Knoten zu erstellen und zu beschriften. "
     
     # Add scaffolding-specific encouragement
     if scaffolding_type == "conceptual":
-        base_response += "Once you've added it, think about how it relates to your existing concepts."
+        base_response += "Uberlege nach dem Hinzufugen, wie es zu deinen bestehenden Konzepten passt."
     elif scaffolding_type == "procedural":
-        base_response += "After adding the node, you can create edges to show its relationships."
+        base_response += "Nach dem Hinzufugen des Knotens kannst du Kanten erstellen, um die Beziehungen zu zeigen."
     elif scaffolding_type == "strategic":
-        base_response += "Consider where to position it strategically in relation to other concepts."
+        base_response += "Überlege, wo du es strategisch im Verhaltnis zu anderen Konzepten platzierst."
     elif scaffolding_type == "metacognitive":
-        base_response += "Adding it will help solidify your understanding of how it fits in the bigger picture."
+        base_response += "Das Hinzufugen hilft dir, dein Verstandnis zu festigen, wie es ins Gesamtbild passt."
     
     return base_response
 
@@ -1616,7 +1616,7 @@ def handle_interface_help(response: str) -> str:
     Returns:
         Standard interface help response
     """
-    return "For help with creating nodes and connections, please click the '❓ Help' button next to the task description."
+    return "Fur Hilfe beim Erstellen von Knoten und Verbindungen klicke auf den Button '❓ Help' neben der Aufgabenbeschreibung."
 
 
 def handle_reassurance_seeking(response: str, concept_map: Optional[Dict[str, Any]] = None, expert_map: Optional[Dict[str, Any]] = None) -> str:
@@ -1652,35 +1652,35 @@ def handle_reassurance_seeking(response: str, concept_map: Optional[Dict[str, An
     
     # Compare to expert expectations (typical AMG maps have 5-8 concepts)
     if node_count >= 6:
-        progress_assessment = "making excellent progress"
+        progress_assessment = "machst hervorragende Fortschritte"
     elif node_count >= 4:
-        progress_assessment = "developing well"
+        progress_assessment = "kommst gut voran"
     elif node_count >= 2:
-        progress_assessment = "getting started nicely"
+        progress_assessment = "bist gut gestartet"
     else:
-        progress_assessment = "beginning to explore the topic"
+        progress_assessment = "beginnst, das Thema zu erkunden"
     
     # Build context-aware response
     if concept_labels:
         if len(concept_labels) == 1:
-            concept_context = f"concepts like '{concept_labels[0]}'"
+            concept_context = f"Konzepte wie '{concept_labels[0]}'"
         elif len(concept_labels) == 2:
-            concept_context = f"concepts like '{concept_labels[0]}' and '{concept_labels[1]}'"
+            concept_context = f"Konzepte wie '{concept_labels[0]}' und '{concept_labels[1]}'"
         else:
-            concept_context = f"concepts like '{concept_labels[0]}', '{concept_labels[1]}', and '{concept_labels[2]}'"
+            concept_context = f"Konzepte wie '{concept_labels[0]}', '{concept_labels[1]}' und '{concept_labels[2]}'"
     else:
-        concept_context = "your concept map"
+        concept_context = "deine Concept Map"
     
     # Generate response based on progress
     if node_count >= 4:
-        base_response = f"Your map has {node_count} concepts and {edge_count} connections, showing you're {progress_assessment} with the AMG task. "
-        base_response += f"You've included important {concept_context} - there's always room to discover new connections by examining how AMG mechanisms interact with these concepts."
+        base_response = f"Deine Map hat {node_count} Konzepte und {edge_count} Verbindungen – du {progress_assessment} bei der AMG-Aufgabe. "
+        base_response += f"Du hast wichtige {concept_context} eingebunden – es gibt immer Raum fur neue Verbindungen, wenn du betrachtest, wie AMG-Mechanismen mit diesen Konzepten interagieren."
     elif node_count >= 2:
-        base_response = f"With {node_count} concepts including {concept_context}, you're {progress_assessment}. "
-        base_response += "You can feel free to think outside the given examples and add your own observations about how AMG influences market entry."
+        base_response = f"Mit {node_count} Konzepten inklusive {concept_context} {progress_assessment}. "
+        base_response += "Du kannst auch eigene Beobachtungen hinzufugen, wie AMG den Markteintritt beeinflusst."
     else:
-        base_response = f"You're {progress_assessment} - concept maps typically develop with 5-8 key concepts. "
-        base_response += "There are always new relationships to discover when you examine how AMG aspects interact with different market entry factors."
+        base_response = f"Du {progress_assessment} – Concept Maps entwickeln sich oft mit 5-8 Schlusspunkten. "
+        base_response += "Es gibt immer weitere Beziehungen zu entdecken, wenn du anschaust, wie AMG-Aspekte mit Markteintrittsfaktoren interagieren."
     
     return base_response
 
@@ -1702,21 +1702,21 @@ def generate_concrete_idea_followup(response: str, scaffolding_type: str, mentio
     base_response = ""
     
     if mentions_concepts and len(mentions_concepts) > 0:
-        base_response = f"You've mentioned interesting ideas about {', '.join(mentions_concepts[:2])}. "
+        base_response = f"Du hast interessante Ideen zu {', '.join(mentions_concepts[:2])} genannt. "
     else:
-        base_response = "You've shared some valuable insights. "
+        base_response = "Du hast wertvolle Einsichten geteilt. "
     
-    base_response += "Does your current concept map reflect these ideas? "
+    base_response += "Spiegelt deine aktuelle Concept Map diese Ideen wider? "
     
     # Add scaffolding-specific call to action
     if scaffolding_type == "conceptual":
-        base_response += "Consider adding these concepts as new nodes or strengthening the relationships that represent these ideas."
+        base_response += "Fuge diese Konzepte als neue Knoten hinzu oder starker die Beziehungen, die diese Ideen abbilden."
     elif scaffolding_type == "strategic":
-        base_response += "You might reorganize your map to better highlight these strategic insights you've identified."
+        base_response += "Ordne deine Map ggf. um, um diese strategischen Erkenntnisse besser hervorzuheben."
     elif scaffolding_type == "procedural":
-        base_response += "Try implementing this process you've described by adding or modifying the relevant connections."
+        base_response += "Setze den beschriebenen Prozess um, indem du entsprechende Verbindungen hinzufugst oder anpasst."
     elif scaffolding_type == "metacognitive":
-        base_response += "Based on this reflection, what changes would better represent your evolved understanding?"
+        base_response += "Welche Anpassungen wurden dein gewachsenes Verstandnis besser abbilden?"
     
     return base_response
 

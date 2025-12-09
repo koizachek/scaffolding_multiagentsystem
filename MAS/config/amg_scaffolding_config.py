@@ -1,5 +1,5 @@
 """
-AMG-Specific Scaffolding Configuration
+AMG-Specific Scaffolding Configuration GERMAN VERSION
 
 This module provides scaffolding configuration specifically tailored for the 
 Adaptive Market Gatekeeping (AMG) international market entry task.
@@ -9,9 +9,9 @@ Adaptive Market Gatekeeping (AMG) international market entry task.
 AMG_SCAFFOLDING_PROMPT_TEMPLATES = {
     "conceptual": {
         "high": [
-            "I notice you've included {observation}. How do you think AMG's dynamic adaptation mechanism specifically relates to the entry barriers you've identified? What's the conceptual connection there?",
-            "Looking at your map with {node_count} concepts, I'm curious about the relationship between AMG and your chosen entry strategy. What underlying principles connect these concepts?",
-            "You've shown {concept} in your map. How might AMG's resource blocking mechanism conceptually relate to the start-up's resources? What's the nature of that interaction?",
+            "Ich sehe du hast {observation} hinzugefügt. Inwieweit denkst du, dass die Eintrittsbarieren der AMG-Regulationen sich dadurch beheben lassen?",
+            "Deine concept map hat derzeit {node_count} Konzepte. Ich interessiere mich besonders für die Beziehung zwischen den einzelnen Markteintrittstrategien. Welche Prinzipien liegen den Konzepten zugrunde?",
+            "In deiner map ist das Konzept {concept}. How might AMG's resource blocking mechanism conceptually relate to the start-up's resources? What's the nature of that interaction?",
             "I see you have market analysis and target markets in your map. How do these concepts relate to AMG's network control mechanism? What conceptual bridge connects them?",
             "Interesting placement of {concept}. How might the legal framework be influenced by AMG's rule-changing capability? What's the conceptual relationship there?",
             "Looking at your financing concepts, how might they be affected by AMG mechanisms? What underlying principles govern these relationships?"
