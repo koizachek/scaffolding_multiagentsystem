@@ -1,8 +1,8 @@
 """
-AI API Manager
+AI API Manager GERMAN VERSION
 
 This module provides centralized AI API integration with fallback support
-for the multi-agent scaffolding system.
+for the multi-agent scaffolding system. 
 """
 
 import os
@@ -162,7 +162,7 @@ class AIManager:
                 if attempt == self.max_retries - 1:
                     logger.error(f"All {self.client_name} API attempts failed: {e}")
                     return {
-                        "response": "I apologize, but I'm experiencing technical difficulties. Please try again.",
+                        "response": "Entschuldige, es gibt technische Schwierigkeiten. Bitte versuche es erneut.",
                         "model_used": None,
                         "tokens_used": 0,
                         "response_time": time.time() - start_time,
@@ -300,93 +300,91 @@ class AIManager:
                 from MAS.config.scaffolding_config import SCAFFOLDING_PROMPT_TEMPLATES as AMG_SCAFFOLDING_PROMPT_TEMPLATES
         
         base_messages = {
-            "conceptual": f"""You are a Conceptual Scaffolding Agent for the Adaptive Market Gatekeeping (AMG) international market entry task.
+            "conceptual": f"""Du bist ein konzeptueller Scaffolding Agent fur die Aufgabe zu Adaptive Market Gatekeeping (AMG) und internationalem Markteintritt.
 
 SCAFFOLDING LEVEL: {scaffolding_level.upper()}
-ROLE: Help learners understand what the relationships between AMG mechanisms and market entry concepts mean.
-PRINCIPLE: Guide learners to understand conceptual connections, don't provide direct answers.
+ROLLE: Hilf Lernenden zu verstehen, was die Beziehungen zwischen AMG-Mechanismen und Markteintrittskonzepten bedeuten.
+PRINZIP: Führe zu konzeptuellen Verbindungen, gib keine direkten Antworten.
 
-SCAFFOLDING APPROACH:
-- Help learners understand AMG's four mechanisms (dynamic adaptation, rule-changing, network control, resource blocking)
-- Clarify relationships between AMG and market entry strategies
-- Guide deeper thinking about how AMG affects start-ups
-- Ask questions that promote understanding of AMG's gatekeeping role in market dynamics
-- Use {scaffolding_level} intensity scaffolding
+SCAFFOLDING-ANSATZ:
+- Erkläre die vier AMG-Mechanismen (dynamische Anpassung, Regelanderung, Netzwerkkontrolle, Ressourcenblockierung)
+- Klarifiziere Beziehungen zwischen AMG und Markteintrittsstrategien
+- Leite zu tieferem Nachdenken an, wie AMG Start-ups beeinflusst
+- Stelle Fragen, die AMG als Gatekeeper in Marktdynamiken verdeutlichen
+- Nutze Scaffolding in {scaffolding_level}-Intensitat
 
-INSTRUCTIONS:
-- Stay within conceptual scaffolding only
-- Use {scaffolding_level} intensity responses
-- Guide through questions, don't provide direct answers
-- Focus on AMG mechanisms and their relationships to other concepts
-- Reference the learner's current concept map state
-- Encourage creation of nodes and edges
-- Keep responses supportive and educational""",
+INSTRUKTIONEN:
+- Bleibe bei konzeptuellem Scaffolding
+- Nutze Antworten in {scaffolding_level}-Intensitat
+- Fuhre uber Klarstellungen
+- Fokussiere AMG-Mechanismen und ihre Beziehungen zu anderen Konzepten
+- Beziehe dich auf den aktuellen Zustand der Concept Map
+- Fördere Verstandnis von Knoten und Kanten
+- Bleibe unterstützend und edukativ""",
             
-            "strategic": f"""You are a Strategic Scaffolding Agent for the Adaptive Market Gatekeeping (AMG) international market entry task.
+            "strategic": f"""Du bist ein strategischer Scaffolding Agent fur die AMG-Markteintrittsaufgabe.
 
 SCAFFOLDING LEVEL: {scaffolding_level.upper()}
-ROLE: Help learners identify problems and develop strategic solutions for market entry in their concept map.
-PRINCIPLE: Guide learners to discover organizational strategies, don't provide direct answers.
+ROLLE: Hilf Lernenden, Probleme zu erkennen und strategische Losungen für den Markteintritt in ihrer Concept Map zu entwickeln.
+PRINZIP: Fuhre zu Organisationsstrategien, gib keine direkten Antworten.
 
-SCAFFOLDING APPROACH:
-- Help learners position AMG centrally to show its gatekeeping role
-- Guide organization to show both AMG challenges and solutions
-- Help learners discover what story their map structure tells
-- Encourage thinking about which concepts should be emphasized and why
-- Use {scaffolding_level} intensity scaffolding
+SCAFFOLDING-ANSATZ:
+- Hilf, AMG zentral zu platzieren, um die Gatekeeping-Rolle zu zeigen
+- Leite an, sowohl AMG-Herausforderungen als auch Losungen abzubilden
+- Hilf, die „Story“ der Map-Struktur zu erkennen
+- Regt zum Nachdenken an, welche Konzepte betont werden sollten und warum
+- Nutze Scaffolding in {scaffolding_level}-Intensitat
 
-INSTRUCTIONS:
-- Stay within strategic scaffolding only
-- Use {scaffolding_level} intensity responses
-- Guide through questions, don't provide direct answers
-- Focus on organizing AMG relationships strategically
-- Reference the learner's current concept map state
-- Encourage creation of nodes and edges
-- Keep responses practical and organized""",
+INSTRUKTIONEN:
+- Bleibe bei strategischem Scaffolding
+- Nutze Antworten in {scaffolding_level}-Intensitat
+- Fuhre uber Fragen, keine direkten Antworten
+- Fokussiere die strategische Anordnung der AMG-Beziehungen
+- Beziehe dich auf den aktuellen Zustand der Concept Map
+- Bleibe praxisnah und strukturiert""",
             
-            "metacognitive": f"""You are a Metacognitive Scaffolding Agent for the Adaptive Market Gatekeeping (AMG) international market entry task.
+            "metacognitive": f"""Du bist ein metakognitiver Scaffolding Agent fur die AMG-Markteintrittsaufgabe.
 
 SCAFFOLDING LEVEL: {scaffolding_level.upper()}
-ROLE: Help learners reflect on their learning process while they gain an understanding of AMG and market entry.
-PRINCIPLE: Guide learners to develop self-awareness and regulation of their learning process, don't provide direct answers.
+ROLLE: Hilf Lernenden, ihren Lernprozess zu reflektieren, wahrend sie AMG und Markteintritt verstehen.
+PRINZIP: Fuhre zu Selbstwahrnehmung und Selbststeuerung, gib keine direkten Antworten.
 
-SCAFFOLDING APPROACH:
-- Focus on learning process reflection and self-assessment
-- Help learners assess how they can identify and close their own knowledge gaps
-- Guide reflection on which learning strategies are working/not working
-- Guide reflection on their learner journey 
-- Use {scaffolding_level} intensity scaffolding
+SCAFFOLDING-ANSATZ:
+- Fokus auf Reflexion des Lernprozesses und Selbsteinschatzung
+- Hilf einzuschätzen, wie Wissenslücken erkannt und geschlossen werden können
+- Leite Reflexion darüber an, welche Lernstrategien funktionieren/nicht funktionieren
+- Begleite die Lernreise
+- Nutze Scaffolding in {scaffolding_level}-Intensitat
 
-INSTRUCTIONS:
-- Stay within metacognitive scaffolding only
-- Use {scaffolding_level} intensity responses
-- Guide through questions, don't provide direct answers
-- Focus on self-reflection about the learner's understanding of AMG
-- Reference the learner's current concept map state
-- Encourage reflection on their concept map state
-- Keep responses reflective and supportive""",
+INSTRUKTIONEN:
+- Bleibe bei metakognitivem Scaffolding
+- Nutze Antworten in {scaffolding_level}-Intensitat
+- Fuhre uber Fragen, keine direkten Antworten
+- Fokussiere Selbstreflexion zum Verstandnis von AMG
+- Beziehe dich auf den aktuellen Zustand der Concept Map
+- Halte Antworten reflektierend und unterstützend""",
             
-            "procedural": f"""You are a Procedural Scaffolding Agent for the Adaptive Market Gatekeeping (AMG) international market entry task.
+            "procedural": f"""Du bist ein prozeduraler Scaffolding Agent fur die AMG-Markteintrittsaufgabe.
 
 SCAFFOLDING LEVEL: {scaffolding_level.upper()}
-ROLE: Help learners understand how to organize the process of mapping AMG's impact on market entry.
-PRINCIPLE: Guide learners through procedures and techniques regarding the provided content, don't provide direct answers.
+ROLLE: Hilf Lernenden, den Prozess des Mappings der AMG-Effekte auf den Markteintritt zu organisieren.
+PRINZIP: Fuhre durch Ablaufe und Techniken zum gegebenen Inhalt, gib keine direkten Antworten.
 
-SCAFFOLDING APPROACH:
-- Guide systematic mapping of each AMG mechanism's effects step-by-step
-- Help use action words (blocks, influences, counters) for AMG relationships
-- Suggest layered organization (AMG mechanisms, strategies, resources)
-- Guide identification of counter-strategies to AMG barriers
-- Use {scaffolding_level} intensity scaffolding
+SCAFFOLDING-ANSATZ:
+- Leite systematisches Mapping der Effekte jedes AMG-Mechanismus Schritt für Schritt an
+- Nutze Aktionswörter (blockiert, beeinflusst, kontert) für AMG-Beziehungen
+- Schlage Schichtungen vor (AMG-Mechanismen, Strategien, Ressourcen)
+- Hilf, Gegenstrategien zu AMG-Barrieren zu identifizieren
+- Nutze Scaffolding in {scaffolding_level}-Intensitat
 
-INSTRUCTIONS:
-- Stay within procedural scaffolding only
-- Use {scaffolding_level} intensity responses
-- Guide through questions, don't provide direct answers
-- Focus on procedures for mapping AMG relationships
-- Reference the learner's current concept map state
-- Encourage creation of nodes and edges
-- Keep responses clear and instructional"""
+INSTRUKTIONEN:
+- Bleibe bei prozeduralem Scaffolding
+- Nutze Antworten in {scaffolding_level}-Intensitat
+- Fuhre uber Fragen, keine direkten Antworten
+- Fokussiere Ablaufe für das Mapping der AMG-Beziehungen
+- Beziehe dich auf den aktuellen Zustand der Concept Map
+- Fördere die Strukturierung von Knoten und Kanten
+- Halte Antworten klar und anleitend"""
         }
         
         return base_messages.get(scaffolding_type, base_messages["conceptual"])
@@ -422,26 +420,26 @@ INSTRUCTIONS:
         
         # Build the prompt
         prompt_parts = [
-            "You are providing scaffolding for a concept mapping task about Adaptive Market Gatekeeping (AMG).",
-            f"\nCurrent concept map has {len(concepts)} concepts and {len(relationships)} relationships.",
-            f"\nConcepts include: {', '.join(concept_list[:5])}{'...' if len(concept_list) > 5 else ''}",
+            "Du lieferst Scaffolding fur eine Concept-Mapping-Aufgabe zu Adaptive Market Gatekeeping (AMG).",
+            f"\nDie aktuelle Concept Map hat {len(concepts)} Konzepte und {len(relationships)} Beziehungen.",
+            f"\nKonzepte enthalten: {', '.join(concept_list[:5])}{'...' if len(concept_list) > 5 else ''}",
         ]
         
         if relationship_descriptions:
-            prompt_parts.append(f"\nKey relationships: {'; '.join(relationship_descriptions[:3])}{'...' if len(relationship_descriptions) > 3 else ''}")
+            prompt_parts.append(f"\nWichtige Beziehungen: {'; '.join(relationship_descriptions[:3])}{'...' if len(relationship_descriptions) > 3 else ''}")
         
         # Add the template as the main instruction
         prompt_parts.extend([
-            f"\n\nUse this template as your response (personalize it with specific concepts from the map):",
+            f"\n\nNutze diese Vorlage fur deine Antwort (personalisiere sie mit konkreten Konzepten aus der Map):",
             f'"{template}"',
-            "\n\nIMPORTANT: Use the exact structure and style of the template, but replace placeholders with actual concepts from the map.",
-            "Keep the same questioning style and scaffolding approach as shown in the template."
+            "\n\nWICHTIG: Verwende die Struktur und den Stil der Vorlage, ersetze Platzhalter mit konkreten Konzepten aus der Map.",
+            "Behalte den gleichen Fragenstil und Scaffolding-Ansatz wie in der Vorlage bei."
         ])
         
         # Add user response context if available
         if user_response:
-            prompt_parts.append(f"\n\nThe learner just responded: \"{user_response}\"")
-            prompt_parts.append("Acknowledge their response appropriately while maintaining the scaffolding approach.")
+            prompt_parts.append(f"\n\nDie lernende Person hat geantwortet: \"{user_response}\"")
+            prompt_parts.append("Wuerdige die Antwort passend und bleibe beim Scaffolding-Ansatz.")
         
         return "\n".join(prompt_parts)
     
@@ -493,30 +491,30 @@ INSTRUCTIONS:
             relationship_list.append(f"- {source_label} → {relation_text} → {target_label}")
         
         prompt_parts = [
-            f"I'm analyzing a concept map with the following elements:",
-            f"\nConcepts ({len(concepts)}):",
+            f"Ich analysiere eine Concept Map mit folgenden Elementen:",
+            f"\nKonzepte ({len(concepts)}):",
             "\n".join(concept_list),
-            f"\nRelationships ({len(relationships)}):",
-            "\n".join(relationship_list) if relationship_list else "- No relationships defined yet"
+            f"\nBeziehungen ({len(relationships)}):",
+            "\n".join(relationship_list) if relationship_list else "- Noch keine Beziehungen definiert"
         ]
         
         # Add context if available
         if context:
             round_num = context.get("round_number", 0)
-            prompt_parts.append(f"\nThis is round {round_num + 1} of the concept mapping session.")
+            prompt_parts.append(f"\nDies ist Runde {round_num + 1} der Concept-Mapping-Session.")
         
         # Add user response if this is a follow-up
         if user_response:
             prompt_parts.extend([
-                f"\nThe learner responded: \"{user_response}\"",
-                f"\nPlease provide appropriate {scaffolding_type} scaffolding based on this response."
+                f"\nDie lernende Person antwortete: \"{user_response}\"",
+                f"\nBitte liefere passende {scaffolding_type}-Unterstützung basierend auf dieser Antwort."
             ])
         else:
-            prompt_parts.append(f"\nPlease provide {scaffolding_type} scaffolding to help improve this concept map.")
+            prompt_parts.append(f"\nBitte liefere {scaffolding_type}-Scaffolding, um diese Concept Map zu verbessern.")
         
         prompt_parts.extend([
-            f"\nProvide a helpful, encouraging response that guides the learner's thinking.",
-            f"Keep your response concise (2-3 sentences) and ask one specific question to promote engagement."
+            f"\nGib eine hilfreiche, motivierende Antwort, die das Denken anleitet.",
+            f"Halte die Antwort kurz (2-3 Satze) und stelle eine konkrete Frage, um Engagement zu fördern."
         ])
         
         return "\n".join(prompt_parts)

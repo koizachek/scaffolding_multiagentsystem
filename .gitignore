@@ -30,3 +30,7 @@ MAS/experimental_data/
 MAS/app/testing_fixes
 #old files
 /MAS/app/app Kopie.py
+
+# Unused for Streamlit experimental app
+MAS/core/
+MAS/examples/

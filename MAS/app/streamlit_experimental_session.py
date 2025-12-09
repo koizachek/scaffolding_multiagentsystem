@@ -139,85 +139,85 @@ class StreamlitExperimentalSession:
         """Render pre-knowledge questionnaire about task materials."""
         import streamlit as st
         
-        st.header("📝 Pre-Knowledge Assessment")
+        st.header("📝 Vorkenntnis-Abfrage")
         st.markdown("---")
         
         st.info("""
-        Please answer the following questions about the task materials. 
-        This helps us understand your baseline knowledge before the experiment begins.
+        Bitte beantworte die folgenden Fragen. 
+        Diese Informationen helfen uns, dein Vorwissen zu verstehen.
         
-        **Note:** Your answers will not be graded or shown to you. This is purely for research purposes.
+        **Notiz:** Deine Antworten werden nicht bewertet, sondern zu Forschungszwecken erhoben.
         """)
         
         # Define questions with correct answers (for logging only)
         questions = [
             {
                 "id": "market_analysis",
-                "question": "Market Analysis: What is the main purpose of market analysis?",
+                "question": "Marktanalyse: Was ist das Hauptziel einer Marktanalyse?",
                 "options": {
-                    "A": "To monitor internal employee satisfaction",
-                    "B": "To investigate and evaluate potential markets",
-                    "C": "To test software usability in market settings"
+                    "A": "Die Zufriedenheit der Mitarbeitenden zu uberwachen",
+                    "B": "Potenzielle Markte zu untersuchen und zu bewerten",
+                    "C": "Software-Usability im Markt zu testen"
                 },
                 "correct": "B"
             },
             {
                 "id": "attention_check_pre",
-                "question": "Attention Check: Which Answer is in the center?",
+                "question": "Aufmerksamkeitscheck: Welche Antwort steht in der Mitte?",
                 "options": {
-                    "A": "This answer is the first",
-                    "B": "At the center you may find this answer",
-                    "C": "The last possible answer"
+                    "A": "Diese Antwort steht zuerst",
+                    "B": "In der Mitte findest du diese Antwort",
+                    "C": "Die letzte mogliche Antwort"
                 },
                 "correct": "B"
             },
             {
                 "id": "startup_resources",
-                "question": "Start-up Resources: Which resources are critical for expansion?",
+                "question": "Ressourcen: Welche Ressourcen sind fur die Expansion entscheidend?",
                 "options": {
-                    "A": "A strong company branding and a mission",
-                    "B": "Capital, staff, and know-how",
-                    "C": "Access to local talent"
+                    "A": "Starke Marke und Mission",
+                    "B": "Kapital, Personal und Know-how",
+                    "C": "Zugang zu lokalen Talenten"
                 },
                 "correct": "B"
             },
             {
                 "id": "export",
-                "question": "Export: What does an export strategy involve?",
+                "question": "Export: Was beinhaltet eine Exportstrategie?",
                 "options": {
-                    "A": "Outsourcing production to the new market",
-                    "B": "Relocating or setting up new offices abroad",
-                    "C": "Shipping products from the home country to the new market"
+                    "A": "Auslagerung der Produktion ins Zielland",
+                    "B": "Neue Niederlassungen im Ausland eroffnen",
+                    "C": "Produkte aus dem Heimatland in den Zielmarkt liefern"
                 },
                 "correct": "C"
             },
             {
                 "id": "joint_venture",
-                "question": "Joint Venture: What is a joint venture?",
+                "question": "Joint Venture: Was ist ein Joint Venture?",
                 "options": {
-                    "A": "A partnership with a local company in the target market",
-                    "B": "A partnership with a local supplier without shared ownership",
-                    "C": "An acquisition of a competitor's patents to produce locally"
+                    "A": "Partnerschaft mit einem lokalen Unternehmen im Zielmarkt",
+                    "B": "Partnerschaft mit einem lokalen Lieferanten ohne gemeinsames Eigentum",
+                    "C": "Erwerb von Patenten eines Wettbewerbers zur lokalen Produktion"
                 },
                 "correct": "A"
             },
             {
                 "id": "direct_investment",
-                "question": "Direct Investment: What does direct investment mean?",
+                "question": "Direktinvestition: Was bedeutet Direktinvestition?",
                 "options": {
-                    "A": "Relying on e-commerce distribution",
-                    "B": "Licensing technology to other firms for profit",
-                    "C": "Establishing your own subsidiary or branch abroad"
+                    "A": "Verkauf uber E-Commerce",
+                    "B": "Technologie lizenzieren, um Gewinn zu erzielen",
+                    "C": "Eigene Niederlassung oder Tochtergesellschaft im Ausland grunden"
                 },
                 "correct": "C"
             },
             {
                 "id": "amg",
-                "question": "AMG: How might Adaptive Market Gatekeeping (AMG) affect new entrants?",
+                "question": "AMG: Wie kann Adaptive Market Gatekeeping (AMG) neue Marktteilnehmer beeinflussen?",
                 "options": {
-                    "A": "Governments guarantee fair access for every new entrant",
-                    "B": "Start-ups gain automatic advantages over established firms as an incentive",
-                    "C": "Incumbent firms adapt rules and networks to make entry harder for competitors"
+                    "A": "Staaten garantieren allen fairen Zugang",
+                    "B": "Start-ups erhalten automatisch Vorteile gegenuber Etablierten",
+                    "C": "Etablierte passen Regeln und Netzwerke an, um den Markteintritt zu erschweren"
                 },
                 "correct": "C"
             }
@@ -250,12 +250,12 @@ class StreamlitExperimentalSession:
                 
                 st.markdown("---")
             
-            submitted = st.form_submit_button("Submit Questionnaire", type="primary")
+            submitted = st.form_submit_button("Fragebogen abschicken", type="primary")
             
             if submitted:
                 # Check if all questions are answered
                 if len(responses) < len(questions):
-                    st.error(f"Please answer all {len(questions)} questions before submitting.")
+                    st.error(f"Bitte beantworte alle {len(questions)} Fragen, bevor du absendest.")
                     return
                 
                 # Calculate score (for logging only, not shown to user)
@@ -342,8 +342,8 @@ class StreamlitExperimentalSession:
                 st.session_state.pre_questionnaire_completed = True
                 st.session_state.show_tutorial = True
                 
-                st.success("✅ Questionnaire completed! Thank you for your responses.")
-                st.info("📚 Proceeding to the tutorial on concept mapping...")
+                st.success("✅ Fragebogen abgeschlossen! Danke fur deine Antworten.")
+                st.info("📚 Weiter zum Tutorial zum Concept Mapping...")
                 
                 # Automatically proceed to tutorial
                 st.rerun()
@@ -352,13 +352,13 @@ class StreamlitExperimentalSession:
         """Render Cognitive Load Theory questionnaire."""
         import streamlit as st
         
-        st.header("📊 Cognitive Load Assessment")
+        st.header("📊 Erhebung der kognitiven Belastung")
         st.markdown("---")
         
         st.info("""
-        Please answer the following statements about the learning task you just completed.
+        Bitte bewerte die folgenden Aussagen zur soeben abgeschlossenen Lernaufgabe.
         
-        Select a rating from 1 (not at all applicable) to 9 (fully applicable) for each statement.
+        Waehle fur jede Aussage eine Bewertung von 1 (trifft gar nicht zu) bis 9 (trifft voll zu).
         """)
         
         # Define CLT items (15 items total)
@@ -448,7 +448,7 @@ class StreamlitExperimentalSession:
         attention_check_item = {
             "construct": "ATTN",
             "code": "ATTN1",
-            "statement": "To show you are paying attention, please select the number 4."
+            "statement": "Um zu zeigen, dass du aufmerksam bist, waehle bitte die Zahl 4."
         }
         insert_position = random.randint(0, len(clt_items))
         clt_items.insert(insert_position, attention_check_item)
@@ -466,7 +466,7 @@ class StreamlitExperimentalSession:
             for i, item_idx in enumerate(st.session_state.clt_item_order, 1):
                 item = clt_items[item_idx]
                 
-                st.markdown(f"**Statement {i} of {len(clt_items)}**")
+                st.markdown(f"**Aussage {i} von {len(clt_items)}**")
                 st.markdown(f"*{item['statement']}*")
                 
                 # Use radio buttons for 7-point Likert scale
@@ -496,7 +496,7 @@ class StreamlitExperimentalSession:
             if submitted:
                 # Check if all items are answered
                 if len(responses) < len(clt_items):
-                    st.error(f"Please answer all {len(clt_items)} statements before submitting.")
+                    st.error(f"Bitte beantworte alle {len(clt_items)} Aussagen, bevor du absendest.")
                     return
                 
                 # Calculate construct averages
@@ -560,8 +560,8 @@ class StreamlitExperimentalSession:
                 # Update session state to mark CLT as completed
                 st.session_state.clt_completed = True
                 
-                st.success("✅ Cognitive Load questionnaire completed!")
-                st.info("📊 Proceeding to the Post Knowledge questionnaire...")
+                st.success("✅ Fragebogen zur kognitiven Belastung abgeschlossen!")
+                st.info("📊 Weiter zum Post-Knowledge-Fragebogen...")
                 
                 # Automatically proceed to post knowledge
                 st.rerun()
@@ -571,12 +571,12 @@ class StreamlitExperimentalSession:
         """Render Post Knowledge questionnaire."""
         import streamlit as st
 
-        st.header("📋 Your Learning Gains")
+        st.header("📋 Deine Lernergebnisse")
         st.markdown("---")
 
         st.info(
             """
-            Please answer the following questions. This helps us understand your knowledge gains after the experiment.
+            Bitte beantworte die folgenden Fragen. Das hilft uns, deine Wissenszuwachse nach dem Experiment zu verstehen.
             """
         )
 
@@ -584,71 +584,71 @@ class StreamlitExperimentalSession:
         questions = [
             {
                 "id": "market_analysis",
-                "question": "Market Analysis: What is the main purpose of market analysis?",
+                "question": "Marktanalyse: Was ist das Hauptziel einer Marktanalyse?",
                 "options": {
-                    "A": "To monitor internal employee satisfaction",
-                    "B": "To investigate and evaluate potential markets",
-                    "C": "To test software usability in market settings"
+                    "A": "Die Zufriedenheit der Mitarbeitenden zu uberwachen",
+                    "B": "Potenzielle Markte zu untersuchen und zu bewerten",
+                    "C": "Software-Usability im Markt zu testen"
                 },
                 "correct": "B"
             },
             {
                 "id": "startup_resources",
-                "question": "Start-up Resources: Which resources are critical for expansion?",
+                "question": "Ressourcen: Welche Ressourcen sind fur die Expansion entscheidend?",
                 "options": {
-                    "A": "A strong company branding and a mission",
-                    "B": "Capital, staff, and know-how",
-                    "C": "Access to local talent"
+                    "A": "Starke Marke und Mission",
+                    "B": "Kapital, Personal und Know-how",
+                    "C": "Zugang zu lokalen Talenten"
                 },
                 "correct": "B"
             },
             {
                 "id": "export",
-                "question": "Export: What does an export strategy involve?",
+                "question": "Export: Was beinhaltet eine Exportstrategie?",
                 "options": {
-                    "A": "Outsourcing production to the new market",
-                    "B": "Relocating or setting up new offices abroad",
-                    "C": "Shipping products from the home country to the new market"
+                    "A": "Auslagerung der Produktion ins Zielland",
+                    "B": "Neue Niederlassungen im Ausland eroffnen",
+                    "C": "Produkte aus dem Heimatland in den Zielmarkt liefern"
                 },
                 "correct": "C"
             },
             {
                 "id": "joint_venture",
-                "question": "Joint Venture: What is a joint venture?",
+                "question": "Joint Venture: Was ist ein Joint Venture?",
                 "options": {
-                    "A": "A partnership with a local company in the target market",
-                    "B": "A partnership with a local supplier without shared ownership",
-                    "C": "An acquisition of a competitor's patents to produce locally"
+                    "A": "Partnerschaft mit einem lokalen Unternehmen im Zielmarkt",
+                    "B": "Partnerschaft mit einem lokalen Lieferanten ohne gemeinsames Eigentum",
+                    "C": "Erwerb von Patenten eines Wettbewerbers zur lokalen Produktion"
                 },
                 "correct": "A"
             },
             {
                 "id": "attention_check_post",
-                "question": "Attention Check: Which Answer is in the center?",
+                "question": "Aufmerksamkeitscheck: Welche Antwort steht in der Mitte?",
                 "options": {
-                    "A": "This answer is the first",
-                    "B": "At the center you may find this answer",
-                    "C": "The last possible answer"
+                    "A": "Diese Antwort steht zuerst",
+                    "B": "In der Mitte findest du diese Antwort",
+                    "C": "Die letzte mogliche Antwort"
                 },
                 "correct": "B"
             },
             {
                 "id": "direct_investment",
-                "question": "Direct Investment: What does direct investment mean?",
+                "question": "Direktinvestition: Was bedeutet Direktinvestition?",
                 "options": {
-                    "A": "Relying on e-commerce distribution",
-                    "B": "Licensing technology to other firms for profit",
-                    "C": "Establishing your own subsidiary or branch abroad"
+                    "A": "Verkauf uber E-Commerce",
+                    "B": "Technologie lizenzieren, um Gewinn zu erzielen",
+                    "C": "Eigene Niederlassung oder Tochtergesellschaft im Ausland grunden"
                 },
                 "correct": "C"
             },
             {
                 "id": "amg",
-                "question": "AMG: How might Adaptive Market Gatekeeping (AMG) affect new entrants?",
+                "question": "AMG: Wie kann Adaptive Market Gatekeeping (AMG) neue Marktteilnehmer beeinflussen?",
                 "options": {
-                    "A": "Governments guarantee fair access for every new entrant",
-                    "B": "Start-ups gain automatic advantages over established firms as an incentive",
-                    "C": "Incumbent firms adapt rules and networks to make entry harder for competitors"
+                    "A": "Staaten garantieren allen fairen Zugang",
+                    "B": "Start-ups erhalten automatisch Vorteile gegenuber Etablierten",
+                    "C": "Etablierte passen Regeln und Netzwerke an, um den Markteintritt zu erschweren"
                 },
                 "correct": "C"
             }
@@ -681,12 +681,12 @@ class StreamlitExperimentalSession:
 
                 st.markdown("---")
 
-            submitted = st.form_submit_button("Submit Questionnaire", type="primary")
+            submitted = st.form_submit_button("Fragebogen abschicken", type="primary")
 
             if submitted:
                 # Check if all questions are answered
                 if len(responses) < len(questions):
-                    st.error(f"Please answer all {len(questions)} questions before submitting.")
+                    st.error(f"Bitte beantworte alle {len(questions)} Fragen, bevor du absendest.")
                     return
 
                 # Calculate score (for logging only, not shown to user)
@@ -738,8 +738,8 @@ class StreamlitExperimentalSession:
 
                 # Update session state to mark questionnaire as completed
                 st.session_state.post_questionnaire_completed = True
-                st.success("✅ Questionnaire completed! Thank you for your responses.")
-                st.info("📊 Proceeding to the Cognitive Load questionnaire...")
+                st.success("✅ Fragebogen abgeschlossen! Danke fur deine Antworten.")
+                st.info("📊 Weiter zum Fragebogen zur kognitiven Belastung...")
 
                 # Automatically proceed
                 st.rerun()
@@ -747,22 +747,22 @@ class StreamlitExperimentalSession:
     
     def create_learner_profile_form(self) -> Dict[str, Any]:
         """Create learner profile through Streamlit form."""
-        st.header("Learner Profile Creation")
-        st.markdown("Please complete your learner profile to personalize your experience.")
+        st.header("Lernendenprofil erstellen")
+        st.markdown("Bitte erstelle dein Lernendenprofil, um die Erfahrung zu personalisieren.")
         
         # Add disclaimer
         st.warning("""
-        **Important Notice:**
+        **Wichtiger Hinweis:**
         
-        All your data will be anonymized throughout the study. We will not collect or record your legal name. You can choose your alias.
+        Alle Daten werden anonymisiert. Wir erfassen keinen Klarnamen – waehle ein Alias.
                    
-        For the integrity of this research study, we strongly encourage you to:
-        - Use only your own cognitive abilities and the materials provided
-        - Refrain from using ChatGPT or any other AI assistants during the tasks
+        Fuer die Integritaet der Studie bitten wir dich:
+        - Nutze nur deine eigenen kognitiven Faehigkeiten und die bereitgestellten Materialien.
+        - Verzichte auf ChatGPT oder andere KI-Assistenten waehrend der Aufgaben.
         
-        Please note that your browser activity, including tab switching, will be monitored during the experiment to ensure data validity.
+        Deine Browser-Aktivitaet (inkl. Tab-Wechsel) kann zur Sicherung der Datenqualitaet beobachtet werden.
         
-        Your honest participation helps us develop better learning materials for future students. Thank you for your cooperation!
+        Deine ehrliche Teilnahme hilft uns, bessere Lernmaterialien zu entwickeln. Danke fuer deine Unterstuetzung!
         """)
         
         # Define dropdown options
@@ -1236,12 +1236,12 @@ class StreamlitExperimentalSession:
         """Get agent response for the current round with pattern detection."""
         # Handle round 0 specially - no scaffolding
         if roundn == 0:
-            return "Please create your initial concept map on the topic. Take your time to include all the concepts and relationships you think are relevant. When you're ready, submit your concept map to proceed."
+            return "Bitte erstelle deine erste Concept Map zum Thema. Nimm dir Zeit, alle relevanten Konzepte und Beziehungen einzutragen. Wenn du bereit bist, reiche die Concept Map ein, um fortzufahren."
         
         # Adjust for agent sequence after round 0
         agent_index = roundn - 1
         if agent_index >= len(self.session_data["agent_sequence"]):
-            return "Session completed. Thank you for participating!"
+            return "Session abgeschlossen. Vielen Dank fur deine Teilnahme!"
         
         agent_type = self.session_data["agent_sequence"][agent_index]
         
@@ -1329,10 +1329,10 @@ class StreamlitExperimentalSession:
         
         # Demo responses fallback
         demo_responses = {
-            "conceptual_scaffolding": "Let's explore the conceptual relationships in your map. How do these concepts connect to form a coherent understanding?",
-            "strategic_scaffolding": "Consider the strategic organization of your concept map. What's the most effective way to structure these ideas?",
-            "metacognitive_scaffolding": "Reflect on your thinking process. How confident are you about these relationships? What might you be missing?",
-            "procedural_scaffolding": "Let's focus on the procedural aspects. What steps or tools did you utilize in your concept map?"
+            "conceptual_scaffolding": "Lass uns die konzeptuellen Beziehungen in deiner Map erkunden. Wie fugen sich diese Konzepte zu einem stimmigen Verstandnis zusammen?",
+            "strategic_scaffolding": "Uberlege die strategische Struktur deiner Concept Map. Wie ordnest du die Ideen am effektivsten?",
+            "metacognitive_scaffolding": "Reflektiere deinen Denkprozess. Wie sicher bist du dir bei diesen Beziehungen? Was konnte noch fehlen?",
+            "procedural_scaffolding": "Schau auf die praktischen Schritte. Welche Vorgehensweise oder Tools hast du beim Erstellen der Map genutzt?"
         }
         
         # Try OpenAI integration for experimental mode (only for scaffolding agents)
@@ -1439,9 +1439,9 @@ class StreamlitExperimentalSession:
                 
                 # Safely extract response
                 if isinstance(api_result, dict):
-                    response = api_result.get("response", "I apologize, but I'm having trouble generating a response. Please continue with your concept map or skip to the next round.")
+                    response = api_result.get("response", "Entschuldige, ich habe Schwierigkeiten, eine Antwort zu erzeugen. Bitte arbeite an deiner Concept Map weiter oder springe zur nachsten Runde.")
                 else:
-                    response = str(api_result) if api_result else "I apologize, but I'm having trouble generating a response. Please continue with your concept map or skip to the next round."
+                    response = str(api_result) if api_result else "Entschuldige, ich habe Schwierigkeiten, eine Antwort zu erzeugen. Bitte arbeite an deiner Concept Map weiter oder springe zur nachsten Runde."
                 
                 # Log the interaction
                 if self.session_logger:
@@ -1474,19 +1474,19 @@ class StreamlitExperimentalSession:
                             "agent_type": agent_type
                         }
                     )
-                st.warning(f"{error_msg}. Using demo response.")
+                st.warning(f"{error_msg}. Ich nutze eine Demo-Antwort.")
                 # Fall through to demo response
         
         # Use demo response with conversation awareness
         if conversation_turn > 0 and user_response:
             # Create contextual demo responses for follow-ups
             demo_followup_responses = {
-                "conceptual_scaffolding": f"I see you mentioned '{user_response[:50]}...'. Let's explore how this connects to the broader conceptual framework in your map.",
-                "strategic_scaffolding": f"Based on your response about '{user_response[:50]}...', have you considered alternative organizational strategies?",
-                "metacognitive_scaffolding": f"Your reflection on '{user_response[:50]}...' is interesting. What does this tell you about your learning process?",
-                "procedural_scaffolding": f"You mentioned '{user_response[:50]}...'. How does this procedural approach compare to other methods and tools you could use?"
+                "conceptual_scaffolding": f"Du hast '{user_response[:50]}...' erwahnt. Wie passt das in den konzeptuellen Rahmen deiner Map?",
+                "strategic_scaffolding": f"Ausgehend von '{user_response[:50]}...' – hast du alternative Organisationsstrategien bedacht?",
+                "metacognitive_scaffolding": f"Deine Reflexion zu '{user_response[:50]}...' ist interessant. Was sagt dir das uber deinen Lernprozess?",
+                "procedural_scaffolding": f"Du hast '{user_response[:50]}...' erwahnt. Wie lasst sich dieser Schritt mit anderen Methoden oder Tools vergleichen?"
             }
-            response = demo_followup_responses.get(agent_type, demo_responses.get(agent_type, "Thank you for your response. Can you elaborate further?"))
+            response = demo_followup_responses.get(agent_type, demo_responses.get(agent_type, "Danke fur deine Antwort. Kannst du das noch etwas ausfuhrlicher erlautern?"))
         else:
             response = demo_responses.get(agent_type, demo_responses["conceptual_scaffolding"])
         
@@ -1556,38 +1556,38 @@ class StreamlitExperimentalSession:
             elif pattern_type == "reassurance_seeking":
                 return handle_reassurance_seeking(user_response, internal_format, expert_map)
             elif pattern_type == "help_seeking":
-                return "Please check the 'Task Description' and 'Extra Materials' buttons for guidance. Continue working on your concept map as instructed."
+                return "Bitte nutze die Buttons 'Task Description' und 'Extra Materials' fur Hinweise. Arbeite an deiner Concept Map wie beschrieben weiter."
             elif pattern_type == "empty_input":
-                return "Please type your response or click 'Finish Round' to continue to the next round."
+                return "Bitte gib deine Antwort ein oder klicke auf 'Finish Round', um zur nachsten Runde zu gehen."
             elif pattern_type == "gibberish":
-                return "I didn't understand that. Please continue with your concept mapping task as described."
+                return "Das habe ich nicht verstanden. Bitte arbeite an deiner Concept Map wie beschrieben weiter."
             elif pattern_type == "greeting":
-                return "Hello! Please continue with your concept mapping task as described in the instructions."
+                return "Hallo! Bitte arbeite an deiner Concept Map wie in den Anweisungen beschrieben weiter."
             elif pattern_type == "minimal_input":
-                return "Please continue developing your concept map as outlined in the task."
+                return "Bitte entwickle deine Concept Map weiter wie in der Aufgabe vorgesehen."
             elif pattern_type == "system_question":
-                return "That's something for you to decide based on the task instructions. Continue working as you think appropriate."
+                return "Das entscheidest du anhand der Aufgabenbeschreibung. Arbeite weiter, wie du es fur richtig haltst."
             elif pattern_type == "disagreement":
-                return "I understand you have a different view. Please continue with your concept mapping as you see fit."
+                return "Verstanden, dass du es anders siehst. Bitte arbeite an deiner Concept Map weiter, wie du es fur richtig haltst."
             elif pattern_type == "inappropriate_language":
-                return "Let's keep our discussion focused on the concept mapping task. Please continue working as instructed."
+                return "Lass uns beim Thema Concept Mapping bleiben. Bitte arbeite wie angewiesen weiter."
             elif pattern_type == "off_topic":
-                return "Please focus on the concept mapping task as described. Continue building your map according to the instructions."
+                return "Bitte konzentriere dich auf die Concept-Mapping-Aufgabe. Baue deine Map wie beschrieben weiter aus."
             elif pattern_type == "frustration":
-                return "Please take your time with the concept mapping task. Continue working according to the provided instructions."
+                return "Nimm dir Zeit fur die Concept-Mapping-Aufgabe. Arbeite nach den bereitgestellten Anweisungen weiter."
             elif pattern_type == "premature_ending":
-                return "Your contribution is valuable for this research. Please continue with the concept mapping task as outlined."
+                return "Dein Beitrag ist wichtig fur die Studie. Bitte fahre mit der Concept-Mapping-Aufgabe wie vorgesehen fort."
             elif pattern_type in ["concrete_idea", "conversational", "intention_without_action"]:
                 # Acknowledge without scaffolding
                 idea_snippet = user_response[:30] + "..." if len(user_response) > 30 else user_response
-                return f"I see you mentioned '{idea_snippet}'. Continue developing your concept map as you think best."
+                return f"Ich sehe, du hast '{idea_snippet}' erwahnt. Fahre fort, deine Concept Map nach deinen Vorstellungen auszubauen."
             else:
                 # Default neutral response
                 node_count = len(internal_format.get("concepts", []))
                 if node_count > 0:
-                    return f"Your map has {node_count} concepts so far - please continue as instructed."
+                    return f"Deine Map hat bisher {node_count} Konzepte - bitte arbeite wie angewiesen weiter."
                 else:
-                    return "Please continue with your concept mapping task as described."
+                    return "Bitte arbeite an deiner Concept Map wie beschrieben weiter."
         
         # Extract scaffolding type without "_scaffolding" suffix for handlers
         scaffolding_type_clean = agent_type.replace("_scaffolding", "")
@@ -1675,13 +1675,13 @@ class StreamlitExperimentalSession:
         
         # Agent-specific idea affirmations with call to action
         idea_responses = {
-            "conceptual_scaffolding": f"That's an interesting conceptual insight about '{idea_snippet}'. Does your concept map reflect this understanding? Consider adding a node or relationship to capture this idea.",
-            "procedural_scaffolding": f"Good procedural thinking about '{idea_snippet}'. How can you incorporate this into your mapping process? Try adding it as a labeled relationship.",
-            "strategic_scaffolding": f"Interesting strategic perspective on '{idea_snippet}'. How does this fit into your overall map organization? Consider repositioning related concepts to highlight this.",
-            "metacognitive_scaffolding": f"That's valuable reflection about '{idea_snippet}'. What does this tell you about your understanding? How confident are you in representing this in your map?"
+            "conceptual_scaffolding": f"Spannende konzeptuelle Einsicht zu '{idea_snippet}'. Spiegelt deine Concept Map das wider? Fuge ggf. einen Knoten oder eine Beziehung hinzu.",
+            "procedural_scaffolding": f"Gute prozedurale Uberlegung zu '{idea_snippet}'. Wie kannst du das in deinen Mapping-Prozess einbauen? Versuche es als beschriftete Beziehung einzutragen.",
+            "strategic_scaffolding": f"Interessante strategische Perspektive auf '{idea_snippet}'. Wie passt das in deine Gesamtstruktur? Ordne verwandte Konzepte ggf. um, um das hervorzuheben.",
+            "metacognitive_scaffolding": f"Wertvolle Reflexion zu '{idea_snippet}'. Was sagt dir das uber dein Verstandnis? Wie sicher kannst du das in der Map darstellen?"
         }
         
-        return idea_responses.get(agent_type, f"I see you mentioned '{idea_snippet}'. How does this relate to your concept map?")
+        return idea_responses.get(agent_type, f"Ich sehe, du hast '{idea_snippet}' erwahnt. Wie hangt das mit deiner Concept Map zusammen?")
     
     def log_user_response(self, roundn: int, user_response: str, concept_map_data: Optional[Dict[str, Any]] = None):
         """Log user response to scaffolding."""
