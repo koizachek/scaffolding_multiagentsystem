@@ -17,6 +17,8 @@ examples/output/all_features/concept_map.json
 examples/output/all_features/concept_map.png
 examples/output/all_features/config.json
 experimental_data/
+MAS/app/logs/
+*.log
 .venv/
 .logs/
 .env
