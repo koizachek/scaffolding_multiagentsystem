@@ -2,10 +2,10 @@
     "rounds": 4,
     "labels": { 
 	"initial": {
-	    "header": "Please create your initial concept map using the window below."
+	    "header": "Bitte erstelle deine erste Concept Map im Fenster unten."
 	},
 	"extend": {
-	    "header": "Please extend your concept map from the previous round."
+	    "header": "Bitte erweitere deine Concept Map aus der vorherigen Runde."
 	}
     },
 

@@ -110,43 +110,43 @@ def render_mode_selection():
 
     # Add page refresh warning at the top
     st.error("""
-    🚫 **DO NOT REFRESH THE PAGE** 
+    🚫 **BITTE DIE SEITE NICHT AKTUALISIEREN**
 
-    Refreshing the page will restart your session from the beginning and you will lose all progress!
-    Please complete the entire experiment in one session.
+    Ein Neuladen wuerde die Sitzung von vorne beginnen lassen und Fortschritt loeschen!
+    Bitte das gesamte Experiment in einer Sitzung absolvieren.
     """)
 
     # Display the study introduction as regular text (not protected)
-    st.markdown("### Study Introduction")
+    st.markdown("### Studien-Einfuehrung")
     st.markdown(STUDY_INTRODUCTION)
 
     # Display topic as regular text (not protected)
     st.info(
-        "**Topic:** International market entry challenges for a German software start-up under the Adaptive Market Gatekeeping (AMG) standard.")
+        "**Thema:** Herausforderungen beim internationalen Markteintritt eines deutschen Software-Start-ups unter dem Standard Adaptive Market Gatekeeping (AMG).")
 
     # Task description and resources information
     st.success("""
-    📋 **Task Description & Resources:**
+    📋 **Aufgabenbeschreibung & Materialien:**
 
-    This study examines the helpfulness of chatbot instructions in learning. During the experiment, you will have continuous access to:
-    - **Task Description**: The specific problem you need to solve through concept mapping
-    - **Extra Materials**: Additional resources to help you understand the topic
-    - **Aid and Instructions**: From round 1 on, you can interact with a chatbot that assists you in improving your map
+    Diese Studie untersucht die Nuetzlichkeit von Chatbot-Anweisungen beim Lernen. Im Experiment hast du durchgehend Zugriff auf:
+    - **Aufgabenbeschreibung**: Das konkrete Problem, das du per Concept Map loesen sollst
+    - **Zusatzmaterialien**: Weitere Ressourcen zum besseren Verstaendnis des Themas
+    - **Hilfen und Anweisungen**: Ab Runde 1 kannst du mit einem Chatbot interagieren, der dir hilft, deine Map zu verbessern
 
-    These resources will be available via buttons at the top of the screen throughout all rounds. The chatbot is below the concept map.
-    Your task is to create and refine a concept map that represents your understanding of the problem described in these materials with the help of the chatbot.
+    Diese Ressourcen findest du oben auf der Seite als Buttons. Der Chatbot ist unter der Concept Map positioniert.
+    Deine Aufgabe: Erstelle und verfeinere eine Concept Map, die dein Verstaendnis des beschriebenen Problems widerspiegelt – mit Hilfe des Chatbots.
     """)
 
     # Add time information
     st.warning("""
-    ⏱️ **Expected Duration:**
-    - Total experiment time: **Approximately 45 minutes**
-    - 5 rounds of concept mapping: **5 minutes per round**
-    - Additional time for questionnaires and profile setup
-    - Your time will be tracked for research purposes
+    ⏱️ **Erwartete Dauer:**
+    - Gesamtdauer: **ca. 45 Minuten**
+    - 5 Runden Concept Mapping: **ca. 5 Minuten pro Runde**
+    - Zusaetzliche Zeit fuer Frageboegen und Profil
+    - Deine Zeit wird zu Forschungszwecken erfasst
 
-    ⚠️ **Important:** Please complete all steps in order. Experimental data will only be logged after all required items are filled out. 
-    Your careful participation ensures the validity of our research data. The top 10 percent of participants will receive a financial bonus.
+    ⚠️ **Wichtig:** Bitte alle Schritte der Reihe nach abschliessen. Daten werden nur erfasst, wenn alle Pflichtangaben gemacht wurden.
+    Deine sorgfaeltige Teilnahme sichert gueltige Forschungsdaten. Die besten 10 Prozent der Teilnehmenden erhalten einen Bonus.
     """)
 
     st.markdown("**Bereit, das Experiment zu starten?**")
@@ -164,7 +164,7 @@ def render_mode_selection():
         - **Datenerhebung fuer Forschungszwecke**
         """)
 
-        if st.button("Start Experimental Session", type="primary", use_container_width=True):
+        if st.button("Experiment starten", type="primary", use_container_width=True):
             st.session_state.mode = "experimental"
             st.session_state.experimental_session = StreamlitExperimentalSession()
 
@@ -718,8 +718,8 @@ def render_header():
 @st.dialog("Task Description", width='large')
 def render_task_dialog():
     """Render task description dialog with copy protection."""
-    st.markdown("### 📋 Task Description")
-    st.caption("This content is protected and cannot be copied.")
+    st.markdown("### 📋 Aufgabenbeschreibung")
+    st.caption("Dieser Inhalt ist geschuetzt und kann nicht kopiert werden.")
 
     # Render task description as protected image with larger font
     render_protected_markdown(TASK_DESCRIPTION, width=1100, font_size=20)
@@ -728,36 +728,35 @@ def render_task_dialog():
 @st.dialog("Extra Materials", width='large')
 def render_materials_dialog():
     """Render extra materials dialog with copy protection."""
-    st.markdown("### 📚 Extra Materials")
-    st.caption("This content is protected and cannot be copied.")
+    st.markdown("### 📚 Zusatzmaterialien")
+    st.caption("Dieser Inhalt ist geschuetzt und kann nicht kopiert werden.")
 
     # Render extra materials as protected image with larger font
     render_protected_markdown(EXTRA_MATERIALS, width=1100, font_size=20)
 
 
-@st.dialog("How to use a concept map creator?", width='large')
+@st.dialog("Anleitung Concept-Map-Editor", width='large')
 def render_help_dialog():
     """Render help dialog for concept map editor."""
-    st.subheader("Modifying nodes 🔵")
+    st.subheader("Knoten bearbeiten 🔵")
     st.markdown("""
-                - Click with **Left Mouse Button** 🖱️ on any place to create a new node.
-                    - Write the label and press **Enter** or click on the **OK** Button to confirm changes.
-                    - Press **Escape** or drag the context map to discard changes.
-                - You can move holding the **Left Mouse Button** 🖱️ on a node.
-                    - You can also select multiple nodes by holding the **Shift** button. Selected nodes will be highlighted with the green color 🟢. 
-                    - Selected nodes can be moved together.
-                - Double Click with **Left Mouse Button** 🖱️ on a node to edit it's label.
-                - Click with **Right Mouse Button** 🖱️ on a node to delete it.
+                - **Linksklick** 🖱️ irgendwo auf die Map, um einen neuen Knoten zu erstellen.
+                    - Beschriftung eingeben und mit **Enter** oder **OK** bestaetigen.
+                    - Mit **Escape** oder Ziehen der Map abbrechen.
+                - Halte die **linke Maustaste** 🖱️ auf einem Knoten, um ihn zu bewegen.
+                    - Mit **Shift** kannst du mehrere Knoten markieren (gruen hervorgehoben) und gemeinsam verschieben.
+                - **Doppelklick** auf einen Knoten, um die Beschriftung zu bearbeiten.
+                - **Rechtsklick** auf einen Knoten, um ihn zu loeschen.
                 """)
     st.markdown("---")
-    st.subheader("Modifying edges ↗️")
+    st.subheader("Kanten bearbeiten ↗️")
     st.markdown("""
-                - Click and hold the **Left Mouse Button** 🖱️ on a node for one second to begin the edge creation. The source node will be highlighted with the red color 🔴.
-                    - Click with **Left Mouse Button** 🖱️ on the other node to set it as the target node.
-                    - Write the label and press **Enter** or click on the **OK** Button to confirm changes.
-                    - Press **Escape** or drag the context map to discard changes.
-                - Double Click with **Left Mouse Button** 🖱️ on an edge to edit it's label.
-                - Click with **Right Mouse Button** 🖱️ on an edge to delete it.
+                - **Linksklick halten** 🖱️ auf einem Knoten fuer eine Sekunde, um eine Kante zu starten (Quellknoten wird rot 🔴).
+                    - Dann **Linksklick** auf den Zielknoten.
+                    - Beschriftung eingeben und mit **Enter** oder **OK** bestaetigen.
+                    - Mit **Escape** oder Ziehen der Map abbrechen.
+                - **Doppelklick** auf eine Kante, um die Beschriftung zu bearbeiten.
+                - **Rechtsklick** auf eine Kante, um sie zu loeschen.
                 """)
 
 
@@ -777,7 +776,7 @@ def render_concept_map():
         # example map
         if roundn == 0:
             st.markdown(
-                "Please read the Task Description and the Extra Materials carefully. Add a minimum of 3, and up to 5 of your most important concepts and their connections in this round. Here is an example to illustrate what your baseline concept map might look like, before you receive assistance")
+                "Bitte lies die Aufgabenbeschreibung und die Zusatzmaterialien sorgfaeltig. Fuege in dieser Runde mindestens 3 und bis zu 5 deiner wichtigsten Konzepte und deren Verbindungen hinzu. Unten ein Beispiel, wie eine Baseline-Concept-Map vor der Unterstuetzung aussehen koennte.")
 
             img_path = os.path.join(os.path.dirname(__file__), "..", "examples", "data", "examplemap.png")
             if os.path.exists(img_path):
@@ -835,8 +834,8 @@ def render_followup():
 
     # Spezielle Behandlung fuer Runde 0 - direkt zu Runde 1 springen
     if roundn == 0:
-        st.success("✅ Erste Concept Map erfolgreich eingereicht!")
-        st.info("Das war deine Baseline-Concept-Map (Runde 0). Jetzt geht es mit agentengefuertem Scaffolding weiter.")
+            st.success("✅ Erste Concept Map erfolgreich eingereicht!")
+            st.info("Das war deine Baseline-Concept-Map (Runde 0). Jetzt geht es mit agentengefuertem Scaffolding weiter.")
 
         col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
