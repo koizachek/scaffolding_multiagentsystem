@@ -42,14 +42,12 @@ except ImportError:
 
 logger = logging.getLogger(__name__)
 
-# Experimental conditions for balanced assignment
-EXPERIMENTAL_CONDITIONS = ['EG_SEQ', 'CG_WRONG_SEQ', 'CG_NEUTRAL']
+# Einzelne Experimentalbedingung mit fixer Sequenz (keine Randomisierung/Kontrollgruppe)
+EXPERIMENTAL_CONDITIONS = ['EG_SEQ']
 
-# Agent sequences for each experimental condition
+# Feste Agenten-Sequenz fuer alle Teilnehmenden
 AGENT_SEQUENCES = {
-    'EG_SEQ': ["conceptual_scaffolding", "procedural_scaffolding", "strategic_scaffolding", "metacognitive_scaffolding"],
-    'CG_WRONG_SEQ': ["metacognitive_scaffolding", "strategic_scaffolding", "procedural_scaffolding", "conceptual_scaffolding"],
-    'CG_NEUTRAL': ["neutral", "neutral", "neutral", "neutral"]
+    'EG_SEQ': ["metacognitive_scaffolding", "strategic_scaffolding", "procedural_scaffolding", "conceptual_scaffolding"]
 }
 
 
@@ -217,9 +215,29 @@ class StreamlitExperimentalSession:
                 "options": {
                     "A": "Staaten garantieren allen fairen Zugang",
                     "B": "Start-ups erhalten automatisch Vorteile gegenuber Etablierten",
-                    "C": "Etablierte passen Regeln und Netzwerke an, um den Markteintritt zu erschweren"
+                    "C": "Etablierte Unternehmen passen flexibel Regeln und Netzwerke an, um den Markteintritt zu erschweren"
                 },
                 "correct": "C"
+            },
+            {
+                "id": "amg_2",
+                "question": "AMG: Wie kann Adaptive Market Gatekeeping (AMG) lokale Märkte schützen?",
+                "options": {
+                    "A": "Staaten lassen Start-ups aus dem Ausland nicht ohne weiteres zu",
+                    "B": "Start-ups zahlen einen Teil ihrer lokalen Gewinne an etablierte Unternehmen",
+                    "C": "Start-ups spenden einen gewissen Prozentsatz ihrer Einnahmen an lokale Non-Profits, um einen Markteintritt zu erhalten"
+                },
+                "correct": "A"
+            },
+            {
+                "id": "amg_3",
+                "question": "AMG: Inwieweit gefährdet Adaptive Market Gatekeeping (AMG) lokale Märkte?",
+                "options": {
+                    "A": "Staaten lassen Start-ups aus dem Ausland nicht ohne weiteres zu",
+                    "B": "Start-ups zahlen einen Teil ihrer lokalen Gewinne an etablierte Unternehmen",
+                    "C": "Start-ups spenden einen gewissen Prozentsatz ihrer Einnahmen an lokale Non-Profits, um einen Markteintritt zu erhalten"
+                },
+                "correct": "B"
             }
         ]
         
@@ -981,23 +999,16 @@ class StreamlitExperimentalSession:
     
     def assign_experimental_condition(self) -> str:
         """
-        Assign experimental condition using deterministic balanced assignment.
+        Assign the single experimental condition (no randomization).
         
         Returns:
-            Assigned experimental condition (EG_SEQ, CG_WRONG_SEQ, or CG_NEUTRAL)
+            Assigned experimental condition (fixed: EG_SEQ)
         """
         # Check if condition already assigned
         if "experimental_condition" in self.session_data:
             return self.session_data["experimental_condition"]
         
-        # Use session ID for deterministic balanced assignment
-        session_id = self.session_data["session_id"]
-        
-        # Convert to number and mod by 3 for balanced distribution
-        hash_value = int(hashlib.md5(session_id.encode()).hexdigest(), 16)
-        condition_index = hash_value % 3
-        
-        assigned_condition = EXPERIMENTAL_CONDITIONS[condition_index]
+        assigned_condition = "EG_SEQ"
         
         # Store in session data
         self.session_data["experimental_condition"] = assigned_condition
@@ -1008,9 +1019,9 @@ class StreamlitExperimentalSession:
                 event_type="experimental_condition_assigned",
                 metadata={
                     "experimental_condition": assigned_condition,
-                    "session_id": session_id,
-                    "assignment_method": "deterministic_hash",
-                    "condition_index": condition_index,
+                    "session_id": self.session_data["session_id"],
+                    "assignment_method": "fixed_single_condition",
+                    "condition_index": 0,
                     "timestamp": datetime.now().isoformat()
                 }
             )

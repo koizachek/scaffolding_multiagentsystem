@@ -1,0 +1,198 @@
+2025-12-10 13:53:04,524 - MAS.utils.logging_utils - INFO - Logging configured with level INFO
+2025-12-10 13:53:04,525 - MAS.utils.logging_utils - INFO - Logging to file: logs/mas_20251210_135304.log
+2025-12-10 13:53:04,525 - MAS.mas_system - INFO - Initializing multi-agent scaffolding system
+2025-12-10 13:53:04,525 - MAS.agents.agent_factory - INFO - Creating lead agent: Lead Agent
+2025-12-10 13:53:04,526 - MAS.agents.base_agent - INFO - Initialized lead agent: Lead Agent
+2025-12-10 13:53:04,526 - MAS.core.scaffolding_engine - INFO - Initialized scaffolding engine
+2025-12-10 13:53:04,526 - MAS.core.dialogue_manager - INFO - Initialized dialogue manager
+2025-12-10 13:53:04,526 - MAS.agents.lead_agent - INFO - Initialized lead agent: Lead Agent
+2025-12-10 13:53:04,526 - MAS.agents.agent_factory - INFO - Created agent: lead (lead)
+2025-12-10 13:53:04,526 - MAS.agents.agent_factory - INFO - Creating learner profiling agent: Learner Profiling Agent
+2025-12-10 13:53:04,527 - MAS.agents.base_agent - INFO - Initialized learner_profiling agent: Learner Profiling Agent
+2025-12-10 13:53:04,527 - MAS.agents.learner_profiling_agent - INFO - Initialized learner profiling agent: Learner Profiling Agent
+2025-12-10 13:53:04,527 - MAS.agents.agent_factory - INFO - Created agent: learner_profiling (learner_profiling)
+2025-12-10 13:53:04,527 - MAS.agents.agent_factory - INFO - Creating strategic scaffolding agent: Strategic Scaffolding Agent
+2025-12-10 13:53:04,527 - MAS.agents.base_agent - INFO - Initialized strategic_scaffolding agent: Strategic Scaffolding Agent
+2025-12-10 13:53:04,527 - MAS.agents.strategic_scaffolding_agent - INFO - Initialized strategic scaffolding agent: Strategic Scaffolding Agent
+2025-12-10 13:53:04,527 - MAS.agents.agent_factory - INFO - Created agent: strategic_scaffolding (strategic_scaffolding)
+2025-12-10 13:53:04,527 - MAS.agents.agent_factory - INFO - Creating metacognitive scaffolding agent: Metacognitive Scaffolding Agent
+2025-12-10 13:53:04,527 - MAS.agents.base_agent - INFO - Initialized metacognitive_scaffolding agent: Metacognitive Scaffolding Agent
+2025-12-10 13:53:04,527 - MAS.agents.metacognitive_scaffolding_agent - INFO - Initialized metacognitive scaffolding agent: Metacognitive Scaffolding Agent
+2025-12-10 13:53:04,528 - MAS.agents.agent_factory - INFO - Created agent: metacognitive_scaffolding (metacognitive_scaffolding)
+2025-12-10 13:53:04,528 - MAS.agents.agent_factory - INFO - Creating procedural scaffolding agent: Procedural Scaffolding Agent
+2025-12-10 13:53:04,528 - MAS.agents.base_agent - INFO - Initialized procedural_scaffolding agent: Procedural Scaffolding Agent
+2025-12-10 13:53:04,528 - MAS.agents.procedural_scaffolding_agent - INFO - Initialized procedural scaffolding agent: Procedural Scaffolding Agent
+2025-12-10 13:53:04,528 - MAS.agents.agent_factory - INFO - Created agent: procedural_scaffolding (procedural_scaffolding)
+2025-12-10 13:53:04,528 - MAS.agents.agent_factory - INFO - Creating conceptual scaffolding agent: Conceptual Scaffolding Agent
+2025-12-10 13:53:04,528 - MAS.agents.base_agent - INFO - Initialized conceptual_scaffolding agent: Conceptual Scaffolding Agent
+2025-12-10 13:53:04,528 - MAS.agents.conceptual_scaffolding_agent - INFO - Initialized conceptual scaffolding agent: Conceptual Scaffolding Agent
+2025-12-10 13:53:04,528 - MAS.agents.agent_factory - INFO - Created agent: conceptual_scaffolding (conceptual_scaffolding)
+2025-12-10 13:53:04,528 - MAS.agents.agent_factory - INFO - Creating content ingestion agent: Content Ingestion Agent
+2025-12-10 13:53:04,528 - MAS.agents.base_agent - INFO - Initialized content_ingestion agent: Content Ingestion Agent
+2025-12-10 13:53:04,528 - MAS.agents.content_ingestion_agent - INFO - Initialized content ingestion agent: Content Ingestion Agent
+2025-12-10 13:53:04,529 - MAS.agents.agent_factory - INFO - Created agent: content_ingestion (content_ingestion)
+2025-12-10 13:53:04,529 - MAS.agents.agent_factory - INFO - Creating example map agent: Example Map Agent
+2025-12-10 13:53:04,529 - MAS.agents.base_agent - INFO - Initialized example_map agent: Example Map Agent
+2025-12-10 13:53:04,529 - MAS.agents.example_map_agent - INFO - Initialized example map agent: Example Map Agent
+2025-12-10 13:53:04,529 - MAS.agents.agent_factory - INFO - Created agent: example_map (example_map)
+2025-12-10 13:53:04,529 - MAS.core.scaffolding_engine - INFO - Initialized scaffolding engine
+2025-12-10 13:53:04,529 - MAS.core.dialogue_manager - INFO - Initialized dialogue manager
+2025-12-10 13:53:04,654 - MAS.utils.ai_api - INFO - AI Manager initialized: Groq with primary model llama-3.3-70b-versatile
+2025-12-10 13:53:04,654 - MAS.utils.mermaid_parser - INFO - Mermaid parser initialized
+2025-12-10 13:53:04,654 - MAS.utils.session_timer - INFO - Session timer initialized: 7min rounds, 2min breaks
+2025-12-10 13:53:04,654 - MAS.utils.session_timer - INFO - Round manager initialized for 4 rounds
+2025-12-10 13:53:04,654 - MAS.utils.logging_utils - INFO - Initialized session logger with ID: mas_20251210_135304
+2025-12-10 13:53:04,654 - MAS.mas_system - INFO - Experimental mode initialized for participant: participant_20251210_135304
+2025-12-10 13:53:04,654 - MAS.mas_system - INFO - Multi-agent scaffolding system initialized
+2025-12-10 13:53:04,660 - MAS.utils.ai_api - INFO - AI Manager initialized: Groq with primary model llama-3.3-70b-versatile
+2025-12-10 13:53:04,660 - MAS.utils.logging_utils - INFO - Initialized session logger with ID: streamlit_session_20251210_135304
+2025-12-10 13:53:04,762 - streamlit_experimental_session - ERROR -     ❌🗃️ Could not establish the connection to the database!
+2025-12-10 14:03:27,652 - streamlit_experimental_session - INFO - Assigned experimental condition: EG_SEQ
+2025-12-10 14:03:46,516 - numexpr.utils - INFO - NumExpr defaulting to 8 threads.
+2025-12-10 14:04:09,440 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: False)
+2025-12-10 14:04:41,955 - __main__ - INFO -    ✅ Processing response...
+2025-12-10 14:04:41,957 - __main__ - INFO -    📝 Stored response in cmdata[0]
+2025-12-10 14:04:41,957 - streamlit_experimental_session - INFO - 🔍 DEBUG: Converting concept map data
+2025-12-10 14:04:41,957 - streamlit_experimental_session - INFO -    Input type: dict
+2025-12-10 14:04:41,957 - streamlit_experimental_session - INFO -    Input data: {'elements': []}
+2025-12-10 14:04:41,958 - streamlit_experimental_session - INFO -    📊 Processing dict with keys: ['elements']
+2025-12-10 14:04:41,958 - streamlit_experimental_session - INFO -    📈 Found 0 actions, metrics: False
+2025-12-10 14:04:41,958 - streamlit_experimental_session - INFO -    🗺️  Processing 0 elements
+2025-12-10 14:04:41,959 - streamlit_experimental_session - INFO -    🎯 Final result: 0 concepts, 0 relationships
+2025-12-10 14:04:42,178 - __main__ - INFO - 🆕 Node created: Adaptive Market Gatekeeping (AMG) (id: amg, x: 400, y: 300)
+2025-12-10 14:04:42,180 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: True)
+2025-12-10 14:04:43,663 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: True)
+2025-12-10 14:04:43,664 - streamlit_experimental_session - INFO - 🔍 DEBUG: Converting concept map data
+2025-12-10 14:04:43,664 - streamlit_experimental_session - INFO -    Input type: dict
+2025-12-10 14:04:43,664 - streamlit_experimental_session - INFO -    Input data: {'elements': []}
+2025-12-10 14:04:43,664 - streamlit_experimental_session - INFO -    📊 Processing dict with keys: ['elements']
+2025-12-10 14:04:43,665 - streamlit_experimental_session - INFO -    📈 Found 0 actions, metrics: False
+2025-12-10 14:04:43,665 - streamlit_experimental_session - INFO -    🗺️  Processing 0 elements
+2025-12-10 14:04:43,665 - streamlit_experimental_session - INFO -    🎯 Final result: 0 concepts, 0 relationships
+2025-12-10 14:04:43,722 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: False)
+2025-12-10 14:04:46,242 - __main__ - INFO -    ✅ Processing response...
+2025-12-10 14:04:46,244 - __main__ - INFO -    📝 Stored response in cmdata[1]
+2025-12-10 14:04:46,244 - streamlit_experimental_session - INFO - 🔍 DEBUG: Converting concept map data
+2025-12-10 14:04:46,244 - streamlit_experimental_session - INFO -    Input type: dict
+2025-12-10 14:04:46,245 - streamlit_experimental_session - INFO -    Input data: {'elements': {'nodes': [{'data': {'id': 'amg', 'label': 'Adaptive Market Gatekeeping (AMG)', 'x': 400, 'y': 300}, 'position': {'x': 294, 'y': 194}, 'group': 'nodes', 'removed': False, 'selected': Fals
+2025-12-10 14:04:46,246 - streamlit_experimental_session - INFO -    📊 Processing dict with keys: ['elements', 'style', 'data', 'zoomingEnabled', 'userZoomingEnabled', 'zoom', 'minZoom', 'maxZoom', 'panningEnabled', 'userPanningEnabled', 'pan', 'boxSelectionEnabled', 'renderer']
+2025-12-10 14:04:46,246 - streamlit_experimental_session - INFO -    📈 Found 0 actions, metrics: False
+2025-12-10 14:04:46,246 - streamlit_experimental_session - INFO -    🗺️  Processing 1 elements
+2025-12-10 14:04:46,246 - streamlit_experimental_session - INFO -    🔍 Element 0 data: {'id': 'amg', 'label': 'Adaptive Market Gatekeeping (AMG)', 'x': 400, 'y': 300}
+2025-12-10 14:04:46,246 - streamlit_experimental_session - INFO -    ✅ Added node: {'id': 'amg', 'text': 'Adaptive Market Gatekeeping (AMG)', 'x': 400, 'y': 300}
+2025-12-10 14:04:46,247 - streamlit_experimental_session - INFO -    🎯 Final result: 1 concepts, 0 relationships
+2025-12-10 14:04:46,303 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: True)
+2025-12-10 14:04:46,369 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: True)
+2025-12-10 14:04:54,487 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: True)
+2025-12-10 14:04:55,780 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: True)
+2025-12-10 14:04:55,848 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: True)
+2025-12-10 14:05:03,182 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: True)
+2025-12-10 14:05:04,183 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: True)
+2025-12-10 14:05:04,253 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: True)
+2025-12-10 14:05:13,391 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: True)
+2025-12-10 14:05:14,403 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: True)
+2025-12-10 14:05:14,471 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: True)
+2025-12-10 14:05:24,887 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: True)
+2025-12-10 14:05:25,983 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: True)
+2025-12-10 14:05:26,044 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: True)
+2025-12-10 14:05:28,509 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: True)
+2025-12-10 14:05:29,771 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: True)
+2025-12-10 14:05:29,777 - streamlit_experimental_session - INFO - 🔍 DEBUG: Converting concept map data
+2025-12-10 14:05:29,778 - streamlit_experimental_session - INFO -    Input type: dict
+2025-12-10 14:05:29,778 - streamlit_experimental_session - INFO -    Input data: {'elements': {'nodes': [{'data': {'id': 'amg', 'label': 'Adaptive Market Gatekeeping (AMG)', 'x': 400, 'y': 300}, 'position': {'x': 294, 'y': 194}, 'group': 'nodes', 'removed': False, 'selected': Fals
+2025-12-10 14:05:29,779 - streamlit_experimental_session - INFO -    📊 Processing dict with keys: ['elements', 'style', 'data', 'zoomingEnabled', 'userZoomingEnabled', 'zoom', 'minZoom', 'maxZoom', 'panningEnabled', 'userPanningEnabled', 'pan', 'boxSelectionEnabled', 'renderer']
+2025-12-10 14:05:29,779 - streamlit_experimental_session - INFO -    📈 Found 0 actions, metrics: False
+2025-12-10 14:05:29,779 - streamlit_experimental_session - INFO -    🗺️  Processing 1 elements
+2025-12-10 14:05:29,779 - streamlit_experimental_session - INFO -    🔍 Element 0 data: {'id': 'amg', 'label': 'Adaptive Market Gatekeeping (AMG)', 'x': 400, 'y': 300}
+2025-12-10 14:05:29,779 - streamlit_experimental_session - INFO -    ✅ Added node: {'id': 'amg', 'text': 'Adaptive Market Gatekeeping (AMG)', 'x': 400, 'y': 300}
+2025-12-10 14:05:29,780 - streamlit_experimental_session - INFO -    🎯 Final result: 1 concepts, 0 relationships
+2025-12-10 14:05:29,842 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: False)
+2025-12-10 14:05:32,351 - __main__ - INFO -    ✅ Processing response...
+2025-12-10 14:05:32,352 - __main__ - INFO -    📝 Stored response in cmdata[2]
+2025-12-10 14:05:32,353 - streamlit_experimental_session - INFO - 🔍 DEBUG: Converting concept map data
+2025-12-10 14:05:32,353 - streamlit_experimental_session - INFO -    Input type: dict
+2025-12-10 14:05:32,353 - streamlit_experimental_session - INFO -    Input data: {'elements': {'nodes': [{'data': {'id': 'amg', 'label': 'Adaptive Market Gatekeeping (AMG)', 'x': 400, 'y': 300}, 'position': {'x': 294, 'y': 194}, 'group': 'nodes', 'removed': False, 'selected': Fals
+2025-12-10 14:05:32,354 - streamlit_experimental_session - INFO -    📊 Processing dict with keys: ['elements', 'style', 'data', 'zoomingEnabled', 'userZoomingEnabled', 'zoom', 'minZoom', 'maxZoom', 'panningEnabled', 'userPanningEnabled', 'pan', 'boxSelectionEnabled', 'renderer']
+2025-12-10 14:05:32,355 - streamlit_experimental_session - INFO -    📈 Found 0 actions, metrics: False
+2025-12-10 14:05:32,355 - streamlit_experimental_session - INFO -    🗺️  Processing 1 elements
+2025-12-10 14:05:32,355 - streamlit_experimental_session - INFO -    🔍 Element 0 data: {'id': 'amg', 'label': 'Adaptive Market Gatekeeping (AMG)', 'x': 400, 'y': 300}
+2025-12-10 14:05:32,355 - streamlit_experimental_session - INFO -    ✅ Added node: {'id': 'amg', 'text': 'Adaptive Market Gatekeeping (AMG)', 'x': 400, 'y': 300}
+2025-12-10 14:05:32,356 - streamlit_experimental_session - INFO -    🎯 Final result: 1 concepts, 0 relationships
+2025-12-10 14:05:32,411 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: True)
+2025-12-10 14:05:32,481 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: True)
+2025-12-10 14:05:47,321 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: True)
+2025-12-10 14:05:48,303 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: True)
+2025-12-10 14:05:48,373 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: True)
+2025-12-10 14:06:13,437 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: True)
+2025-12-10 14:06:14,520 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: True)
+2025-12-10 14:06:14,581 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: True)
+2025-12-10 14:06:52,375 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: True)
+2025-12-10 14:06:53,873 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: True)
+2025-12-10 14:06:53,880 - streamlit_experimental_session - INFO - 🔍 DEBUG: Converting concept map data
+2025-12-10 14:06:53,880 - streamlit_experimental_session - INFO -    Input type: dict
+2025-12-10 14:06:53,880 - streamlit_experimental_session - INFO -    Input data: {'elements': {'nodes': [{'data': {'id': 'amg', 'label': 'Adaptive Market Gatekeeping (AMG)', 'x': 400, 'y': 300}, 'position': {'x': 294, 'y': 194}, 'group': 'nodes', 'removed': False, 'selected': Fals
+2025-12-10 14:06:53,881 - streamlit_experimental_session - INFO -    📊 Processing dict with keys: ['elements', 'style', 'data', 'zoomingEnabled', 'userZoomingEnabled', 'zoom', 'minZoom', 'maxZoom', 'panningEnabled', 'userPanningEnabled', 'pan', 'boxSelectionEnabled', 'renderer']
+2025-12-10 14:06:53,881 - streamlit_experimental_session - INFO -    📈 Found 0 actions, metrics: False
+2025-12-10 14:06:53,882 - streamlit_experimental_session - INFO -    🗺️  Processing 1 elements
+2025-12-10 14:06:53,882 - streamlit_experimental_session - INFO -    🔍 Element 0 data: {'id': 'amg', 'label': 'Adaptive Market Gatekeeping (AMG)', 'x': 400, 'y': 300}
+2025-12-10 14:06:53,882 - streamlit_experimental_session - INFO -    ✅ Added node: {'id': 'amg', 'text': 'Adaptive Market Gatekeeping (AMG)', 'x': 400, 'y': 300}
+2025-12-10 14:06:53,884 - streamlit_experimental_session - INFO -    🎯 Final result: 1 concepts, 0 relationships
+2025-12-10 14:06:53,945 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: False)
+2025-12-10 14:06:55,975 - __main__ - INFO -    ✅ Processing response...
+2025-12-10 14:06:55,977 - __main__ - INFO -    📝 Stored response in cmdata[3]
+2025-12-10 14:06:55,978 - streamlit_experimental_session - INFO - 🔍 DEBUG: Converting concept map data
+2025-12-10 14:06:55,978 - streamlit_experimental_session - INFO -    Input type: dict
+2025-12-10 14:06:55,978 - streamlit_experimental_session - INFO -    Input data: {'elements': {'nodes': [{'data': {'id': 'amg', 'label': 'Adaptive Market Gatekeeping (AMG)', 'x': 400, 'y': 300}, 'position': {'x': 294, 'y': 194}, 'group': 'nodes', 'removed': False, 'selected': Fals
+2025-12-10 14:06:55,979 - streamlit_experimental_session - INFO -    📊 Processing dict with keys: ['elements', 'style', 'data', 'zoomingEnabled', 'userZoomingEnabled', 'zoom', 'minZoom', 'maxZoom', 'panningEnabled', 'userPanningEnabled', 'pan', 'boxSelectionEnabled', 'renderer']
+2025-12-10 14:06:55,980 - streamlit_experimental_session - INFO -    📈 Found 0 actions, metrics: False
+2025-12-10 14:06:55,980 - streamlit_experimental_session - INFO -    🗺️  Processing 1 elements
+2025-12-10 14:06:55,980 - streamlit_experimental_session - INFO -    🔍 Element 0 data: {'id': 'amg', 'label': 'Adaptive Market Gatekeeping (AMG)', 'x': 400, 'y': 300}
+2025-12-10 14:06:55,981 - streamlit_experimental_session - INFO -    ✅ Added node: {'id': 'amg', 'text': 'Adaptive Market Gatekeeping (AMG)', 'x': 400, 'y': 300}
+2025-12-10 14:06:55,982 - streamlit_experimental_session - INFO -    🎯 Final result: 1 concepts, 0 relationships
+2025-12-10 14:06:56,041 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: True)
+2025-12-10 14:06:56,110 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: True)
+2025-12-10 14:07:02,973 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: True)
+2025-12-10 14:07:03,890 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: True)
+2025-12-10 14:07:03,955 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: True)
+2025-12-10 14:07:14,950 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: True)
+2025-12-10 14:07:15,792 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: True)
+2025-12-10 14:07:15,859 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: True)
+2025-12-10 14:07:19,473 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: True)
+2025-12-10 14:07:20,744 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: True)
+2025-12-10 14:07:20,751 - streamlit_experimental_session - INFO - 🔍 DEBUG: Converting concept map data
+2025-12-10 14:07:20,751 - streamlit_experimental_session - INFO -    Input type: dict
+2025-12-10 14:07:20,751 - streamlit_experimental_session - INFO -    Input data: {'elements': {'nodes': [{'data': {'id': 'amg', 'label': 'Adaptive Market Gatekeeping (AMG)', 'x': 400, 'y': 300}, 'position': {'x': 294, 'y': 194}, 'group': 'nodes', 'removed': False, 'selected': Fals
+2025-12-10 14:07:20,752 - streamlit_experimental_session - INFO -    📊 Processing dict with keys: ['elements', 'style', 'data', 'zoomingEnabled', 'userZoomingEnabled', 'zoom', 'minZoom', 'maxZoom', 'panningEnabled', 'userPanningEnabled', 'pan', 'boxSelectionEnabled', 'renderer']
+2025-12-10 14:07:20,752 - streamlit_experimental_session - INFO -    📈 Found 0 actions, metrics: False
+2025-12-10 14:07:20,753 - streamlit_experimental_session - INFO -    🗺️  Processing 1 elements
+2025-12-10 14:07:20,753 - streamlit_experimental_session - INFO -    🔍 Element 0 data: {'id': 'amg', 'label': 'Adaptive Market Gatekeeping (AMG)', 'x': 400, 'y': 300}
+2025-12-10 14:07:20,754 - streamlit_experimental_session - INFO -    ✅ Added node: {'id': 'amg', 'text': 'Adaptive Market Gatekeeping (AMG)', 'x': 400, 'y': 300}
+2025-12-10 14:07:20,755 - streamlit_experimental_session - INFO -    🎯 Final result: 1 concepts, 0 relationships
+2025-12-10 14:07:20,815 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: False)
+2025-12-10 14:07:23,091 - __main__ - INFO -    ✅ Processing response...
+2025-12-10 14:07:23,093 - __main__ - INFO -    📝 Stored response in cmdata[4]
+2025-12-10 14:07:23,093 - streamlit_experimental_session - INFO - 🔍 DEBUG: Converting concept map data
+2025-12-10 14:07:23,093 - streamlit_experimental_session - INFO -    Input type: dict
+2025-12-10 14:07:23,093 - streamlit_experimental_session - INFO -    Input data: {'elements': {'nodes': [{'data': {'id': 'amg', 'label': 'Adaptive Market Gatekeeping (AMG)', 'x': 400, 'y': 300}, 'position': {'x': 294, 'y': 194}, 'group': 'nodes', 'removed': False, 'selected': Fals
+2025-12-10 14:07:23,095 - streamlit_experimental_session - INFO -    📊 Processing dict with keys: ['elements', 'style', 'data', 'zoomingEnabled', 'userZoomingEnabled', 'zoom', 'minZoom', 'maxZoom', 'panningEnabled', 'userPanningEnabled', 'pan', 'boxSelectionEnabled', 'renderer']
+2025-12-10 14:07:23,095 - streamlit_experimental_session - INFO -    📈 Found 0 actions, metrics: False
+2025-12-10 14:07:23,095 - streamlit_experimental_session - INFO -    🗺️  Processing 1 elements
+2025-12-10 14:07:23,096 - streamlit_experimental_session - INFO -    🔍 Element 0 data: {'id': 'amg', 'label': 'Adaptive Market Gatekeeping (AMG)', 'x': 400, 'y': 300}
+2025-12-10 14:07:23,096 - streamlit_experimental_session - INFO -    ✅ Added node: {'id': 'amg', 'text': 'Adaptive Market Gatekeeping (AMG)', 'x': 400, 'y': 300}
+2025-12-10 14:07:23,098 - streamlit_experimental_session - INFO -    🎯 Final result: 1 concepts, 0 relationships
+2025-12-10 14:07:23,156 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: True)
+2025-12-10 14:07:23,226 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: True)
+2025-12-10 14:07:27,702 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: True)
+2025-12-10 14:07:29,222 - __main__ - INFO -    ℹ️ No action taken (response: True, submit_request: False, followup: True)
+2025-12-10 14:07:29,228 - streamlit_experimental_session - INFO - 🔍 DEBUG: Converting concept map data
+2025-12-10 14:07:29,229 - streamlit_experimental_session - INFO -    Input type: dict
+2025-12-10 14:07:29,229 - streamlit_experimental_session - INFO -    Input data: {'elements': {'nodes': [{'data': {'id': 'amg', 'label': 'Adaptive Market Gatekeeping (AMG)', 'x': 400, 'y': 300}, 'position': {'x': 294, 'y': 194}, 'group': 'nodes', 'removed': False, 'selected': Fals
+2025-12-10 14:07:29,230 - streamlit_experimental_session - INFO -    📊 Processing dict with keys: ['elements', 'style', 'data', 'zoomingEnabled', 'userZoomingEnabled', 'zoom', 'minZoom', 'maxZoom', 'panningEnabled', 'userPanningEnabled', 'pan', 'boxSelectionEnabled', 'renderer']
+2025-12-10 14:07:29,230 - streamlit_experimental_session - INFO -    📈 Found 0 actions, metrics: False
+2025-12-10 14:07:29,230 - streamlit_experimental_session - INFO -    🗺️  Processing 1 elements
+2025-12-10 14:07:29,231 - streamlit_experimental_session - INFO -    🔍 Element 0 data: {'id': 'amg', 'label': 'Adaptive Market Gatekeeping (AMG)', 'x': 400, 'y': 300}
+2025-12-10 14:07:29,231 - streamlit_experimental_session - INFO -    ✅ Added node: {'id': 'amg', 'text': 'Adaptive Market Gatekeeping (AMG)', 'x': 400, 'y': 300}
+2025-12-10 14:07:29,232 - streamlit_experimental_session - INFO -    🎯 Final result: 1 concepts, 0 relationships
+2025-12-10 14:08:08,909 - streamlit_experimental_session - INFO - Session was finalized successfully
+2025-12-10 14:16:45,929 - MAS.utils.mermaid_parser - INFO - Mermaid parser initialized
+2025-12-10 14:16:45,935 - MAS.mas_system - INFO - Loaded configuration from /Users/dianakozachek/Desktop/scaffolding_multiagentsystem_DE/MAS/config.json

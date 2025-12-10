@@ -200,6 +200,10 @@ class AIManager:
         # Import scaffolding utilities to get templates
         try:
             from MAS.utils.scaffolding_utils import generate_default_prompts
+            from MAS.config.amg_scaffolding_config import (
+                AMG_SCAFFOLDING_PROMPT_TEMPLATES,
+                AMG_SCAFFOLDING_FOLLOWUP_TEMPLATES
+            )
             from MAS.config.scaffolding_config import (
                 SCAFFOLDING_PROMPT_TEMPLATES,
                 SCAFFOLDING_FOLLOWUP_TEMPLATES,
@@ -207,11 +211,20 @@ class AIManager:
             )
         except ImportError:
             from utils.scaffolding_utils import generate_default_prompts
+            from config.amg_scaffolding_config import (
+                AMG_SCAFFOLDING_PROMPT_TEMPLATES,
+                AMG_SCAFFOLDING_FOLLOWUP_TEMPLATES
+            )
             from config.scaffolding_config import (
                 SCAFFOLDING_PROMPT_TEMPLATES,
                 SCAFFOLDING_FOLLOWUP_TEMPLATES,
                 SCAFFOLDING_CONCLUSION_TEMPLATES
             )
+
+        # Prefer AMG-specific templates; fallback to generic if not defined
+        prompt_templates = AMG_SCAFFOLDING_PROMPT_TEMPLATES or SCAFFOLDING_PROMPT_TEMPLATES
+        followup_templates = AMG_SCAFFOLDING_FOLLOWUP_TEMPLATES or SCAFFOLDING_FOLLOWUP_TEMPLATES
+        conclusion_templates = SCAFFOLDING_CONCLUSION_TEMPLATES
         
         # Get conversation turn from context
         conversation_turn = context.get("conversation_turn", 0) if context else 0
@@ -223,7 +236,7 @@ class AIManager:
         # Get appropriate template based on context
         if is_followup:
             # Use follow-up templates for continued conversation
-            templates = SCAFFOLDING_FOLLOWUP_TEMPLATES.get(scaffolding_type, [])
+            templates = followup_templates.get(scaffolding_type, [])
             if templates:
                 # Select a template that hasn't been used recently
                 used_templates = [msg.get("metadata", {}).get("template_used") 
@@ -241,7 +254,7 @@ class AIManager:
         else:
             # Use initial scaffolding templates
             intensity = "high" if scaffolding_level == "high" else "medium"
-            templates = SCAFFOLDING_PROMPT_TEMPLATES.get(scaffolding_type, {}).get(intensity, [])
+            templates = prompt_templates.get(scaffolding_type, {}).get(intensity, [])
             
             if templates:
                 # Generate prompts using the utility function with correct signature

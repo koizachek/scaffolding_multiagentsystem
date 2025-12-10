@@ -149,19 +149,19 @@ def render_mode_selection():
     Your careful participation ensures the validity of our research data. The top 10 percent of participants will receive a financial bonus.
     """)
 
-    st.markdown("**Ready to begin the experiment?**")
+    st.markdown("**Bereit, das Experiment zu starten?**")
 
     # Center the experimental mode button
     col1, col2, col3 = st.columns([1, 2, 1])
 
     with col2:
-        st.subheader("🔬 Experimental Session")
+        st.subheader("🔬 Experimentelle Sitzung")
         st.markdown("""
-        This research study includes:
-        - **AI-powered personalized learning**
-        - **Learner profiling questionnaire**
-        - **5 rounds of concept mapping**
-        - **Data collection for research purposes**
+        Diese Studie umfasst:
+        - **KI-gestuetztes, personalisiertes Lernen**
+        - **Fragebogen zur Lernendenprofilierung**
+        - **5 Runden Concept Mapping**
+        - **Datenerhebung fuer Forschungszwecke**
         """)
 
         if st.button("Start Experimental Session", type="primary", use_container_width=True):
@@ -171,55 +171,50 @@ def render_mode_selection():
             # Initialize system
             if st.session_state.experimental_session.initialize_system("experimental"):
                 st.session_state.session_initialized = True
-                st.success("✅ Experimental session initialized!")
+                st.success("✅ Experiment initialisiert!")
                 st.rerun()
             else:
-                st.error("❌ Failed to initialize experimental session. Please check your configuration.")
+                st.error("❌ Experiment konnte nicht initialisiert werden. Bitte Konfiguration pruefen.")
 
 
 def render_consent_form():
     """Render research consent form."""
-    st.header("📋 Research Study Consent Form")
+    st.header("📋 Einverstaendniserklaerung zur Studie")
     st.markdown("---")
 
     # Consent form content
     with st.container(border=True):
         st.markdown("""
-        ### Informed Consent for Research Participation
+        ### Einverstaendniserklaerung zur Studienteilnahme
 
-        You are being invited to participate in a research study titled **"Agentic AI for Higher Education"**. 
-        This study is being conducted by **Diana Kozachek** from the **University of St. Gallen, Switzerland**. 
-        You were selected to participate in this study because you are an adult learner interested in educational technology.
+        Du wirst eingeladen, an der Studie **"Agentic AI for Higher Education"** teilzunehmen.
+        Die Studie wird von **Diana Kozachek** an der **Universitaet St. Gallen (Schweiz)** durchgefuehrt.
 
-        **Purpose of the Research:**
-        The purpose of this research study is to investigate how AI-powered agents can support learning through concept mapping activities. 
-        If you agree to take part in this study, you will be asked to complete an online concept mapping exercise with AI assistance, 
-        followed by questionnaires about your experience. This experiment will take you approximately **30-45 minutes** to complete.
+        **Zweck der Studie:**
+        Wir untersuchen, wie KI-gestuetzte Agenten beim Lernen durch Concept Mapping unterstuetzen koennen.
+        Wenn du zustimmst, bearbeitest du ein Online-Concept-Mapping mit KI-Unterstuetzung und anschliessenden Frageboegen.
+        Dauer: ca. **30–45 Minuten**.
 
-        **Benefits:**
-        Apart from the paid participation, we hope that your participation in the study may contribute to 
-        improving educational technology and AI-assisted learning tools for students. Therefore, the top 10 percent of participants 
-        receive an financial bonus to be paid upon analysis of all results.
+        **Nutzen:**
+        Neben der Verguetung hilfst du, Lerntechnologien und KI-Lernhilfen zu verbessern.
+        Die besten 10 Prozent der Teilnehmenden erhalten einen Bonus nach Auswertung.
 
-        **Risks and Confidentiality:**
-        We believe there are no known risks associated with this research study; however, as with any online related activity 
-        the risk of a breach of confidentiality is always possible. To the best of our ability your answers in this study will 
-        remain confidential. We will minimize any risks by:
-        - Storing all data securely with participant IDs rather than names
-        - All published results will be anonymized
-        - Data will be stored on secure servers and deleted after the research is complete
+        **Risiken & Vertraulichkeit:**
+        Es sind keine besonderen Risiken bekannt; ein Restrisiko fuer Vertraulichkeit besteht immer online.
+        Wir minimieren Risiken durch:
+        - Sichere Speicherung mit Teilnehmer-IDs statt Klarnamen
+        - Anonymisierte Veroeffentlichung
+        - Loeschung der Daten nach Abschluss der Forschung
 
-        **Voluntary Participation:**
-        Your participation in this study is completely voluntary and you can withdraw at any time. 
+        **Freiwilligkeit:**
+        Deine Teilnahme ist freiwillig, du kannst jederzeit abbrechen.
 
-        **Contact Information:**
-        If you have questions about this project or if you have a research-related problem, you may contact the researcher, 
-        **Diana Kozachek** at the University of St. Gallen. If you have any questions concerning your rights as a research subject, 
-        you may contact the University of Saint Gallen Ethics Committee.
+        **Kontakt:**
+        Bei Fragen wende dich an **Diana Kozachek**, Universitaet St. Gallen.
+        Bei Fragen zu Rechten als Proband: Ethikkommission der Universitaet St. Gallen.
 
-        **Consent Statement:**
-        By clicking "I agree" below you are indicating that you are at least 18 years old, have read and understood this 
-        consent form and agree to participate in this research study. Please print a copy of this page for your records.
+        **Zustimmung:**
+        Mit Klick auf „Ich stimme zu“ bestaetigst du, dass du mindestens 18 Jahre alt bist, die Informationen gelesen und verstanden hast und einverstanden bist teilzunehmen. Bewahre gern eine Kopie dieser Seite auf.
         """)
 
     st.markdown("---")
@@ -228,12 +223,12 @@ def render_consent_form():
     col1, col2, col3 = st.columns([1, 1, 1])
 
     with col1:
-        if st.button("❌ No, I do not agree", type="secondary", use_container_width=True):
+        if st.button("❌ Nein, ich stimme nicht zu", type="secondary", use_container_width=True):
             st.session_state.consent_declined = True
             st.rerun()
 
     with col3:
-        if st.button("✅ Yes, I agree", type="primary", use_container_width=True):
+        if st.button("✅ Ja, ich stimme zu", type="primary", use_container_width=True):
             st.session_state.consent_given = True
 
             # Log consent
@@ -251,13 +246,11 @@ def render_consent_form():
     # Show message if consent was declined
     if st.session_state.consent_declined:
         st.error("""
-        ### Thank you for your interest
+        ### Vielen Dank fuer dein Interesse
 
-        You have chosen not to participate in this research study. 
+        Du hast entschieden, nicht teilzunehmen. Das respektieren wir. Wenn du es dir anders ueberlegst, kannst du die Seite neu laden und neu starten.
 
-        We respect your decision. If you change your mind, you can refresh the page to start again.
-
-        Thank you for considering participation in our research.
+        Danke, dass du eine Teilnahme in Betracht gezogen hast.
         """)
         st.stop()
 
@@ -301,41 +294,41 @@ def render_learner_profile():
         # Initialize agent sequence
         st.session_state.agent_sequence = st.session_state.experimental_session.initialize_agent_sequence()
 
-        st.info("📋 **Experiment Structure:**")
-        st.write("**Round 0:** Initial Map Creation (No agent) - Baseline")
-        st.write("**Rounds 1-4:** Agent-guided mapping sessions")
+        st.info("📋 **Ablauf des Experiments:**")
+        st.write("**Runde 0:** Erste Concept Map (ohne Agent) – Baseline")
+        st.write("**Runden 1-4:** Agentengefuhrte Mapping-Runden")
         st.write("")
-        st.write("You will receive guidance from AI agents across 4 rounds to help improve your concept map.")
+        st.write("Du erhaeltst in 4 Runden Hinweise von KI-Agenten, um deine Concept Map zu verbessern.")
 
         st.markdown("---")
-        st.info("📝 Next, you'll complete a pre-knowledge questionnaire about the task materials.")
+        st.info("📝 Als naechstes folgt ein Fragebogen zu deinen Vorkenntnissen zu den Aufgabenmaterialien.")
 
-        if st.button("Continue to Pre-Knowledge Questionnaire", type="primary"):
+        if st.button("Weiter zum Vorkenntnis-Fragebogen", type="primary"):
             st.rerun()
 
 
 def render_tutorial():
     """Render interactive concept mapping tutorial."""
-    st.header("📚 Concept Mapping Tutorial")
+    st.header("📚 Concept-Mapping-Tutorial")
     st.markdown("---")
 
     st.markdown("""
-    Welcome! Before starting the experiment, let's learn how to create concept maps effectively.
+    Willkommen! Bevor wir starten, schauen wir uns an, wie man Concept Maps effektiv erstellt.
 
-    **What is a concept map?**
-    A concept map is a visual representation of knowledge that shows relationships between concepts using nodes (concepts) and edges (relationships). This concept map is responsive. You can zoom in and out to adapt the content to your screen.
+    **Was ist eine Concept Map?**
+    Eine Concept Map ist eine visuelle Darstellung von Wissen, die Beziehungen zwischen Konzepten ueber Knoten (Konzepte) und Kanten (Beziehungen) zeigt. Die Map ist responsiv, du kannst hinein- und herauszoomen, um sie an deinen Bildschirm anzupassen.
     """)
 
     tutorial_steps = [
         {
-            "title": "Step 1: Creating Nodes (Concepts)",
+            "title": "Schritt 1: Knoten (Konzepte) erstellen",
             "content": """
-            **How to create a node:**
-            - Click anywhere on the map with your **left mouse button** 🖱️
-            - Type your concept label
-            - Press **Enter** or click **OK** to confirm
+            **So erstellst du einen Knoten:**
+            - Klicke irgendwo auf die Map mit der **linken Maustaste** 🖱️
+            - Gib den Konzeptnamen ein
+            - Bestaetige mit **Enter** oder **OK**
 
-            **Try it:** Create a node labeled "Learning" in the practice area below.
+            **Probiere es aus:** Erstelle unten einen Knoten mit der Beschriftung „Learning“.
             """,
             "demo_map": {
                 "elements": [
@@ -344,15 +337,15 @@ def render_tutorial():
             }
         },
         {
-            "title": "Step 2: Creating Edges (Relationships)",
+            "title": "Schritt 2: Kanten (Beziehungen) erstellen",
             "content": """
-            **How to create an edge:**
-            - Click and **hold** on a node for **1 second** 🖱️ (source node turns red 🔴)
-            - Click on another node to connect them
-            - Type the relationship label (e.g., "leads to", "causes", "includes")
-            - Press **Enter** or click **OK** to confirm
+            **So erstellst du eine Kante:**
+            - Klicke auf einen Knoten und **halte** fuer **1 Sekunde** 🖱️ (Quellknoten wird rot 🔴)
+            - Klicke auf einen anderen Knoten, um zu verbinden
+            - Beschrifte die Beziehung (z. B. „fuehrt zu“, „verursacht“, „enthaelt“)
+            - Bestaetige mit **Enter** oder **OK**
 
-            **Try it:** Connect two concepts with a meaningful relationship.
+            **Probiere es aus:** Verbinde zwei Konzepte mit einer sinnvollen Beziehung.
             """,
             "demo_map": {
                 "elements": [
@@ -363,19 +356,19 @@ def render_tutorial():
             }
         },
         {
-            "title": "Step 3: Editing and Deleting",
+            "title": "Schritt 3: Bearbeiten und Loeschen",
             "content": """
-            **Editing:**
-            - **Double-click** on any node or edge to edit its label
+            **Bearbeiten:**
+            - **Doppelklick** auf einen Knoten oder eine Kante, um die Beschriftung zu aendern
 
-            **Deleting:**
-            - **Right-click** on any node or edge to delete it
+            **Loeschen:**
+            - **Rechtsklick** auf einen Knoten oder eine Kante, um ihn zu loeschen
 
-            **Moving:**
-            - **Drag** nodes to reposition them
-            - Hold **Shift** to select multiple nodes
+            **Verschieben:**
+            - **Ziehen**, um Knoten zu verschieben
+            - **Shift** halten, um mehrere Knoten zu markieren
 
-            **Try it:** Practice editing and moving elements in the map below.
+            **Probiere es aus:** Uebe das Bearbeiten und Verschieben in der Map unten.
             """,
             "demo_map": {
                 "elements": [
@@ -395,14 +388,14 @@ def render_tutorial():
 
     # Progress indicator
     progress = (st.session_state.tutorial_step + 1) / len(tutorial_steps)
-    st.progress(progress, text=f"Step {st.session_state.tutorial_step + 1} of {len(tutorial_steps)}")
+    st.progress(progress, text=f"Schritt {st.session_state.tutorial_step + 1} von {len(tutorial_steps)}")
 
     # Current step content
     st.subheader(current_step["title"])
     st.markdown(current_step["content"])
 
     # Practice area
-    st.markdown("**Practice Area:**")
+    st.markdown("**Uebungsbereich:**")
     try:
         tutorial_response = conceptmap_component(
             cm_data=current_step["demo_map"]
@@ -416,26 +409,26 @@ def render_tutorial():
 
     with col1:
         if st.session_state.tutorial_step > 0:
-            if st.button("← Previous", type="secondary"):
+            if st.button("← Zurueck", type="secondary"):
                 st.session_state.tutorial_step -= 1
                 st.rerun()
 
     with col3:
         if st.session_state.tutorial_step < len(tutorial_steps) - 1:
-            if st.button("Next →", type="primary"):
+            if st.button("Weiter →", type="primary"):
                 st.session_state.tutorial_step += 1
                 st.rerun()
         else:
-            if st.button("Complete Tutorial", type="primary"):
+            if st.button("Tutorial abschliessen", type="primary"):
                 st.session_state.tutorial_completed = True
                 st.session_state.show_tutorial = False
-                st.success("🎉 Tutorial completed! You're ready to start the experiment.")
+                st.success("🎉 Tutorial abgeschlossen! Du kannst mit dem Experiment starten.")
                 st.session_state.scroll_to_top = True
                 st.rerun()
 
     # Skip option
     st.markdown("---")
-    if st.button("Skip Tutorial", type="secondary"):
+    if st.button("Tutorial ueberspringen", type="secondary"):
         st.session_state.tutorial_completed = True
         st.session_state.show_tutorial = False
         st.session_state.scroll_to_top = True
@@ -826,7 +819,7 @@ def render_cm_submit_button():
         return
 
     # Make the submit button more prominent
-    st.markdown("### Submit Your Concept Map")
+    st.markdown("### Concept Map einreichen")
 
     _, col2, _ = st.columns([1, 2, 1])
     with col2:
@@ -840,14 +833,14 @@ def render_followup():
     """Render agent followup interaction with multi-turn conversation support."""
     roundn = st.session_state.roundn
 
-    # Special handling for Round 0 - skip directly to Round 1
+    # Spezielle Behandlung fuer Runde 0 - direkt zu Runde 1 springen
     if roundn == 0:
-        st.success("✅ Initial concept map submitted successfully!")
-        st.info("This was your baseline concept map (Round 0). Now let's proceed with agent-guided experiment.")
+        st.success("✅ Erste Concept Map erfolgreich eingereicht!")
+        st.info("Das war deine Baseline-Concept-Map (Runde 0). Jetzt geht es mit agentengefuertem Scaffolding weiter.")
 
         col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
-            if st.button("Proceed to Round 1", type="primary", use_container_width=True):
+            if st.button("Weiter zu Runde 1", type="primary", use_container_width=True):
                 # Log the round 0 completion
                 if st.session_state.experimental_session:
                     current_cm_data = st.session_state.cmdata[0] if len(st.session_state.cmdata) > 0 else None
@@ -856,7 +849,7 @@ def render_followup():
                     current_cm_data = st.session_state.cmdata[0] if len(st.session_state.cmdata) > 0 else None
                     st.session_state.experimental_session.update_concept_map_evolution(0, current_cm_data)
                     st.session_state.experimental_session.add_to_conversation_history(
-                        0, "system", "Round 0 completed - baseline concept map created", {"final": True}
+                        0, "system", "Runde 0 abgeschlossen - Baseline-Concept-Map erstellt", {"final": True}
                     )
 
                 # Move to round 1
