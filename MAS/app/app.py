@@ -140,7 +140,7 @@ def render_mode_selection():
     # Add time information
     st.warning("""
     ⏱️ **Erwartete Dauer:**
-    - Gesamtdauer: **ca. 45 Minuten**
+    - Gesamtdauer: **ca. 30 Minuten**
     - 5 Runden Concept Mapping: **ca. 5 Minuten pro Runde**
     - Zusaetzliche Zeit fuer Frageboegen und Profil
     - Deine Zeit wird zu Forschungszwecken erfasst
@@ -193,7 +193,7 @@ def render_consent_form():
         **Zweck der Studie:**
         Wir untersuchen, wie KI-gestuetzte Agenten beim Lernen durch Concept Mapping unterstuetzen koennen.
         Wenn du zustimmst, bearbeitest du ein Online-Concept-Mapping mit KI-Unterstuetzung und anschliessenden Frageboegen.
-        Dauer: ca. **30–45 Minuten**.
+        Dauer: ca. **30 Minuten**.
 
         **Nutzen:**
         Neben der Verguetung hilfst du, Lerntechnologien und KI-Lernhilfen zu verbessern.
@@ -257,28 +257,28 @@ def render_consent_form():
 
 def render_attention_check_failure():
     """Render attention check failure page."""
-    st.header("❌ Attention Check Failed")
+    st.header("❌ Aufmerksamkeitscheck nicht bestanden")
     st.markdown("---")
 
     st.error("""
-    ### Thank you for your interest
+    ### Danke fuer dein Interesse
 
-    You have failed the attention check and cannot participate in this research study.
+    Du hast den Aufmerksamkeitscheck nicht bestanden und kannst an dieser Studie leider nicht teilnehmen.
 
-    We require participants to carefully read and respond to all questions to ensure data quality.
+    Wir brauchen, dass alle Fragen sorgfaeltig gelesen und beantwortet werden, um die Datenqualitaet sicherzustellen.
 
-    Thank you for your time and consideration.
+    Danke fuer deine Zeit und dein Interesse.
     """)
     st.stop()
 
 
 def render_profile_login():
     with st.columns([1, 10, 1])[1]:
-        st.header("Welcome to the Experiment")
-        st.write("To participate in this research study, please complete the profile questionnaire.")
-        st.info("Your responses will help us personalize the adaption to your learning needs.")
+        st.header("Willkommen zum Experiment")
+        st.write("Um an dieser Studie teilzunehmen, fuelle bitte den Profilfragebogen aus.")
+        st.info("Deine Antworten helfen uns dabei, die Anpassung an deine Lernbeduerfnisse zu personalisieren.")
 
-        if st.button("Begin Profile Setup", type='primary', use_container_width=True):
+        if st.button("Profil einrichten", type='primary', use_container_width=True):
             st.session_state.profile_initialisation_started = True
             st.rerun()
 
@@ -437,40 +437,40 @@ def render_tutorial():
 
 def render_agent_differentiation_question():
     """Render agent differentiation question before questionnaires."""
-    st.header("🤖 Agent Differentiation")
+    st.header("🤖 Agenten-Differenzierung")
     st.markdown("---")
 
     st.info("""
-    Before we proceed with the final questionnaires, we'd like to know about your experience with the agents.
+    Bevor es mit den letzten Frageboegen weitergeht, wollen wir wissen, wie du die Agenten erlebt hast.
     """)
 
     with st.form("agent_differentiation"):
-        st.markdown("**Were you able to differentiate between the different agents that provided guidance?**")
+        st.markdown("**Konntest du die unterschiedlichen Agenten voneinander unterscheiden?**")
 
         differentiation = st.radio(
-            "Select your answer:",
+            "Waehle deine Antwort:",
             options=[
-                "Yes, I could clearly tell the agents were different",
-                "Somewhat - I noticed some differences but wasn't sure",
-                "No, all agents seemed the same to me",
-                "I'm not sure"
+                "Ja, die Unterschiede waren klar",
+                "Teils-teils – ich habe Unterschiede gemerkt, war mir aber unsicher",
+                "Nein, alle Agenten wirkten gleich",
+                "Ich weiss es nicht"
             ],
             index=None  # No default selection
         )
 
         # Optional text field for additional comments
-        st.markdown("**Additional comments (optional):**")
+        st.markdown("**Weitere Kommentare (optional):**")
         comments = st.text_area(
-            "If you noticed differences, what made the agents seem different? If not, why do you think they seemed the same?",
+            "Wenn dir Unterschiede aufgefallen sind: Was genau? Falls nicht: Warum wirkten sie gleich?",
             height=100,
-            placeholder="Your observations about the agents..."
+            placeholder="Deine Beobachtungen zu den Agenten..."
         )
 
-        submitted = st.form_submit_button("Submit", type="primary")
+        submitted = st.form_submit_button("Abschicken", type="primary")
 
         if submitted:
             if not differentiation:
-                st.error("Please select an answer before submitting.")
+                st.error("Bitte waehle eine Antwort aus, bevor du abschickst.")
                 return
 
             # Store the response in session data
@@ -498,41 +498,41 @@ def render_agent_differentiation_question():
             # Mark as completed
             st.session_state.agent_differentiation_completed = True
 
-            st.success("✅ Thank you for your feedback!")
-            st.info("📊 Proceeding to the map adaption question...")
+            st.success("✅ Danke fuer dein Feedback!")
+            st.info("📊 Weiter geht es mit der Frage zur Map-Anpassung...")
             st.rerun()
 
 
 def render_map_adaption_question():
     """Render self-assessment of concept map adaptation between rounds."""
-    st.header("🗺️ Concept Map Adaptation")
+    st.header("🗺️ Anpassung deiner Concept Map")
     st.markdown("---")
 
-    st.info("""We would like to know how much you think your concept map changed between the rounds.""")
+    st.info("""Wir moechten wissen, wie stark du deine Concept Map zwischen den Runden geaendert hast.""")
 
     with st.form("map_adaptation"):
         adaptation = st.radio(
-            "Did you adapt your concept map between the rounds?",
+            "Hast du deine Concept Map zwischen den Runden angepasst?",
             options=[
-                "Yes, I actively changed or expanded my map between rounds",
-                "Somewhat - I made a few adjustments but mostly kept it the same",
-                "No, I barely changed my map between rounds",
-                "I'm not sure"
+                "Ja, ich habe die Map aktiv veraendert oder erweitert",
+                "Ein wenig – ein paar Anpassungen, sonst gleich geblieben",
+                "Nein, ich habe kaum etwas geaendert",
+                "Ich bin mir nicht sicher"
             ],
             index=None  # No default selection
         )
 
         comments = st.text_area(
-            "Additional comments (optional):",
+            "Weitere Kommentare (optional):",
             height=100,
-            placeholder="What kinds of changes (if any) did you make to your map?"
+            placeholder="Welche Aenderungen (falls welche) hast du vorgenommen?"
         )
 
-        submitted = st.form_submit_button("Submit", type="primary")
+        submitted = st.form_submit_button("Abschicken", type="primary")
 
         if submitted:
             if not adaptation:
-                st.error("Please select an answer before submitting.")
+                st.error("Bitte waehle eine Antwort aus, bevor du abschickst.")
                 return
 
             # Store response
@@ -557,16 +557,16 @@ def render_map_adaption_question():
             # Mark as completed and proceed
             st.session_state.map_adaptation_completed = True
 
-            st.success("✅ Thank you for your feedback!")
-            st.info("📋 Proceeding to the learning gains questionnaire...")
+            st.success("✅ Danke fuer dein Feedback!")
+            st.info("📋 Weiter geht es mit dem Fragebogen zu deinem Lernerfolg...")
             st.rerun()
 
 
 def render_summary_page():
     """Render session summary page."""
-    st.header("Concept Mapping Experiment")
+    st.header("Concept-Mapping-Experiment")
     st.markdown("---")
-    st.write("Thank You for participating in the Concept Mapping Experiment!")
+    st.write("Danke, dass du am Concept-Mapping-Experiment teilgenommen hast!")
     st.balloons()
 
     # Calculate map summary statistics
@@ -594,14 +594,14 @@ def render_summary_page():
 
     # Finalize session if not already done
     if not st.session_state.session_finalized and st.session_state.experimental_session:
-        with st.spinner("Finalizing session and saving data..."):
+        with st.spinner("Sitzung wird abgeschlossen und Daten werden gespeichert..."):
             export_info = st.session_state.experimental_session.finalize_session()
             st.session_state.session_finalized = True
 
             if "error" not in export_info:
-                st.success("✅ Session data saved successfully!")
+                st.success("✅ Sitzungsdaten erfolgreich gespeichert!")
 
-    st.subheader("Session Summary")
+    st.subheader("Sitzungsuebersicht")
 
     # Get session summary
     if st.session_state.experimental_session:
@@ -614,47 +614,47 @@ def render_summary_page():
         col1, col2 = st.columns(2)
 
         with col1:
-            st.write(f"**Participant Name:** {summary.get('participant_name', 'Demo User')}")
+            st.write(f"**Teilnehmername:** {summary.get('participant_name', 'Demo-Nutzer')}")
             st.write(f"**Prolific Experiment ID:** {unique_id}")
-            st.write(f"**Mode:** {summary.get('mode', 'unknown').title()}")
+            st.write(f"**Modus:** {summary.get('mode', 'unknown').title()}")
 
         with col2:
-            st.write(f"**Total Rounds Completed:** {st.session_state.max_rounds}")
+            st.write(f"**Anzahl abgeschlossene Runden:** {st.session_state.max_rounds}")
             if st.session_state.mode == "experimental":
-                st.write("**Session Structure:**")
-                st.write("- Round 0: Baseline (own map)")
-                st.write("- Rounds 1-4: Agent-guided map")
+                st.write("**Ablauf:**")
+                st.write("- Runde 0: Baseline (eigene Map)")
+                st.write("- Runden 1-4: Agentengeleitete Map")
 
     # Display concept map statistics
     st.markdown("---")
-    st.subheader("📊 Concept Map Statistics")
+    st.subheader("📊 Concept-Map-Statistiken")
 
     col1, col2, col3 = st.columns(3)
 
     with col1:
-        st.metric(label="Total Nodes Created", value=final_nodes)
+        st.metric(label="Erstellte Knoten gesamt", value=final_nodes)
 
     with col2:
-        st.metric(label="Total Edges Created", value=final_edges)
+        st.metric(label="Erstellte Kanten gesamt", value=final_edges)
 
     with col3:
         if final_nodes > 0:
             connectivity = round(final_edges / final_nodes, 2)
-            st.metric(label="Connectivity Ratio", value=connectivity)
+            st.metric(label="Verhaeltnis Kanten/Knoten", value=connectivity)
         else:
-            st.metric(label="Connectivity Ratio", value="N/A")
+            st.metric(label="Verhaeltnis Kanten/Knoten", value="k.A.")
 
     # Thank you message
     st.markdown("---")
     st.info("""
-    📊 Your responses have been recorded for research purposes.
+    📊 Deine Antworten wurden fuer die Forschung gespeichert.
 
-    Thank you for your valuable contribution to our research on AI-powered learning!
+    Danke fuer deinen wertvollen Beitrag zu unserer Forschung ueber KI-gestuetztes Lernen!
     """)
 
     # Leading back to Prolific
-    st.markdown("---")
-    st.link_button("Please return to Prolific", "https://app.prolific.com/submissions/complete?cc=C1EF9RLL", type="primary")
+#    st.markdown("---")
+#    st.link_button("Bitte kehre zu Prolific zurueck", "https://app.prolific.com/submissions/complete?cc=C1EF9RLL", type="primary")
 
 
 def render_agent_name():
@@ -664,22 +664,22 @@ def render_agent_name():
     # In experimental mode, hide specific agent types from participants
     if st.session_state.mode == "experimental":
         if roundn == 0:
-            agent_name = "Initial Map Creation"
+            agent_name = "Initiale Map-Erstellung"
         else:
-            agent_name = "Agent"  # Generic name for all scaffolding agents
+            agent_name = "Agent"  # Generischer Name fuer alle Scaffolding-Agenten
     else:
         # In demo mode, show the actual agent type
         if st.session_state.experimental_session:
             agent_name = st.session_state.experimental_session.get_agent_name(roundn)
         else:
-            agent_name = "Demo Agent"
+            agent_name = "Demo-Agent"
 
-    st.markdown(f'<div style="font-size:20px;">🧙<b> {agent_name} Follow-Up:</b></div>', unsafe_allow_html=True)
+    st.markdown(f'<div style="font-size:20px;">🧙<b> {agent_name} Nachfrage:</b></div>', unsafe_allow_html=True)
 
 
 def render_header():
     """Render page header."""
-    st.header("Concept Mapping Experiment")
+    st.header("Concept-Mapping-Experiment")
     st.markdown("---")
 
     # Add resource buttons in the header
@@ -688,21 +688,21 @@ def render_header():
     with col1:
         # Display Round 0 as "Baseline" and others as Round 1-4
         if st.session_state.roundn == 0:
-            st.subheader(f"Round 0 (Baseline) / {st.session_state.max_rounds - 1}")
+            st.subheader(f"Runde 0 (Baseline) / {st.session_state.max_rounds - 1}")
 
         else:
-            st.subheader(f"Round {st.session_state.roundn}/{st.session_state.max_rounds - 1}")
+            st.subheader(f"Runde {st.session_state.roundn}/{st.session_state.max_rounds - 1}")
 
     with col2:
-        if st.button("📋 Task Description", type="secondary", use_container_width=True):
+        if st.button("📋 Aufgabenbeschreibung", type="secondary", use_container_width=True):
             render_task_dialog()
 
     with col3:
-        if st.button("📚 Extra Materials", type="secondary", use_container_width=True):
+        if st.button("📚 Zusatzmaterialien", type="secondary", use_container_width=True):
             render_materials_dialog()
 
     with col4:
-        if st.button("❓ Help", type="secondary", use_container_width=True):
+        if st.button("❓ Hilfe", type="secondary", use_container_width=True):
             render_help_dialog()
 
     # Show mode and participant info
@@ -710,25 +710,25 @@ def render_header():
         col1, col2 = st.columns([3, 1])
         with col1:
             if st.session_state.learner_profile:
-                st.caption(f"Participant: {st.session_state.learner_profile['name']}")
+                st.caption(f"Teilnehmer: {st.session_state.learner_profile['name']}")
         with col2:
-            st.caption(f"Mode: {st.session_state.mode.title()}")
+            st.caption(f"Modus: {st.session_state.mode.title()}")
 
 
-@st.dialog("Task Description", width='large')
+@st.dialog("Aufgabenbeschreibung", width='large')
 def render_task_dialog():
     """Render task description dialog with copy protection."""
-    st.markdown("### 📋 Aufgabenbeschreibung")
+    st.markdown("📋 Aufgabenbeschreibung")
     st.caption("Dieser Inhalt ist geschuetzt und kann nicht kopiert werden.")
 
     # Render task description as protected image with larger font
     render_protected_markdown(TASK_DESCRIPTION, width=1100, font_size=20)
 
 
-@st.dialog("Extra Materials", width='large')
+@st.dialog("Zusatzmaterialien", width='large')
 def render_materials_dialog():
     """Render extra materials dialog with copy protection."""
-    st.markdown("### 📚 Zusatzmaterialien")
+    st.markdown("📚 Zusatzmaterialien")
     st.caption("Dieser Inhalt ist geschuetzt und kann nicht kopiert werden.")
 
     # Render extra materials as protected image with larger font
@@ -814,7 +814,7 @@ def render_cm_submit_button():
     st.markdown("---")  # Add a separator
 
     if st.session_state.followup:
-        st.success("Concept map was submitted successfully!")
+        st.success("Concept map wurde eingereicht!")
         return
 
     # Make the submit button more prominent
@@ -822,7 +822,7 @@ def render_cm_submit_button():
 
     _, col2, _ = st.columns([1, 2, 1])
     with col2:
-        if st.button("🚀 Submit Concept Map", type='primary', use_container_width=True,
+        if st.button("🚀 Concept Map abschicken", type='primary', use_container_width=True,
                      disabled=st.session_state.submit_request):
             st.session_state.submit_request = True
             st.rerun()
@@ -834,8 +834,8 @@ def render_followup():
 
     # Spezielle Behandlung fuer Runde 0 - direkt zu Runde 1 springen
     if roundn == 0:
-            st.success("✅ Erste Concept Map erfolgreich eingereicht!")
-            st.info("Das war deine Baseline-Concept-Map (Runde 0). Jetzt geht es mit agentengefuertem Scaffolding weiter.")
+        st.success("✅ Erste Concept Map erfolgreich eingereicht!")
+        st.info("Das war deine Baseline-Concept-Map (Runde 0). Jetzt geht es mit agentengefuertem Scaffolding weiter.")
 
         col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
@@ -878,11 +878,11 @@ def render_followup():
 
         # Show conversation history
         if conversation_history:
-            st.markdown("**Conversation History:**")
+            st.markdown("**Verlauf:**")
             for i, exchange in enumerate(conversation_history):
-                with st.expander(f"Exchange {i + 1}", expanded=(i == len(conversation_history) - 1)):
+                with st.expander(f"Austausch {i + 1}", expanded=(i == len(conversation_history) - 1)):
                     st.markdown(f"**🧙 Agent:** {exchange['agent_message']}")
-                    st.markdown(f"**👤 You:** {exchange['user_response']}")
+                    st.markdown(f"**👤 Du:** {exchange['user_response']}")
 
         # Current agent response
         with st.container(border=True):
@@ -910,18 +910,18 @@ def render_followup():
             else:
                 # Demo mode with conversation awareness
                 if conversation_turn == 0:
-                    st.session_state.agent_msg = "This is a demo response. In experimental mode, you would receive personalized AI-powered response."
+                    st.session_state.agent_msg = "Dies ist eine Demo-Antwort. Im Experiment erhaeltst du eine personalisierte KI-Antwort."
                 else:
-                    st.session_state.agent_msg = f"Thank you for your response. This is demo follow-up #{conversation_turn}. In experimental mode, this would be a contextual response based on your input."
+                    st.session_state.agent_msg = f"Danke fuer deine Antwort. Dies ist Demo-Nachfrage #{conversation_turn}. Im Experiment waere dies eine kontextuelle Antwort basierend auf deinem Input."
 
-            st.markdown(f"**Current Response:**")
+            st.markdown(f"**Aktuelle Antwort:**")
             st.write(st.session_state.agent_msg)
 
         # User response area - use unique key based on turn
         current_response_key = f'followup_response_r{roundn}_t{conversation_turn}'
         st.text_area(
-            label='Your Response',
-            placeholder="Please respond to the output above",
+            label='Deine Antwort',
+            placeholder="Antworte hier auf die Ausgabe oben",
             height=100,
             key=current_response_key
         )
@@ -938,7 +938,7 @@ def render_followup():
                             st.session_state.experimental_session.can_continue_conversation(roundn))
 
             if (len(user_response) > 0 and can_continue and
-                    st.button("Continue Conversation", type='secondary', use_container_width=True,
+                    st.button("Gespräch fortsetzen", type='secondary', use_container_width=True,
                               key=f"continue_r{roundn}_t{conversation_turn}")):
 
                 # Add current exchange to history
@@ -965,7 +965,7 @@ def render_followup():
         with col2:
             # Finish round button
             if (len(user_response) > 0 and
-                    st.button("Finish Round", type='primary', use_container_width=True,
+                    st.button("Runde beenden", type='primary', use_container_width=True,
                               key=f"finish_r{roundn}_t{conversation_turn}")):
 
                 # Add final exchange to history
@@ -1005,16 +1005,16 @@ def render_followup():
             if st.session_state.experimental_session:
                 remaining_turns = max_user_messages - conversation_turn
                 if remaining_turns > 0:
-                    st.caption(f"Turns remaining: {remaining_turns}")
+                    st.caption(f"Verbleibende Antworten: {remaining_turns}")
                 else:
-                    st.caption("Max turns remaining")
+                    st.caption("Maximale Antworten erreicht")
 
         # Show instructions
         if conversation_turn == 0:
             st.info(
-                "💡 **Tip:** You can have up to 5 exchanges with the agent in this round. Use 'Continue Conversation' for follow-up questions or 'Finish Round' when ready to proceed.")
+                "💡 **Tipp:** Du kannst bis zu 5 Austausche mit dem Agenten in dieser Runde fuehren. Nutze 'Gespraech fortsetzen' fuer weitere Fragen oder 'Runde beenden', wenn du fertig bist.")
         elif conversation_turn >= max_user_messages - 1:
-            st.warning("⚠️ This is your final exchange for this round. Click 'Finish Round' to proceed.")
+            st.warning("⚠️ Dies ist dein letzter Austausch in dieser Runde. Klicke auf 'Runde beenden', um weiterzugehen.")
 
 
 def capture_concept_map_data(roundn: int, concept_map_response: Dict) -> None:
