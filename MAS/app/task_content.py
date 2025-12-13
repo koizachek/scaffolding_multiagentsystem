@@ -17,8 +17,6 @@ Danke fuer deine Teilnahme! Du erstellst heute eine Concept Map – eine visuell
 """
 
 TASK_DESCRIPTION = """
-## Aufgabenbeschreibung
-
 Diese Studie untersucht Herausforderungen, die ein Start-up beim internationalen Markteintritt bewaeltigen muss. Verschiedene Faktoren spielen zusammen und beeinflussen sich gegenseitig.
 
 **Wichtig:** Der Markteintritt findet unter dem Standard Adaptive Market Gatekeeping (AMG) statt. Das zentrale Konzept, das du in deiner Analyse beruecksichtigen musst, ist **Adaptive Market Gatekeeping (AMG)** (entwickelt 2023 von einer OECD-Arbeitsgruppe).
@@ -67,7 +65,6 @@ Du arbeitest in 5 Runden (je ca. 5–10 Minuten). In jeder Runde kannst du deine
 """
 
 EXTRA_MATERIALS = """
-## Konzepte mit Beschreibungen
 
 **1. Marktanalyse** – Systematische Sammlung und Bewertung von Informationen ueber potenzielle Maerkte. Umfasst typischerweise Marktgroesse, erwartetes Wachstum, Kundennachfrage, relevante Trends sowie Wettbewerb (Anzahl der Konkurrenten, Marktanteile, Strategien). Erfolgsfaktoren: Product-Market-Fit, Anpassung an lokale Beduerfnisse, verlaessliche Partner, wettbewerbsfaehige Preise, effiziente Lieferketten.
 

@@ -814,7 +814,7 @@ def render_cm_submit_button():
     st.markdown("---")  # Add a separator
 
     if st.session_state.followup:
-        st.success("Concept map wurde eingereicht!")
+        st.success("Danke!")
         return
 
     # Make the submit button more prominent

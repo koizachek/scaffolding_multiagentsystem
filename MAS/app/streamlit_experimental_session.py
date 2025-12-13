@@ -957,8 +957,8 @@ class StreamlitExperimentalSession:
                         }
                     )
                 
-                st.success(f"Profile created for {profile['name']}")
-                st.info("Your profile has been created successfully. Let's continue with the experiment.")
+                st.success(f"Profil angelegt für {profile['name']}")
+#                st.info("Your profile has been created successfully. Let's continue with the experiment.")
                 
                 return profile
         
