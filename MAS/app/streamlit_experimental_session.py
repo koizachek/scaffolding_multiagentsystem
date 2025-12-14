@@ -938,7 +938,7 @@ class StreamlitExperimentalSession:
                     return None
                 
 #                # Use fixed Kassel completion code as unique ID
-                unique_id = "K1EF9RLL"
+                unique_id = "K2EF9RLL"
                 
                 # Assess background knowledge and determine scaffolding level
                 background_score = self.assess_background_knowledge(background, "")  # No prior knowledge field anymore
