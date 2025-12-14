@@ -122,7 +122,7 @@ def render_mode_selection():
 
     # Display topic as regular text (not protected)
     st.info(
-        "**Thema:** Herausforderungen beim internationalen Markteintritt eines deutschen Software-Start-ups unter dem Standard Adaptive Market Gatekeeping (AMG).")
+        "**Thema:** Teilnahme von KMU an AI-CO2-Handelssystemen unter dem AI Carbon Credit Transfer Protocol (AICCTP).")
 
     # Task description and resources information
     st.success("""
@@ -615,7 +615,7 @@ def render_summary_page():
 
         with col1:
             st.write(f"**Teilnehmername:** {summary.get('participant_name', 'Demo-Nutzer')}")
-#            st.write(f"**Prolific Experiment ID:** {unique_id}")
+            st.write(f"**Prolific Experiment ID:** {unique_id}")
             st.write(f"**Modus:** {summary.get('mode', 'unknown').title()}")
 
         with col2:

@@ -3,7 +3,7 @@ Task-Inhalte fuer die Studie „AI Carbon Credit Transfer Protocol (AICCTP)“
 Dieses Modul enthaelt alle Aufgabenbeschreibungen, Materialien und Inhalte fuer das AICCTP-Experiment.
 """
 
-STUDY_TITLE = "Task B: AI Carbon Credit Transfer Protocol (AICCTP)"
+STUDY_TITLE = "AI Carbon Credit Transfer Protocol (AICCTP)"
 
 STUDY_INTRODUCTION = """
 Danke fuer deine Teilnahme! Du erstellst heute eine Concept Map – eine visuelle Darstellung von Konzepten und ihren Beziehungen. Stell dir eine Concept Map wie eine Landkarte vor: Staedte (= Konzepte) sind durch Strassen (= Beziehungen) verbunden.
@@ -17,29 +17,30 @@ Danke fuer deine Teilnahme! Du erstellst heute eine Concept Map – eine visuell
 """
 
 TASK_DESCRIPTION = """
-Task B: AI Carbon Credit Transfer Protocol FOR AI USAGE (AICCTP)
-Studie: "Implementierung eines AI CO2-Handelssystems fuer KMU"
-Vielen Dank, dass du mit dieser Studie fortfaehrst! In dieser Runde wirst du eine Concept Map nach denselben Prinzipien wie zuvor erstellen. Wir wechseln thematisch von Martkeintritt zu Marktteilnahme.
+In dieser Runde wirst du eine Concept Map nach denselben Prinzipien wie zuvor erstellen. Wir wechseln thematisch von Martkeintritt zu Marktteilnahme.
 
-Aufgabenbeschreibung
+### Aufgabenbeschreibung
 Diese Studie untersucht die Herausforderungen, vor denen kleine und mittlere Unternehmen (KMU) stehen, wenn sie an regionalen AI CO2-Handelssystemen teilnehmen. Waehend die Big Player grosse LLMs trainieren und viel CO2 in Folge dieses Trainings verursachen, sind die kleinen Player weitgehend aussen vor und haben Zertifikate uebrig, die sie nicht verwenden mussten, da sie beim Training sparsamer sind und auf kleinere Modelle setzen. Verschiedene Faktoren bestimmen Erfolg oder Misserfolg in diesem aufstrebenden Markt.
 Wichtig: Das zentrale Konzept, das in der Analyse einbezogen werden muss, ist das AI Carbon Credit Transfer Protocol (AICCTP). Es wurde 2025 von der International Carbon Markets Association (ICMA) entwickelt.
 
-Was ist AICCTP?
+### Was ist AICCTP?
 Stell dir vor, dein KMU moechte ueberschuessige AI CO2-Zertifikate in einem regionalen Handelssystem verkaufen – zum Beispiel in der EU oder auf nordamerikanischen Maerkten. Grosse Industrieakteure, die bereits den AI CO2-Handel dominieren, wollen ihre vorteilhafte Position beibehalten. AICCTP beschreibt, wie diese „dominanten Haendler" kollektiv und dynamisch Verifizierungs- und Transferprozesse manipulieren, um kleinere Teilnehmer zu benachteiligen. Folgende Mechanismen sind enthalten:
 • Verifizierungskomplexitaet: Dominante Haendler setzen sich fuer zunehmend technische Verifizierungsstandards ein, die grosse Unternehmen mit Compliance-Abteilungen beguenstigen
 • Transferverzoegerungen: Sie beeinflussen Abwicklungsfristen und Prioritaeten von Clearingstellen, um Transaktionen kleinerer Haendler zu verlangsamen
 • Preissignalisierung: Sie koordinieren Informationsveroeffentlichungen, um kuenstliche Preisvolatilitaet zu erzeugen, die KMU-Teilnahme abschreckt
 • Zugangssteuerung: Sie kontrollieren Schluesselbeziehungen zu Pruefern, Auditoren und Plattformbetreibern
-Beispiel:
+
+### Beispiel:
 Das deutsche Produktions-AI-KMU „TechKlima" moechte 500 AICO2-Zertifikate verkaufen, die es durch Effizienzverbesserungen und Verzicht auf LLM-Re-Training erworben hat. Durch AICCTP koennen dominante Haendler:
 • Zusaetzliche Drittpruefungen verlangen, die nur grosse Verifizierungsfirmen (verbuendet mit dominanten Haendlern) durchfuehren koennen
 • Die Zertifikatsregistrierung im System verzoegern, sodass TechKlima guenstige Preisfenster verpasst
 • Koordinierte Marktberichte veroeffentlichen, die die Preise kuenstlich druecken, kurz bevor TechKlimas Zertifikate handelbar werden
 
-Aufgabe
+### Deine Aufgabe
+
 Nutz die bereitgestellte Oberflaeche, um eine Concept Map zu erstellen, die zeigt, wie die folgenden Konzepte bei der KMU-Teilnahme an CO2-Handelssystemen zusammenhaengen. Zeig auf, wie das KMU AICCTP navigieren kann.
-Zu verwendende Konzepte (mit eigener konkreter Benennung):
+
+### Zu verwendende Konzepte (mit eigener konkreter Benennung):
 • CO2-Fussabdruck-Bewertung (Messung aktueller Emissionen)
 • Marktbedingungen (Zustand des AI CO2-Zertifikatehandelsmarktes)
 • Handelsbarrieren (Hindernisse fuer Marktteilnahme)
@@ -52,13 +53,13 @@ Zu verwendende Konzepte (mit eigener konkreter Benennung):
 • Verifizierungsprozess (wie Zertifikate authentifiziert und registriert werden)
 • AICCTP (AI Carbon Credit Transfer Protocol – siehe oben)
 
-Anforderungen
+### Anforderungen
 • Verwende alle relevanten, konkreten Konzepte (z.B. nutze „Bankkredit" als Knoten beim Thema „Kapitalanforderungen")
 • Verbinde die Konzepte mit beschrifteten Pfeilen. Beispiele fuer Beschriftungen: beeinflusst, ermoeglicht, verhindert, erfordert, verstaerkt, schwaecht, etc.
 • Erstelle mindestens 10 Verbindungen, und mehr, wenn sie sinnvoll sind
 • Besonderes Augenmerk auf: Wie beeinflusst AICCTP die anderen Faktoren
 
-Format
+### Format
 Du wirst in 5 Runden (jeweils ca. 5–10 Minuten) an dieser Aufgabe arbeiten. In jeder Runde kann die Map erweitert und verfeinert werden.
 Tipp: Beginne mit den offensichtlichen Verbindungen und fuege dann schrittweise komplexere Beziehungen hinzu. Denk daran: AICCTP ist ein Mechanismus, der von dominanten Haendlern genutzt wird – ueberlege, wie er die verschiedenen Aspekte der KMU-Teilnahme an CO2-Maerkten beeinflusst.
 """

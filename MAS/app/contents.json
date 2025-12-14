@@ -10,11 +10,11 @@
     },
 
     "initial_map": {
-	"elements": [
+        "elements": [
             {
                 "data": {
-                    "id": "amg",
-                    "label": "Adaptive Market Gatekeeping (AMG)",
+                    "id": "aicctp",
+                    "label": "AICCTP",
                     "x": 400,
                     "y": 300
                 }
