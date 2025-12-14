@@ -223,9 +223,9 @@ class StreamlitExperimentalSession:
                 "id": "amg_2",
                 "question": "AMG: Wie kann Adaptive Market Gatekeeping (AMG) lokale Märkte schützen?",
                 "options": {
-                    "A": "Staaten lassen Start-ups aus dem Ausland nicht ohne weiteres zu",
-                    "B": "Start-ups zahlen einen Teil ihrer lokalen Gewinne an etablierte Unternehmen",
-                    "C": "Start-ups spenden einen gewissen Prozentsatz ihrer Einnahmen an lokale Non-Profits, um einen Markteintritt zu erhalten"
+                    "A": "Etablierte Unternehmen passen Standards, Regeln und Netzwerke dynamisch an, um den Markteintritt neuer Anbieter zu erschweren",
+                    "B": "Ein staatliches Lizenzsystem prueft Markteintritte nach festen, fuer alle gleichen Kriterien",
+                    "C": "Ein freiwilliges Guetesiegel, das Start-ups durch Transparenzberichte erhalten koennen"
                 },
                 "correct": "A"
             },
@@ -233,9 +233,9 @@ class StreamlitExperimentalSession:
                 "id": "amg_3",
                 "question": "AMG: Inwieweit gefährdet Adaptive Market Gatekeeping (AMG) lokale Märkte?",
                 "options": {
-                    "A": "Staaten lassen Start-ups aus dem Ausland nicht ohne weiteres zu",
-                    "B": "Start-ups zahlen einen Teil ihrer lokalen Gewinne an etablierte Unternehmen",
-                    "C": "Start-ups spenden einen gewissen Prozentsatz ihrer Einnahmen an lokale Non-Profits, um einen Markteintritt zu erhalten"
+                    "A": "Es verbessert automatisch die Produktqualitaet im Markt durch zusaetzliche Pruefungen",
+                    "B": "Es kann Wettbewerb und Innovation daempfen, wenn Etablierte Regeln/Standards/Netzwerke so anpassen, dass neue Anbieter faktisch ausgeschlossen werden",
+                    "C": "Es reduziert Marktmacht etablierter Unternehmen, indem es den Eintritt neuer Anbieter erleichtert"
                 },
                 "correct": "B"
             }
@@ -466,7 +466,7 @@ class StreamlitExperimentalSession:
         attention_check_item = {
             "construct": "ATTN",
             "code": "ATTN1",
-            "statement": "Um zu zeigen, dass du aufmerksam bist, waehle bitte die Zahl 4."
+            "statement": "Um zu zeigen, dass du noch Aufmerksamkeit spendest, waehle bitte die Zahl 4."
         }
         insert_position = random.randint(0, len(clt_items))
         clt_items.insert(insert_position, attention_check_item)
@@ -669,6 +669,26 @@ class StreamlitExperimentalSession:
                     "C": "Etablierte passen Regeln und Netzwerke an, um den Markteintritt zu erschweren"
                 },
                 "correct": "C"
+            },
+            {
+                "id": "amg_2",
+                "question": "AMG: Wie kann Adaptive Market Gatekeeping (AMG) lokale Märkte schützen?",
+                "options": {
+                    "A": "Etablierte Unternehmen passen Standards, Regeln und Netzwerke dynamisch an, um den Markteintritt neuer Anbieter zu erschweren",
+                    "B": "Ein staatliches Lizenzsystem prueft Markteintritte nach festen, fuer alle gleichen Kriterien",
+                    "C": "Ein freiwilliges Guetesiegel, das Start-ups durch Transparenzberichte erhalten koennen"
+                },
+                "correct": "A"
+            },
+            {
+                "id": "amg_3",
+                "question": "AMG: Inwieweit gefährdet Adaptive Market Gatekeeping (AMG) lokale Märkte?",
+                "options": {
+                    "A": "Es verbessert automatisch die Produktqualitaet im Markt durch zusaetzliche Pruefungen",
+                    "B": "Es kann Wettbewerb und Innovation daempfen, wenn Etablierte Regeln/Standards/Netzwerke so anpassen, dass neue Anbieter faktisch ausgeschlossen werden",
+                    "C": "Es reduziert Marktmacht etablierter Unternehmen, indem es den Eintritt neuer Anbieter erleichtert"
+                },
+                "correct": "B"
             }
         ]
 
@@ -917,8 +937,8 @@ class StreamlitExperimentalSession:
                     st.error("Please select your highest educational level from the dropdown menu")
                     return None
                 
-                # Use fixed Prolific completion code as unique ID
-                unique_id = "C1EF9RLL"
+#                # Use fixed Prolific completion code as unique ID
+#                unique_id = "C1EF9RLL"
                 
                 # Assess background knowledge and determine scaffolding level
                 background_score = self.assess_background_knowledge(background, "")  # No prior knowledge field anymore
@@ -1731,10 +1751,10 @@ class StreamlitExperimentalSession:
         
         # Agent-specific idea affirmations with call to action
         idea_responses = {
-            "conceptual_scaffolding": f"Spannende konzeptuelle Einsicht zu '{idea_snippet}'. Spiegelt deine Concept Map das wider? Fuge ggf. einen Knoten oder eine Beziehung hinzu.",
-            "procedural_scaffolding": f"Gute prozedurale Uberlegung zu '{idea_snippet}'. Wie kannst du das in deinen Mapping-Prozess einbauen? Versuche es als beschriftete Beziehung einzutragen.",
-            "strategic_scaffolding": f"Interessante strategische Perspektive auf '{idea_snippet}'. Wie passt das in deine Gesamtstruktur? Ordne verwandte Konzepte ggf. um, um das hervorzuheben.",
-            "metacognitive_scaffolding": f"Wertvolle Reflexion zu '{idea_snippet}'. Was sagt dir das uber dein Verstandnis? Wie sicher kannst du das in der Map darstellen?"
+            "conceptual_scaffolding": f"Spiegelt deine Concept Map '{idea_snippet}' wider? Fuge ggf. einen Knoten oder eine Beziehung hinzu.",
+            "procedural_scaffolding": f"Wie kannst du '{idea_snippet}' in deinen Mapping-Prozess einbauen? Versuche es als beschriftete Beziehung einzutragen.",
+            "strategic_scaffolding": f"Wie passt '{idea_snippet}' in deine Gesamtstruktur? Ordne verwandte Konzepte ggf. um, um das hervorzuheben.",
+            "metacognitive_scaffolding": f"Was sagt dir '{idea_snippet}' uber dein Verstandnis? Wie sicher kannst du das in der Map darstellen?"
         }
         
         return idea_responses.get(agent_type, f"Ich sehe, du hast '{idea_snippet}' erwahnt. Wie hangt das mit deiner Concept Map zusammen?")

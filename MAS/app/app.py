@@ -615,7 +615,7 @@ def render_summary_page():
 
         with col1:
             st.write(f"**Teilnehmername:** {summary.get('participant_name', 'Demo-Nutzer')}")
-            st.write(f"**Prolific Experiment ID:** {unique_id}")
+#            st.write(f"**Prolific Experiment ID:** {unique_id}")
             st.write(f"**Modus:** {summary.get('mode', 'unknown').title()}")
 
         with col2:

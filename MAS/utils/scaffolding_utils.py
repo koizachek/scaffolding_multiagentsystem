@@ -974,13 +974,25 @@ def analyze_user_response_type(response: str) -> Dict[str, Any]:
             analysis["disagreement_type"] = "general"
     
     # Pattern 4: Inappropriate Language
+    # CRITICAL FIX: Use word boundary matching to avoid false positives (e.g., German "fassen" contains "ass")
     inappropriate_indicators = ["fuck", "shit", "stupid", "dumb", "hate", "sucks", "awful", "terrible", 
                                "waste", "useless", "pointless", "damn", "hell", "ass", "bitch", "crap"]
-    if any(indicator in response_lower for indicator in inappropriate_indicators):
-        analysis["is_inappropriate"] = True
-        analysis["needs_encouragement"] = True
-        analysis["response_type"] = "inappropriate_language"
-        analysis["requires_pattern_response"] = True  # Pattern needs handling
+    
+    # Build regex pattern with word boundaries to match whole words only
+    inappropriate_pattern = r'\b(' + '|'.join(re.escape(word) for word in inappropriate_indicators) + r')\b'
+    
+    # Safeguard: Check if response starts with polite phrases
+    polite_starters = ["danke", "bitte", "vielen dank", "gerne", "ja,", "nein,", "ok," , "oke," , "okay," "oki," , "cool," ] 
+    is_polite_start = any(response_lower.strip().startswith(phrase) for phrase in polite_starters)
+    
+    # Only flag if: (1) whole-word match found AND (2) not a polite response
+    if re.search(inappropriate_pattern, response_lower, re.IGNORECASE):
+        # Additional check: if it's a polite response with normal content, don't flag
+        if not is_polite_start or len(response_lower) < 15:  # Very short + offensive = still flag
+            analysis["is_inappropriate"] = True
+            analysis["needs_encouragement"] = True
+            analysis["response_type"] = "inappropriate_language"
+            analysis["requires_pattern_response"] = True  # Pattern needs handling
     
     # Pattern 6: Off-topic Detection (ENHANCED)
     off_topic_indicators = ["weather", "sports", "news", "politics", "movie", "game", 
@@ -1369,7 +1381,7 @@ def handle_inappropriate_language(scaffolding_type: str) -> str:
     Returns:
         Appropriate response for inappropriate language
     """
-    base_response = "Ich verstehe, dass das herausfordernd sein kann. Lass uns respektvoll bleiben und uns auf die Verbesserung deiner Concept Map konzentrieren. "
+    base_response = "Ich verstehe, dass das herausfordernd sein kann. Lass uns auf die Verbesserung deiner Concept Map hinarbeiten. "
     
     # Add scaffolding-specific redirection
     if scaffolding_type == "metacognitive":

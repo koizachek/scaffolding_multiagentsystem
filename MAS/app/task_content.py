@@ -33,8 +33,8 @@ Angenommen, du willst mit deinem Start-up in einen neuen Markt (z. B. China oder
 ### Beispiel:
 Das deutsche Software-Start-up „Veyra“ will in den japanischen Markt. Durch AMG koennen lokale Wettbewerber:
 - Neue technische Standards einfuehren, die nur ihre Produkte erfuellen
-- Exklusive Vertraege mit wichtigen Distributoren sichern
-- Preise temporaer senken, um den Eintritt unprofitabel zu machen
+- Exklusive Vertraege mit wichtigen Distributoren sichern, um Import von Ressourcen zu kontrollieren
+- Preise temporaer senken, um den Eintritt unprofitabel zu machen und sogar den Export der eigenen Produkte zu behindern
 
 ## Deine Aufgabe
 
@@ -42,19 +42,20 @@ Erstelle mit der bereitgestellten Oberflaeche eine Concept Map, die zeigt, wie f
 
 ### Konzepte (eigene, konkrete Benennung erlaubt):
 
-1. Marktanalyse (Untersuchung potenzieller Maerkte, Wettbewerbssituation im Zielmarkt)
-2. Ressourcen (Kapital, Personal, Know-how)
-3. Eintrittsstrategien (Wege in den Markt):
+1. Marktanalyse (Untersuchung potenzieller Maerkte)
+2. Wettbewerbsumfeld (Situation der Konkurrenten im Zielmarkt) 
+3. Ressourcen (Kapital, Personal, Know-how)
+4. Eintrittsstrategien (Wege in den Markt):
    - Export (Warenversand aus dem Heimatland)
    - Joint Venture (Partnerschaft mit lokalem Unternehmen)
    - Direktinvestition (eigene Tochtergesellschaft gruenden)
-4. AMG (Adaptive Market Gatekeeping – siehe oben)
+5. AMG (Adaptive Market Gatekeeping – Beschreibung siehe oben)
 
 ### Anforderungen
 
 - Verwende konkrete, relevante Konzepte (z. B. „Kredit“ als Knoten bei „Finanzierung“)
 - Verbinde Konzepte mit kurzen, beschrifteten Pfeilen (z. B. beeinflusst, ermoeglicht, verhindert, ist Voraussetzung fuer, verstaerkt, reduziert)
-- Erstelle mindestens 6 Verbindungen; mehr, wenn sinnvoll
+- Erstelle mindestens 5 Verbindungen; mehr, wenn sinnvoll
 - Besonderer Fokus: Wie beeinflusst AMG die anderen Faktoren?
 
 ### Format
@@ -68,14 +69,16 @@ EXTRA_MATERIALS = """
 
 **1. Marktanalyse** – Systematische Sammlung und Bewertung von Informationen ueber potenzielle Maerkte. Umfasst typischerweise Marktgroesse, erwartetes Wachstum, Kundennachfrage, relevante Trends sowie Wettbewerb (Anzahl der Konkurrenten, Marktanteile, Strategien). Erfolgsfaktoren: Product-Market-Fit, Anpassung an lokale Beduerfnisse, verlaessliche Partner, wettbewerbsfaehige Preise, effiziente Lieferketten.
 
-**2. Ressourcen** – Finanzielle, personelle und wissensbasierte Mittel eines Start-ups: Kapitalreserven, qualifizierte Mitarbeitende, Management-Expertise, technologisches Know-how, Netzwerke.
+**2. Wettbewerbsumfeld – Die Struktur und Dynamik der Konkurrenten im Zielmarkt, einschließlich der Anzahl der Rivalen, ihrer relativen Marktanteile, Strategien und potenzieller neuer Marktteilnehmer. Es spiegelt das Niveau der Rivalität und die Verfügbarkeit von Alternativen für Kunden wider. 
 
-**3. Eintrittsstrategien** – Strategische Ansaetze, um in einen neuen Markt zu gehen; unterscheiden sich in Risiko, Kontrolle und Ressourceneinsatz.
+**3. Ressourcen** – Finanzielle, personelle und wissensbasierte Mittel eines Start-ups: Kapitalreserven, qualifizierte Mitarbeitende, Management-Expertise, technologisches Know-how, Netzwerke.
+
+**4. Eintrittsstrategien** – Strategische Ansaetze, um in einen neuen Markt zu gehen; unterscheiden sich in Risiko, Kontrolle und Ressourceneinsatz.
    - **Export** – Waren direkt aus dem Heimatland liefern, minimale lokale Praesenz.
    - **Joint Venture** – Kooperation mit einem lokalen Unternehmen zum Teilen von Ressourcen, Risiken und Markt-Know-how.
    - **Direktinvestition** – Eigene Tochter oder Niederlassung gruenden: volle Kontrolle, aber hoher Aufwand; erfordert oft starke Marke, Umgang mit Regulierung, Aufbau von Kanaelen.
 
-**4. AMG (Adaptive Market Gatekeeping)** – Mechanismus, der Markteintritt reguliert und bewertet. Agiert als dynamischer Filter, der sich an Kontextbedingungen anpasst und bestimmt, ob ein Unternehmen Zugang erhaelt oder fortschreiten kann.
+**5. AMG (Adaptive Market Gatekeeping)** – Mechanismus, der Markteintritt reguliert und bewertet. Agiert als dynamischer Filter, der sich an Kontextbedingungen anpasst und bestimmt, ob ein Unternehmen Zugang erhaelt oder fortschreiten kann.
 """
 
 # Initial concept map for the AMG task
