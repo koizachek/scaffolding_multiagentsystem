@@ -1294,6 +1294,7 @@ class StreamlitExperimentalSession:
     
     def get_agent_response(self, roundn: int, concept_map_data: Optional[Dict[str, Any]] = None, user_response: Optional[str] = None, conversation_turn: int = 0) -> str:
         """Get agent response for the current round with pattern detection."""
+        return "Chatbot deaktiviert."
         # Handle round 0 specially - no scaffolding
         if roundn == 0:
             return "Bitte erstelle deine erste Concept Map zum Thema. Nimm dir Zeit, alle relevanten Konzepte und Beziehungen einzutragen. Wenn du bereit bist, reiche die Concept Map ein, um fortzufahren."
