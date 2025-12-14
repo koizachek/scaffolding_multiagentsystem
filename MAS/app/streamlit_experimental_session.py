@@ -150,12 +150,12 @@ class StreamlitExperimentalSession:
         # Define questions with correct answers (for logging only)
         questions = [
             {
-                "id": "market_analysis",
-                "question": "Marktanalyse: Was ist das Hauptziel einer Marktanalyse?",
+                "id": "aicctp_role",
+                "question": "AICCTP: Was beschreibt das AI Carbon Credit Transfer Protocol am besten?",
                 "options": {
-                    "A": "Die Zufriedenheit der Mitarbeitenden zu uberwachen",
-                    "B": "Potenzielle Markte zu untersuchen und zu bewerten",
-                    "C": "Software-Usability im Markt zu testen"
+                    "A": "Ein technischer Standard zur CO2-Messung",
+                    "B": "Ein Mechanismus dominanter Haendler, der Verifizierung/Transfer zu Ungunsten von KMU manipuliert",
+                    "C": "Ein staatliches Lizenzsystem mit festen Regeln fuer alle"
                 },
                 "correct": "B"
             },
@@ -165,79 +165,79 @@ class StreamlitExperimentalSession:
                 "options": {
                     "A": "Diese Antwort steht zuerst",
                     "B": "In der Mitte findest du diese Antwort",
-                    "C": "Die letzte mogliche Antwort"
+                    "C": "Die letzte moegliche Antwort"
                 },
                 "correct": "B"
             },
             {
-                "id": "startup_resources",
-                "question": "Ressourcen: Welche Ressourcen sind fur die Expansion entscheidend?",
+                "id": "verification_complexity",
+                "question": "Verifizierungskomplexitaet: Was bedeutet sie im Kontext von AICCTP?",
                 "options": {
-                    "A": "Starke Marke und Mission",
-                    "B": "Kapital, Personal und Know-how",
-                    "C": "Zugang zu lokalen Talenten"
+                    "A": "Einfache Selbstauskunft ohne Prufer",
+                    "B": "Technische Standards, die grosse Compliance-Teams beguenstigen",
+                    "C": "Sofortige automatische Freigabe von Zertifikaten"
                 },
                 "correct": "B"
             },
             {
-                "id": "export",
-                "question": "Export: Was beinhaltet eine Exportstrategie?",
+                "id": "transfer_delays",
+                "question": "Transferverzoegerungen: Wie wirken sie sich aus?",
                 "options": {
-                    "A": "Auslagerung der Produktion ins Zielland",
-                    "B": "Neue Niederlassungen im Ausland eroffnen",
-                    "C": "Produkte aus dem Heimatland in den Zielmarkt liefern"
+                    "A": "Beschleunigen Transaktionen kleiner Haendler",
+                    "B": "Verlangsamen Abwicklung und lassen KMU Preisfenster verpassen",
+                    "C": "Haben keinen Einfluss auf Handelsabwicklung"
                 },
-                "correct": "C"
+                "correct": "B"
             },
             {
-                "id": "joint_venture",
-                "question": "Joint Venture: Was ist ein Joint Venture?",
+                "id": "price_signaling",
+                "question": "Preissignalisierung im AICCTP-Kontext bedeutet…",
                 "options": {
-                    "A": "Partnerschaft mit einem lokalen Unternehmen im Zielmarkt",
-                    "B": "Partnerschaft mit einem lokalen Lieferanten ohne gemeinsames Eigentum",
-                    "C": "Erwerb von Patenten eines Wettbewerbers zur lokalen Produktion"
+                    "A": "Koordinierte Infos, die kuenstliche Preisvolatilitaet erzeugen",
+                    "B": "Staatlich fixierte CO2-Preise",
+                    "C": "Zufaellige Marktschwankungen ohne Einflussnahme"
                 },
                 "correct": "A"
             },
             {
-                "id": "direct_investment",
-                "question": "Direktinvestition: Was bedeutet Direktinvestition?",
+                "id": "access_control",
+                "question": "Zugangssteuerung: Was umfasst sie?",
                 "options": {
-                    "A": "Verkauf uber E-Commerce",
-                    "B": "Technologie lizenzieren, um Gewinn zu erzielen",
-                    "C": "Eigene Niederlassung oder Tochtergesellschaft im Ausland grunden"
+                    "A": "Offene Plattformen fuer alle",
+                    "B": "Kontrolle ueber Pruefer, Auditoren und Plattformbetreiber durch dominante Haendler",
+                    "C": "Rabattierte Handelsgebuehren fuer KMU"
+                },
+                "correct": "B"
+            },
+            {
+                "id": "participation_strategy",
+                "question": "Welche Teilnahmestrategie buendelt Ressourcen mehrerer KMU?",
+                "options": {
+                    "A": "Direkthandel",
+                    "B": "Maklerpartnerschaft",
+                    "C": "Handelskonsortium"
                 },
                 "correct": "C"
             },
             {
-                "id": "amg",
-                "question": "AMG: Wie kann Adaptive Market Gatekeeping (AMG) neue Marktteilnehmer beeinflussen?",
+                "id": "regulatory_standards",
+                "question": "Regulatorische Standards definieren…",
                 "options": {
-                    "A": "Staaten garantieren allen fairen Zugang",
-                    "B": "Start-ups erhalten automatisch Vorteile gegenuber Etablierten",
-                    "C": "Etablierte Unternehmen passen flexibel Regeln und Netzwerke an, um den Markteintritt zu erschweren"
-                },
-                "correct": "C"
-            },
-            {
-                "id": "amg_2",
-                "question": "AMG: Wie kann Adaptive Market Gatekeeping (AMG) lokale Märkte schützen?",
-                "options": {
-                    "A": "Etablierte Unternehmen passen Standards, Regeln und Netzwerke dynamisch an, um den Markteintritt neuer Anbieter zu erschweren",
-                    "B": "Ein staatliches Lizenzsystem prueft Markteintritte nach festen, fuer alle gleichen Kriterien",
-                    "C": "Ein freiwilliges Guetesiegel, das Start-ups durch Transparenzberichte erhalten koennen"
+                    "A": "Wie Emissionen gemessen und Zertifikate verifiziert werden muessen",
+                    "B": "Marketing- und Vertriebskanaele eines KMU",
+                    "C": "Interne HR-Richtlinien"
                 },
                 "correct": "A"
             },
             {
-                "id": "amg_3",
-                "question": "AMG: Inwieweit gefährdet Adaptive Market Gatekeeping (AMG) lokale Märkte?",
+                "id": "market_conditions",
+                "question": "Marktbedingungen umfassen vor allem…",
                 "options": {
-                    "A": "Es verbessert automatisch die Produktqualitaet im Markt durch zusaetzliche Pruefungen",
-                    "B": "Es kann Wettbewerb und Innovation daempfen, wenn Etablierte Regeln/Standards/Netzwerke so anpassen, dass neue Anbieter faktisch ausgeschlossen werden",
-                    "C": "Es reduziert Marktmacht etablierter Unternehmen, indem es den Eintritt neuer Anbieter erleichtert"
+                    "A": "Preisniveau, Liquiditaet, Handelsvolumen, Angebot/Nachfrage",
+                    "B": "Teamgroesse des KMU",
+                    "C": "Urlaubsplanung der Mitarbeitenden"
                 },
-                "correct": "B"
+                "correct": "A"
             }
         ]
         
@@ -601,42 +601,42 @@ class StreamlitExperimentalSession:
         # Define questions with correct answers (for logging only)
         questions = [
             {
-                "id": "market_analysis",
-                "question": "Marktanalyse: Was ist das Hauptziel einer Marktanalyse?",
+                "id": "aicctp_role",
+                "question": "AICCTP: Was beschreibt das AI Carbon Credit Transfer Protocol am besten?",
                 "options": {
-                    "A": "Die Zufriedenheit der Mitarbeitenden zu uberwachen",
-                    "B": "Potenzielle Markte zu untersuchen und zu bewerten",
-                    "C": "Software-Usability im Markt zu testen"
+                    "A": "Ein technischer Standard zur CO2-Messung",
+                    "B": "Ein Mechanismus dominanter Haendler, der Verifizierung/Transfer zu Ungunsten von KMU manipuliert",
+                    "C": "Ein staatliches Lizenzsystem mit festen Regeln fuer alle"
                 },
                 "correct": "B"
             },
             {
-                "id": "startup_resources",
-                "question": "Ressourcen: Welche Ressourcen sind fur die Expansion entscheidend?",
+                "id": "verification_complexity",
+                "question": "Verifizierungskomplexitaet: Was bedeutet sie im Kontext von AICCTP?",
                 "options": {
-                    "A": "Starke Marke und Mission",
-                    "B": "Kapital, Personal und Know-how",
-                    "C": "Zugang zu lokalen Talenten"
+                    "A": "Einfache Selbstauskunft ohne Prufer",
+                    "B": "Technische Standards, die grosse Compliance-Teams beguenstigen",
+                    "C": "Sofortige automatische Freigabe von Zertifikaten"
                 },
                 "correct": "B"
             },
             {
-                "id": "export",
-                "question": "Export: Was beinhaltet eine Exportstrategie?",
+                "id": "transfer_delays",
+                "question": "Transferverzoegerungen: Wie wirken sie sich aus?",
                 "options": {
-                    "A": "Auslagerung der Produktion ins Zielland",
-                    "B": "Neue Niederlassungen im Ausland eroffnen",
-                    "C": "Produkte aus dem Heimatland in den Zielmarkt liefern"
+                    "A": "Beschleunigen Transaktionen kleiner Haendler",
+                    "B": "Verlangsamen Abwicklung und lassen KMU Preisfenster verpassen",
+                    "C": "Haben keinen Einfluss auf Handelsabwicklung"
                 },
-                "correct": "C"
+                "correct": "B"
             },
             {
-                "id": "joint_venture",
-                "question": "Joint Venture: Was ist ein Joint Venture?",
+                "id": "price_signaling",
+                "question": "Preissignalisierung im AICCTP-Kontext bedeutet…",
                 "options": {
-                    "A": "Partnerschaft mit einem lokalen Unternehmen im Zielmarkt",
-                    "B": "Partnerschaft mit einem lokalen Lieferanten ohne gemeinsames Eigentum",
-                    "C": "Erwerb von Patenten eines Wettbewerbers zur lokalen Produktion"
+                    "A": "Koordinierte Infos, die kuenstliche Preisvolatilitaet erzeugen",
+                    "B": "Staatlich fixierte CO2-Preise",
+                    "C": "Zufaellige Marktschwankungen ohne Einflussnahme"
                 },
                 "correct": "A"
             },
@@ -646,49 +646,49 @@ class StreamlitExperimentalSession:
                 "options": {
                     "A": "Diese Antwort steht zuerst",
                     "B": "In der Mitte findest du diese Antwort",
-                    "C": "Die letzte mogliche Antwort"
+                    "C": "Die letzte moegliche Antwort"
                 },
                 "correct": "B"
             },
             {
-                "id": "direct_investment",
-                "question": "Direktinvestition: Was bedeutet Direktinvestition?",
+                "id": "access_control",
+                "question": "Zugangssteuerung: Was umfasst sie?",
                 "options": {
-                    "A": "Verkauf uber E-Commerce",
-                    "B": "Technologie lizenzieren, um Gewinn zu erzielen",
-                    "C": "Eigene Niederlassung oder Tochtergesellschaft im Ausland grunden"
+                    "A": "Offene Plattformen fuer alle",
+                    "B": "Kontrolle ueber Pruefer, Auditoren und Plattformbetreiber durch dominante Haendler",
+                    "C": "Rabattierte Handelsgebuehren fuer KMU"
+                },
+                "correct": "B"
+            },
+            {
+                "id": "participation_strategy",
+                "question": "Welche Teilnahmestrategie buendelt Ressourcen mehrerer KMU?",
+                "options": {
+                    "A": "Direkthandel",
+                    "B": "Maklerpartnerschaft",
+                    "C": "Handelskonsortium"
                 },
                 "correct": "C"
             },
             {
-                "id": "amg",
-                "question": "AMG: Wie kann Adaptive Market Gatekeeping (AMG) neue Marktteilnehmer beeinflussen?",
+                "id": "regulatory_standards",
+                "question": "Regulatorische Standards definieren…",
                 "options": {
-                    "A": "Staaten garantieren allen fairen Zugang",
-                    "B": "Start-ups erhalten automatisch Vorteile gegenuber Etablierten",
-                    "C": "Etablierte passen Regeln und Netzwerke an, um den Markteintritt zu erschweren"
-                },
-                "correct": "C"
-            },
-            {
-                "id": "amg_2",
-                "question": "AMG: Wie kann Adaptive Market Gatekeeping (AMG) lokale Märkte schützen?",
-                "options": {
-                    "A": "Etablierte Unternehmen passen Standards, Regeln und Netzwerke dynamisch an, um den Markteintritt neuer Anbieter zu erschweren",
-                    "B": "Ein staatliches Lizenzsystem prueft Markteintritte nach festen, fuer alle gleichen Kriterien",
-                    "C": "Ein freiwilliges Guetesiegel, das Start-ups durch Transparenzberichte erhalten koennen"
+                    "A": "Wie Emissionen gemessen und Zertifikate verifiziert werden muessen",
+                    "B": "Marketing- und Vertriebskanaele eines KMU",
+                    "C": "Interne HR-Richtlinien"
                 },
                 "correct": "A"
             },
             {
-                "id": "amg_3",
-                "question": "AMG: Inwieweit gefährdet Adaptive Market Gatekeeping (AMG) lokale Märkte?",
+                "id": "market_conditions",
+                "question": "Marktbedingungen umfassen vor allem…",
                 "options": {
-                    "A": "Es verbessert automatisch die Produktqualitaet im Markt durch zusaetzliche Pruefungen",
-                    "B": "Es kann Wettbewerb und Innovation daempfen, wenn Etablierte Regeln/Standards/Netzwerke so anpassen, dass neue Anbieter faktisch ausgeschlossen werden",
-                    "C": "Es reduziert Marktmacht etablierter Unternehmen, indem es den Eintritt neuer Anbieter erleichtert"
+                    "A": "Preisniveau, Liquiditaet, Handelsvolumen, Angebot/Nachfrage",
+                    "B": "Teamgroesse des KMU",
+                    "C": "Urlaubsplanung der Mitarbeitenden"
                 },
-                "correct": "B"
+                "correct": "A"
             }
         ]
 

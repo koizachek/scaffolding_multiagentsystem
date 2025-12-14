@@ -1,177 +1,177 @@
 """
-AMG-spezifische Scaffolding-Konfiguration (deutsche Version)
+AICCTP-spezifische Scaffolding-Konfiguration (deutsche Version)
 
-Dieses Modul enthaelt Scaffolding-Vorlagen fuer die AMG-Markteintrittsaufgabe.
+Dieses Modul enthaelt Scaffolding-Vorlagen fuer die Aufgabe zum AI Carbon Credit Transfer Protocol (AICCTP).
 """
 
-# AMG-specific scaffolding prompt templates
+# AICCTP-specific scaffolding prompt templates
 AMG_SCAFFOLDING_PROMPT_TEMPLATES = {
     "conceptual": {
         "high": [
-            "Ich sehe, du hast {observation} ergaenzt. Wie koennte das AMG-Eintrittsbarrieren beeinflussen?",
-            "Deine Concept Map hat {node_count} Konzepte. Welche Prinzipien verbinden die Markteintrittsstrategien?",
-            "In deiner Map ist {concept}. Wie koennte AMGs Ressourcenblockade die Ressourcen eines Start-ups konzeptionell betreffen?",
-            "Du hast Marktanalyse und Zielmaerkte. Wie verknuepfen sie sich mit AMGs Netzwerkkontrolle?",
-            "Spannende Platzierung von {concept}. Wie koennte der Rechtsrahmen durch AMGs Regelanderung beeinflusst werden?",
-            "Wie wirken AMGs Mechanismen auf deine Finanzierungskonzepte? Welche Prinzipien steuern das?"
+            "Ich sehe, du hast {observation} ergaenzt. Wie koennte das AICCTP die Handelsbarrieren und Verifizierungen beeinflussen?",
+            "Deine Concept Map hat {node_count} Konzepte. Welche Prinzipien verbinden die Teilnahmestrategien (Direkthandel, Makler, Konsortium)?",
+            "In deiner Map ist {concept}. Wie koennte AICCTPs Verifizierungskomplexitaet die Faehigkeiten eines KMU belasten?",
+            "Du hast Marktbedingungen und Regulatorische Standards. Wie verknuepfen sie sich mit AICCTPs Zugangssteuerung?",
+            "Spannende Platzierung von {concept}. Wie koennte AICCTPs Preissignalisierung die Handelsbarrieren beeinflussen?",
+            "Wie wirken AICCTP-Mechanismen auf deine Finanzierungs- und Kompetenz-Konzepte? Welche Prinzipien steuern das?"
         ],
         "medium": [
-            "Wie haengt AMG mit den Eintrittsbarrieren deiner Map zusammen?",
-            "Welche Verbindung besteht zwischen AMG und deinen Eintrittsstrategien?",
-            "Wie koennten AMGs Mechanismen die Ressourcen des Start-ups beeinflussen?",
-            "Welche Beziehung siehst du zwischen Marktanalyse und AMG?",
-            "Wie interagiert der Rechtsrahmen mit AMG in deiner Map?"
+            "Wie haengt AICCTP mit den Handelsbarrieren deiner Map zusammen?",
+            "Welche Verbindung besteht zwischen AICCTP und deinen Teilnahmestrategien?",
+            "Wie koennten AICCTP-Mechanismen die KMU-Faehigkeiten beeinflussen?",
+            "Welche Beziehung siehst du zwischen Marktbedingungen und AICCTP?",
+            "Wie interagieren Regulatorische Standards mit AICCTP in deiner Map?"
         ],
         "low": [
-            "Welche Konzepte sind am staerksten von AMG betroffen?",
-            "Wie ist AMG mit anderen Konzepten verbunden?",
-            "Welcher AMG-Mechanismus ist am wichtigsten?",
-            "Was ist die Hauptbeziehung zwischen AMG und Markteintritt?"
+            "Welche Konzepte sind am staerksten von AICCTP betroffen?",
+            "Wie ist AICCTP mit anderen Konzepten verbunden?",
+            "Welcher AICCTP-Mechanismus ist am wichtigsten?",
+            "Was ist die Hauptbeziehung zwischen AICCTP und Marktteilnahme?"
         ]
     },
     "procedural": {
         "high": [
-            "Ich sehe {observation}. Hast du fuer jeden AMG-Mechanismus (dynamisch, Regelanderung, Netzwerk, Ressourcenblockade) die Effekte auf den Markteintritt nachverfolgt?",
-            "Wie entscheidest du, welche Eintrittsstrategien du mit AMG verknuepfst? Hast du das Beispiel als Vorlage genutzt?",
-            "Welche Beschriftung nutzt du fuer AMG-Beziehungen? Aktionsverben wie „blockiert“, „beeinflusst“, „kontert“ helfen.",
-            "Hast du Konzepte in Ebenen geordnet (AMG-Mechanismen, Strategien, Ressourcen), um den Einflussfluss zu zeigen?",
-            "Wie identifizierst du Gegenstrategien, damit das Start-up AMG navigieren kann? Von Erfolgsfaktoren rueckwaerts denken hilft.",
-            "Pruefst du systematisch, ob jeder AMG-Mechanismus mindestens eine Verbindung hat? So deckst du AMGs Wirkung ab."
+            "Ich sehe {observation}. Hast du fuer jeden AICCTP-Mechanismus (Verifizierungskomplexitaet, Transferverzoegerung, Preissignalisierung, Zugangssteuerung) die Effekte nachverfolgt?",
+            "Wie entscheidest du, welche Teilnahmestrategien du mit AICCTP verknuepfst? Nutzt du das Beispiel als Vorlage?",
+            "Welche Beschriftung nutzt du fuer AICCTP-Beziehungen? Aktionsverben wie „verzoegert“, „beguenstigt“, „erschwert“ helfen.",
+            "Hast du Konzepte in Ebenen geordnet (Mechanismen, Strategien, Ressourcen/Kompetenzen), um den Einflussfluss zu zeigen?",
+            "Wie identifizierst du Gegenstrategien, damit das KMU AICCTP navigieren kann? Von Erfolgsfaktoren rueckwaerts denken hilft.",
+            "Pruefst du systematisch, ob jeder AICCTP-Mechanismus mindestens eine Verbindung hat? So deckst du AICCTPs Wirkung ab."
         ],
         "medium": [
-            "Hast du von jedem AMG-Mechanismus aus die Effekte nachgezeichnet?",
-            "Welchen Prozess nutzt du, um AMG mit Eintrittsstrategien zu verbinden?",
-            "Wie waehlst du Labels fuer AMG-Beziehungen?",
+            "Hast du von jedem AICCTP-Mechanismus aus die Effekte nachgezeichnet?",
+            "Welchen Prozess nutzt du, um AICCTP mit Teilnahmestrategien zu verbinden?",
+            "Wie waehlst du Labels fuer AICCTP-Beziehungen?",
             "Hast du ueberlegt, Konzepte nach Rolle in Ebenen zu ordnen?",
-            "Welche Vorgehensweise hilft dir, AMG-Navigation zu zeigen?"
+            "Welche Vorgehensweise hilft dir, die Navigation durch AICCTP zu zeigen?"
         ],
         "low": [
-            "Wie entscheidest du, welche Konzepte du mit AMG verknuepfst?",
-            "Was hilft dir bei der Beschriftung von AMG-Beziehungen?",
-            "Welche Anordnung von AMG in der Map hast du ausprobiert?",
-            "Welcher Prozess hilft dir, AMGs Einfluss zu zeigen?"
+            "Wie entscheidest du, welche Konzepte du mit AICCTP verknuepfst?",
+            "Was hilft dir bei der Beschriftung von AICCTP-Beziehungen?",
+            "Welche Anordnung von AICCTP in der Map hast du ausprobiert?",
+            "Welcher Prozess hilft dir, AICCTPs Einfluss zu zeigen?"
         ]
     },
     "strategic": {
         "high": [
-            "Ich sehe {observation}. Wie zeigst du strategisch die Reaktion des Start-ups auf AMG? Wie stellst du Herausforderungen und Loesungen dar?",
-            "Deine Map hat {node_count} Konzepte. Warum positionierst du AMG so? Sollte AMG zentral stehen, um die Gatekeeper-Rolle zu zeigen?",
-            "Welche Strategie nutzt du, um darzustellen, dass AMG mehrere Aspekte gleichzeitig beeinflusst? Unterschiedliche Beziehungstypen koennten direkt/indirekt zeigen.",
-            "Struktur mit {concept}: Wie trennst du strategisch AMGs blockierende vs. adaptive Effekte? Diese Unterscheidung staerkt die Map.",
-            "Wie zeigst du den Zeitverlauf – wie AMG sich an neue Strategien anpasst? Diese Dynamik ist zentral.",
-            "Nach welchen Kriterien waehlst du die kritischsten Verbindungen, um erfolgreiche AMG-Navigation zu zeigen?"
+            "Ich sehe {observation}. Wie zeigst du strategisch die Reaktion des KMU auf AICCTP? Wie stellst du Herausforderungen und Loesungen dar?",
+            "Deine Map hat {node_count} Konzepte. Warum positionierst du AICCTP so? Sollte es zentral stehen, um die Gatekeeper-Rolle zu zeigen?",
+            "Welche Strategie nutzt du, um darzustellen, dass AICCTP mehrere Aspekte gleichzeitig beeinflusst? Unterschiedliche Beziehungstypen koennten direkt/indirekt zeigen.",
+            "Struktur mit {concept}: Wie trennst du strategisch AICCTPs blockierende vs. adaptive Effekte? Diese Unterscheidung staerkt die Map.",
+            "Wie zeigst du den Zeitverlauf – wie AICCTP sich an Strategien kleinerer Akteure anpasst? Diese Dynamik ist zentral.",
+            "Nach welchen Kriterien waehlst du die kritischsten Verbindungen, um erfolgreiche AICCTP-Navigation zu zeigen?"
         ],
         "medium": [
-            "Wie zeigst du AMGs Herausforderungen und moegliche Loesungen?",
-            "Wie hast du entschieden, wo AMG steht?",
-            "Welche Vorgehensweise hilft dir, AMGs vielfaeltige Wirkungen zu zeigen?",
-            "Wie machst du Blockieren vs. Anpassen sichtbar?",
-            "Wie zeigst du die wichtigsten AMG-Beziehungen?"
+            "Wie zeigst du AICCTPs Herausforderungen und moegliche Loesungen?",
+            "Wie hast du entschieden, wo AICCTP steht?",
+            "Welche Vorgehensweise hilft dir, AICCTPs vielfaeltige Wirkungen zu zeigen?",
+            "Wie machst du Verzoegerungen vs. Beguenstigungen sichtbar?",
+            "Wie zeigst du die wichtigsten AICCTP-Beziehungen?"
         ],
         "low": [
-            "Was ist deine Gesamtstrategie, um AMG anzuordnen?",
-            "Wie hast du entschieden, welche AMG-Effekte zuerst kommen?",
-            "Welche Vorgehensweise hilft dir, AMGs Beziehungen zu strukturieren?",
-            "Welche AMG-Verbindungen sind strategisch am wichtigsten?"
+            "Was ist deine Gesamtstrategie, um AICCTP anzuordnen?",
+            "Wie hast du entschieden, welche AICCTP-Effekte zuerst kommen?",
+            "Welche Vorgehensweise hilft dir, AICCTP-Beziehungen zu strukturieren?",
+            "Welche AICCTP-Verbindungen sind strategisch am wichtigsten?"
         ]
     },
     "metacognitive": {
         "high": [
-            "Welche AMG-Aspekte sind dir klar, welche unklar? Warum sind die unklaren schwierig?",
-            "Wie hat sich dein Verstaendnis von AMGs Rolle im Markteintritt veraendert? Welche Einsichten hast du gewonnen?",
-            "Im Vergleich zum Beispiel: Wie gut erfasst deine Map aehnliche Dynamiken? Was koennte bei AMG-Effekten fehlen?",
-            "Wenn du AMG erklaeren muesstest: Welche Schluesselbeziehungen wuerdest du betonen? Was fehlt noch?",
-            "Wie sicher bist du, dass deine Map zeigt, wie ein Start-up AMG navigiert? Welche Bereiche brauchen mehr Gedanken?",
-            "Welche Annahmen triffst du ueber AMG? Wie wuerde die Map sich aendern, wenn du sie hinterfragst?"
+            "Welche AICCTP-Aspekte sind dir klar, welche unklar? Warum sind die unklaren schwierig?",
+            "Wie hat sich dein Verstaendnis von AICCTPs Rolle im CO2-Handel veraendert? Welche Einsichten hast du gewonnen?",
+            "Im Vergleich zum Beispiel: Wie gut erfasst deine Map aehnliche Dynamiken? Was koennte bei AICCTP-Effekten fehlen?",
+            "Wenn du AICCTP erklaeren muesstest: Welche Schluesselbeziehungen wuerdest du betonen? Was fehlt noch?",
+            "Wie sicher bist du, dass deine Map zeigt, wie ein KMU AICCTP navigiert? Welche Bereiche brauchen mehr Gedanken?",
+            "Welche Annahmen triffst du ueber AICCTP? Wie wuerde die Map sich aendern, wenn du sie hinterfragst?"
         ],
         "medium": [
-            "Welche Teile von AMG verstehst du am besten, welche sind unklar?",
-            "Wie hat sich dein AMG-Verstaendnis beim Erstellen der Map veraendert?",
-            "Wie gut erklaert deine Map das Veyra-Beispiel?",
-            "Welche AMG-Beziehungen wuerdest du hervorheben, um sie anderen zu erklaeren?",
-            "Wie sicher bist du bei Wegen, AMG zu navigieren?"
+            "Welche Teile von AICCTP verstehst du am besten, welche sind unklar?",
+            "Wie hat sich dein AICCTP-Verstaendnis beim Erstellen der Map veraendert?",
+            "Wie gut erklaert deine Map das TechKlima-Beispiel?",
+            "Welche AICCTP-Beziehungen wuerdest du hervorheben, um sie anderen zu erklaeren?",
+            "Wie sicher bist du bei Wegen, AICCTP zu navigieren?"
         ],
         "low": [
-            "Was verstehst du an AMG am besten?",
-            "Was ist an AMGs Rolle noch verwirrend?",
-            "Wie hat sich dein Denken ueber AMG veraendert?",
-            "Was moechtest du an AMG besser verstehen?"
+            "Was verstehst du an AICCTP am besten?",
+            "Was ist an AICCTPs Rolle noch verwirrend?",
+            "Wie hat sich dein Denken ueber AICCTP veraendert?",
+            "Was moechtest du an AICCTP besser verstehen?"
         ]
     }
 }
 
-# AMG-specific follow-up templates
+# AICCTP-specific follow-up templates
 AMG_SCAFFOLDING_FOLLOWUP_TEMPLATES = {
     "conceptual": [
-        "Wie koennten andere AMG-Mechanismen (z. B. Netzwerkkontrolle oder Regelanderung) aehnliche Beziehungen erzeugen?",
-        "Welche weiteren Konzepte koennte AMG nach demselben Prinzip beeinflussen?",
-        "Wie wirkt sich diese AMG-Beziehung auf strategische Optionen aus? Welche Implikationen folgen?",
-        "Wie hilft dieses Verstaendnis, Gegen- oder Anpassungswege an AMG zu finden?"
+        "Wie koennten andere AICCTP-Mechanismen (z. B. Preissignalisierung oder Zugangssteuerung) aehnliche Beziehungen erzeugen?",
+        "Welche weiteren Konzepte koennte AICCTP nach demselben Prinzip beeinflussen?",
+        "Wie wirkt sich diese AICCTP-Beziehung auf strategische Optionen aus? Welche Implikationen folgen?",
+        "Wie hilft dieses Verstaendnis, Gegen- oder Anpassungswege an AICCTP zu finden?"
     ],
     "procedural": [
-        "Hast du denselben Prozess systematisch fuer alle vier AMG-Mechanismen genutzt?",
-        "Wuerde eine Checkliste der AMG-Effekte helfen, alle Bereiche abzudecken?",
+        "Hast du denselben Prozess systematisch fuer alle vier AICCTP-Mechanismen genutzt?",
+        "Wuerde eine Checkliste der AICCTP-Effekte helfen, alle Bereiche abzudecken?",
         "Wie kannst du Gegenstrategien je Mechanismus systematisch identifizieren?",
-        "Wie kannst du damit die zeitliche Abfolge von AMGs Anpassungen zeigen?"
+        "Wie kannst du damit die zeitliche Abfolge von AICCTPs Anpassungen zeigen?"
     ],
     "strategic": [
-        "Wie wuerde eine Reorganisation, die AMGs Gatekeeper-Rolle betont, die Aussage deiner Map aendern?",
-        "Wie zeigst du am effektivsten Wege durch AMG-Barrieren?",
-        "Koennte eine Gruppierung nach ‚von AMG betroffen‘ vs. ‚kontert AMG‘ Klarheit bringen?",
-        "Wie kannst du die dynamisch-adaptive Natur von AMG im Zeitverlauf staerker betonen?"
+        "Wie wuerde eine Reorganisation, die AICCTPs Gatekeeper-Rolle betont, die Aussage deiner Map aendern?",
+        "Wie zeigst du am effektivsten Wege durch AICCTP-Barrieren?",
+        "Koennte eine Gruppierung nach ‚von AICCTP betroffen‘ vs. ‚kontert AICCTP‘ Klarheit bringen?",
+        "Wie kannst du die dynamisch-adaptive Natur von AICCTP im Zeitverlauf staerker betonen?"
     ],
     "metacognitive": [
-        "Welcher AMG-Aspekt profitiert am meisten von weiterer Vertiefung?",
-        "Wie beeinflusst dieses Verstaendnis deine Herangehensweise an aehnliche Geschaeftskonzepte?",
-        "Welche Fragen zum Markteintritt kannst du nun beantworten?",
-        "Wie hat das AMG-Verstaendnis deine Sicht auf Gruende fuer Scheitern bei Internationalisierung veraendert?"
+        "Welcher AICCTP-Aspekt profitiert am meisten von weiterer Vertiefung?",
+        "Wie beeinflusst dieses Verstaendnis deine Herangehensweise an aehnliche Marktteilnahme-Konzepte?",
+        "Welche Fragen zum CO2-Handel kannst du nun beantworten?",
+        "Wie hat das AICCTP-Verstaendnis deine Sicht auf Gruende fuer Scheitern bei Marktteilnahme veraendert?"
     ]
 }
 
-# AMG-specific conclusion templates
+# AICCTP-specific conclusion templates
 AMG_SCAFFOLDING_CONCLUSION_TEMPLATES = {
     "conceptual": [
         "Dein Verstaendnis ist fundiert. Pruefe, wie der Mechanismus {specific_mechanism} Kaskadeneffekte ueber mehrere Konzepte erzeugt.",
         "Die konzeptuellen Links entwickeln sich gut. Zeige als Naechstes, wie Rueckkopplungsschleifen entstehen.",
-        "Du hast wichtige AMG-Beziehungen identifiziert. Fuege Konzepte hinzu, die zeigen, wie Start-ups Ressourcen einsetzen, um Mechanismen zu kontern."
+        "Du hast wichtige AICCTP-Beziehungen identifiziert. Fuege Konzepte hinzu, die zeigen, wie KMU Ressourcen einsetzen, um Mechanismen zu kontern."
     ],
     "procedural": [
-        "Der systematische Ansatz hilft. Starte mit den vier Mechanismen und verfolge ihre Wirkungen methodisch.",
-        "Achte darauf, dass jeder AMG-Mechanismus mit relevanten Strategien und Ressourcen verknuepft ist.",
-        "Die prozeduralen Techniken greifen. Nutze konsistente Labels, die AMGs aktive Rolle markieren."
+        "Der systematische Ansatz hilft. Starte mit den vier AICCTP-Mechanismen und verfolge ihre Wirkungen methodisch.",
+        "Achte darauf, dass jeder AICCTP-Mechanismus mit relevanten Strategien und Ressourcen verknuepft ist.",
+        "Die prozeduralen Techniken greifen. Nutze konsistente Labels, die AICCTPs aktive Rolle markieren."
     ],
     "strategic": [
-        "Erwaege eine Struktur, die Wege durch AMG-Barrieren staerker hervorhebt.",
-        "Hebe als Naechstes die kritischsten Beziehungen fuer den Markteintritt hervor.",
-        "Zeige deutlicher die zeitliche Dynamik von AMGs Anpassungsreaktionen."
+        "Erwaege eine Struktur, die Wege durch AICCTP-Barrieren staerker hervorhebt.",
+        "Hebe als Naechstes die kritischsten Beziehungen fuer die Marktteilnahme hervor.",
+        "Zeige deutlicher die zeitliche Dynamik von AICCTPs Anpassungsreaktionen."
     ],
     "metacognitive": [
-        "Nutze die Einsichten, um festzulegen, welche AMG-Mechanismen du weiter vertiefen willst.",
-        "Hinterfrage weiter deine Annahmen zum Funktionieren von AMG, waehrend du die Map ausbaust.",
-        "Verfolge, wie sich deine Sicht auf Markteintritts-Herausforderungen mit tieferer Analyse aendert."
+        "Nutze die Einsichten, um festzulegen, welche AICCTP-Mechanismen du weiter vertiefen willst.",
+        "Hinterfrage weiter deine Annahmen zum Funktionieren von AICCTP, waehrend du die Map ausbaust.",
+        "Verfolge, wie sich deine Sicht auf Marktteilnahme-Herausforderungen mit tieferer Analyse aendert."
     ]
 }
 
-# Configuration for AMG task
+# Configuration for AICCTP task
 AMG_SCAFFOLDING_CONFIG = {
     "prompt_templates": AMG_SCAFFOLDING_PROMPT_TEMPLATES,
     "followup_templates": AMG_SCAFFOLDING_FOLLOWUP_TEMPLATES,
     "conclusion_templates": AMG_SCAFFOLDING_CONCLUSION_TEMPLATES,
     "task_context": {
-        "main_concept": "Adaptive Market Gatekeeping (AMG)",
-        "key_mechanisms": ["dynamische Anpassung", "Regelaenderung", "Netzwerkkontrolle", "Ressourcenblockade"],
-        "example_company": "Veyra",
-        "example_market": "japanischer Markt",
-        "core_challenge": "AMG-Barrieren fuer erfolgreichen Markteintritt navigieren"
+        "main_concept": "AI Carbon Credit Transfer Protocol (AICCTP)",
+        "key_mechanisms": ["Verifizierungskomplexitaet", "Transferverzoegerungen", "Preissignalisierung", "Zugangssteuerung"],
+        "example_company": "TechKlima",
+        "example_market": "regionaler AI-CO2-Markt (z. B. EU)",
+        "core_challenge": "AICCTP-Barrieren fuer erfolgreiche KMU-Teilnahme navigieren"
     },
     "concept_priorities": {
-        "essential": ["AMG", "Eintrittsstrategien", "Eintrittsbarrieren", "Start-up-Ressourcen"],
-        "important": ["Marktanalyse", "Zielmaerkte", "Wettbewerbsumfeld", "Rechtsrahmen"],
-        "supporting": ["Finanzierung", "Marketingstrategie", "Erfolgsfaktoren"]
+        "essential": ["AICCTP", "Teilnahmestrategien", "Handelsbarrieren", "Verifizierungsprozess", "KMU-Faehigkeiten"],
+        "important": ["CO2-Fussabdruck-Bewertung", "Marktbedingungen", "Regulatorische Standards", "Preis-Signalisierung"],
+        "supporting": ["Transferverzoegerungen", "Verifizierungskomplexitaet", "Zugangssteuerung"]
     },
     "relationship_suggestions": {
-        "AMG_impacts": ["blockiert", "schraenkt ein", "beeinflusst", "erschwert", "verhindert", "erhoeht"],
-        "counter_strategies": ["ueberwindet", "umgeht", "passt sich an", "mildert", "nutzt"],
+        "AICCTP_impacts": ["verzoegert", "erschwert", "manipuliert", "kontrolliert", "beeinflusst", "drueckt Preise"],
+        "counter_strategies": ["umgeht", "mildert", "passt sich an", "nutzt Netzwerke", "beschleunigt Verifizierung"],
         "enabling": ["ermoeglicht", "erleichtert", "unterstuetzt", "staerkt"],
         "causal": ["verursacht", "fuehrt zu", "resultiert in", "loest aus"]
     }
