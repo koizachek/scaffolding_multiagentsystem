@@ -1083,6 +1083,35 @@ class StreamlitExperimentalSession:
             return agent_type.replace('_', ' ').title()
         return "Unknown Agent"
     
+    def _clamp_followup_response(self, response: str, max_paragraphs: int = 2) -> str:
+        """
+        Clamp follow-up response to first 2 paragraphs (preserves scaffolding content).
+        
+        Splits by paragraph breaks (double newlines) and keeps only the first max_paragraphs.
+        This preserves all scaffolding semantics, multiple sentences, and questions within those paragraphs.
+        Rationale: We've had to do it for the german version only, as this language extends the text lenght significantly, thus, potentially causing cognitive overload.
+        
+        Args:
+            response: The response text to clamp
+            max_paragraphs: Maximum number of paragraphs to keep (default: 2)
+            
+        Returns:
+            Clamped response with at most max_paragraphs
+        """
+        if not response:
+            return response
+        
+        # Split by paragraph breaks (double newlines or single newlines followed by blank lines)
+        paragraphs = [p.strip() for p in response.split('\n\n') if p.strip()]
+        
+        # Keep only first max_paragraphs
+        if len(paragraphs) > max_paragraphs:
+            clamped = '\n\n'.join(paragraphs[:max_paragraphs])
+            logger.info(f"Clamped response from {len(paragraphs)} to {max_paragraphs} paragraphs")
+            return clamped
+        
+        return response
+    
     def convert_streamlit_to_internal_format(self, streamlit_cm_data) -> Dict[str, Any]:
         """Convert Streamlit concept map format to internal format with enhanced action tracking."""
         concepts = []
@@ -1280,6 +1309,10 @@ class StreamlitExperimentalSession:
                 )
                 
                 if pattern_response:
+                    # Apply post-filter for follow-ups (conversation_turn > 0)
+                    if conversation_turn > 0:
+                        pattern_response = self._clamp_followup_response(pattern_response)
+                    
                     # Log the pattern-based response
                     if self.session_logger:
                         self.session_logger.log_agent_response(
@@ -1320,6 +1353,10 @@ class StreamlitExperimentalSession:
                 concept_map=internal_format,
                 context={"round_number": roundn, "conversation_turn": conversation_turn}
             )
+            
+            # Apply post-filter for follow-ups (conversation_turn > 0)
+            if conversation_turn > 0:
+                neutral_response = self._clamp_followup_response(neutral_response)
             
             # Log neutral response
             if self.session_logger:
@@ -1454,6 +1491,10 @@ class StreamlitExperimentalSession:
                 else:
                     response = str(api_result) if api_result else "Entschuldige, ich habe Schwierigkeiten, eine Antwort zu erzeugen. Bitte arbeite an deiner Concept Map weiter oder springe zur nachsten Runde."
                 
+                # Apply post-filter for follow-ups (conversation_turn > 0)
+                if conversation_turn > 0:
+                    response = self._clamp_followup_response(response)
+                
                 # Log the interaction
                 if self.session_logger:
                     self.session_logger.log_agent_response(
@@ -1500,6 +1541,10 @@ class StreamlitExperimentalSession:
             response = demo_followup_responses.get(agent_type, demo_responses.get(agent_type, "Danke fur deine Antwort. Kannst du das noch etwas ausfuhrlicher erlautern?"))
         else:
             response = demo_responses.get(agent_type, demo_responses["conceptual_scaffolding"])
+        
+        # Apply post-filter for follow-ups (conversation_turn > 0)
+        if conversation_turn > 0:
+            response = self._clamp_followup_response(response)
         
         # Log demo response
         if self.session_logger:
