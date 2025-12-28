@@ -42,12 +42,12 @@ except ImportError:
 
 logger = logging.getLogger(__name__)
 
-# Einzelne Experimentalbedingung mit fixer Sequenz (keine Randomisierung/Kontrollgruppe)
-EXPERIMENTAL_CONDITIONS = ['EG_SEQ']
+# Einzelne Experimentalbedingung: Neutral-Only (keine Scaffolding-Intervention)
+EXPERIMENTAL_CONDITIONS = ['CG_NEUTRAL']
 
-# Feste Agenten-Sequenz fuer alle Teilnehmenden
+# Feste Agenten-Sequenz fuer alle Teilnehmenden (neutral in allen 4 Agenten-Runden)
 AGENT_SEQUENCES = {
-    'EG_SEQ': ["metacognitive_scaffolding", "strategic_scaffolding", "procedural_scaffolding", "conceptual_scaffolding"]
+    'CG_NEUTRAL': ["neutral", "neutral", "neutral", "neutral"]
 }
 
 
@@ -943,7 +943,7 @@ class StreamlitExperimentalSession:
                     return None
                 
                 # unique ID
-                unique_id = "V1EF9RLL"
+                unique_id = "V2EF9RLL"
                 
                 # Assess background knowledge and determine scaffolding level
                 background_score = self.assess_background_knowledge(background, "")  # No prior knowledge field anymore
@@ -1027,13 +1027,13 @@ class StreamlitExperimentalSession:
         Assign the single experimental condition (no randomization).
         
         Returns:
-            Assigned experimental condition (fixed: EG_SEQ)
+            Assigned experimental condition (fixed: CG_NEUTRAL)
         """
         # Check if condition already assigned
         if "experimental_condition" in self.session_data:
             return self.session_data["experimental_condition"]
         
-        assigned_condition = "EG_SEQ"
+        assigned_condition = "CG_NEUTRAL"
         
         # Store in session data
         self.session_data["experimental_condition"] = assigned_condition
@@ -1045,7 +1045,7 @@ class StreamlitExperimentalSession:
                 metadata={
                     "experimental_condition": assigned_condition,
                     "session_id": self.session_data["session_id"],
-                    "assignment_method": "fixed_single_condition",
+                    "assignment_method": "fixed_single_condition_neutral",
                     "condition_index": 0,
                     "timestamp": datetime.now().isoformat()
                 }
@@ -1073,7 +1073,14 @@ class StreamlitExperimentalSession:
         experimental_condition = self.assign_experimental_condition()
         
         # Get agent sequence based on experimental condition
-        agents = AGENT_SEQUENCES.get(experimental_condition, AGENT_SEQUENCES['EG_SEQ'])
+        agents = AGENT_SEQUENCES.get(experimental_condition)
+        if agents is None:
+            # Fallback: use the first configured sequence (and log for debugging)
+            agents = next(iter(AGENT_SEQUENCES.values()))
+            logger.warning(
+                "Unknown experimental_condition '%s' - falling back to default agent sequence.",
+                experimental_condition,
+            )
         
         # Note: Round 0 is handled separately (no scaffolding agent)
         
