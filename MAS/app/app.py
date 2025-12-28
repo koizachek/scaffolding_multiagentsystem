@@ -45,8 +45,13 @@ def init_session_state():
         "session_initialized": False,
         "profile_initialized": False,
         "pre_questionnaire_completed": False,
+        "agent_acceptance_completed": False,
+        "task_difficulty_completed": False,
         "clt_completed": False,
         "post_questionnaire_completed": False,
+        "critical_ai_completed": False,
+        "ai_reliance_completed": False,
+        "trust_in_ai_completed": False,
         "session_finalized": False,
         "tutorial_completed": False,
         "conversation_turn": 0,
@@ -188,7 +193,7 @@ def render_consent_form():
         ### Einverstaendniserklaerung zur Studienteilnahme
 
         Du wirst eingeladen, an der Studie **"Agentic AI for Higher Education"** teilzunehmen.
-        Die Studie wird von **Diana Kozachek** an der **Universitaet St. Gallen (Schweiz)** durchgefuehrt.
+        Die Studie wird von **Vivian Abt** an der **Universitaet Kassel** durchgefuehrt.
 
         **Zweck der Studie:**
         Wir untersuchen, wie KI-gestuetzte Agenten beim Lernen durch Concept Mapping unterstuetzen koennen.
@@ -210,8 +215,8 @@ def render_consent_form():
         Deine Teilnahme ist freiwillig, du kannst jederzeit abbrechen.
 
         **Kontakt:**
-        Bei Fragen wende dich an **Diana Kozachek**, Universitaet St. Gallen.
-        Bei Fragen zu Rechten als Proband: Ethikkommission der Universitaet St. Gallen.
+        Bei Fragen wende dich an **Vivian Abt**, Universitaet Kassel.
+        Bei Fragen zu Rechten als Proband: Ethikkommission der Universitaet Kassel.
 
         **Zustimmung:**
         Mit Klick auf „Ich stimme zu“ bestaetigst du, dass du mindestens 18 Jahre alt bist, die Informationen gelesen und verstanden hast und einverstanden bist teilzunehmen. Bewahre gern eine Kopie dieser Seite auf.
@@ -435,25 +440,26 @@ def render_tutorial():
         st.rerun()
 
 
-def render_agent_differentiation_question():
-    """Render agent differentiation question before questionnaires."""
-    st.header("🤖 Agenten-Differenzierung")
+def render_agent_acceptance_question():
+    """Render agent acceptance question before questionnaires."""
+    st.header("🤖 Agenten-Akzeptanz")
     st.markdown("---")
 
     st.info("""
     Bevor es mit den letzten Frageboegen weitergeht, wollen wir wissen, wie du die Agenten erlebt hast.
     """)
 
-    with st.form("agent_differentiation"):
-        st.markdown("**Konntest du die unterschiedlichen Agenten voneinander unterscheiden?**")
+    with st.form("agent_acceptance"):
+        st.markdown("**Ich würde das System gerne regelmäßig verwenden**")
 
-        differentiation = st.radio(
-            "Waehle deine Antwort:",
+        acceptance = st.radio(
+            "Auswahlmöglichkeiten:",
             options=[
-                "Ja, die Unterschiede waren klar",
-                "Teils-teils – ich habe Unterschiede gemerkt, war mir aber unsicher",
-                "Nein, alle Agenten wirkten gleich",
-                "Ich weiss es nicht"
+                "Stimme überhaupt nicht zu",
+                "Stimme nicht zu",
+                "Neutral",
+                "Stimme zu",
+                "Stimme voll und ganz zu"
             ],
             index=None  # No default selection
         )
@@ -461,7 +467,7 @@ def render_agent_differentiation_question():
         # Optional text field for additional comments
         st.markdown("**Weitere Kommentare (optional):**")
         comments = st.text_area(
-            "Wenn dir Unterschiede aufgefallen sind: Was genau? Falls nicht: Warum wirkten sie gleich?",
+            "Was fehlt den Agenten, damit du sie gerne nutzen würdest?",
             height=100,
             placeholder="Deine Beobachtungen zu den Agenten..."
         )
@@ -469,14 +475,14 @@ def render_agent_differentiation_question():
         submitted = st.form_submit_button("Abschicken", type="primary")
 
         if submitted:
-            if not differentiation:
+            if not acceptance:
                 st.error("Bitte waehle eine Antwort aus, bevor du abschickst.")
                 return
 
             # Store the response in session data
             if st.session_state.experimental_session:
-                differentiation_data = {
-                    "differentiation_response": differentiation,
+                acceptance_data = {
+                    "acceptance_response": acceptance,
                     "comments": comments,
                     "timestamp": datetime.now().isoformat(),
                     "participant_id": st.session_state.learner_profile.get('unique_id',
@@ -486,38 +492,41 @@ def render_agent_differentiation_question():
                 }
 
                 # Add to session data
-                st.session_state.experimental_session.session_data["agent_differentiation"] = differentiation_data
+                st.session_state.experimental_session.session_data["agent_acceptance"] = acceptance_data
 
                 # Log the response
                 if st.session_state.experimental_session.session_logger:
                     st.session_state.experimental_session.session_logger.log_event(
-                        event_type="agent_differentiation_response",
-                        metadata=differentiation_data
+                        event_type="agent_acceptance_response",
+                        metadata=acceptance_data
                     )
 
             # Mark as completed
-            st.session_state.agent_differentiation_completed = True
+            st.session_state.agent_acceptance_completed = True
 
             st.success("✅ Danke fuer dein Feedback!")
-            st.info("📊 Weiter geht es mit der Frage zur Map-Anpassung...")
+            st.info("📊 Weiter geht es mit der Frage zum Schwierigkeitsgrad der Aufgabe...")
             st.rerun()
 
 
 def render_map_adaption_question():
-    """Render self-assessment of concept map adaptation between rounds."""
-    st.header("🗺️ Anpassung deiner Concept Map")
+    """Render self-assessment of task difficulty."""
+    st.header("🗺️ Schwierigkeitsgrad der Aufgabe")
     st.markdown("---")
 
-    st.info("""Wir moechten wissen, wie stark du deine Concept Map zwischen den Runden geaendert hast.""")
+    st.info("""Bitte bewerten Sie die Aufgabe:""")
 
-    with st.form("map_adaptation"):
-        adaptation = st.radio(
-            "Hast du deine Concept Map zwischen den Runden angepasst?",
+    with st.form("task_difficulty"):
+        task_difficulty = st.radio(
+            "Die Aufgabe war...",
             options=[
-                "Ja, ich habe die Map aktiv veraendert oder erweitert",
-                "Ein wenig – ein paar Anpassungen, sonst gleich geblieben",
-                "Nein, ich habe kaum etwas geaendert",
-                "Ich bin mir nicht sicher"
+                "sehr leicht",
+                "leicht",
+                "ziemlich leicht",
+                "weder leicht noch schwierig",
+                "ziemlich schwierig",
+                "schwierig",
+                "sehr schwierig"
             ],
             index=None  # No default selection
         )
@@ -525,20 +534,20 @@ def render_map_adaption_question():
         comments = st.text_area(
             "Weitere Kommentare (optional):",
             height=100,
-            placeholder="Welche Aenderungen (falls welche) hast du vorgenommen?"
+            placeholder="Was hat die Aufgabe fuer dich (un)schwierig gemacht?"
         )
 
         submitted = st.form_submit_button("Abschicken", type="primary")
 
         if submitted:
-            if not adaptation:
+            if not task_difficulty:
                 st.error("Bitte waehle eine Antwort aus, bevor du abschickst.")
                 return
 
             # Store response
             if st.session_state.experimental_session:
-                adaptation_data = {
-                    "adaptation_response": adaptation,
+                task_difficulty_data = {
+                    "task_difficulty": task_difficulty,
                     "comments": comments,
                     "timestamp": datetime.now().isoformat(),
                     "participant_id": st.session_state.learner_profile.get('unique_id',
@@ -547,18 +556,241 @@ def render_map_adaption_question():
                                                                              'Unknown') if st.session_state.learner_profile else 'Unknown'
                 }
 
-                st.session_state.experimental_session.session_data["map_adaptation"] = adaptation_data
+                st.session_state.experimental_session.session_data["task_difficulty"] = task_difficulty_data
 
                 if st.session_state.experimental_session.session_logger:
                     st.session_state.experimental_session.session_logger.log_event(
-                        event_type="map_adaptation_response",
-                        metadata=adaptation_data
+                        event_type="task_difficulty_response",
+                        metadata=task_difficulty_data
                     )
             # Mark as completed and proceed
-            st.session_state.map_adaptation_completed = True
+            st.session_state.task_difficulty_completed = True
 
             st.success("✅ Danke fuer dein Feedback!")
             st.info("📋 Weiter geht es mit dem Fragebogen zu deinem Lernerfolg...")
+            st.rerun()
+
+
+def render_critical_ai_questionnaire():
+    """Render measurement 3: critical stance towards AI."""
+    st.header("🧠 Kritischer Umgang mit KI")
+    st.markdown("---")
+
+    st.info("Bitte bewerte die folgenden Aussagen.")
+
+    options = [
+        "Stimme überhaupt nicht zu",
+        "Stimme nicht zu",
+        "Neutral",
+        "Stimme zu",
+        "Stimme voll und ganz zu",
+    ]
+
+    items = [
+        "Ich begegne den Antworten von KI mit einer kritischen Haltung und hinterfrage die von ihr gelieferten Informationen.",
+        "Ich überprüfe aktiv Fakten und bewerte die Glaubwürdigkeit der von KI bereitgestellten Informationen.",
+        "Ich suche aktiv nach unterschiedlichen Perspektiven und Meinungen, um sie mit den von KI generierten Informationen zu vergleichen.",
+        "Ich bewerte kritisch die zugrunde liegenden Annahmen und mögliche Voreingenommenheit in den Antworten von KI.",
+        "Ich erkenne an, dass KI nicht immer vollständige oder unvoreingenommene Informationen liefern kann.",
+        "Ich prüfe kritisch, inwiefern die Antworten von KI auf meinen spezifischen Kontext anwendbar sind.",
+        "Ich nutze KI als Werkzeug neben anderen Quellen und hinterfrage bei Bedarf die Schlussfolgerungen sowie die Logik dessen Antworten.",
+    ]
+
+    with st.form("critical_ai"):
+        responses = {}
+        for idx, statement in enumerate(items, 1):
+            st.markdown(f"**{statement}**")
+            answer = st.radio(
+                "Auswahlmöglichkeiten:",
+                options=options,
+                index=None,
+                key=f"critical_ai_{idx}",
+            )
+            if answer:
+                responses[f"CAI{idx}"] = {"statement": statement, "response": answer}
+            st.markdown("---")
+
+        submitted = st.form_submit_button("Abschicken", type="primary")
+
+        if submitted:
+            if len(responses) < len(items):
+                st.error("Bitte beantworte alle Aussagen, bevor du absendest.")
+                return
+
+            if st.session_state.experimental_session:
+                payload = {
+                    "responses": responses,
+                    "timestamp": datetime.now().isoformat(),
+                    "participant_id": st.session_state.learner_profile.get("unique_id", "N/A")
+                    if st.session_state.learner_profile
+                    else "N/A",
+                    "participant_name": st.session_state.learner_profile.get("name", "Unknown")
+                    if st.session_state.learner_profile
+                    else "Unknown",
+                }
+
+                st.session_state.experimental_session.session_data["critical_ai"] = payload
+                if st.session_state.experimental_session.session_logger:
+                    st.session_state.experimental_session.session_logger.log_event(
+                        event_type="critical_ai_response",
+                        metadata=payload,
+                    )
+
+            st.session_state.critical_ai_completed = True
+            st.success("✅ Danke! Weiter zur nächsten Befragung…")
+            st.rerun()
+
+
+def render_ai_reliance_questionnaire():
+    """Render measurement 4: AI reliance."""
+    st.header("📎 AI-reliance")
+    st.markdown("---")
+
+    st.info("Bitte geben Sie an, in welchem Ausmaß Sie sich auf KI verlassen, um die folgenden Tätigkeiten auszuführen.")
+
+    options = [
+        "Überhaupt nicht",
+        "Selten",
+        "Manchmal",
+        "Häufig",
+        "Sehr stark / Immer",
+    ]
+
+    items = [
+        "Antworten auf spezifische Fragen im Zusammenhang mit meinem Studium oder meiner Arbeit finden.",
+        "Entwürfe für meine (schriftlichen) Aufgaben erstellen.",
+        "Meine (schriftlichen) Aufgaben überarbeiten.",
+        "Unterstützung bei der Erledigung meiner Aufgaben erhalten.",
+        "Komplexe Konzepte verstehen.",
+        "Komplexe Texte oder Informationen zusammenfassen.",
+        "Rückmeldungen zu Lösungen meiner (schriftlichen) Aufgaben erhalten.",
+        "Übungsfragen oder Quizze zur Selbstüberprüfung oder Weiterbildung generieren.",
+        "Arbeits- oder Lernpläne zur Organisation meiner Aufgaben erstellen.",
+        "Fachliche oder analytische Probleme lösen (z. B. mathematische oder technische Aufgaben).",
+        "Coding- oder Programmieraufgaben bearbeiten.",
+        "Ideen für kreative Projekte generieren.",
+        "Aufgaben oder Texte vollständig von KI schreiben lassen.",
+    ]
+
+    with st.form("ai_reliance"):
+        responses = {}
+        for idx, statement in enumerate(items, 1):
+            st.markdown(f"**{statement}**")
+            answer = st.radio(
+                "Auswahlmöglichkeiten:",
+                options=options,
+                index=None,
+                key=f"ai_reliance_{idx}",
+            )
+            if answer:
+                responses[f"AIR{idx}"] = {"statement": statement, "response": answer}
+            st.markdown("---")
+
+        submitted = st.form_submit_button("Abschicken", type="primary")
+
+        if submitted:
+            if len(responses) < len(items):
+                st.error("Bitte beantworte alle Aussagen, bevor du absendest.")
+                return
+
+            if st.session_state.experimental_session:
+                payload = {
+                    "responses": responses,
+                    "timestamp": datetime.now().isoformat(),
+                    "participant_id": st.session_state.learner_profile.get("unique_id", "N/A")
+                    if st.session_state.learner_profile
+                    else "N/A",
+                    "participant_name": st.session_state.learner_profile.get("name", "Unknown")
+                    if st.session_state.learner_profile
+                    else "Unknown",
+                }
+
+                st.session_state.experimental_session.session_data["ai_reliance"] = payload
+                if st.session_state.experimental_session.session_logger:
+                    st.session_state.experimental_session.session_logger.log_event(
+                        event_type="ai_reliance_response",
+                        metadata=payload,
+                    )
+
+            st.session_state.ai_reliance_completed = True
+            st.success("✅ Danke! Weiter zur nächsten Befragung…")
+            st.rerun()
+
+
+def render_trust_in_ai_questionnaire():
+    """Render measurement 5: trust in AI."""
+    st.header("🔒 Vertrauen in KI")
+    st.markdown("---")
+
+    st.info("Bitte bewerte die folgenden Aussagen.")
+
+    options = [
+        "Überhaupt nicht",
+        "Kaum",
+        "Wenig",
+        "Neutral",
+        "Stark",
+        "Sehr stark",
+        "Extrem",
+    ]
+
+    items = [
+        "Das System ist irreführend.",
+        "Das System verhält sich hinterhältig.",
+        "Ich bin misstrauisch gegenüber den Absichten, Handlungen oder Ergebnissen des Systems.",
+        "Ich bin vorsichtig im Umgang mit dem System.",
+        "Die Handlungen des Systems könnten schädliche oder verletzende Folgen haben.",
+        "Ich bin vom System überzeugt / sicher, dass es zuverlässig funktioniert.",
+        "Das System bietet Sicherheit.",
+        "Das System hat Integrität.",
+        "Das System ist verlässlich (es erfüllt verlässlich seine Aufgaben).",
+        "Das System ist zuverlässig (es in funktioniert in kritischen Momenten).",
+        "Ich kann dem System vertrauen.",
+        "Ich bin mit dem System vertraut.",
+    ]
+
+    with st.form("trust_in_ai"):
+        responses = {}
+        for idx, statement in enumerate(items, 1):
+            st.markdown(f"**{statement}**")
+            answer = st.radio(
+                "Auswahlmöglichkeiten:",
+                options=options,
+                index=None,
+                key=f"trust_in_ai_{idx}",
+            )
+            if answer:
+                responses[f"TAI{idx}"] = {"statement": statement, "response": answer}
+            st.markdown("---")
+
+        submitted = st.form_submit_button("Abschicken", type="primary")
+
+        if submitted:
+            if len(responses) < len(items):
+                st.error("Bitte beantworte alle Aussagen, bevor du absendest.")
+                return
+
+            if st.session_state.experimental_session:
+                payload = {
+                    "responses": responses,
+                    "timestamp": datetime.now().isoformat(),
+                    "participant_id": st.session_state.learner_profile.get("unique_id", "N/A")
+                    if st.session_state.learner_profile
+                    else "N/A",
+                    "participant_name": st.session_state.learner_profile.get("name", "Unknown")
+                    if st.session_state.learner_profile
+                    else "Unknown",
+                }
+
+                st.session_state.experimental_session.session_data["trust_in_ai"] = payload
+                if st.session_state.experimental_session.session_logger:
+                    st.session_state.experimental_session.session_logger.log_event(
+                        event_type="trust_in_ai_response",
+                        metadata=payload,
+                    )
+
+            st.session_state.trust_in_ai_completed = True
+            st.success("✅ Danke! Du bist fertig.")
             st.rerun()
 
 
@@ -1365,21 +1597,21 @@ def main():
 
     # Check if all rounds are completed and post-task questionnaires are needed
     if roundn == st.session_state.max_rounds:
-        # Agent differentiation question (experimental mode only)
+        # Agent acceptance question (experimental mode only)
         if (st.session_state.mode == "experimental" and
-                not st.session_state.get('agent_differentiation_completed', False)):
-            render_agent_differentiation_question()
+                not st.session_state.get('agent_acceptance_completed', False)):
+            render_agent_acceptance_question()
             return
-        # Map adaptation question (after differentiation)
+        # Task difficulty question (after agent acceptance)
         if (st.session_state.mode == "experimental" and
-                st.session_state.get('agent_differentiation_completed', False) and
-                not st.session_state.get('map_adaptation_completed', False)):
+                st.session_state.get('agent_acceptance_completed', False) and
+                not st.session_state.get('task_difficulty_completed', False)):
             render_map_adaption_question()
             return
 
         # Post-knowledge questionnaire (experimental mode only, after map adaptation - measure learning gains immediately)
         if (st.session_state.mode == "experimental" and
-             st.session_state.get('map_adaptation_completed', False) and
+             st.session_state.get('task_difficulty_completed', False) and
              not st.session_state.get('post_questionnaire_completed', False)):
              if st.session_state.experimental_session:
                  st.session_state.experimental_session.render_post_knowledge_questionnaire()
@@ -1393,6 +1625,27 @@ def main():
             if st.session_state.experimental_session:
                 st.session_state.experimental_session.render_clt_questionnaire()
             st.components.v1.html(scroll_js)
+            return
+
+        # 3) Critical stance towards AI (after CLT)
+        if (st.session_state.mode == "experimental" and
+                st.session_state.get('clt_completed', False) and
+                not st.session_state.get('critical_ai_completed', False)):
+            render_critical_ai_questionnaire()
+            return
+
+        # 4) AI reliance (after critical stance)
+        if (st.session_state.mode == "experimental" and
+                st.session_state.get('critical_ai_completed', False) and
+                not st.session_state.get('ai_reliance_completed', False)):
+            render_ai_reliance_questionnaire()
+            return
+
+        # 5) Trust in AI (after AI reliance)
+        if (st.session_state.mode == "experimental" and
+                st.session_state.get('ai_reliance_completed', False) and
+                not st.session_state.get('trust_in_ai_completed', False)):
+            render_trust_in_ai_questionnaire()
             return
 
         # Show summary page after all questionnaires are completed (or immediately in demo mode)

@@ -33,3 +33,7 @@ MAS/app/testing_fixes
 # Unused for Streamlit experimental app
 MAS/core/
 MAS/examples/
+
+# macOS
+.DS_Store
+Icon?

@@ -374,93 +374,93 @@ class StreamlitExperimentalSession:
         st.markdown("---")
         
         st.info("""
-        Bitte bewerte die folgenden Aussagen zur soeben abgeschlossenen Lernaufgabe.
+        Das ist der letzte Fragebogen. Bitte bewerte die folgenden Aussagen zur soeben abgeschlossenen Lernaufgabe.
         
         Waehle fur jede Aussage eine Bewertung von 1 (trifft gar nicht zu) bis 9 (trifft voll zu).
         """)
         
-        # Define CLT items (15 items total) – deutsche Originalformulierungen (Krieglstein et al., 2023)
+        # Define CLT items (12 items total) – deutsche Originalformulierungen (Krieglstein et al., 2023)
         clt_items = [
             # Intrinsic Cognitive Load (ICL)
             {
                 "construct": "ICL",
                 "code": "ICL1",
-                "statement": "Die Lerninhalte waren schwer zu verstehen."
+                "statement": "Diese Aufgabe war sehr komplex."
             },
             {
                 "construct": "ICL",
                 "code": "ICL2",
-                "statement": "Die Erklarungen des Lerninhalts waren schwer nachvollziehbar."
+                "statement": "Bei der Aufgabe musste man viele Dinge gleichzeitig im Kopf bearbeiten."
             },
-            {
-                "construct": "ICL",
-                "code": "ICL3",
-                "statement": "Die Lerninhalte waren komplex."
-            },
-            {
-                "construct": "ICL",
-                "code": "ICL4",
-                "statement": "Die Lerninhalte enthielten viele komplexe Informationen."
-            },
-            {
-                "construct": "ICL",
-                "code": "ICL5",
-                "statement": "Ohne Vorwissen waren die Informationen nicht verstandlich."
-            },
+            # {
+            #     "construct": "ICL",
+            #     "code": "ICL3",
+            #     "statement": "Die Lerninhalte waren komplex."
+            # },
+            # {
+            #     "construct": "ICL",
+            #     "code": "ICL4",
+            #     "statement": "Die Lerninhalte enthielten viele komplexe Informationen."
+            # },
+            # {
+            #     "construct": "ICL",
+            #     "code": "ICL5",
+            #     "statement": "Ohne Vorwissen waren die Informationen nicht verstandlich."
+            # },
             
             # Extraneous Cognitive Load (ECL)
             {
                 "construct": "ECL",
                 "code": "ECL1",
-                "statement": "Es war schwierig, einen Ueberblick ueber den Aufbau des Lernmaterials zu erlangen."
+                "statement": "Bei dieser Aufgabe ist es mühsam, die wichtigsten Informationen zu erkennen."
             },
             {
                 "construct": "ECL",
                 "code": "ECL2",
-                "statement": "Die Gestaltung des Lernmaterials machte es schwer, die Zusammenhaenge zwischen den einzelnen Informationen herzustellen."
+                "statement": "Die Darstellung bei dieser Aufgabe ist ungünstig, um wirklich etwas zu lernen."
             },
             {
                 "construct": "ECL",
                 "code": "ECL3",
-                "statement": "Das Lernmaterial war unguenstig gestaltet."
+                "statement": "Bei dieser Aufgabe ist es schwer, die zentralen Inhalte miteinander in Verbindung zu bringen."
             },
-            {
-                "construct": "ECL",
-                "code": "ECL4",
-                "statement": "Die Gestaltung des Lernmaterials machte es schwierig, wichtige Informationen zuegig zu finden."
-            },
-            {
-                "construct": "ECL",
-                "code": "ECL5",
-                "statement": "Aufgrund der Gestaltung des Lernmaterials hatte ich das Gefuehl, mich nicht auf die Lerninhalte konzentrieren zu koennen."
-            },
+            # {
+            #     "construct": "ECL",
+            #     "code": "ECL4",
+            #     "statement": "Die Gestaltung des Lernmaterials machte es schwierig, wichtige Informationen zuegig zu finden."
+            # },
+            # {
+            #     "construct": "ECL",
+            #     "code": "ECL5",
+            #     "statement": "Aufgrund der Gestaltung des Lernmaterials hatte ich das Gefuehl, mich nicht auf die Lerninhalte konzentrieren zu koennen."
+            # },
             
             # Germane Cognitive Load (GCL)
             {
                 "construct": "GCL",
                 "code": "GCL1",
-                "statement": "Ich habe aktiv ueber die Lerninhalte nachgedacht."
+                "statement": "Ich habe mich angestrengt, mir nicht nur einzelne Dinge zu merken, sondern auch den Gesamtzusammenhang zu verstehen."
+            },
+            {
+                "construct": "GCL",
+                "code": "GCL2",
+                "statement": "Es ging mir beim Bearbeiten der Lerneinheit darum, alles richtig zu verstehen."
             },
             {
                 "construct": "GCL",
                 "code": "GCL3",
-                "statement": "Ich habe mich bemueht, die Lerninhalte zu verstehen."
+                "statement": "Die Lerneinheit enthielt Elemente, die mich unterstützten, den Lernstoff besser zu verstehen."
             },
-            {
-                "construct": "GCL",
-                "code": "GCL5",
-                "statement": "Ich habe ein umfassendes Verstaendnis der Lerninhalte erlangt."
-            },
-            {
-                "construct": "GCL",
-                "code": "GCL6",
-                "statement": "Ich konnte mein bestehendes Wissen mit den Lerninhalten erweitern."
-            },
-            {
-                "construct": "GCL",
-                "code": "GCL7",
-                "statement": "Das Wissen, das ich durch das Lernmaterial erworben habe, kann ich schnell und sicher anwenden."
-            }
+            # {
+            #     "construct": "GCL",
+            #     "code": "GCL6",
+            #     "statement": "Ich konnte mein bestehendes Wissen mit den Lerninhalten erweitern."
+            # },
+            # {
+            #     "construct": "GCL",
+            #     "code": "GCL7",
+            #     "statement": "Das Wissen, das ich durch das Lernmaterial erworben habe, kann ich schnell und sicher anwenden."
+            # }
         ]
         # Add random attention check item
         attention_check_item = {
@@ -468,11 +468,13 @@ class StreamlitExperimentalSession:
             "code": "ATTN1",
             "statement": "Um zu zeigen, dass du noch Aufmerksamkeit spendest, waehle bitte die Zahl 4."
         }
-        insert_position = random.randint(0, len(clt_items))
+        if "clt_attention_insert_position" not in st.session_state:
+            st.session_state.clt_attention_insert_position = random.randint(0, len(clt_items))
+        insert_position = st.session_state.clt_attention_insert_position
         clt_items.insert(insert_position, attention_check_item)
         
         # Randomize item order to reduce bias (but keep consistent within session)
-        if "clt_item_order" not in st.session_state:
+        if "clt_item_order" not in st.session_state or len(st.session_state.clt_item_order) != len(clt_items):
             st.session_state.clt_item_order = list(range(len(clt_items)))
             random.shuffle(st.session_state.clt_item_order)
         
@@ -489,14 +491,14 @@ class StreamlitExperimentalSession:
                 
                 # Use radio buttons for 7-point Likert scale
                 response = st.radio(
-                    "Select your rating:",
+                    "Bitte wähle deine Bewertung:",
                     options=list(range(1, 10)), 
                     format_func=str,
                     key=f"clt_{item['code']}",
                     index=None,  
                     horizontal=True  
                 )
-                st. caption ("1 = Not at all applicable     9 = Fully applicable")
+                st.caption("1 = Trifft gar nicht zu     9 = Trifft voll zu")
 
                 if response:
                     responses[item['code']] = {
@@ -579,7 +581,7 @@ class StreamlitExperimentalSession:
                 st.session_state.clt_completed = True
                 
                 st.success("✅ Fragebogen zur kognitiven Belastung abgeschlossen!")
-                st.info("📊 Weiter zum Post-Knowledge-Fragebogen...")
+                st.info("📊 Weiter zu weiteren Fragebögen...")
                 
                 # Automatically proceed to post knowledge
                 st.rerun()
@@ -841,15 +843,11 @@ class StreamlitExperimentalSession:
         ]
         
         education_options = [
-            "Please select...",
-            "High School Diploma/Secondary Education",
-            "Some College/University (no degree)",
-            "Associate Degree/Diploma",
-            "Bachelor's Degree",
-            "Master's Degree",
-            "Doctoral Degree (PhD/MD/JD/etc.)",
-            "Professional Certification",
-            "Other"
+            "Wann nutzen Sie Künstliche Intelligenz? Bitte auswählen...",
+            "Im Alltag",
+            "Im Studium",
+            "An der Arbeit",
+            "Nie"
         ]
         
         gender_options = [
@@ -877,22 +875,28 @@ class StreamlitExperimentalSession:
                     help="Select your nationality"
                 )
                 background = st.selectbox(
-                    "Highest Educational Level*", 
+                    "Nutzung Künstlicher Intelligenz*", 
                     options=education_options,
-                    help="Select your highest completed educational level"
+                    help="Wann nutzen Sie Künstliche Intelligenz?"
                 )
             
             with col2:
-                confidence = st.selectbox(
-                    "Confidence in Concept Mapping*",
-                    options=["1 - Very Low", "2 - Low", "3 - Moderate", "4 - High", "5 - Very High"],
-                    help="How confident do you feel about concept mapping?"
-                )
+                # confidence = st.selectbox(
+                #     "Confidence in Concept Mapping*",
+                #     options=["1 - Very Low", "2 - Low", "3 - Moderate", "4 - High", "5 - Very High"],
+                #     help="How confident do you feel about concept mapping?"
+                # )
 
                 confidencechat = st.selectbox(
-                    "Confidence in Chatbot Interactions*",
-                    options=["1 - Very Low", "2 - Low", "3 - Moderate", "4 - High", "5 - Very High"],
-                    help="How confident do you feel about interacting with a chatbot?"
+                    "Sicherheit in der Interaktion mit KI*",
+                    options=[
+                        "Ich habe noch nie von Künstlicher Intelligenz (KI) gehört.",
+                        "Ich habe von Künstlicher Intelligenz (KI) gehört, aber keine eigenen Erfahrungen damit.",
+                        "Ich habe grundlegende Erfahrungen mit der Nutzung von KI-Anwendungen oder -Tools",
+                        "Ich habe umfangreiche praktische Erfahrungen im Umgang mit KI.",
+                        "Ich habe sehr umfangreiche Erfahrungen in der KI-Forschung und/oder -Entwicklung.",
+                    ],
+                    help="Wie vertraut sind Sie im Umgang mit KI?",
                 )
                 # # Learning factors that could affect outcome
                 # st.markdown("**Learning Factors**")
@@ -920,7 +924,8 @@ class StreamlitExperimentalSession:
             
             if submitted:
                 # Validate required fields
-                if not all([name, age, gender, nationality, background, confidence, confidencechat]):
+                # if not all([name, age, gender, nationality, background, confidence, confidencechat]):
+                if not all([name, age, gender, nationality, background, confidencechat]):
                     st.error("Please fill in all required fields marked with *")
                     return None
                 
@@ -938,7 +943,7 @@ class StreamlitExperimentalSession:
                     return None
                 
                 # unique ID
-                unique_id = "K1EF9RLL"
+                unique_id = "V1EF9RLL"
                 
                 # Assess background knowledge and determine scaffolding level
                 background_score = self.assess_background_knowledge(background, "")  # No prior knowledge field anymore
@@ -951,12 +956,12 @@ class StreamlitExperimentalSession:
                     "gender": gender.strip(),
                     "nationality": nationality.strip(),
                     "background": background.strip(),
-                    "confidence": confidence,
+                    # "confidence": confidence,
                     "confidencechat": confidencechat,
 #                    "learning_factors": learning_factors,
                     "background_knowledge_score": background_score,
-                    "scaffolding_level": scaffolding_level,
-                    "zpd_level": scaffolding_level,  # For compatibility
+#                    "scaffolding_level": scaffolding_level,
+#                    "zpd_level": scaffolding_level,  # For compatibility
                     "created_at": datetime.now().isoformat()
                 }
                 
@@ -1291,10 +1296,9 @@ class StreamlitExperimentalSession:
             )
         
         return result
-    
+    # Für die Non-Scaffolding-Implementierung kann der Bot optional abgestellt werden.
     def get_agent_response(self, roundn: int, concept_map_data: Optional[Dict[str, Any]] = None, user_response: Optional[str] = None, conversation_turn: int = 0) -> str:
         """Get agent response for the current round with pattern detection."""
-        return "Chatbot deaktiviert."
         # Handle round 0 specially - no scaffolding
         if roundn == 0:
             return "Bitte erstelle deine erste Concept Map zum Thema. Nimm dir Zeit, alle relevanten Konzepte und Beziehungen einzutragen. Wenn du bereit bist, reiche die Concept Map ein, um fortzufahren."
