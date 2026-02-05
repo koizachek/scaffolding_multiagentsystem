@@ -23,7 +23,7 @@ numpy
 pandas
 
 # Web Application
-streamlit
+streamlit>=1.32.0,<2.0.0
 streamlit_scroll_to_top
 st-conceptmap-cs >= 1.0.2.1
 
