@@ -43,7 +43,8 @@ except ImportError:
 logger = logging.getLogger(__name__)
 
 # Experimental conditions for balanced assignment
-EXPERIMENTAL_CONDITIONS = ['EG_SEQ', 'CG_WRONG_SEQ', 'CG_NEUTRAL']
+# EXPERIMENTAL_CONDITIONS = ['EG_SEQ', 'CG_WRONG_SEQ', 'CG_NEUTRAL']
+EXPERIMENTAL_CONDITIONS = ['CG_WRONG_SEQ']  # metacognitive-first only
 
 # Agent sequences for each experimental condition
 AGENT_SEQUENCES = {
