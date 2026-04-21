@@ -1,0 +1,11 @@
+<ExposureSummaryCollection>
+  <ExposureSummary>
+    <Id>1001</Id>
+    <ExposureTime>180036</ExposureTime>
+    <SlidePosition>1</SlidePosition>
+    <TransitionEventId>1</TransitionEventId>
+    <RawDataQuality>0</RawDataQuality>
+    <StimulusId>1004</StimulusId>
+    <RawDataRunId>1001</RawDataRunId>
+  </ExposureSummary>
+</ExposureSummaryCollection>

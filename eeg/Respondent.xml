@@ -1,0 +1,161 @@
+<?xml version="1.0" standalone="yes"?>
+<NewDataSet>
+  <xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:MainDataTable="Respondent" msdata:UseCurrentLocale="true">
+      <xs:complexType>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="Respondent">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Id" msdata:AutoIncrement="true" type="xs:long" />
+                <xs:element name="Name">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="Age" type="xs:long" minOccurs="0" />
+                <xs:element name="Gender">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="Address1" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="Tlf" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="CreatedDate" type="xs:dateTime" minOccurs="0" />
+                <xs:element name="ModifiedDate" type="xs:dateTime" minOccurs="0" />
+                <xs:element name="Comments" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="Address2" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="City" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="PostalCode" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="StudyId" type="xs:long" />
+                <xs:element name="GroupName">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="UniqueRespondentIdentifier">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="SiteName">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="MergeStatus">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="ParticipationMode">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:complexType>
+      <xs:unique name="Constraint1">
+        <xs:selector xpath=".//Respondent" />
+        <xs:field xpath="UniqueRespondentIdentifier" />
+      </xs:unique>
+      <xs:unique name="Constraint2" msdata:PrimaryKey="true">
+        <xs:selector xpath=".//Respondent" />
+        <xs:field xpath="Id" />
+      </xs:unique>
+    </xs:element>
+  </xs:schema>
+  <Respondent>
+    <Id>1001</Id>
+    <Name>k</Name>
+    <Age>0</Age>
+    <Gender>OTHER</Gender>
+    <Address1 />
+    <Tlf />
+    <CreatedDate>2026-04-21T12:13:40+02:00</CreatedDate>
+    <ModifiedDate>2026-04-21T12:13:40+02:00</ModifiedDate>
+    <Comments />
+    <Address2 />
+    <City />
+    <PostalCode />
+    <StudyId>1000</StudyId>
+    <GroupName>Default</GroupName>
+    <UniqueRespondentIdentifier>1c92679e-6cfb-4d87-8e0e-2af04b1b082e</UniqueRespondentIdentifier>
+    <SiteName>DefaultSite</SiteName>
+    <MergeStatus>NOT_MERGED</MergeStatus>
+    <ParticipationMode>MANAGED</ParticipationMode>
+  </Respondent>
+  <Respondent>
+    <Id>1000</Id>
+    <Name>Anonymous 21-04-26 12h03m</Name>
+    <Age>0</Age>
+    <Gender>OTHER</Gender>
+    <Address1 />
+    <Tlf />
+    <CreatedDate>2026-04-21T12:03:26+02:00</CreatedDate>
+    <ModifiedDate>2026-04-21T12:03:26+02:00</ModifiedDate>
+    <Comments />
+    <Address2 />
+    <City />
+    <PostalCode />
+    <StudyId>1000</StudyId>
+    <GroupName>Default</GroupName>
+    <UniqueRespondentIdentifier>50cdc470-e2bd-4d2b-a143-b6ad16d0f7e9</UniqueRespondentIdentifier>
+    <SiteName>DefaultSite</SiteName>
+    <MergeStatus>NOT_APPLICABLE</MergeStatus>
+    <ParticipationMode>MANAGED</ParticipationMode>
+  </Respondent>
+</NewDataSet>

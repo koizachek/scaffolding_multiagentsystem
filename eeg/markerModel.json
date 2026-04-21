@@ -1,0 +1,23 @@
+﻿11.1.1.0
+#HEADER
+SlideEvents
+SlideEvents
+
+
+%7b%22SlideShowStartDateTime%22%3a%222026-04-21T11%3a05%3a46.0592364Z%22%2c%22TimeZone%22%3a%22W.+Europe+Standard+Time%3b60%3b(UTC%2b01%3a00)+Amsterdam%2c+Berlin%2c+Bern%2c+Rome%2c+Stockholm%2c+Vienna%3bW.+Europe+Standard+Time%3bW.+Europe+Daylight+Time%3b%5b01%3a01%3a0001%3b12%3a31%3a9999%3b60%3b%5b0%3b02%3a00%3a00%3b3%3b5%3b0%3b%5d%3b%5b0%3b03%3a00%3a00%3b10%3b5%3b0%3b%5d%3b%5d%3b%22%7d
+#METADATA
+FieldName,SlideEvent,Timestamp,StimType,Duration,CollectionPhase,SourceStimuliName
+DataType,String,Double,String,Double,String,String
+Description,Slide & Media events: Start/Stop,iMotions timestamp,Type of stimulus,Stimulus duration fx video length,Reason slide was changed,Name of stimulus
+Category,Slideshow,Timestamp,Slideshow,Slideshow,Slideshow,Slideshow
+Provided By,iMotions,,iMotions,iMotions,iMotions,iMotions
+Channel identifier,SE_SlideEvent,,SE_StimulusType,SE_Duration,SE_CollectionPhase,SE_SourceStimuliName
+Unit,,Millisecond,,Millisecond,,
+Short unit,,,,ms,,
+#DATA
+RowNumber,SlideEvent,Timestamp,StimType,Duration,CollectionPhase,SourceStimuliName
+0,StartSlide,112.0956,TestImage,180000,StimuliDisplay,Website 5
+1,StartMedia,2765.5399000000002,TestImage,180000,StimuliDisplay,Website 5
+2,EndMedia,182801.70629999999,TestImage,180000,StimuliDisplay,Website 5
+3,EndSlide,182801.70629999999,TestImage,180000,StimuliDisplay,Website 5
+4,EndSlideshow,183307.96489999999,,,,

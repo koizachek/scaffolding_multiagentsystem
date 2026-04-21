@@ -1,0 +1,733 @@
+<?xml version="1.0" standalone="yes"?>
+<NewDataSet>
+  <xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">
+      <xs:complexType>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="Study">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Id" msdata:AutoIncrement="true" type="xs:long" />
+                <xs:element name="Name">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="Description" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="AutoRespondents" type="xs:long" />
+                <xs:element name="CreatedDate" type="xs:dateTime" />
+                <xs:element name="IsStimulusExposureTimeFixed" type="xs:long" />
+                <xs:element name="StimuliOrder">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="DefaultStimuliExposureTime" type="xs:double" />
+                <xs:element name="UniqueStudyIdentifier">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="StudyPath">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="StudyType">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="TriggerEnum">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="GazeCheckSequence" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="OutlierThreshold" type="xs:double" />
+                <xs:element name="CalibrationMode">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="Algorithms" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="AreStimuliBlocksUsed" type="xs:long" />
+                <xs:element name="AutoSelectStimuliBlock" type="xs:long" />
+                <xs:element name="IsIncrementalExportEnabled" type="xs:long" />
+                <xs:element name="IsLocked" type="xs:long" />
+                <xs:element name="IsDesktopStudy" type="xs:long" minOccurs="0" />
+                <xs:element name="IgnoreRespondentInformedConsent" type="xs:long" minOccurs="0" />
+                <xs:element name="StudySetupType">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="Study_BGVariables">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Id" msdata:AutoIncrement="true" type="xs:long" />
+                <xs:element name="StudyId" type="xs:long" />
+                <xs:element name="BGValueId" type="xs:long" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="PredefinedStimuliOrder">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Id" type="xs:long" minOccurs="0" />
+                <xs:element name="RespondentId" type="xs:long" minOccurs="0" />
+                <xs:element name="StudyId" type="xs:long" minOccurs="0" />
+                <xs:element name="OrderedStimuli" type="xs:string" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="TestEnvSetup">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Id" msdata:AutoIncrement="true" type="xs:long" />
+                <xs:element name="EyeTrackerModel">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="ScreenResolution">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="Distance" type="xs:double" />
+                <xs:element name="DistanceUnit">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="ScreenSize">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="StudyId" type="xs:long" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="StudySensors">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Id" msdata:AutoIncrement="true" type="xs:long" />
+                <xs:element name="SensorType">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="SensorModel">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="StudyId" type="xs:long" />
+                <xs:element name="SensorDetails" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="Stimuli">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Id" msdata:AutoIncrement="true" type="xs:long" />
+                <xs:element name="StimuliPath">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="StimuliDisplayName">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="Description" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="StudyId" type="xs:long" />
+                <xs:element name="StimuliContext" type="xs:base64Binary" minOccurs="0" />
+                <xs:element name="StimuliExposureTime" type="xs:double" />
+                <xs:element name="StimuliOrder">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="SlideShowPosition" type="xs:long" />
+                <xs:element name="AutoHighlightTemplates" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="DefaultHighlightTemplate" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="StimuliType">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="ParentId" type="xs:long" minOccurs="0" />
+                <xs:element name="AdditionalData" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="TriggerEnum">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="ResultTypes" type="xs:long" />
+                <xs:element name="RecWebCam" type="xs:long" />
+                <xs:element name="WebProfileOption" type="xs:int" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="MovingAOI">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Id" msdata:AutoIncrement="true" type="xs:long" />
+                <xs:element name="StimuliId" type="xs:long" />
+                <xs:element name="Name">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="Color">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="EventData">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="AnnotationData" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="RespondentId" type="xs:long" minOccurs="0" />
+                <xs:element name="MarkerId" type="xs:long" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="Stimuli_BGVariables">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Id" msdata:AutoIncrement="true" type="xs:long" />
+                <xs:element name="StimuliId" type="xs:long" />
+                <xs:element name="BGValueId" type="xs:long" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="StimuliBlock">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Id" msdata:AutoIncrement="true" type="xs:long" />
+                <xs:element name="DisplayName">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="StudyId" type="xs:long" />
+                <xs:element name="BlockType" type="xs:long" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="StimuliBlockItem">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="ParentBlockId" type="xs:long" />
+                <xs:element name="BlockOrder" type="xs:long" />
+                <xs:element name="IsFixed" type="xs:long" />
+                <xs:element name="StimuliId" type="xs:long" minOccurs="0" />
+                <xs:element name="BlockId" type="xs:long" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="Respondent_BGVariables">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Id" msdata:AutoIncrement="true" type="xs:long" />
+                <xs:element name="RespondentId" type="xs:long" />
+                <xs:element name="BGValueId" type="xs:long" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="BGVariable" msdata:CaseSensitive="False">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Id" msdata:AutoIncrement="true" type="xs:long" />
+                <xs:element name="Name">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="Description" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="VariableType">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="VariableContext">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="VariableValue" msdata:CaseSensitive="False">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Id" msdata:AutoIncrement="true" type="xs:long" />
+                <xs:element name="Value">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="BGVariableId" type="xs:long" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="SceneFragment">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Id" msdata:AutoIncrement="true" type="xs:long" />
+                <xs:element name="SceneId" type="xs:long" />
+                <xs:element name="RespondentId" type="xs:long" minOccurs="0" />
+                <xs:element name="FragmentStart" type="xs:long" />
+                <xs:element name="FragmentEnd" type="xs:long" />
+                <xs:element name="BaseLineName" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="FeatureRun">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Id" msdata:AutoIncrement="true" type="xs:long" />
+                <xs:element name="RespondentId" type="xs:long" />
+                <xs:element name="EngineConfiguration">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="StudyId" type="xs:long" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="RawDataRun">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Id" msdata:AutoIncrement="true" type="xs:long" />
+                <xs:element name="RespondentId" type="xs:long" />
+                <xs:element name="SensorModelId" type="xs:long" />
+                <xs:element name="StudyId" type="xs:long" />
+                <xs:element name="RootBlockId" type="xs:long" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="SensorModel" msdata:CaseSensitive="False">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Id" type="xs:string" minOccurs="0" />
+                <xs:element name="Model" type="xs:string" minOccurs="0" />
+                <xs:element name="SampleRate" type="xs:string" minOccurs="0" />
+                <xs:element name="SerialNumber" type="xs:string" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="GazeCalibrationData">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Id" type="xs:long" minOccurs="0" />
+                <xs:element name="RunId" type="xs:long" minOccurs="0" />
+                <xs:element name="CalibrationData" type="xs:string" minOccurs="0" />
+                <xs:element name="CalibrationResult" type="xs:string" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="TextImage">
+            <xs:complexType>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="Marker">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Id" type="xs:long" minOccurs="0" />
+                <xs:element name="Name" type="xs:string" minOccurs="0" />
+                <xs:element name="Description" type="xs:string" minOccurs="0" />
+                <xs:element name="Type" type="xs:string" minOccurs="0" />
+                <xs:element name="StudyId" type="xs:long" minOccurs="0" />
+                <xs:element name="KeyStroke" type="xs:string" minOccurs="0" />
+                <xs:element name="StudySegmentationId" type="xs:long" minOccurs="0" />
+                <xs:element name="Color" type="xs:string" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="AnnotationDefinition">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Id" type="xs:long" minOccurs="0" />
+                <xs:element name="StudyId" type="xs:long" minOccurs="0" />
+                <xs:element name="Name" type="xs:string" minOccurs="0" />
+                <xs:element name="DisplayColor" type="xs:string" minOccurs="0" />
+                <xs:element name="HotKey" type="xs:int" minOccurs="0" />
+                <xs:element name="AnnotationType" type="xs:int" minOccurs="0" />
+                <xs:element name="IsAutomated" type="xs:long" minOccurs="0" />
+                <xs:element name="AutomationRule" type="xs:string" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="AnnotationFragment">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Id" type="xs:long" minOccurs="0" />
+                <xs:element name="AnnotationId" type="xs:long" minOccurs="0" />
+                <xs:element name="StimuliId" type="xs:long" minOccurs="0" />
+                <xs:element name="RespondentId" type="xs:long" minOccurs="0" />
+                <xs:element name="AnnotationText" type="xs:string" minOccurs="0" />
+                <xs:element name="RangeStart" type="xs:double" minOccurs="0" />
+                <xs:element name="RangeEnd" type="xs:double" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="CreditManagement">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Id" type="xs:long" minOccurs="0" />
+                <xs:element name="StudyId" type="xs:long" minOccurs="0" />
+                <xs:element name="CreditsRegistered" type="xs:base64Binary" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:complexType>
+      <xs:unique name="Constraint1">
+        <xs:selector xpath=".//Study" />
+        <xs:field xpath="Name" />
+      </xs:unique>
+      <xs:unique name="Constraint2">
+        <xs:selector xpath=".//Study" />
+        <xs:field xpath="UniqueStudyIdentifier" />
+      </xs:unique>
+      <xs:unique name="Constraint3" msdata:PrimaryKey="true">
+        <xs:selector xpath=".//Study" />
+        <xs:field xpath="Id" />
+      </xs:unique>
+      <xs:unique name="Study_BGVariables_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+        <xs:selector xpath=".//Study_BGVariables" />
+        <xs:field xpath="Id" />
+      </xs:unique>
+      <xs:unique name="TestEnvSetup_Constraint1" msdata:ConstraintName="Constraint1">
+        <xs:selector xpath=".//TestEnvSetup" />
+        <xs:field xpath="StudyId" />
+      </xs:unique>
+      <xs:unique name="TestEnvSetup_Constraint2" msdata:ConstraintName="Constraint2" msdata:PrimaryKey="true">
+        <xs:selector xpath=".//TestEnvSetup" />
+        <xs:field xpath="Id" />
+      </xs:unique>
+      <xs:unique name="StudySensors_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+        <xs:selector xpath=".//StudySensors" />
+        <xs:field xpath="Id" />
+      </xs:unique>
+      <xs:unique name="Stimuli_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+        <xs:selector xpath=".//Stimuli" />
+        <xs:field xpath="Id" />
+      </xs:unique>
+      <xs:unique name="MovingAOI_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+        <xs:selector xpath=".//MovingAOI" />
+        <xs:field xpath="Id" />
+      </xs:unique>
+      <xs:unique name="Stimuli_BGVariables_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+        <xs:selector xpath=".//Stimuli_BGVariables" />
+        <xs:field xpath="Id" />
+      </xs:unique>
+      <xs:unique name="StimuliBlock_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+        <xs:selector xpath=".//StimuliBlock" />
+        <xs:field xpath="Id" />
+      </xs:unique>
+      <xs:unique name="StimuliBlockItem_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+        <xs:selector xpath=".//StimuliBlockItem" />
+        <xs:field xpath="ParentBlockId" />
+        <xs:field xpath="BlockOrder" />
+      </xs:unique>
+      <xs:unique name="Respondent_BGVariables_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+        <xs:selector xpath=".//Respondent_BGVariables" />
+        <xs:field xpath="Id" />
+      </xs:unique>
+      <xs:unique name="SceneFragment_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+        <xs:selector xpath=".//SceneFragment" />
+        <xs:field xpath="Id" />
+      </xs:unique>
+      <xs:unique name="FeatureRun_Constraint1" msdata:ConstraintName="Constraint1">
+        <xs:selector xpath=".//FeatureRun" />
+        <xs:field xpath="RespondentId" />
+      </xs:unique>
+      <xs:unique name="FeatureRun_Constraint2" msdata:ConstraintName="Constraint2" msdata:PrimaryKey="true">
+        <xs:selector xpath=".//FeatureRun" />
+        <xs:field xpath="Id" />
+      </xs:unique>
+      <xs:unique name="RawDataRun_Constraint1" msdata:ConstraintName="Constraint1">
+        <xs:selector xpath=".//RawDataRun" />
+        <xs:field xpath="RespondentId" />
+      </xs:unique>
+      <xs:unique name="RawDataRun_Constraint2" msdata:ConstraintName="Constraint2" msdata:PrimaryKey="true">
+        <xs:selector xpath=".//RawDataRun" />
+        <xs:field xpath="Id" />
+      </xs:unique>
+    </xs:element>
+  </xs:schema>
+  <Study>
+    <Id>1000</Id>
+    <Name>scaffolding</Name>
+    <Description />
+    <AutoRespondents>1</AutoRespondents>
+    <CreatedDate>2026-04-21T11:13:36.5611565+02:00</CreatedDate>
+    <IsStimulusExposureTimeFixed>0</IsStimulusExposureTimeFixed>
+    <StimuliOrder>RANDOM</StimuliOrder>
+    <DefaultStimuliExposureTime>6</DefaultStimuliExposureTime>
+    <UniqueStudyIdentifier>91f04c6b-9d8d-4f5c-977b-17747ac87659</UniqueStudyIdentifier>
+    <StudyPath>Data\scaffolding</StudyPath>
+    <StudyType>Normal</StudyType>
+    <TriggerEnum>Timer</TriggerEnum>
+    <GazeCheckSequence />
+    <OutlierThreshold>1</OutlierThreshold>
+    <CalibrationMode>ADVANCED</CalibrationMode>
+    <Algorithms>{"Algorithms":[{"PossibleAlgorithms":{"Duration Dispersion":{"Parameters":[],"Name":"Duration Dispersion","WriteToFile":false},"I-VT Fixation":{"Parameters":[{"Name":"Screen Resolution Width","Value":0.0,"DefaultValue":null,"DoubleValue":0.0,"Units":null,"ShowInUI":false},{"Name":"Screen Resolution Height","Value":0.0,"DefaultValue":null,"DoubleValue":0.0,"Units":null,"ShowInUI":false},{"Name":"Display Screen Size","Value":0,"DefaultValue":null,"DoubleValue":0.0,"Units":null,"ShowInUI":false},{"Name":"Window Length","Value":20,"DefaultValue":20,"DoubleValue":0.0,"Units":"ms","ShowInUI":true},{"Name":"Velocity Threshold","Value":30.0,"DefaultValue":30.0,"DoubleValue":30.0,"Units":"degrees/second","ShowInUI":true}],"Name":"I-VT Fixation","WriteToFile":true},"HMM Fixation":{"Parameters":[{"Name":"Screen Resolution Width","Value":0.0,"DefaultValue":null,"DoubleValue":0.0,"Units":null,"ShowInUI":false},{"Name":"Screen Resolution Height","Value":0.0,"DefaultValue":null,"DoubleValue":0.0,"Units":null,"ShowInUI":false},{"Name":"Display Screen Size","Value":0,"DefaultValue":null,"DoubleValue":0.0,"Units":null,"ShowInUI":false},{"Name":"Window Length","Value":20,"DefaultValue":20,"DoubleValue":0.0,"Units":"ms","ShowInUI":true}],"Name":"HMM Fixation","WriteToFile":true}},"FixationAlgorithm":{"Parameters":[{"Name":"Screen Resolution Width","Value":0.0,"DefaultValue":null,"DoubleValue":0.0,"Units":null,"ShowInUI":false},{"Name":"Screen Resolution Height","Value":0.0,"DefaultValue":null,"DoubleValue":0.0,"Units":null,"ShowInUI":false},{"Name":"Display Screen Size","Value":0,"DefaultValue":null,"DoubleValue":0.0,"Units":null,"ShowInUI":false},{"Name":"Window Length","Value":20,"DefaultValue":20,"DoubleValue":0.0,"Units":"ms","ShowInUI":true},{"Name":"Velocity Threshold","Value":30.0,"DefaultValue":30.0,"DoubleValue":30.0,"Units":"degrees/second","ShowInUI":true}],"Name":"I-VT Fixation","WriteToFile":true},"GapFillinSelected":true,"GapFillinAlgorithm":{"Parameters":[{"Name":"Max Gap Length","Value":75.0,"DefaultValue":75.0,"DoubleValue":75.0,"Units":"ms","ShowInUI":true},{"Name":"Fixed Value","Value":-1.0,"DefaultValue":null,"DoubleValue":-1.0,"Units":"","ShowInUI":false}],"Name":null,"WriteToFile":false},"NoiseReductionSelection":0,"NoiseReductionAlgorithm":{"Parameters":[{"Name":"Window Size","Value":3,"DefaultValue":3,"DoubleValue":0.0,"Units":"samples","ShowInUI":true},{"Name":"Filter Type","Value":1,"DefaultValue":null,"DoubleValue":0.0,"Units":"","ShowInUI":false}],"Name":"Sliding Window Filter","WriteToFile":true},"MergeFixationsSelected":true,"MergeFixations":{"Parameters":[{"Name":"Max Time Between Fixations","Value":75,"DefaultValue":75,"DoubleValue":0.0,"Units":"ms","ShowInUI":true},{"Name":"Max Angle Between Fixations","Value":0.5,"DefaultValue":0.5,"DoubleValue":0.5,"Units":"degrees","ShowInUI":true}],"Name":"Merge Adjacent Fixations","WriteToFile":true},"DiscardShortFixationsSelected":true,"DiscardShortFixations":{"Parameters":[{"Name":"Minimum Fixation Duration","Value":60,"DefaultValue":60,"DoubleValue":0.0,"Units":"ms","ShowInUI":true}],"Name":"Discard Short Fixations","WriteToFile":true},"AlgorithmType":0}]}</Algorithms>
+    <AreStimuliBlocksUsed>1</AreStimuliBlocksUsed>
+    <AutoSelectStimuliBlock>0</AutoSelectStimuliBlock>
+    <IsIncrementalExportEnabled>0</IsIncrementalExportEnabled>
+    <IsLocked>0</IsLocked>
+    <IsDesktopStudy>1</IsDesktopStudy>
+    <IgnoreRespondentInformedConsent>1</IgnoreRespondentInformedConsent>
+    <StudySetupType>SCREEN_BASED</StudySetupType>
+  </Study>
+  <TestEnvSetup>
+    <Id>1000</Id>
+    <EyeTrackerModel>TOBII_PRO_FUSION</EyeTrackerModel>
+    <ScreenResolution>1920,1080</ScreenResolution>
+    <Distance>65</Distance>
+    <DistanceUnit>cm</DistanceUnit>
+    <ScreenSize>&lt;Size&gt;&lt;Width value="52.7" /&gt;&lt;Height value="29.6" /&gt;&lt;/Size&gt;</ScreenSize>
+    <StudyId>1000</StudyId>
+  </TestEnvSetup>
+  <StudySensors>
+    <Id>1</Id>
+    <SensorType>EyeTracker</SensorType>
+    <SensorModel>Tobii Pro Fusion</SensorModel>
+    <StudyId>1000</StudyId>
+    <SensorDetails />
+  </StudySensors>
+  <StudySensors>
+    <Id>2</Id>
+    <SensorType>Camera</SensorType>
+    <SensorModel>iMotions.CameraDevice</SensorModel>
+    <StudyId>1000</StudyId>
+    <SensorDetails />
+  </StudySensors>
+  <StudySensors>
+    <Id>3</Id>
+    <SensorType>Affectiva</SensorType>
+    <SensorModel>iMotions.AffectivaCameraDevice</SensorModel>
+    <StudyId>1000</StudyId>
+    <SensorDetails />
+  </StudySensors>
+  <StudySensors>
+    <Id>4</Id>
+    <SensorType>EventAPI</SensorType>
+    <SensorModel>iMotions.ExternDevice</SensorModel>
+    <StudyId>1000</StudyId>
+    <SensorDetails />
+  </StudySensors>
+  <StudySensors>
+    <Id>5</Id>
+    <SensorType>Lsl</SensorType>
+    <SensorModel>iMotions.LslSensor</SensorModel>
+    <StudyId>1000</StudyId>
+    <SensorDetails />
+  </StudySensors>
+  <Stimuli>
+    <Id>1004</Id>
+    <StimuliPath>https://eduagentsystem.streamlit.app</StimuliPath>
+    <StimuliDisplayName>Website 5</StimuliDisplayName>
+    <Description />
+    <StudyId>1000</StudyId>
+    <StimuliContext>Zzc0Wmd5NVRVSDQ5Y1FzZ0I4SkMxdz09</StimuliContext>
+    <StimuliExposureTime>180</StimuliExposureTime>
+    <StimuliOrder>RANDOM</StimuliOrder>
+    <SlideShowPosition>-1</SlideShowPosition>
+    <AutoHighlightTemplates />
+    <DefaultHighlightTemplate />
+    <StimuliType>WebSiteRecording</StimuliType>
+    <AdditionalData>&lt;AdditionalData&gt;&lt;TrackMouse&gt;True&lt;/TrackMouse&gt;&lt;UseIframe&gt;OpenNewTab&lt;/UseIframe&gt;&lt;IncludeUrlParams&gt;False&lt;/IncludeUrlParams&gt;&lt;OpenInKiosk&gt;False&lt;/OpenInKiosk&gt;&lt;/AdditionalData&gt;</AdditionalData>
+    <TriggerEnum>RespondentDevice</TriggerEnum>
+    <ResultTypes>6</ResultTypes>
+    <RecWebCam>1</RecWebCam>
+    <WebProfileOption>0</WebProfileOption>
+  </Stimuli>
+  <StimuliBlock>
+    <Id>1000</Id>
+    <DisplayName>Study flow 1</DisplayName>
+    <StudyId>1000</StudyId>
+    <BlockType>1</BlockType>
+  </StimuliBlock>
+  <StimuliBlockItem>
+    <ParentBlockId>1000</ParentBlockId>
+    <BlockOrder>0</BlockOrder>
+    <IsFixed>1</IsFixed>
+    <StimuliId>1004</StimuliId>
+  </StimuliBlockItem>
+  <FeatureRun>
+    <Id>1001</Id>
+    <RespondentId>1001</RespondentId>
+    <EngineConfiguration>ERV2.0. 21.4.2026 - 13:08:49.6511301</EngineConfiguration>
+    <StudyId>1000</StudyId>
+  </FeatureRun>
+  <RawDataRun>
+    <Id>1001</Id>
+    <RespondentId>1001</RespondentId>
+    <SensorModelId>1000</SensorModelId>
+    <StudyId>1000</StudyId>
+    <RootBlockId>1000</RootBlockId>
+  </RawDataRun>
+  <SensorModel>
+    <Id>1000</Id>
+    <Model>TOBII_PRO_FUSION</Model>
+    <SampleRate>120</SampleRate>
+    <SerialNumber>TPFC1-100200014821;TPFC1-100200014821</SerialNumber>
+  </SensorModel>
+  <GazeCalibrationData>
+    <Id>1001</Id>
+    <RunId>1001</RunId>
+    <CalibrationData>&lt;GazeCalibrationData xmlversion="1.0" DataPoints="251"&gt;&lt;DataPoint TruePoint="0.099999994;0.09999997"&gt;&lt;LeftEye Mapping="0.10256789;0.11461768" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.1078313;0.12241965" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.09999997"&gt;&lt;LeftEye Mapping="0.10405142;0.1123368" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.10313617;0.11891217" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.09999997"&gt;&lt;LeftEye Mapping="0.10440035;0.11187735" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.09623036;0.08064092" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.09999997"&gt;&lt;LeftEye Mapping="0.103510655;0.11319367" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.09245649;0.084976085" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.09999997"&gt;&lt;LeftEye Mapping="0.10310013;0.1153996" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.09469783;0.0896219" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.09999997"&gt;&lt;LeftEye Mapping="0.10261066;0.11406884" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.0957661;0.08723559" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.09999997"&gt;&lt;LeftEye Mapping="0.103817776;0.114948444" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.0958321;0.0859246" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.09999997"&gt;&lt;LeftEye Mapping="0.10290165;0.114854455" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.09579937;0.088806674" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.09999997"&gt;&lt;LeftEye Mapping="0.105511345;0.11075495" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.09540208;0.0875406" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.09999997"&gt;&lt;LeftEye Mapping="0.10082764;0.111198284" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.10272312;0.12602584" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.09999997"&gt;&lt;LeftEye Mapping="0.10710832;0.10915096" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.09560228;0.08282711" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.09999997"&gt;&lt;LeftEye Mapping="0.110688806;0.112355985" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.10437957;0.11380948" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.09999997"&gt;&lt;LeftEye Mapping="0.10437682;0.10900347" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.09692609;0.09247449" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.09999997"&gt;&lt;LeftEye Mapping="0.10575341;0.11061278" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.109155774;0.11024641" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.09999997"&gt;&lt;LeftEye Mapping="0.10664648;0.111336954" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.103170216;0.11236838" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.09999997"&gt;&lt;LeftEye Mapping="0.10514198;0.11104361" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.10291449;0.10976745" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.09999997"&gt;&lt;LeftEye Mapping="0.106354795;0.10854129" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.09910542;0.09649457" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.09999997"&gt;&lt;LeftEye Mapping="0.10563701;0.10899478" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.09980779;0.09383004" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.09999997"&gt;&lt;LeftEye Mapping="0.10287092;0.1101668" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.10107174;0.09923992" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.09999997"&gt;&lt;LeftEye Mapping="0.107399575;0.11027374" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.10148706;0.096828766" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.09999997"&gt;&lt;LeftEye Mapping="0.10680826;0.112088844" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.10208943;0.10129017" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.09999997"&gt;&lt;LeftEye Mapping="0.10708819;0.111863114" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.09978795;0.09826681" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.09999997"&gt;&lt;LeftEye Mapping="0.10223017;0.1062025" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.10290979;0.099900514" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.09999997"&gt;&lt;LeftEye Mapping="0.10844434;0.115046315" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.10256386;0.10055218" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.09999997"&gt;&lt;LeftEye Mapping="0.105043076;0.11102011" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.09962602;0.09858813" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.09999997"&gt;&lt;LeftEye Mapping="0.55838007;0.16525789" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.09852988;0.10016051" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.09999997"&gt;&lt;LeftEye Mapping="0.5589439;0.16653723" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.097993195;0.099439636" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.09999997"&gt;&lt;LeftEye Mapping="0.55956656;0.16781546" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.1033519;0.096900046" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.09999997"&gt;&lt;LeftEye Mapping="0.5601109;0.17015971" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.101968564;0.09375436" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.09999997"&gt;&lt;LeftEye Mapping="0.5598838;0.17017362" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.09928673;0.098302074" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.09999997"&gt;&lt;LeftEye Mapping="0.55563194;0.171938" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.10251679;0.097410806" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.09999997"&gt;&lt;LeftEye Mapping="0.56055766;0.16539174" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.10014155;0.09972424" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.09999997"&gt;&lt;LeftEye Mapping="0.5555651;0.17103024" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.10218508;0.09844798" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.09999997"&gt;&lt;LeftEye Mapping="0.5550058;0.1733081" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.10447904;0.09710639" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.09999997"&gt;&lt;LeftEye Mapping="0.56064147;0.16760524" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.10229158;0.097710736" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.09999997"&gt;&lt;LeftEye Mapping="0.10654962;0.113367625" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.10352797;0.101142995" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.09999997"&gt;&lt;LeftEye Mapping="0.105431035;0.116824456" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.10675236;0.10394587" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.09999997"&gt;&lt;LeftEye Mapping="0.1086703;0.11196651" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.11198015;0.101212285" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.09999997"&gt;&lt;LeftEye Mapping="0.10979417;0.11070989" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.111317866;0.10026355" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.09999997"&gt;&lt;LeftEye Mapping="0.10684613;0.11339708" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.114975214;0.09726862" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.09999997"&gt;&lt;LeftEye Mapping="0.50111175;0.11317052" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.50146943;0.11460233" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.09999997"&gt;&lt;LeftEye Mapping="0.5017121;0.109371856" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.49981818;0.11235548" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.09999997"&gt;&lt;LeftEye Mapping="0.50081867;0.11160459" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.5012604;0.113865755" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.09999997"&gt;&lt;LeftEye Mapping="0.49956045;0.11282944" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.50124377;0.11346048" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.09999997"&gt;&lt;LeftEye Mapping="0.5027166;0.10895403" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.5001836;0.11205574" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.09999997"&gt;&lt;LeftEye Mapping="0.4988829;0.11175819" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.5026577;0.11452252" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.09999997"&gt;&lt;LeftEye Mapping="0.49541533;0.11453972" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.49855545;0.11031078" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.09999997"&gt;&lt;LeftEye Mapping="0.49447307;0.080145724" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.4906623;0.19743688" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.09999997"&gt;&lt;LeftEye Mapping="0.48973536;0.10230332" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.45976058;0.18722539" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.09999997"&gt;&lt;LeftEye Mapping="0.4971991;0.09133686" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.5092786;0.08172228" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.09999997"&gt;&lt;LeftEye Mapping="0.5029382;0.0936171" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.5025367;0.09054724" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.09999997"&gt;&lt;LeftEye Mapping="0.49931568;0.09222699" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.5044376;0.09739925" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.09999997"&gt;&lt;LeftEye Mapping="0.50016207;0.09213788" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.50375205;0.09060986" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.09999997"&gt;&lt;LeftEye Mapping="0.5005557;0.09068725" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.5019885;0.08750084" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.09999997"&gt;&lt;LeftEye Mapping="0.5004504;0.09362669" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.50408375;0.08975628" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.09999997"&gt;&lt;LeftEye Mapping="0.50223523;0.09258199" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.50373566;0.0915043" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.09999997"&gt;&lt;LeftEye Mapping="0.4763621;0.2550481" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0;0" Quality="1" Validity="4" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.09999997"&gt;&lt;LeftEye Mapping="0.5019336;0.09234197" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.5020549;0.09027346" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.09999997"&gt;&lt;LeftEye Mapping="0.5062161;0.22761467" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0;0" Quality="1" Validity="4" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.09999997"&gt;&lt;LeftEye Mapping="0.50294256;0.09011824" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.50528836;0.08881238" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.09999997"&gt;&lt;LeftEye Mapping="0.5018803;0.09386005" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.50180924;0.08958155" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.09999997"&gt;&lt;LeftEye Mapping="0.5020472;0.11275537" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.49999538;0.11387299" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.09999997"&gt;&lt;LeftEye Mapping="0.89414656;0.10545796" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.8938062;0.109841704" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.09999997"&gt;&lt;LeftEye Mapping="0.8901838;0.10622396" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.8955217;0.10660006" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.09999997"&gt;&lt;LeftEye Mapping="0.89619803;0.10531726" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.89501745;0.10418149" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.09999997"&gt;&lt;LeftEye Mapping="0.8911147;0.11138889" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.8945161;0.10704895" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.09999997"&gt;&lt;LeftEye Mapping="0.8926568;0.106404215" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.8929852;0.1032503" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.09999997"&gt;&lt;LeftEye Mapping="0.89153165;0.10529489" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.8942454;0.10534419" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.09999997"&gt;&lt;LeftEye Mapping="0.8935363;0.1012679" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.8965327;0.107338406" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.09999997"&gt;&lt;LeftEye Mapping="0.8936578;0.09035188" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.8960612;0.10363102" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.09999997"&gt;&lt;LeftEye Mapping="0.8980225;0.1053573" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.89481515;0.10778035" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.09999997"&gt;&lt;LeftEye Mapping="0.902329;0.10269175" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.89457566;0.10755366" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.09999997"&gt;&lt;LeftEye Mapping="0.8961291;0.102572255" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.894544;0.10711065" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.09999997"&gt;&lt;LeftEye Mapping="0.896554;0.1007436" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.8923853;0.10324957" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.09999997"&gt;&lt;LeftEye Mapping="0.8937259;0.10595528" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.89292103;0.106321625" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.09999997"&gt;&lt;LeftEye Mapping="0.89030355;0.10904927" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.8963026;0.10895355" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.09999997"&gt;&lt;LeftEye Mapping="0.8922381;0.10872952" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.9022665;0.10819408" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.09999997"&gt;&lt;LeftEye Mapping="0.89398;0.110439554" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.8951998;0.11057931" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.09999997"&gt;&lt;LeftEye Mapping="0.89853895;0.103069976" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.9013887;0.10737563" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.09999997"&gt;&lt;LeftEye Mapping="0.894694;0.109121814" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.89817685;0.10644516" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.09999997"&gt;&lt;LeftEye Mapping="0.89202875;0.11015452" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.8994814;0.11024402" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.09999997"&gt;&lt;LeftEye Mapping="0.8957201;0.11293298" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.89883447;0.10646892" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.09999997"&gt;&lt;LeftEye Mapping="0.8931162;0.10717883" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.8992065;0.108116716" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.09999997"&gt;&lt;LeftEye Mapping="0.8928248;0.10598319" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.89851826;0.10731197" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.09999997"&gt;&lt;LeftEye Mapping="0.89299786;0.106647484" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.90012115;0.10617628" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.09999997"&gt;&lt;LeftEye Mapping="0.8918458;0.10652596" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.9001801;0.110007845" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.09999997"&gt;&lt;LeftEye Mapping="0.89328355;0.106412664" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.8968234;0.10868489" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.09999997"&gt;&lt;LeftEye Mapping="0.89695275;0.10918865" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.8981005;0.11023531" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.09999997"&gt;&lt;LeftEye Mapping="0.8987231;0.109634645" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.9028208;0.1110857" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.09999997"&gt;&lt;LeftEye Mapping="0.90092176;0.1099479" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.90438896;0.11795314" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.09999997"&gt;&lt;LeftEye Mapping="0.89464164;0.09783166" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.8965041;0.109359115" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.09999997"&gt;&lt;LeftEye Mapping="0.89259213;0.095235616" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.89300543;0.10570595" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.09999997"&gt;&lt;LeftEye Mapping="0.8931651;0.09052194" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.8971688;0.10729528" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.09999997"&gt;&lt;LeftEye Mapping="0.8954507;0.09495529" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.8943896;0.10318447" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.09999997"&gt;&lt;LeftEye Mapping="0.8905743;0.09516821" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.89506567;0.10643479" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.09999997"&gt;&lt;LeftEye Mapping="0.894864;0.09543328" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.8922505;0.10410783" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.09999997"&gt;&lt;LeftEye Mapping="0.8937313;0.09639714" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.8993454;0.1084578" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.09999997"&gt;&lt;LeftEye Mapping="0.8950147;0.09884271" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.896067;0.10554665" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.09999997"&gt;&lt;LeftEye Mapping="0.8944211;0.09279979" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.8964008;0.10821598" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.09999997"&gt;&lt;LeftEye Mapping="0.8969221;0.10050943" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.8955709;0.10505895" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.09999997"&gt;&lt;LeftEye Mapping="0.89069486;0.088397995" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.9007554;0.10577539" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.09999997"&gt;&lt;LeftEye Mapping="0.8928402;0.106409796" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.88886565;0.10343853" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.5"&gt;&lt;LeftEye Mapping="0.09942374;0.48387635" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.09982862;0.49039003" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.5"&gt;&lt;LeftEye Mapping="0.09526004;0.49514067" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.097359374;0.50258523" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.5"&gt;&lt;LeftEye Mapping="0.092672914;0.49737135" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.0957211;0.5092735" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.5"&gt;&lt;LeftEye Mapping="0.09520036;0.49854907" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.0988722;0.50644755" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.5"&gt;&lt;LeftEye Mapping="0.09278071;0.5004283" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.10067245;0.5029223" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.5"&gt;&lt;LeftEye Mapping="0.10017396;0.48169202" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.10002438;0.4941501" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.5"&gt;&lt;LeftEye Mapping="0.10064461;0.48038164" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.09976892;0.49348518" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.5"&gt;&lt;LeftEye Mapping="0.10305058;0.481438" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.10114291;0.4969716" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.5"&gt;&lt;LeftEye Mapping="0.10001455;0.48822215" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.10306541;0.4931998" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.5"&gt;&lt;LeftEye Mapping="0.100549094;0.4888863" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.100664355;0.4923875" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.5"&gt;&lt;LeftEye Mapping="0.09636357;0.49120477" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.10356874;0.48754755" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.5"&gt;&lt;LeftEye Mapping="0.09992749;0.4954024" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.09955091;0.49185908" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.5"&gt;&lt;LeftEye Mapping="0.09490894;0.49931875" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.09847981;0.5037569" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.5"&gt;&lt;LeftEye Mapping="0.09950015;0.49732956" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.09867503;0.49956596" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.5"&gt;&lt;LeftEye Mapping="0.09501511;0.49647567" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.09719384;0.5000645" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.5"&gt;&lt;LeftEye Mapping="0.09610782;0.49659" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.0973384;0.5026448" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.5"&gt;&lt;LeftEye Mapping="0.095377676;0.4916842" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.099791735;0.49893957" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.5"&gt;&lt;LeftEye Mapping="0.094867304;0.49051276" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.100438304;0.495462" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.5"&gt;&lt;LeftEye Mapping="0.0929514;0.4941515" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.10135275;0.49188343" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.5"&gt;&lt;LeftEye Mapping="0.09752372;0.48957592" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.099862784;0.4997747" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.5"&gt;&lt;LeftEye Mapping="0.095676355;0.48900253" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.09871834;0.49737608" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.5"&gt;&lt;LeftEye Mapping="0.10450284;0.49183017" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.09903629;0.4967661" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.5"&gt;&lt;LeftEye Mapping="0.09733629;0.49378553" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.0994881;0.49593398" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.5"&gt;&lt;LeftEye Mapping="0.095749505;0.4889753" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.100300394;0.5000843" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.5"&gt;&lt;LeftEye Mapping="0.096193485;0.48586097" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.10101426;0.4922371" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.5"&gt;&lt;LeftEye Mapping="0.09887384;0.4929835" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.10006903;0.4956462" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.5"&gt;&lt;LeftEye Mapping="0.09385211;0.49067277" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.09873485;0.49351326" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.5"&gt;&lt;LeftEye Mapping="0.094870545;0.49454767" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.09820961;0.49541682" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.5"&gt;&lt;LeftEye Mapping="0.098401636;0.4987756" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.09699974;0.49904495" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.5"&gt;&lt;LeftEye Mapping="0.09692328;0.49123996" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.097343534;0.4979894" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.5"&gt;&lt;LeftEye Mapping="0.098345496;0.48841098" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.097786374;0.4955874" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.5"&gt;&lt;LeftEye Mapping="0.09331552;0.494872" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.09395827;0.5014482" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.5"&gt;&lt;LeftEye Mapping="0.09401892;0.49690682" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.099564545;0.5007791" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.5"&gt;&lt;LeftEye Mapping="0.49899969;0.4958356" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.50133455;0.50477904" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.5"&gt;&lt;LeftEye Mapping="0.502894;0.4949359" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.5003425;0.50097215" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.5"&gt;&lt;LeftEye Mapping="0.5015398;0.49531856" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.5018061;0.49979913" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.5"&gt;&lt;LeftEye Mapping="0.5011796;0.49460086" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.49961746;0.49754676" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.5"&gt;&lt;LeftEye Mapping="0.5019824;0.49343342" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.50057346;0.50067616" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.5"&gt;&lt;LeftEye Mapping="0.50423944;0.49644092" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.49959767;0.50124013" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.5"&gt;&lt;LeftEye Mapping="0.4991297;0.49573368" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.5033942;0.49638084" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.5"&gt;&lt;LeftEye Mapping="0.49766284;0.49590057" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.5046324;0.4948223" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.5"&gt;&lt;LeftEye Mapping="0.49765688;0.49602014" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.50459003;0.495863" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.5"&gt;&lt;LeftEye Mapping="0.49731776;0.4919225" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.5037445;0.500161" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.5"&gt;&lt;LeftEye Mapping="0.499781;0.49648178" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.5006063;0.5032562" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.5"&gt;&lt;LeftEye Mapping="0.5016074;0.49615687" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.50189203;0.4998693" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.5"&gt;&lt;LeftEye Mapping="0.50222653;0.49715847" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.50061244;0.5010898" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.5"&gt;&lt;LeftEye Mapping="0.5021422;0.49329588" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.50303936;0.5008441" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.5"&gt;&lt;LeftEye Mapping="0.50217867;0.49198252" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.5019151;0.4978331" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.5"&gt;&lt;LeftEye Mapping="0.50115514;0.49407524" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.4999265;0.5011573" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.5"&gt;&lt;LeftEye Mapping="0.5019679;0.50054735" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.5006483;0.5019518" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.5"&gt;&lt;LeftEye Mapping="0.50022775;0.49514228" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.501178;0.5011513" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.5"&gt;&lt;LeftEye Mapping="0.502399;0.49668267" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.5023112;0.5012503" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.5"&gt;&lt;LeftEye Mapping="0.5012822;0.4983369" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.5018076;0.49932995" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.5"&gt;&lt;LeftEye Mapping="0.89913934;0.5028476" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.90348965;0.49942645" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.5"&gt;&lt;LeftEye Mapping="0.9058452;0.49100354" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.8984871;0.4973126" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.5"&gt;&lt;LeftEye Mapping="0.90318906;0.49482313" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.9018274;0.50067466" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.5"&gt;&lt;LeftEye Mapping="0.9070456;0.49524534" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.90007234;0.49526516" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.5"&gt;&lt;LeftEye Mapping="0.902843;0.4946072" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.89998215;0.5004131" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.5"&gt;&lt;LeftEye Mapping="0.90435666;0.49182335" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.9012353;0.48976377" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.5"&gt;&lt;LeftEye Mapping="0.90281916;0.49276364" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.8993479;0.4927463" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.5"&gt;&lt;LeftEye Mapping="0.90331644;0.4965145" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.8993715;0.4952988" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.5"&gt;&lt;LeftEye Mapping="0.9052556;0.4982929" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.89880407;0.49405652" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.5"&gt;&lt;LeftEye Mapping="0.90744245;0.48998085" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.90107787;0.49098632" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.5"&gt;&lt;LeftEye Mapping="0.90133;0.4903163" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.8976194;0.49212882" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.5"&gt;&lt;LeftEye Mapping="0.9018675;0.4917896" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.90363854;0.49516493" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.5"&gt;&lt;LeftEye Mapping="0.8982693;0.49063838" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.90027356;0.5014371" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.5"&gt;&lt;LeftEye Mapping="0.8990902;0.49850678" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.89753145;0.49952054" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.5"&gt;&lt;LeftEye Mapping="0.8996099;0.49018115" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.89791936;0.49968556" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.5"&gt;&lt;LeftEye Mapping="0.8959318;0.49523002" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.89729863;0.49647146" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.5"&gt;&lt;LeftEye Mapping="0.9032664;0.49207917" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.8987731;0.49276412" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.5"&gt;&lt;LeftEye Mapping="0.8967055;0.4925719" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.89898056;0.49833956" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.5"&gt;&lt;LeftEye Mapping="0.8988531;0.4985177" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.8989614;0.4951091" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.5"&gt;&lt;LeftEye Mapping="0.90328;0.49088576" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.9011475;0.49396488" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.90000004"&gt;&lt;LeftEye Mapping="0.09925734;0.9092144" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.09579276;0.9070541" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.90000004"&gt;&lt;LeftEye Mapping="0.09880929;0.9129628" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.094992496;0.9137464" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.90000004"&gt;&lt;LeftEye Mapping="0.10020417;0.9131324" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.09725119;0.9120622" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.90000004"&gt;&lt;LeftEye Mapping="0.098772675;0.90648234" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.10316926;0.9052541" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.90000004"&gt;&lt;LeftEye Mapping="0.10161105;0.91056126" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.09378345;0.9102863" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.90000004"&gt;&lt;LeftEye Mapping="0.101784304;0.91202164" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.09367602;0.9069154" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.90000004"&gt;&lt;LeftEye Mapping="0.0945994;0.90462685" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.09996135;0.90285635" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.90000004"&gt;&lt;LeftEye Mapping="0.09693559;0.90494186" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.0981162;0.8995793" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.90000004"&gt;&lt;LeftEye Mapping="0.09793416;0.9077191" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.09791903;0.9045931" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.90000004"&gt;&lt;LeftEye Mapping="0.10009457;0.90557414" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.09814294;0.90468967" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.90000004"&gt;&lt;LeftEye Mapping="0.09994343;0.9045639" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.094917096;0.9038645" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.90000004"&gt;&lt;LeftEye Mapping="0.095004074;0.8963068" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.09646691;0.9049492" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.90000004"&gt;&lt;LeftEye Mapping="0.099302106;0.9054628" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.096010886;0.9030607" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.90000004"&gt;&lt;LeftEye Mapping="0.099643305;0.9039637" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.09670297;0.9056714" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.90000004"&gt;&lt;LeftEye Mapping="0.10099264;0.9126923" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.09330861;0.89942443" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.90000004"&gt;&lt;LeftEye Mapping="0.096656665;0.9030142" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.09360754;0.9012278" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.90000004"&gt;&lt;LeftEye Mapping="0.10016038;0.9066558" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.09785148;0.8918607" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.90000004"&gt;&lt;LeftEye Mapping="0.100534335;0.9100696" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.094554335;0.89792323" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.90000004"&gt;&lt;LeftEye Mapping="0.10011514;0.9051438" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.09365128;0.90908766" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.099999994;0.90000004"&gt;&lt;LeftEye Mapping="0.10191134;0.91674435" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.10027117;0.9076785" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.90000004"&gt;&lt;LeftEye Mapping="0.49483365;0.9023082" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.48819885;0.8901677" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.90000004"&gt;&lt;LeftEye Mapping="0.50419486;0.8982136" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0;0" Quality="1" Validity="4" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.90000004"&gt;&lt;LeftEye Mapping="0.5048972;0.899789" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0;0" Quality="1" Validity="4" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.90000004"&gt;&lt;LeftEye Mapping="0.5045279;0.9010195" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.50488144;0.8647561" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.90000004"&gt;&lt;LeftEye Mapping="0.49879894;0.8997122" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.5030017;0.906896" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.90000004"&gt;&lt;LeftEye Mapping="0.50217634;0.9056701" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.5005019;0.86126775" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.90000004"&gt;&lt;LeftEye Mapping="0.50182176;0.9045723" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.4978357;0.9002876" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.90000004"&gt;&lt;LeftEye Mapping="0.50305367;0.89786285" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.5026792;0.8815835" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.90000004"&gt;&lt;LeftEye Mapping="0.5017926;0.9040375" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.4952244;0.90756416" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.90000004"&gt;&lt;LeftEye Mapping="0.5062905;0.90318614" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.4965823;0.8823953" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.90000004"&gt;&lt;LeftEye Mapping="0.5067667;0.898383" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.496158;0.91800535" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.90000004"&gt;&lt;LeftEye Mapping="0.49942344;0.8965983" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.49921462;0.8993993" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.90000004"&gt;&lt;LeftEye Mapping="0.505109;0.9044373" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.4988951;0.9083373" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.90000004"&gt;&lt;LeftEye Mapping="0.5072414;0.8975117" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.49819633;0.9143648" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.90000004"&gt;&lt;LeftEye Mapping="0.5043137;0.90362877" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.49595398;0.9004356" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.90000004"&gt;&lt;LeftEye Mapping="0.5007321;0.8982147" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.48955774;0.91182166" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.90000004"&gt;&lt;LeftEye Mapping="0.50485235;0.9037443" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.49218753;0.9170416" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.90000004"&gt;&lt;LeftEye Mapping="0.5012025;0.90347797" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.5031468;0.8657519" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.90000004"&gt;&lt;LeftEye Mapping="0.50249016;0.90685827" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.49594292;0.9019557" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.90000004"&gt;&lt;LeftEye Mapping="0.5016328;0.904767" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.49309704;0.88473725" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.90000004"&gt;&lt;LeftEye Mapping="0.49945217;0.8996356" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.49374756;0.9192852" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.5;0.90000004"&gt;&lt;LeftEye Mapping="0.50579345;0.8989652" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.50074565;0.90062225" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.90000004"&gt;&lt;LeftEye Mapping="0.2602786;0.99016565" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.23024577;0.9944415" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.90000004"&gt;&lt;LeftEye Mapping="0.2614928;0.99123937" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.232021;0.9677016" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.90000004"&gt;&lt;LeftEye Mapping="0.26156002;0.9911591" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.22845046;0.9896438" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.90000004"&gt;&lt;LeftEye Mapping="0.32758737;1.0030131" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.3029612;0.96618265" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.90000004"&gt;&lt;LeftEye Mapping="0.33944616;1.0034769" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.3027949;0.9798259" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.90000004"&gt;&lt;LeftEye Mapping="0.33966336;1.0084753" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.30448943;0.9874622" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.90000004"&gt;&lt;LeftEye Mapping="0.33702555;1.0082647" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.2995495;0.9935077" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.90000004"&gt;&lt;LeftEye Mapping="0.33815506;1.0039599" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.29957345;0.97655034" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.90000004"&gt;&lt;LeftEye Mapping="0.34252882;1.0094024" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.31571868;0.95969796" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.90000004"&gt;&lt;LeftEye Mapping="0.26136655;0.993096" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.24199125;0.963008" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.90000004"&gt;&lt;LeftEye Mapping="0.2595579;0.99010825" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.23594809;0.9913917" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.90000004"&gt;&lt;LeftEye Mapping="0.2580398;0.9927061" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.24047215;0.960831" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.90000004"&gt;&lt;LeftEye Mapping="0.2649599;0.9651635" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.23967761;0.97075015" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.90000004"&gt;&lt;LeftEye Mapping="0.27062652;0.96541214" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.23209228;0.9872383" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.90000004"&gt;&lt;LeftEye Mapping="0.2701437;0.9640267" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.23324794;0.9876802" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.90000004"&gt;&lt;LeftEye Mapping="0.26702347;0.96473366" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.24205951;0.95408964" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.90000004"&gt;&lt;LeftEye Mapping="0.261878;0.96956855" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.23438577;1.0084428" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.90000004"&gt;&lt;LeftEye Mapping="0.25900272;0.96811104" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.25114703;0.9872646" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.90000004"&gt;&lt;LeftEye Mapping="0.32883638;0.9719946" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.33178756;0.94703555" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.90000004"&gt;&lt;LeftEye Mapping="0.9215545;0.8995024" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.79244727;1.0446193" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.90000004"&gt;&lt;LeftEye Mapping="0.32032052;1.0090377" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0;0" Quality="1" Validity="4" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.90000004"&gt;&lt;LeftEye Mapping="0.26638213;0.9581368" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0;0" Quality="1" Validity="4" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.90000004"&gt;&lt;LeftEye Mapping="0.5139174;0.9251235" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0;0" Quality="1" Validity="4" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.90000004"&gt;&lt;LeftEye Mapping="0.762578;0.9291536" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0;0" Quality="1" Validity="4" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.90000004"&gt;&lt;LeftEye Mapping="0.9151692;0.9033886" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0;0" Quality="1" Validity="4" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.90000004"&gt;&lt;LeftEye Mapping="0.9168828;0.9025486" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0;0" Quality="1" Validity="4" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.90000004"&gt;&lt;LeftEye Mapping="0.9168473;0.9013262" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0;0" Quality="1" Validity="4" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.90000004"&gt;&lt;LeftEye Mapping="0.92139524;0.9143735" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0;0" Quality="1" Validity="4" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.90000004"&gt;&lt;LeftEye Mapping="0.9208638;0.9057638" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0;0" Quality="1" Validity="4" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.90000004"&gt;&lt;LeftEye Mapping="0.92801917;0.91841847" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0;0" Quality="1" Validity="4" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.90000004"&gt;&lt;LeftEye Mapping="0.92283034;0.9099858" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0;0" Quality="1" Validity="4" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.90000004"&gt;&lt;LeftEye Mapping="0.92417306;0.8996209" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0;0" Quality="1" Validity="4" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.90000004"&gt;&lt;LeftEye Mapping="0.914484;0.9100824" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0;0" Quality="1" Validity="4" /&gt;&lt;/DataPoint&gt;&lt;DataPoint TruePoint="0.9;0.90000004"&gt;&lt;LeftEye Mapping="0.3376003;1.0022037" Quality="1" Validity="1" /&gt;&lt;RightEye Mapping="0.31677687;0.9607866" Quality="1" Validity="1" /&gt;&lt;/DataPoint&gt;&lt;/GazeCalibrationData&gt;</CalibrationData>
+    <CalibrationResult>&lt;GazeCalibrationResult xmlversion="1.0"&gt;&lt;Verifier Version="1.0" /&gt;&lt;Attempts&gt;1&lt;/Attempts&gt;&lt;Quality Mean="37.19546127319336" StandardDev="52.29055832781263" Result="69"&gt;Good&lt;/Quality&gt;&lt;CalibrationPoints&gt;9&lt;/CalibrationPoints&gt;&lt;/GazeCalibrationResult&gt;</CalibrationResult>
+  </GazeCalibrationData>
+  <Marker>
+    <Id>1000</Id>
+    <Name>Default Marker</Name>
+    <Description />
+    <Type>Live</Type>
+    <StudyId>1000</StudyId>
+    <KeyStroke>F3</KeyStroke>
+    <Color>#FFFFA500</Color>
+  </Marker>
+  <CreditManagement>
+    <Id>1000</Id>
+    <StudyId>1000</StudyId>
+    <CreditsRegistered>bkN2MDhpS25BYUFuNktleTQ5aEFhZz09</CreditsRegistered>
+  </CreditManagement>
+</NewDataSet>
