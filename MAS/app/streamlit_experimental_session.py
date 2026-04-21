@@ -49,7 +49,7 @@ EXPERIMENTAL_CONDITIONS = ['CG_WRONG_SEQ']  # metacognitive-first only
 # Agent sequences for each experimental condition
 AGENT_SEQUENCES = {
     'EG_SEQ': ["conceptual_scaffolding", "procedural_scaffolding", "strategic_scaffolding", "metacognitive_scaffolding"],
-    'CG_WRONG_SEQ': ["metacognitive_scaffolding", "strategic_scaffolding", "procedural_scaffolding", "conceptual_scaffolding"],
+    'CG_WRONG_SEQ': ["metacognitive_scaffolding", "strategic_scaffolding"],
     'CG_NEUTRAL': ["neutral", "neutral", "neutral", "neutral"]
 }
 
@@ -982,7 +982,7 @@ class StreamlitExperimentalSession:
     
     def assign_experimental_condition(self) -> str:
         """
-        Assign experimental condition using deterministic balanced assignment.
+        Assign experimental condition.
         
         Returns:
             Assigned experimental condition (EG_SEQ, CG_WRONG_SEQ, or CG_NEUTRAL)
@@ -991,14 +991,17 @@ class StreamlitExperimentalSession:
         if "experimental_condition" in self.session_data:
             return self.session_data["experimental_condition"]
         
-        # Use session ID for deterministic balanced assignment
+        # Use session ID for logging and session bookkeeping
         session_id = self.session_data["session_id"]
+
+        if not EXPERIMENTAL_CONDITIONS:
+            logger.error("No experimental conditions configured; falling back to EG_SEQ")
+            assigned_condition = "EG_SEQ"
+            self.session_data["experimental_condition"] = assigned_condition
+            return assigned_condition
         
-        # Convert to number and mod by 3 for balanced distribution
-        hash_value = int(hashlib.md5(session_id.encode()).hexdigest(), 16)
-        condition_index = hash_value % 3
-        
-        assigned_condition = EXPERIMENTAL_CONDITIONS[condition_index]
+        assigned_condition = "CG_WRONG_SEQ"
+        condition_index = EXPERIMENTAL_CONDITIONS.index(assigned_condition)
         
         # Store in session data
         self.session_data["experimental_condition"] = assigned_condition
@@ -1010,7 +1013,7 @@ class StreamlitExperimentalSession:
                 metadata={
                     "experimental_condition": assigned_condition,
                     "session_id": session_id,
-                    "assignment_method": "deterministic_hash",
+                    "assignment_method": "fixed_condition",
                     "condition_index": condition_index,
                     "timestamp": datetime.now().isoformat()
                 }
@@ -1053,8 +1056,8 @@ class StreamlitExperimentalSession:
                     "experimental_condition": experimental_condition,
                     "participant_id": self.session_data["learner_profile"].get("name", "unknown"),
                     "sequence_type": "experimental_condition_based",
-                    "total_rounds": 5,  # Including round 0
-                    "note": f"Round 0 is baseline (no scaffolding), followed by 4 rounds with {experimental_condition} condition"
+                    "total_rounds": len(agents) + 1,  # Including round 0
+                    "note": f"Round 0 is baseline (no scaffolding), followed by {len(agents)} rounds with {experimental_condition} condition"
                 }
             )
         

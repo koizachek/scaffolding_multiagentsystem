@@ -708,7 +708,7 @@ def analyze_user_response_type(response: str) -> Dict[str, Any]:
         "response_type": "statement",
         "key_phrases": [],
         # New pattern detection fields
-        "is_empty": False,
+        "is_empty": False,  
         "is_domain_question": False,
         "is_system_question": False,
         "is_disagreement": False,
@@ -719,11 +719,11 @@ def analyze_user_response_type(response: str) -> Dict[str, Any]:
         "wants_to_end": False,
         "needs_encouragement": False,
         "requires_pattern_response": False,  # CRITICAL: Add this flag
-        "is_help_seeking": False,  # NEW: For "what should I do" questions
-        "is_gibberish": False,  # NEW: For random text
-        "has_intention_without_action": False,  # NEW: For "I can add X" without doing it
-        "is_greeting": False,  # NEW: For greetings like "hi", "hello"
-        "is_reassurance_seeking": False  # NEW: For "how am I doing?" questions
+        "is_help_seeking": False,  # For "what should I do" questions
+        "is_gibberish": False,  # For random text
+        "has_intention_without_action": False,  # For "I can add X" without doing it
+        "is_greeting": False,  # For greetings like "hi", "hello"
+        "is_reassurance_seeking": False  # For "how am I doing?" questions
     }
     
     # Enhanced empty input detection - includes whitespace-only

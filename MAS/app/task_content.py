@@ -61,7 +61,7 @@ Use the interface provided to create a concept map that shows how the following 
 
 ### Format
 
-You will work on this task in 5 rounds (approx. 5–10 minutes each). In each round, you can expand and refine your map with the help of chatbots.
+You will work on this task in 3 rounds (approx. 5–10 minutes each). In each round, you can expand and refine your map with the help of chatbots.
 
 **Tip:** Start with the obvious connections and then gradually add more complex relationships. Remember: AMG is a mechanism used by established firms – consider how it impacts the various aspects of market entry.
 """

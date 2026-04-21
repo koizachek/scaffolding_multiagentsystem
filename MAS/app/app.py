@@ -64,9 +64,9 @@ def init_session_state():
         initial_map = copy.deepcopy(st.session_state.contents["initial_map"])
         st.session_state.cmdata = [initial_map]
 
-    # Set max rounds (now 5 total: round 1 + 4 scaffolding rounds)
+    # Set max rounds (baseline + 2 scaffolding rounds)
     if 'max_rounds' not in st.session_state:
-        st.session_state.max_rounds = 5  # Round 1 + 4 scaffolding rounds
+        st.session_state.max_rounds = 3
 
 
 def load_contents():
@@ -140,8 +140,8 @@ def render_mode_selection():
     # Add time information
     st.warning("""
     ⏱️ **Expected Duration:**
-    - Total experiment time: **Approximately 45 minutes**
-    - 5 rounds of concept mapping: **5 minutes per round**
+    - Total experiment time: **Approximately 20-30 minutes**
+    - 3 rounds of concept mapping: **5 minutes per round**
     - Additional time for questionnaires and profile setup
     - Your time will be tracked for research purposes
 
@@ -160,7 +160,7 @@ def render_mode_selection():
         This research study includes:
         - **AI-powered personalized learning**
         - **Learner profiling questionnaire**
-        - **5 rounds of concept mapping**
+        - **3 rounds of concept mapping**
         - **Data collection for research purposes**
         """)
 
@@ -300,12 +300,13 @@ def render_learner_profile():
 
         # Initialize agent sequence
         st.session_state.agent_sequence = st.session_state.experimental_session.initialize_agent_sequence()
+        st.session_state.max_rounds = len(st.session_state.agent_sequence) + 1
 
         st.info("📋 **Experiment Structure:**")
         st.write("**Round 0:** Initial Map Creation (No agent) - Baseline")
-        st.write("**Rounds 1-4:** Agent-guided mapping sessions")
+        st.write("**Rounds 1-2:** Agent-guided mapping sessions")
         st.write("")
-        st.write("You will receive guidance from AI agents across 4 rounds to help improve your concept map.")
+        st.write("You will receive guidance from AI agents across 2 rounds to help improve your concept map.")
 
         st.markdown("---")
         st.info("📝 Next, you'll complete a pre-knowledge questionnaire about the task materials.")
@@ -630,7 +631,7 @@ def render_summary_page():
             if st.session_state.mode == "experimental":
                 st.write("**Session Structure:**")
                 st.write("- Round 0: Baseline (own map)")
-                st.write("- Rounds 1-4: Agent-guided map")
+                st.write("- Rounds 1-2: Agent-guided map")
 
     # Display concept map statistics
     st.markdown("---")

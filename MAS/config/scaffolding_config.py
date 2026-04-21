@@ -42,7 +42,6 @@ SCAFFOLDING_PROMPT_TEMPLATES = {
     },
     "metacognitive": {
         "high": [
-            # alt
             "As you look at your concept map now, which parts do you feel most confident about, and which parts are you less certain about?",
             "How has your understanding of {concept} changed since you started working on this concept map? What specific insights have you gained?",
             "If you were to explain what you've learned about this topic to someone else, what key points would you emphasize based on your concept map?",
@@ -80,7 +79,7 @@ SCAFFOLDING_PROMPT_TEMPLATES = {
             # TOOL-NUTZUNG & TECHNISCHE SCHRITTE
             "Here's the step-by-step process for {concept} categorization: Identify themes, group it with related concepts, create category labels, organize spatially. Which step requires guidance?",
             "To check map completeness systematically: 1) List key course concepts, 2) Verify each appears in your map, 3) Check for adequate connections, 4) Identify gaps. Let's work through this process.",
-            # alt
+            # appreciation
             "I notice that {observation}. Would you like some guidance on how to add more complex relationships between concepts in your map? What specific aspects of the concept mapping process are you finding challenging?",
             "How do you typically approach the process of creating and revising your map? Are there specific techniques you'd like help with?",
             "When reviewing your concept map, what systematic approach do you use to identify areas for improvement? Have you tried starting from one concept and tracing all its possible connections?",
